@@ -31,4 +31,4 @@ ENV FLASK_ENV=development
 ENV FLASK_DEBUG=1
 
 # Run Flask development server with hot reload
-CMD ["python", "-m", "flask", "run", "--host=0.0.0.0", "--port=8000", "--reload"] 
+CMD ["sh", "-c", "flask db upgrade && flask run --host=0.0.0.0 --port=8000"]
