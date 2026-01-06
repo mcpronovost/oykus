@@ -6,6 +6,7 @@ import { OykButton, OykCard, OykGrid, OykHeading } from "@/components/common";
 export default function DevQuests() {
   const { t } = useTranslation();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [character, setCharacter] = useState({});
 
   const getLevel = (xp) => {
@@ -14,14 +15,37 @@ export default function DevQuests() {
     return Math.floor(Math.log2(xp)) - 9 + 1;
   }
 
-  const handleQuest1 = () => {
+  const getXpForLevel = (xp) => {
+    const level = getLevel(xp);
+    if (level < 1) return 1;
+    return Math.pow(2, level + 9);
+  }
+
+  const getPercentForLevel = (xp) => {
+    const level = getLevel(xp);
+    if (level < 1) return 0;
+    
+    // Get the XP required for the current level
+    const xpForCurrentLevel = Math.pow(2, level + 9);
+    // Get the XP required for the previous level
+    const xpForPreviousLevel = level > 1 ? Math.pow(2, level + 8) : 0;
+    // Calculate XP progress within the current level
+    const xpInCurrentLevel = xp - xpForPreviousLevel;
+    // Calculate total XP range for the current level
+    const xpRangeForLevel = xpForCurrentLevel - xpForPreviousLevel;
+    
+    return Math.round((xpInCurrentLevel / xpRangeForLevel) * 100);
+  }
+
+  const handleQuest1 = (attr, skill) => {
     console.log("Starting Quest 1");
+    setIsLoading(true);
     const QuestLevel = 1;
-    const QuestXP = 500;
-    const SkillLevel = getLevel(character?.skills?.woodcutting || 0);
+    const QuestXP = 125;
+    const SkillLevel = getLevel(character?.skills?.[skill] || 0);
     const LD = (QuestLevel - SkillLevel);
     const Malus = LD * 0.25;
-    const SA = getLevel(character?.attributes?.strength || 0);
+    const SA = getLevel(character?.attributes?.[attr] || 0);
     const AT = 12;
     const Bonus = SA / AT;
     const Mastery = Math.max(0, Bonus - Malus);
@@ -35,25 +59,28 @@ export default function DevQuests() {
     console.log("Success Rate:", (SR * 100).toFixed(2), "%");
     const success = Math.random() < SR;
     let SkillXP = QuestXP;
-    let AttrXP = QuestXP / 12;
+    let AttrXP = QuestXP / 6;
     if (success) {
       console.log("Success!");
     } else {
-      SkillXP = Math.round(SkillXP / 2);
-      AttrXP = Math.round(AttrXP / 2);
+      SkillXP = SkillXP / 2;
+      AttrXP = AttrXP / 2;
       console.log("Failed!");
     }
-    setCharacter({
-      ...character,
-      attributes: {
-        ...character.attributes,
-        strength: (character.attributes.strength || 0) + AttrXP,
-      },
-      skills: {
-        ...character.skills,
-        woodcutting: (character.skills.woodcutting || 0) + SkillXP,
-      },
-    });
+    setTimeout(() => {
+      setCharacter({
+        ...character,
+        attributes: {
+          ...character.attributes,
+          [attr]: Math.round((character.attributes[attr] || 0) + AttrXP),
+        },
+        skills: {
+          ...character.skills,
+          [skill]: Math.round((character.skills[skill] || 0) + SkillXP),
+        },
+      });
+      setIsLoading(false);
+    }, 4000);
   }
 
   useEffect(() => {
@@ -102,7 +129,7 @@ export default function DevQuests() {
             <br />
             <ul>
               {Object.entries(character.attributes).map(([attribute, value]) => (
-                <li key={attribute}>{attribute}: {getLevel(value)} ({value} xp)</li>
+                <li key={attribute}>{attribute}: {getLevel(value)} ({value}/{getXpForLevel(value)} xp) [{getPercentForLevel(value)}%]</li>
               ))}
             </ul>
           </OykCard>
@@ -120,12 +147,12 @@ export default function DevQuests() {
           <h3>Quêtes</h3>
           <br />
           <ul>
-            <li><OykButton color="primary" action={() => handleQuest1()}>Commencer</OykButton> Quête 1: Lvl 1 (strength) [woodcutting] : 1 - {getLevel(character?.skills?.woodcutting || 0)} = {1 - getLevel(character?.skills?.woodcutting || 0)} x 0.25 = <u>{(1 - getLevel(character?.skills?.woodcutting || 0)) * 0.25}</u> : {getLevel(character?.attributes?.strength || 0)} / 12 = <u>{Number((getLevel(character?.attributes?.strength || 0) / 12).toFixed(2))}</u> : {(1 - getLevel(character?.skills?.woodcutting || 0)) * 0.25} - {Number((getLevel(character?.attributes?.strength || 0) / 12).toFixed(2))} = <u>{Number(((1 - getLevel(character?.skills?.woodcutting || 0)) * 0.25) - (getLevel(character?.attributes?.strength || 0) / 12)).toFixed(2)}</u> - 0,05 = <u>{Number(((1 - getLevel(character?.skills?.woodcutting || 0)) * 0.25) - (getLevel(character?.attributes?.strength || 0) / 12) - 0.05).toFixed(2)}</u></li>
-            <li>Quête 2: Lvl 1 (constitution)</li>
-            <li>Quête 3: Lvl 1 (dexterity)</li>
-            <li>Quête 4: Lvl 1 (perception)</li>
-            <li>Quête 5: Lvl 1 (intelligence)</li>
-            <li>Quête 6: Lvl 1 (willpower)</li>
+            <li><OykButton color="primary" disabled={isLoading} isLoading={isLoading} action={() => handleQuest1("strength", "woodcutting")}>Start</OykButton> Quête 1: Lvl 1 (strength) [woodcutting]</li>
+            <li><OykButton color="primary" disabled={isLoading} isLoading={isLoading} action={() => handleQuest1("constitution", "carrying")}>Start</OykButton> Quête 2: Lvl 1 (constitution) [carrying]</li>
+            <li><OykButton color="primary" disabled={isLoading} isLoading={isLoading} action={() => handleQuest1("dexterity", "archery")}>Start</OykButton> Quête 3: Lvl 1 (dexterity) [archery]</li>
+            <li><OykButton color="primary" disabled={isLoading} isLoading={isLoading} action={() => handleQuest1("perception", "tracking")}>Start</OykButton> Quête 4: Lvl 1 (perception) [tracking]</li>
+            <li><OykButton color="primary" disabled={isLoading} isLoading={isLoading} action={() => handleQuest1("intelligence", "alchemy")}>Start</OykButton> Quête 5: Lvl 1 (intelligence) [alchemy]</li>
+            <li><OykButton color="primary" disabled={isLoading} isLoading={isLoading} action={() => handleQuest1("willpower", "negotiation")}>Start</OykButton> Quête 6: Lvl 1 (willpower) [negotiation]</li>
           </ul>
           <br />
           <p>QL - SL = LD x 0,25 = Malus</p>

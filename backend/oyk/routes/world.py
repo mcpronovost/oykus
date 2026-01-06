@@ -1,104 +1,38 @@
-from flask import jsonify, request
+from flask import jsonify
 
 from oyk.decorators import require_auth, require_dev
 from oyk.extensions import db
 from oyk.routes import world_bp
 from oyk.models.user import User
-from oyk.models.world import World, WorldTheme
-from oyk.models.task import TaskStatus
+from oyk.models.task import TaskStatus, Task
+from oyk.models.world import World, WorldTheme, WorldArea, WorldSector
 
 
-@world_bp.route("/<world_slug>/tasks", methods=["GET"])
+@world_bp.route("/<world_slug>", methods=["GET"])
 @require_auth
-def world_tasks_get(world_slug):
-    """Get all tasks for a world."""
+def world_get(world_slug):
+    """Get a world."""
     world = World.query.filter_by(slug=world_slug).first()
     if not world:
         return jsonify({"success": False, "message": "World not found"}), 404
-    status = world.task_status.order_by(TaskStatus.sort_order.asc()).all()
-    return (
-        jsonify(
-            {
-                "success": True,
-                "tasks": [status.to_dict() for status in status],
-                "status": [
-                    {
-                        "label": status.name,
-                        "value": status.id,
-                    }
-                    for status in status
-                ],
-            }
-        ),
-        200,
-    )
-
-
-@world_bp.route(
-    "/<world_slug>/task-status/<status_id>/edit", methods=["PATCH"]
-)
-@require_auth
-def world_task_status_edit(world_slug, status_id):
-    """Edit a task status for a world."""
-    world = World.query.filter_by(slug=world_slug).first()
-    if not world:
-        return jsonify({"success": False, "message": "World not found"}), 404
-    status = TaskStatus.query.filter_by(
-        id=status_id, world_id=world.id
-    ).first()
-    if not status:
+    try:
+        areas = world.world_areas.order_by(WorldArea.sort_order).all()
+        world = world.to_dict()
+        world["areas"] = [area.to_dict() for area in areas]
         return (
-            jsonify({"success": False, "message": "Task status not found"}),
-            404,
+            jsonify(
+                {
+                    "success": True,
+                    "world": world,
+                }
+            ),
+            200,
         )
-    data = request.get_json()
-    if not data:
-        return jsonify({"success": False, "message": "No data provided"}), 400
-    status.name = data["name"]
-    status.colour = data["colour"]
-    status.sort_order = data["sort_order"]
-    status.validate()
-    status.save()
-    return (
-        jsonify(
-            {
-                "success": True,
-                "message": "Task status updated",
-                "status": status.to_dict(),
-            }
-        ),
-        200,
-    )
-
-
-@world_bp.route("/<world_slug>/task-status/create", methods=["POST"])
-@require_auth
-def world_task_status_create(world_slug):
-    """Create a new task status for a world."""
-    world = World.query.filter_by(slug=world_slug).first()
-    if not world:
-        return jsonify({"success": False, "message": "World not found"}), 404
-    data = request.get_json()
-    if not data:
-        return jsonify({"success": False, "message": "No data provided"}), 400
-    status = TaskStatus(
-        world_id=world.id,
-        name=data["name"],
-        colour=data["colour"],
-        sort_order=data["sort_order"],
-    )
-    status.validate()
-    status.save()
-    return (
-        jsonify(
-            {
-                "success": True,
-                "message": "Task status created",
-                "status": status.to_dict(),
-            }
-        ),
-        200,
-    )
+    except Exception as e:
+        return (
+            jsonify({"success": False, "message": f"{e}"}),
+            500,
+        )
 
 
 @world_bp.route("/dev-create", methods=["GET"])
@@ -117,6 +51,21 @@ def worlds_dev_create():
         )
         world.validate()
         world.save()
+        world_area = WorldArea(
+            world_id=world.id,
+            name="Area #1",
+            sort_order=0,
+        )
+        world_area.validate()
+        world_area.save()
+        world_sector = WorldSector(
+            world_id=world.id,
+            world_area_id=world_area.id,
+            name="Sector #1",
+            sort_order=0,
+        )
+        world_sector.validate()
+        world_sector.save()
         theme = WorldTheme(
             world_id=world.id,
             name="Default Qalatlán",
@@ -175,6 +124,10 @@ def worlds_dev_update():
 def worlds_clean():
     """Clean up the worlds database for development purposes."""
     try:
+        Task.query.delete()
+        TaskStatus.query.delete()
+        WorldSector.query.delete()
+        WorldArea.query.delete()
         WorldTheme.query.delete()
         World.query.delete()
         db.session.commit()
@@ -182,8 +135,8 @@ def worlds_clean():
             jsonify({"success": True, "message": "Worlds database cleaned"}),
             200,
         )
-    except Exception:
+    except Exception as e:
         return (
-            jsonify({"success": False, "message": "Internal server error"}),
+            jsonify({"success": False, "message": f"{e}"}),
             500,
         )

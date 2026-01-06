@@ -1,6 +1,7 @@
 import {
   Blocks,
   Compass,
+  Earth,
   LayoutDashboard,
   LibraryBig,
   ListTodo,
@@ -52,6 +53,12 @@ export default function AppSidebar() {
                 href="world-lore"
                 params={{ worldSlug: currentWorld.slug }}
                 disabled
+              />
+              <OykNavItem
+                icon={Earth}
+                text={t("World")}
+                href="world-home"
+                params={{ worldSlug: currentWorld.slug }}
               />
               <OykNavItem
                 icon={Users}

@@ -11,7 +11,7 @@ export const WORLD_ROUTES = [
     children: [
       {
         name: "world-home",
-        component: React.lazy(() => import("../../../pages/Home")),
+        component: React.lazy(() => import("../../../pages/Worlds/Home")),
         paths: {
           fr: "{worldSlug}",
           en: "{worldSlug}",

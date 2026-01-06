@@ -52,6 +52,18 @@ class World(db.Model):
         lazy="dynamic",
         cascade="all, delete-orphan",
     )
+    world_areas = db.relationship(
+        "WorldArea",
+        back_populates="world",
+        lazy="dynamic",
+        cascade="all, delete-orphan",
+    )
+    world_sectors = db.relationship(
+        "WorldSector",
+        back_populates="world",
+        lazy="dynamic",
+        cascade="all, delete-orphan",
+    )
     tasks = db.relationship(
         "Task",
         back_populates="world",
@@ -186,10 +198,12 @@ class WorldTheme(db.Model):
             "c_primary_fg": self.c_primary_fg,
         }
         if include_full:
-            data.update({
-                "id": self.id,
-                "name": self.name,
-            })
+            data.update(
+                {
+                    "id": self.id,
+                    "name": self.name,
+                }
+            )
         return data
 
     def validate(self):
@@ -206,6 +220,171 @@ class WorldTheme(db.Model):
                 # Deactivate the existing active theme
                 existing_active.is_active = False
                 db.session.add(existing_active)
+
+    def save(self):
+        self.validate()
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+
+class WorldArea(db.Model):
+    __tablename__ = "oyk_world_areas"
+
+    # Authentication
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        index=True,
+    )
+    world_id = db.Column(
+        db.Integer,
+        db.ForeignKey("oyk_worlds.id"),
+        nullable=False,
+    )
+    world = db.relationship(
+        "World",
+        back_populates="world_areas",
+        lazy="joined",
+    )
+
+    # Area Identity
+    name = db.Column(
+        db.String(64),
+        nullable=False,
+    )
+    sort_order = db.Column(
+        db.Integer,
+        nullable=False,
+        default=0,
+    )
+
+    # Relationships
+    world_sectors = db.relationship(
+        "WorldSector",
+        back_populates="world_area",
+        lazy="dynamic",
+        cascade="all, delete-orphan",
+    )
+
+    # Important Dates
+    created_at = db.Column(
+        db.DateTime,
+        default=datetime.now,
+        nullable=False,
+    )
+    updated_at = db.Column(
+        db.DateTime,
+        default=datetime.now,
+        onupdate=datetime.now,
+    )
+
+    def __repr__(self):
+        return f"<WorldArea: {self.name}>"
+
+    def __str__(self):
+        return self.name
+
+    def to_dict(self, include_sectors=True):
+        data = {
+            "id": self.id,
+            "name": self.name,
+        }
+        if include_sectors:
+            data["sectors"] = [
+                sector.to_dict(include_area=False)
+                for sector in self.world_sectors.order_by(
+                    WorldSector.sort_order
+                )
+            ]
+        return data
+
+    def validate(self):
+        pass
+
+    def save(self):
+        self.validate()
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+
+class WorldSector(db.Model):
+    __tablename__ = "oyk_world_sectors"
+
+    # Authentication
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        index=True,
+    )
+    world_id = db.Column(
+        db.Integer,
+        db.ForeignKey("oyk_worlds.id"),
+        nullable=False,
+    )
+    world = db.relationship(
+        "World",
+        back_populates="world_sectors",
+        lazy="joined",
+    )
+    world_area_id = db.Column(
+        db.Integer,
+        db.ForeignKey("oyk_world_areas.id"),
+        nullable=False,
+    )
+    world_area = db.relationship(
+        "WorldArea",
+        back_populates="world_sectors",
+        lazy="joined",
+    )
+
+    # Sector Identity
+    name = db.Column(
+        db.String(64),
+        nullable=False,
+    )
+    sort_order = db.Column(
+        db.Integer,
+        nullable=False,
+        default=0,
+    )
+
+    # Important Dates
+    created_at = db.Column(
+        db.DateTime,
+        default=datetime.now,
+        nullable=False,
+    )
+    updated_at = db.Column(
+        db.DateTime,
+        default=datetime.now,
+        onupdate=datetime.now,
+    )
+
+    def __repr__(self):
+        return f"<WorldSector: {self.name}>"
+
+    def __str__(self):
+        return self.name
+
+    def to_dict(self, include_area=True):
+        data = {
+            "id": self.id,
+            "name": self.name,
+        }
+        if include_area:
+            data["area"] = self.world_area.to_dict(include_sectors=False)
+        return data
+
+    def validate(self):
+        pass
 
     def save(self):
         self.validate()

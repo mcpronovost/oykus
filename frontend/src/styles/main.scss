@@ -21,4 +21,8 @@
 @use "./common/modal" as common-modal;
 @use "./common/progress" as common-progress;
 
+@use "./world/layout" as world-layout;
+@use "./world/areas" as world-areas;
+@use "./world/sectors" as world-sectors;
+
 @use "./page/auth" as page-auth;
