@@ -11,12 +11,11 @@ class Config:
     JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY") or "jwt-secret-key"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    # MySQL optimizations
+    # Optimizations
     SQLALCHEMY_ENGINE_OPTIONS = {
         "pool_size": 10,
         "pool_recycle": 3600,
         "pool_pre_ping": True,
-        "connect_args": {"charset": "utf8mb4"},
     }
 
     # Security headers
