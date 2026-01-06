@@ -32,7 +32,7 @@ class ApiService {
   async request(endpoint, options = {}) {
     // In development, use relative URLs for proxy
     const url = import.meta.env.DEV
-      ? `/api${endpoint}`
+      ? `${this.baseURL}/api${endpoint}`
       : `${this.baseURL}${endpoint}`;
 
     // Get auth token if available
