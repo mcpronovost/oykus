@@ -18,6 +18,7 @@ export default defineConfig(({ mode }) => {
           secure: false,
         },
       },
+      allowedHosts: true,
     },
     plugins: [react()],
     build: {
