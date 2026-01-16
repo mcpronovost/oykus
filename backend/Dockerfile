@@ -1,4 +1,6 @@
-FROM php:8.2-apache
+FROM php:8.5-apache
+
+RUN docker-php-ext-install pdo pdo_mysql mysqli
 
 # Enable Apache rewrite module
 RUN a2enmod rewrite
