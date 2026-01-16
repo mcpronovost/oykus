@@ -1,6 +1,6 @@
 services:
   db:
-    image: mysql:8.0
+    image: mysql:8.4
     container_name: oykus-db
     restart: unless-stopped
     ports:
@@ -23,20 +23,16 @@ services:
   backend:
     build: ./backend
     container_name: oykus-backend
-    command: sh -c "flask run --host=0.0.0.0 --port=8000 --reload"
     restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
     ports:
-      - "8000:8000"
+      - "8080:80"
     volumes:
-      - ./backend:/app
+      - ./backend:/var/www/html
     environment:
       TZ: ${TZ}
-      FLASK_APP: app.py
-      FLASK_ENV: development
-      FLASK_DEBUG: 1
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -51,7 +47,7 @@ services:
       - db
       - backend
     ports:
-      - "3000:3000"
+      - "8000:8000"
     volumes:
       - /app/node_modules
       - ./frontend:/app

@@ -8,12 +8,12 @@ export default defineConfig(({ mode }) => {
 
   return {
     server: {
-      port: 3000,
+      port: 8000,
       host: true,
-      watch: { usePolling: watchUsePolling },
+      watch: { usePolling: true },
       proxy: {
         "/api": {
-          target: "http://backend:8000",
+          target: "http://backend:80",
           changeOrigin: true,
           secure: false,
         },

@@ -1,0 +1,1 @@
+import{u as a,j as t}from"./index-DLfbEI9z.js";import{O as e}from"./Heading-CPx4GJOJ.js";function m(){const{t:s}=a();return(async()=>{const o=await(await fetch("/api/health")).json();console.log(o)})(),t.jsxs("section",{className:"oyk-page oyk-home",children:[t.jsx(e,{title:s("Home")}),"a"]})}export{m as default};

@@ -1,34 +1,12 @@
-FROM python:3.11-slim
+FROM php:8.2-apache
 
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+# Enable Apache rewrite module
+RUN a2enmod rewrite
 
-# Set working directory
-WORKDIR /app
+# Allow .htaccess overrides
+RUN sed -i "s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    default-libmysqlclient-dev \
-    pkg-config \
-    && rm -rf /var/lib/apt/lists/*
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-# Copy requirements first for better caching
-COPY requirements.txt .
-
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy backend code
-COPY . .
-
-# Expose port
-EXPOSE 8000
-
-# Set environment variables for development
-ENV FLASK_APP=app.py
-ENV FLASK_ENV=development
-ENV FLASK_DEBUG=1
-
-# Run Flask development server with hot reload
-CMD ["sh", "-c", "flask db upgrade && flask run --host=0.0.0.0 --port=8000"]
+# Restart Apache
+RUN service apache2 restart
