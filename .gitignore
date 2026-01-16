@@ -51,3 +51,5 @@ prisma/migrations/dev.db-journal
 
 # Local development
 *.local
+
+.htaccess
