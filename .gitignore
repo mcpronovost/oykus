@@ -21,6 +21,7 @@ pnpm-lock.yaml
 
 # Build outputs
 build/
+dist/
 
 # Logs
 logs/
