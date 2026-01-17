@@ -7,14 +7,16 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+    env_file:
+      - .env
     environment:
       TZ: ${TZ}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASS}
+      MYSQL_ROOT_PASSWORD: ${HTTP_DB_PASS}
+      MYSQL_DATABASE: ${HTTP_DB_NAME}
+      MYSQL_USER: ${HTTP_DB_USER}
+      MYSQL_PASSWORD: ${HTTP_DB_PASS}
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${HTTP_DB_PASS}"]
       timeout: 20s
       retries: 10
       interval: 10s
@@ -35,11 +37,6 @@ services:
       - .env
     environment:
       TZ: ${TZ}
-      DB_HOST: ${DB_HOST}
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASS: ${DB_PASS}
-      JWT_SECRET: ${JWT_SECRET}
 
   frontend:
     build: ./frontend
@@ -57,8 +54,6 @@ services:
       - .env
     environment:
       TZ: ${TZ}
-      VITE_API: ${VITE_API}
-      VITE_WATCH_USE_POLLING: ${VITE_WATCH_USE_POLLING}
 
 volumes:
   db_data: 
