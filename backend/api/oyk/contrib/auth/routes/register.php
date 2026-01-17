@@ -46,7 +46,7 @@ try {
     }
 } catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(["error" => "Registration failed", "e" => $e->getMessage()]);
+    echo json_encode(["error" => $e->getCode()]);
     exit;
 }
 

@@ -45,7 +45,11 @@ class OykApi {
         let errorMsg = `HTTP error! status: ${response.status}`;
         try {
           const errorData = await response.json();
-          errorMsg = errorData.error || JSON.stringify(errorData);
+          if (errorData.error && errorData.error === "42S02") {
+            errorMsg = "An internal error occurred, please contact an administrator";
+          } else {
+            errorMsg = errorData.error || JSON.stringify(errorData);
+          }
         } catch (err) {
           errorMsg = `HTTP error! status: ${response.status}`;
         }

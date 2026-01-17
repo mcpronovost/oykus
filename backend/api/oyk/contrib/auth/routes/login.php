@@ -16,16 +16,21 @@ if ($username === "" || $password === "") {
     exit;
 }
 
-// Récupérer l'utilisateur
-$stmt = $pdo->prepare("
-    SELECT id, username, password, name
-    FROM users
-    WHERE username = :username
-    LIMIT 1
-");
-$stmt->execute(["username" => $username]);
-
-$user = $stmt->fetch();
+try{
+    // Récupérer l'utilisateur
+    $stmt = $pdo->prepare("
+        SELECT id, username, password, name
+        FROM users
+        WHERE username = :username
+        LIMIT 1
+    ");
+    $stmt->execute(["username" => $username]);
+    $user = $stmt->fetch();
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(["error" => $e->getCode()]);
+    exit;
+}
 
 if (!$user || !password_verify($password, $user["password"])) {
     http_response_code(401);

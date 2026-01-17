@@ -11,15 +11,21 @@ $authUser = require_auth();
 // $authUser contient le payload du JWT
 // ex: sub, username, iat, exp...
 
-$stmt = $pdo->prepare("
-    SELECT name, slug, abbr
-    FROM users
-    WHERE id = :id
-    LIMIT 1
-");
+try {
+    $stmt = $pdo->prepare("
+        SELECT name, slug, abbr
+        FROM users
+        WHERE id = :id
+        LIMIT 1
+    ");
 
-$stmt->execute(["id" => $authUser["sub"]]);
-$user = $stmt->fetch();
+    $stmt->execute(["id" => $authUser["sub"]]);
+    $user = $stmt->fetch();
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(["error" => $e->getCode()]);
+    exit;
+}
 
 if (!$user) {
     http_response_code(404);
