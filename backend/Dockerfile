@@ -1,14 +1,11 @@
-FROM php:8.5-apache
+FROM python:3.13
 
-RUN docker-php-ext-install pdo pdo_mysql mysqli
+WORKDIR /app
 
-# Enable Apache rewrite module
-RUN a2enmod rewrite
+COPY requirements.txt requirements.txt
 
-# Allow .htaccess overrides
-RUN sed -i "s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+COPY . .
 
-# Restart Apache
-RUN service apache2 restart
+CMD ["fastapi", "run", "main.py", "--port", "80"]
