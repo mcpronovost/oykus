@@ -1,0 +1,85 @@
+.oyk-display {
+  background-color: var(--oyk-card-bg);
+  background-position: center;
+  background-size: cover;
+  border-radius: 32px;
+  text-align: center;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 216px;
+  position: relative;
+  transition: box-shadow 0.2s, transform 0.2s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-4px) scale(1.02);
+  }
+
+  &-overlay {
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.4;
+    transform: scale(1.1);
+    filter: blur(12px);
+  }
+
+  &-content {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    padding: 16px;
+
+    &-image {
+      background-position: center;
+      background-size: cover;
+      border-radius: 24px;
+      overflow: hidden;
+      width: 100%;
+      height: 276px;
+      position: relative;
+      transition: filter 0.3s ease-in-out;
+    }
+
+    &-info {
+      position: relative;
+      padding: 16px 0;
+
+      h3 {
+        font-family: "Quicksand", serif;
+      }
+
+      p {
+        font-size: 0.75rem;
+        line-height: 1.2rem;
+        opacity: 0.75;
+        margin-top: 4px;
+      }
+    }
+  }
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  &.blurred {
+    .oyk-display-content-image {
+      filter: blur(12px);
+    }
+
+    &:hover {
+      .oyk-display-content-image {
+        filter: blur(0);
+      }
+    }
+  }
+}

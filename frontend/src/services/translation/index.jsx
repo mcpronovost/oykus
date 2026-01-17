@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useRef } from "react";
+import { createContext, useContext, useEffect, useRef } from "react";
 import { DEFAULT_LANG, loadTranslations } from "./utils";
 
 const TranslationContext = createContext();

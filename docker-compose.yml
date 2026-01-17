@@ -31,17 +31,20 @@ services:
       - "8080:80"
     volumes:
       - ./backend:/var/www/html
+    env_file:
+      - .env
     environment:
       TZ: ${TZ}
       DB_HOST: ${DB_HOST}
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}
+      JWT_SECRET: ${JWT_SECRET}
 
   frontend:
     build: ./frontend
     container_name: oykus-frontend
-    command: sh -c "npm run dev"
+    command: sh -c "npm run start"
     depends_on:
       - db
       - backend
@@ -50,9 +53,11 @@ services:
     volumes:
       - /app/node_modules
       - ./frontend:/app
+    env_file:
+      - .env
     environment:
       TZ: ${TZ}
-      VITE_API_URL: ${VITE_API_URL}
+      VITE_API: ${VITE_API}
       VITE_WATCH_USE_POLLING: ${VITE_WATCH_USE_POLLING}
 
 volumes:

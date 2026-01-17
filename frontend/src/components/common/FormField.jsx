@@ -1,10 +1,12 @@
 export default function OykFormField({
+  ref,
   label,
   name,
   type = "text",
   options = [],
   defaultValue,
   required = false,
+  disabled = false,
   onChange,
   hasError,
   block = false,
@@ -19,6 +21,7 @@ export default function OykFormField({
       <div className="oyk-form-field-input">
         {type === "textarea" ? (
           <textarea
+            ref={ref}
             id={`field-${name}`}
             name={name}
             defaultValue={defaultValue}
@@ -27,7 +30,7 @@ export default function OykFormField({
             required={required}
           />
         ) : type === "select" ? (
-          <select id={`field-${name}`} name={name} defaultValue={defaultValue} onChange={onChange} required={required}>
+          <select ref={ref} id={`field-${name}`} name={name} defaultValue={defaultValue} onChange={onChange} required={required}>
             {options.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -52,12 +55,14 @@ export default function OykFormField({
           </div>
         ) : (
           <input
+            ref={ref}
             type={type}
             id={`field-${name}`}
             name={name}
             defaultValue={defaultValue}
             onChange={onChange}
             required={required}
+            disabled={disabled}
             autoComplete="off"
           />
         )}

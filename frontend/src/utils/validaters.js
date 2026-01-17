@@ -29,11 +29,11 @@ export const validateEmail = (email) => {
   return null;
 };
 
-export const validatePlayername = (playername) => {
-  if (!playername.trim()) {
-    return "Playername is required";
-  } else if (!/^[\p{L}\p{N}\s\-']{2,50}$/u.test(playername)) {
-    return "Playername must be 2-50 characters, letters, numbers, spaces, hyphens, apostrophes only";
+export const validateName = (name) => {
+  if (!name.trim()) {
+    return "Name is required";
+  } else if (!/^[\p{L}\p{N}\s\-']{2,50}$/u.test(name)) {
+    return "Name must be 2-50 characters, letters, numbers, spaces, hyphens, apostrophes only";
   }
   return null;
 };

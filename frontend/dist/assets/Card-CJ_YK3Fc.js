@@ -1,1 +1,0 @@
-import{j as t}from"./index-DLfbEI9z.js";function d({children:o,nop:a=!1,className:r,style:s}){return t.jsx("div",{className:`oyk-card ${a?"oyk-card-nop":""} ${r||""}`,style:s,children:o})}export{d as O};

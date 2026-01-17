@@ -1,0 +1,35 @@
+.oyk-card {
+  background-color: var(--oyk-card-bg);
+  border-radius: var(--oyk-radius);
+  color: var(--oyk-card-fg);
+  position: relative;
+  padding: 16px;
+
+  &-nop {
+    padding: 0;
+  }
+
+  &-fh {
+    text-align: center;
+    align-content: center;
+    height: 100%;
+  }
+
+  &-aligntop {
+    align-content: flex-start;
+  }
+
+  &-clickable {
+    transition: box-shadow 0.3s, transform 0.3s;
+
+    &:hover {
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transform: translateY(-4px);
+    }
+
+    &:active {
+      transform: scale(0.96);
+    }
+  }
+}

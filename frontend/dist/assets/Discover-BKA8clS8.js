@@ -1,0 +1,1 @@
+import{u as e,j as s}from"./index-OLy-s8nC.js";import{O as t}from"./Heading-CVxeAvcx.js";function a(){const{t:o}=e();return s.jsx("section",{className:"oyk-page oyk-discover",children:s.jsx(t,{title:o("Discover")})})}export{a as default};

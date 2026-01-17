@@ -1,10 +1,17 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
-import "./styles/main.scss";
+import "@/assets/styles/main.scss";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App.jsx";
 
-ReactDOM.createRoot(document.getElementById("oykus")).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+function Root() {
+  return (
+    <StrictMode>
+      <App />
+    </StrictMode>
+  );
+}
+
+const oykRoot = document.getElementById("oykus");
+if (oykRoot) {
+  createRoot(oykRoot).render(<Root />);
+}

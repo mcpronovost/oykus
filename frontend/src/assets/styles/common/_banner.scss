@@ -1,0 +1,37 @@
+.oyk-banner {
+  text-align: center;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  height: 170px;
+  position: relative;
+  transition: height 0.3s;
+
+  &-cover {
+    background-color: var(--oyk-card-subtle-bg);
+    border-top-left-radius: var(--oyk-radius);
+    border-top-right-radius: var(--oyk-radius);
+    color: var(--oyk-card-subtle-fg);
+    overflow: hidden;
+    height: 100px;
+    width: 100%;
+    transition: width 0.3s, height 0.3s;
+
+    &-image {
+      background-position: center;
+      background-size: cover;
+      height: 100px;
+      width: 100%;
+      opacity: 0.5;
+      transition: width 0.3s, height 0.3s;
+    }
+  }
+
+  &-avatar {
+    position: absolute;
+    top: 64px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    transition: top 0.3s;
+  }
+}

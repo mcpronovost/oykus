@@ -17,14 +17,6 @@ export const DEV_ROUTES = [
           en: "components",
         },
       },
-      {
-        name: "dev-quests",
-        component: React.lazy(() => import("../../../pages/Dev/Quests")),
-        paths: {
-          fr: "quetes",
-          en: "quests",
-        },
-      },
     ],
   },
 ];

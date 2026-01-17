@@ -1,0 +1,36 @@
+import { useAuth } from "@/services/auth";
+import { useStore } from "@/services/store";
+import { OykBanner } from "@/components/common";
+
+export default function User() {
+  const { currentUser } = useAuth();
+  const { storeAppSidebarOpen } = useStore();
+
+  if (!currentUser) {
+    return null;
+  }
+
+  return (
+    <section className="oyk-app-sidebar-user">
+      <OykBanner
+        avatarSrc={currentUser.avatar}
+        avatarBorderSize={4}
+        avatarBorderColor="var(--oyk-app-sidebar-bg)"
+        avatarSize={storeAppSidebarOpen ? 96 : 32}
+        avatarTop={storeAppSidebarOpen ? 24 : 12}
+        coverSrc={currentUser.cover}
+        coverHeight={storeAppSidebarOpen ? 72 : 32}
+        coverRadius="0"
+        height={storeAppSidebarOpen ? 132 : 64}
+      />
+      <section className={`oyk-app-sidebar-user-identity ${storeAppSidebarOpen ? '' : 'hidden'}`}>
+        <div className="oyk-app-sidebar-user-identity-name">
+            {currentUser.name}
+        </div>
+        <div className="oyk-app-sidebar-user-identity-title">
+            Qui ne fait que passer
+        </div>
+      </section>
+    </section>
+  );
+}

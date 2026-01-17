@@ -1,0 +1,56 @@
+.oyk-heading {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 32px;
+  margin: 32px auto;
+
+  &-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+  }
+
+  &-content {
+    flex: 1;
+
+    &::after {
+      content: "";
+      background-color: var(--oyk-c-primary);
+      display: block;
+      width: 32px;
+      height: 2px;
+      margin: 16px 0 0;
+    }
+
+    &-title {
+      font-family: "Quicksand", sans-serif;
+      font-size: 2.4rem;
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: 0.05em;
+      padding: 0;
+      margin: 0 0 8px;
+    }
+
+    &-description {
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: 0.05em;
+      max-width: 600px;
+      opacity: 0.7;
+      padding: 0;
+      margin: 0 auto 16px 0;
+    }
+  }
+
+  &-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+  }
+}

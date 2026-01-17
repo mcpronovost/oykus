@@ -1,1 +1,0 @@
-import{j as i}from"./index-DLfbEI9z.js";function n({variant:o="circles",fullview:s=!1}){return i.jsx("div",{className:`oyk-loading ${s?"oyk-loading-fullview":""}`,children:i.jsx("div",{className:`oyk-loading-spinner oyk-${o}`})})}export{n as O};

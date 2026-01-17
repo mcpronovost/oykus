@@ -1,4 +1,24 @@
-RewriteEngine On
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
 
-RewriteCond %{REQUEST_URI} ^/api
-RewriteRule ^api/?(.*)$ api/index.php [L,QSA]
+    # API
+    RewriteCond %{REQUEST_URI} ^/api [NC]
+    RewriteRule ^api/?(.*)$ api/index.php [L,QSA]
+
+    # Not rewrite real files
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Frontend
+    RewriteRule ^ index.html [L]
+
+    # Variables
+    SetEnv HTTP_DB_HOST example
+    SetEnv HTTP_DB_NAME example
+    SetEnv HTTP_DB_USER example
+    SetEnv HTTP_DB_PASS example
+
+    SetEnv HTTP_JWT_SECRET example
+</IfModule>
