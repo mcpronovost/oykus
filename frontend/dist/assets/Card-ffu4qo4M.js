@@ -1,1 +1,0 @@
-import{j as i}from"./index-OLy-s8nC.js";function t({children:a,nop:o=!1,fh:r=!1,alignTop:e=!1,clickable:s=!1,className:l="",style:c,...f}){return i.jsx("div",{className:["oyk-card",o?"oyk-card-nop":"",r?"oyk-card-fh":"",e?"oyk-card-aligntop":"",s?"oyk-card-clickable":"",l].filter(Boolean).join(" "),style:c,...f,children:a})}export{t as O};
