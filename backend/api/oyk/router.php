@@ -15,16 +15,21 @@ if ($method === "GET" && $path === "/api/health") {
 $prefix = "/api/v1/auth";
 $route = "/contrib/auth/routes/";
 
-if (($method === "OPTIONS" || $method === "POST") && $path === $prefix."/register/") {
+if ($method === "POST" && $path === $prefix."/register/") {
     require __DIR__ . $route."register.php";
     exit;
 }
-if (($method === "OPTIONS" || $method === "POST") && $path === $prefix."/login/") {
+if ($method === "POST" && $path === $prefix."/login/") {
     require __DIR__ . $route."login.php";
     exit;
 }
-if (($method === "OPTIONS" || $method === "GET") && $path === $prefix."/me/") {
+if ($method === "GET" && $path === $prefix."/me/") {
     require __DIR__ . $route."me.php";
+    exit;
+}
+if ($method === "GET" && preg_match("#^".$prefix."/users/([a-z0-9-]+)/profile/?$#", $path, $matches)) {
+    $userSlug = $matches[1];
+    require __DIR__ . $route ."users_profile.php";
     exit;
 }
 

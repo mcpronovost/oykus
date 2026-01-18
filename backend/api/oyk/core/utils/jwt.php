@@ -1,10 +1,14 @@
 <?php
 
-function base64url_encode(string $data): string {
+define("JWT_SECRET", getenv("HTTP_JWT_SECRET"));
+define("JWT_ISSUER", "oykus");
+define("JWT_EXPIRATION", 3600 * 24 * 30);
+
+function base64url_encode($data) {
     return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
 }
 
-function generate_jwt(array $payload): string {
+function generate_jwt($payload) {
     $header = [
         "alg" => "HS256",
         "typ" => "JWT"
@@ -29,7 +33,7 @@ function generate_jwt(array $payload): string {
     return "$base64Header.$base64Payload.$base64Signature";
 }
 
-function decode_jwt(string $token): ?array {
+function decode_jwt($token) {
     $parts = explode(".", $token);
     if (count($parts) !== 3) {
         return null;

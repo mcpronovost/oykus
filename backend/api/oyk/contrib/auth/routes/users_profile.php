@@ -8,9 +8,6 @@ require __DIR__ . "/../../../core/db.php";
 // 🔐 bloque si pas auth
 $authUser = require_auth();
 
-// $authUser contient le payload du JWT
-// ex: sub, username, iat, exp...
-
 try {
     $qry = $pdo->prepare("
         SELECT name, slug, abbr
