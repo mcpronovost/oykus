@@ -24,6 +24,7 @@
 @use "./common/grid" as common-grid;
 @use "./common/heading" as common-heading;
 @use "./common/loading" as common-loading;
+@use "./common/modal" as common-modal;
 
 // Pages
 @use "./page/_auth" as page-auth;
