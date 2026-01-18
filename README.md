@@ -16,7 +16,6 @@
 </div>
 
 Oykus is an **experimental RPG project** blending story-creation with gameplay — letting players shape narratives while they play.  
-Currently under active development with:
 
 - **Backend:** PHP  
 - **Frontend:** Vite/React
