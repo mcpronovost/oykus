@@ -37,6 +37,20 @@ if ($method === "GET" && preg_match("#^".$prefix."/users/([a-z0-9-]+)/profile/?$
     exit;
 }
 
+// TASKS ROUTES
+
+$prefix = "/api/v1/tasks";
+$route = "/contrib/tasks/routes/";
+
+if ($method === "GET" && $path === $prefix."/") {
+    require __DIR__.$route."tasks.php";
+    exit;
+}
+if ($method === "POST" && $path === $prefix."/status/create/") {
+    require __DIR__.$route."status_create.php";
+    exit;
+}
+
 // 404 ERROR
 
 http_response_code(404);

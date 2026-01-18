@@ -28,6 +28,14 @@ export const ROUTES = [
       en: "discover",
     },
   },
+  {
+    name: "privacy-policy",
+    component: React.lazy(() => import("../../../pages/PrivacyPolicy")),
+    paths: {
+      fr: "politique-de-confidentialite",
+      en: "privacy-policy",
+    },
+  },
   ...AUTH_ROUTES,
   {
     name: "users",
@@ -46,6 +54,14 @@ export const ROUTES = [
         },
       },
     ],
+  },
+  {
+    name: "tasks",
+    component: React.lazy(() => import("../../../pages/Tasks")),
+    paths: {
+      fr: "taches",
+      en: "tasks",
+    },
   },
   ...SETTINGS_ROUTES,
   ...DEV_ROUTES,
