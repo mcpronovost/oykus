@@ -10,7 +10,7 @@ $authUser = require_auth();
 
 try {
     $qry = $pdo->prepare("
-        SELECT name, slug, abbr
+        SELECT name, slug, abbr, avatar, cover
         FROM users
         WHERE id = :id
         LIMIT 1
