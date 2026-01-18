@@ -38,7 +38,7 @@ if (!$user || !password_verify($password, $user["password"])) {
 }
 
 $token = generate_jwt([
-    "sub"      => $user["id"],
+    "id"      => $user["id"],
     "username" => $user["username"]
 ]);
 

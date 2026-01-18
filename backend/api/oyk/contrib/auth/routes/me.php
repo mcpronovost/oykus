@@ -15,7 +15,7 @@ try {
         LIMIT 1
     ");
 
-    $qry->execute(["id" => $authUser["sub"]]);
+    $qry->execute(["id" => $authUser["id"]]);
     $user = $qry->fetch();
 } catch (Exception $e) {
     http_response_code(500);

@@ -15,7 +15,7 @@ try {
         WHERE id = :id
         LIMIT 1
     ");
-    $qry->execute(["id" => $authUser["sub"]]);
+    $qry->execute(["id" => $authUser["id"]]);
     $user = $qry->fetch();
 } catch (Exception $e) {
     http_response_code(500);
@@ -51,7 +51,7 @@ try {
         "name" => $new_name,
         "avatar" => $new_avatar ?? $user["avatar"],
         "cover" => $new_cover ?? $user["cover"],
-        "id" => $authUser["sub"]
+        "id" => $authUser["id"]
     ]);
 } catch (Exception $e) {
     http_response_code(500);
