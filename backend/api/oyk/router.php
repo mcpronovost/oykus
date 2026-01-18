@@ -6,6 +6,7 @@ $method = $_SERVER["REQUEST_METHOD"];
 $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
 if ($method === "GET" && $path === "/api/health") {
+    require __DIR__."/core/scripts/migrate.php";
     echo json_encode(["ok" => true]);
     exit;
 }
