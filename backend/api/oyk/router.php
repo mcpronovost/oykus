@@ -27,6 +27,10 @@ if ($method === "GET" && $path === $prefix."/me/") {
     require __DIR__ . $route."me.php";
     exit;
 }
+if ($method === "POST" && $path === $prefix."/me/edit/") {
+    require __DIR__ . $route."me_edit.php";
+    exit;
+}
 if ($method === "GET" && preg_match("#^".$prefix."/users/([a-z0-9-]+)/profile/?$#", $path, $matches)) {
     $userSlug = $matches[1];
     require __DIR__ . $route ."users_profile.php";
