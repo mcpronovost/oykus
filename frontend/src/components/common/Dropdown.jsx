@@ -13,7 +13,7 @@ const OykDropdown = forwardRef(({ toggle, menu, direction = "left", disabled = f
   }));
 
   const handleToggle = () => {
-    if (disabled || menu.length === 0) return;
+    if (disabled || !menu || menu.length === 0) return;
     setIsOpen(!isOpen);
   };
 
@@ -40,7 +40,7 @@ const OykDropdown = forwardRef(({ toggle, menu, direction = "left", disabled = f
   return (
     <div ref={dropdownRef} className="oyk-dropdown">
       <div
-        className={`oyk-dropdown-toggle ${disabled || menu.length === 0 ? "disabled" : ""}`}
+        className={`oyk-dropdown-toggle ${disabled || !menu || menu.length === 0 ? "disabled" : ""}`}
         onClick={() => handleToggle()}
       >
         {toggle}

@@ -1,9 +1,8 @@
 import { useState } from "react";
-
 import { api } from "@/services/api";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import { validateUsername, validatePassword, validateEmail, validatePlayername } from "@/utils";
+import { validateUsername, validatePassword, validateEmail, validateName } from "@/utils";
 import { OykButton, OykCard, OykForm, OykFormField, OykFormMessage, OykLink } from "@/components/common";
 
 export default function Register() {
@@ -15,7 +14,7 @@ export default function Register() {
     password: "",
     confirmPassword: "",
     email: "",
-    playername: "",
+    name: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
@@ -27,12 +26,12 @@ export default function Register() {
     const usernameError = validateUsername(formData.username);
     const passwordError = validatePassword(formData.password);
     const emailError = validateEmail(formData.email);
-    const playernameError = validatePlayername(formData.playername);
+    const nameError = validateName(formData.name);
 
     usernameError && (newErrors.username = usernameError);
     passwordError && (newErrors.password = passwordError);
     emailError && (newErrors.email = emailError);
-    playernameError && (newErrors.playername = playernameError);
+    nameError && (newErrors.name = nameError);
 
     // Confirm password validation
     if (!formData.confirmPassword) {
@@ -73,10 +72,13 @@ export default function Register() {
     }
     try {
       const { confirmPassword, ...registrationData } = formData;
-      await api.register(registrationData);
-      n("home");
+      const r = await api.post("/auth/register/", registrationData);
+      if (!r.ok) throw new Error();
+      n("login");
     } catch (e) {
-      setHasError(e.error || t("An error occurred"));
+      setHasError(() => ({
+        message: e.error || t("An error occurred")
+      }));
     } finally {
       setIsLoading(false);
     }
@@ -86,11 +88,11 @@ export default function Register() {
     <section className="oyk-page oyk-auth">
       <div className="oyk-auth-container">
         <div className="oyk-auth-header">
-          <h1 className="oyk-auth-header-title">Create an account</h1>
+          <h1 className="oyk-auth-header-title">{t("Create an account")}</h1>
           <p className="oyk-auth-header-subtitle">
-            Or{" "}
+            {t("Or")}{" "}
             <OykLink routeName="login" className="oyk-auth-header-subtitle">
-              sign in to an existing account
+              {t("sign in to an existing account")}
             </OykLink>
           </p>
         </div>
@@ -136,11 +138,11 @@ export default function Register() {
               block
             />
             <OykFormField
-              label={t("Playername")}
-              name="playername"
-              defaultValue={formData.playername}
+              label={t("Name")}
+              name="name"
+              defaultValue={formData.name}
               onChange={handleChange}
-              hasError={hasError?.fields?.playername}
+              hasError={hasError?.fields?.name}
               required
               block
             />

@@ -21,6 +21,7 @@ pnpm-lock.yaml
 
 # Build outputs
 build/
+dist/
 
 # Logs
 logs/
@@ -51,3 +52,11 @@ prisma/migrations/dev.db-journal
 
 # Local development
 *.local
+
+# Uploads
+backend/uploads/avatars/*
+backend/uploads/covers/*
+!backend/uploads/avatars/.empty
+!backend/uploads/covers/.empty
+
+.htaccess

@@ -1,7 +1,5 @@
 import React from "react";
-
-import { PLAYER_ROUTES } from "./player";
-import { WORLD_ROUTES } from "./world";
+import { AUTH_ROUTES } from "./auth";
 import { SETTINGS_ROUTES } from "./settings";
 import { DEV_ROUTES } from "./dev";
 
@@ -15,22 +13,6 @@ export const ROUTES = [
     },
   },
   {
-    name: "login",
-    component: React.lazy(() => import("../../../pages/Auth/Login")),
-    paths: {
-      fr: "connexion",
-      en: "login",
-    },
-  },
-  {
-    name: "register",
-    component: React.lazy(() => import("../../../pages/Auth/Register")),
-    paths: {
-      fr: "inscription",
-      en: "register",
-    },
-  },
-  {
     name: "about",
     component: React.lazy(() => import("../../../pages/About")),
     paths: {
@@ -39,23 +21,32 @@ export const ROUTES = [
     },
   },
   {
-    name: "privacy-policy",
-    component: React.lazy(() => import("../../../pages/PrivacyPolicy")),
+    name: "discover",
+    component: React.lazy(() => import("../../../pages/Discover")),
     paths: {
-      fr: "politique-de-confidentialite",
-      en: "privacy-policy",
+      fr: "decouvrir",
+      en: "discover",
     },
   },
+  ...AUTH_ROUTES,
   {
-    name: "tasks",
-    component: React.lazy(() => import("../../../pages/Tasks")),
+    name: "users",
+    component: React.lazy(() => import("../../../pages/Users/Profile")),
     paths: {
-      fr: "taches",
-      en: "tasks",
+      fr: "u",
+      en: "u",
     },
+    children: [
+      {
+        name: "users-profile",
+        component: React.lazy(() => import("../../../pages/Users/Profile")),
+        paths: {
+          fr: "{userSlug}",
+          en: "{userSlug}",
+        },
+      },
+    ],
   },
-  ...PLAYER_ROUTES,
-  ...WORLD_ROUTES,
   ...SETTINGS_ROUTES,
   ...DEV_ROUTES,
   {

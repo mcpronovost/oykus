@@ -1,12 +1,10 @@
-import React, { useRef } from "react";
+import { createElement, Suspense } from "react";
 import { useRouter } from "@/services/router";
-import { getLangFromPath } from "@/services/router/utils";
-
 import Providers from "@/components/Providers";
-import AppSidebar from "@/components/core/AppSidebar";
-import AppBar from "@/components/core/AppBar";
-import AppLoading from "@/components/core/AppLoading";
-import AppNotFound from "@/components/core/AppNotFound";
+import OykAppHeader from "@/components/core/AppHeader";
+import OykAppSidebar from "@/components/core/AppSidebar";
+import OykAppLoading from "@/components/core/AppLoading";
+import OykAppNotFound from "@/components/core/AppNotFound";
 
 function MainLayout() {
   const { route } = useRouter();
@@ -14,9 +12,11 @@ function MainLayout() {
   return (
     <main id="oyk-app-main">
       {route && route.component ? (
-        <React.Suspense fallback={<AppLoading />}>{React.createElement(route.component)}</React.Suspense>
+        <Suspense fallback={<OykAppLoading />}>
+          {createElement(route.component)}
+        </Suspense>
       ) : (
-        <AppNotFound />
+        <OykAppNotFound />
       )}
     </main>
   );
@@ -25,9 +25,9 @@ function MainLayout() {
 function Layout() {
   return (
     <div id="oyk-app">
-      <AppSidebar />
+      <OykAppSidebar />
       <div id="oyk-app-core">
-        <AppBar />
+        <OykAppHeader />
         <MainLayout />
       </div>
     </div>
@@ -35,10 +35,8 @@ function Layout() {
 }
 
 function App() {
-  const lang = useRef(getLangFromPath(window.location.pathname));
-
   return (
-    <Providers lang={lang.current}>
+    <Providers>
       <Layout />
     </Providers>
   );

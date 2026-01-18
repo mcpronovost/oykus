@@ -1,0 +1,41 @@
+:root {
+  --oyk-default-primary: #3da5cb;
+  --oyk-default-primary-fg: #ffffff;
+
+  --oyk-core-bg: #16171C;
+  --oyk-core-fg: #838489;
+  --oyk-core-divider: #24272e;
+
+  --oyk-c-primary: var(--oyk-default-primary);
+  --oyk-c-primary-fg: var(--oyk-default-primary-fg);
+
+  --oyk-c-danger: #e25353;
+  --oyk-c-warning: #dea125;
+  --oyk-c-success: #129929;
+
+  --oyk-app-header-bg: #0E0F12;
+  --oyk-app-header-fg: #838489;
+  --oyk-app-header-height: 48px;
+
+  --oyk-app-sidebar-bg: #0E0F12;
+  --oyk-app-sidebar-fg: #838489;
+  --oyk-app-sidebar-bg-subtle: #17181d;
+  --oyk-app-sidebar-width: 48px;
+  --oyk-app-sidebar-width-open: 220px;
+
+  --oyk-popper-bg: #0E0F12;
+  --oyk-popper-fg: #aeafb7;
+  --oyk-popper-item-bg: #14161a;
+  --oyk-popper-item-fg: #a9acb6;
+
+  --oyk-card-bg: #121317;
+  --oyk-card-fg: #aeafb7;
+  --oyk-card-subtle-bg: #191a1f;
+  --oyk-card-subtle-fg: #aeafb7;
+  --oyk-card-item-bg: #16171b;
+  --oyk-card-item-fg: #aeafb7;
+  --oyk-card-item-subtle: #51535b;
+  --oyk-card-divider: #17191e;
+
+  --oyk-radius: 6px;
+}

@@ -1,4 +1,4 @@
-import "@/styles/page/_components.scss";
+import "@/assets/styles/page/_dev-components.scss";
 
 import { useTranslation } from "@/services/translation";
 import {

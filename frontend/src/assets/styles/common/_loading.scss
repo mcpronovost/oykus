@@ -1,0 +1,153 @@
+.oyk-loading {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+
+  &-fullview {
+    min-height: 50vh;
+  }
+
+  &-spinner {
+    &.oyk-squares {
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      position: relative;
+
+      &::after,
+      &::before {
+        content: "";
+        border: 2px solid var(--oyk-core-fg);
+        box-sizing: border-box;
+        width: 48px;
+        height: 48px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        animation: rotation 2s ease-in-out infinite;
+      }
+
+      &::after {
+        border-color: var(--oyk-c-primary);
+        animation-delay: 1s;
+      }
+    }
+
+    &.oyk-layers {
+      background: var(--oyk-core-fg);
+      color: var(--oyk-c-primary);
+      position: relative;
+      width: 48px;
+      height: 48px;
+      transform: rotateX(65deg) rotate(45deg);
+      animation: oykloadinglayers1 1s linear infinite alternate;
+
+      &:after {
+        content: "";
+        background-color: var(--oyk-c-primary);
+        inset: 0;
+        position: absolute;
+        opacity: 0.5;
+        animation: oykloadinglayer2 1s linear infinite alternate;
+      }
+    }
+
+    &.oyk-circles {
+      border: 3px solid;
+      border-color: var(--oyk-c-primary) var(--oyk-c-primary) transparent
+        transparent;
+      border-radius: 50%;
+      box-sizing: border-box;
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      position: relative;
+      animation: oykloadingtriplerotation 1s linear infinite;
+
+      &::after,
+      &::before {
+        content: "";
+        border: 3px solid;
+        border-color: transparent transparent var(--oyk-core-fg) var(--oyk-core-fg);
+        border-radius: 50%;
+        box-sizing: border-box;
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transform-origin: center center;
+        margin: auto;
+        animation: oykloadingtriplerotationBack 0.5s linear infinite;
+      }
+      &::before {
+        border-color: var(--oyk-c-primary) var(--oyk-c-primary) transparent
+          transparent;
+        width: 32px;
+        height: 32px;
+        animation: rotation 1.5s linear infinite;
+      }
+    }
+  }
+}
+
+@keyframes oykloadingspinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes oykloadinglayers1 {
+  0% {
+    box-shadow: 0px 0px 0 0px;
+  }
+  90%,
+  100% {
+    box-shadow: 20px 20px 0 -4px;
+  }
+}
+@keyframes oykloadinglayer2 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(-25px, -25px) scale(1);
+  }
+}
+
+@keyframes oykloadingtriplerotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes oykloadingtriplerotationBack {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}

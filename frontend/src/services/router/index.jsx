@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import { createContext, useContext, useState, useCallback, useEffect } from "react";
 import { ROUTES } from "./routes";
 import { getLangFromPath, findRoute, buildRoutePath } from "./utils";
 

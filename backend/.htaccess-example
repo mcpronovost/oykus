@@ -1,0 +1,26 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # API
+    RewriteCond %{REQUEST_URI} ^/api [NC]
+    RewriteRule ^api/?(.*)$ api/index.php [L,QSA]
+
+    # Not rewrite real files
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Frontend
+    RewriteRule ^ index.html [L]
+
+    # Variables
+    SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+
+    SetEnv HTTP_DB_HOST example
+    SetEnv HTTP_DB_NAME example
+    SetEnv HTTP_DB_USER example
+    SetEnv HTTP_DB_PASS example
+
+    SetEnv HTTP_JWT_SECRET example
+</IfModule>

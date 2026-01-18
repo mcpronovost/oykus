@@ -1,4 +1,5 @@
 import { User } from "lucide-react";
+import { DOMAIN } from "@/services/api/utils";
 
 export default function OykAvatar({
   name = "",
@@ -24,7 +25,7 @@ export default function OykAvatar({
       }}
     >
       {src ? (
-        <img src={src} alt={name} className="oyk-avatar-img" />
+        <img src={(!src.startsWith("http") && !src.startsWith("blob")) ? `${DOMAIN}${src}` : src} alt={name} className="oyk-avatar-img" />
       ) : abbr || name ? (
         <span className="oyk-avatar-abbr" style={{ fontSize: size * 0.35 }}>
           {abbr || name.charAt(0).toUpperCase()}

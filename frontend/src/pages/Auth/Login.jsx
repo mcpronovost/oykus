@@ -1,12 +1,20 @@
 import { useState } from "react";
-
 import { api } from "@/services/api";
+import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import { validateUsername, validatePassword } from "@/utils";
-import { OykButton, OykCard, OykForm, OykFormField, OykFormMessage, OykLink } from "@/components/common";
+import {
+  OykButton,
+  OykCard,
+  OykForm,
+  OykFormField,
+  OykFormMessage,
+  OykLink,
+} from "@/components/common";
 
 export default function Login() {
+  const { setUser, setRat } = useAuth();
   const { n } = useRouter();
   const { t } = useTranslation();
 
@@ -50,7 +58,7 @@ export default function Login() {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     setIsLoading(true);
     setHasError(null);
     if (!validateForm()) {
@@ -58,10 +66,15 @@ export default function Login() {
       return;
     }
     try {
-      await api.login(formData);
+      const r = await api.login(formData);
+      if (!r.ok) throw new Error(r.error || t("An error occurred"));
+      setRat(r.token);
+      setUser(r.user);
       n("home");
     } catch (e) {
-      setHasError(e.error || t("An error occurred"));
+      setHasError(() => ({
+        message: e.message || t("An error occurred")
+      }));
     } finally {
       setIsLoading(false);
     }
@@ -71,43 +84,56 @@ export default function Login() {
     <section className="oyk-page oyk-auth">
       <div className="oyk-auth-container">
         <div className="oyk-auth-header">
-          <h1 className="oyk-auth-header-title">Sign in to your account</h1>
+          <h1 className="oyk-auth-header-title">
+            {t("Sign in to your account")}
+          </h1>
           <p className="oyk-auth-header-subtitle">
-            Or{" "}
+            {t("Or")}{" "}
             <OykLink routeName="register" className="oyk-auth-header-subtitle">
-              create a new account
+              {t("create a new account")}
             </OykLink>
           </p>
         </div>
 
         <OykCard>
-          <OykForm className="oyk-auth-form" onSubmit={handleSubmit} isLoading={isLoading}>
-          <OykFormField
-            label={t("Username")}
-            name="username"
-            defaultValue={formData.username}
-            onChange={handleChange}
-            hasError={hasError?.fields?.username}
-            required
-            block
-          />
-          <OykFormField
-            label={t("Password")}
-            name="password"
-            type="password"
-            defaultValue={formData.password}
-            onChange={handleChange}
-            hasError={hasError?.fields?.password}
-            required
-            block
-          />
-          {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
-          <div className="oyk-form-actions">
-            <OykButton type="submit" color="primary" disabled={isLoading} block>
-              {isLoading ? "Signing in..." : "Sign in"}
-            </OykButton>
-          </div>
-        </OykForm>
+          <OykForm
+            className="oyk-auth-form"
+            onSubmit={handleSubmit}
+            isLoading={isLoading}
+          >
+            <OykFormField
+              label={t("Username")}
+              name="username"
+              defaultValue={formData.username}
+              onChange={handleChange}
+              hasError={hasError?.fields?.username}
+              required
+              block
+            />
+            <OykFormField
+              label={t("Password")}
+              name="password"
+              type="password"
+              defaultValue={formData.password}
+              onChange={handleChange}
+              hasError={hasError?.fields?.password}
+              required
+              block
+            />
+            {hasError?.message && (
+              <OykFormMessage hasError={hasError?.message} />
+            )}
+            <div className="oyk-form-actions">
+              <OykButton
+                type="submit"
+                color="primary"
+                disabled={isLoading}
+                block
+              >
+                {isLoading ? t("Signing in...") : t("Sign in")}
+              </OykButton>
+            </div>
+          </OykForm>
         </OykCard>
       </div>
     </section>

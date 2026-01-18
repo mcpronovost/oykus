@@ -8,10 +8,10 @@ export default function ComponentApiTable({ items }) {
     <table className="oyk-components-api-table">
       <thead className="oyk-components-api-table-head">
         <tr className="oyk-components-api-table-head-row">
-          <th>Name</th>
-          <th>Description</th>
-          <th>Type</th>
-          <th>Default</th>
+          <th>{t("DevComponentName")}</th>
+          <th>{t("DevComponentDescription")}</th>
+          <th>{t("DevComponentType")}</th>
+          <th>{t("DevComponentDefault")}</th>
         </tr>
       </thead>
       <tbody className="oyk-components-api-table-body">

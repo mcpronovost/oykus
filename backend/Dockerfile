@@ -1,34 +1,22 @@
-FROM python:3.11-slim
+FROM php:8.5-apache
 
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+RUN apt-get update && \
+    apt-get install -y zlib1g-dev libpng-dev libjpeg-dev libwebp-dev
 
-# Set working directory
-WORKDIR /app
+RUN docker-php-ext-install pdo pdo_mysql mysqli
+RUN docker-php-ext-configure gd --with-jpeg --with-webp && \
+    docker-php-ext-install gd
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    default-libmysqlclient-dev \
-    pkg-config \
-    && rm -rf /var/lib/apt/lists/*
+# Enable Apache rewrite module
+RUN a2enmod rewrite
 
-# Copy requirements first for better caching
-COPY requirements.txt .
+# Allow .htaccess overrides
+RUN sed -i "s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-# Copy backend code
-COPY . .
+RUN echo "log_errors=On" > /usr/local/etc/php/conf.d/docker-logs.ini \
+ && echo "error_log=/proc/self/fd/2" >> /usr/local/etc/php/conf.d/docker-logs.ini
 
-# Expose port
-EXPOSE 8000
-
-# Set environment variables for development
-ENV FLASK_APP=app.py
-ENV FLASK_ENV=development
-ENV FLASK_DEBUG=1
-
-# Run Flask development server with hot reload
-CMD ["sh", "-c", "flask db upgrade && flask run --host=0.0.0.0 --port=8000"]
+# Restart Apache
+RUN service apache2 restart

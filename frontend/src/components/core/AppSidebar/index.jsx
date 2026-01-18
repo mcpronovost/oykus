@@ -1,88 +1,40 @@
 import {
   Blocks,
   Compass,
-  Earth,
   LayoutDashboard,
-  LibraryBig,
   ListTodo,
   Settings,
-  ShieldAlert,
-  Users,
-  LifeBuoy,
-  Pickaxe,
 } from "lucide-react";
-
+import { useAuth } from "@/services/auth";
 import { useStore } from "@/services/store";
 import { useTranslation } from "@/services/translation";
-
-import OykSidebarHeader from "./SidebarHeader";
-import OykNavItem from "./NavItem";
+import OykAppSidebarHeader from "./Header";
+import OykAppSidebarUser from "./User";
+import OykAppSidebarNavItem from "./NavItem";
 
 export default function AppSidebar() {
-  const { currentUser, storeAppSidebarOpen, currentWorld } = useStore();
+  const { isAuth } = useAuth();
+  const { storeAppSidebarOpen } = useStore();
   const { t } = useTranslation();
 
   return (
     <aside className={`oyk-app-sidebar ${storeAppSidebarOpen ? "open" : ""}`}>
-      <OykSidebarHeader />
+      <OykAppSidebarHeader />
+      <OykAppSidebarUser />
       <section className="oyk-app-sidebar-menu">
         <nav className="oyk-app-sidebar-nav">
-          {!currentWorld && (
-            <ul className="oyk-app-sidebar-nav-list">
-              <OykNavItem icon={LayoutDashboard} text={t("Dashboard")} href="home" />
-              <OykNavItem icon={Compass} text={t("Discover")} href="discover" />
-            </ul>
-          )}
-          {currentUser && currentWorld && (
-            <ul className="oyk-app-sidebar-nav-list">
-              <OykNavItem icon={LayoutDashboard} text={t("Dashboard")} href="home" />
-              <OykNavItem icon={ListTodo} text={t("Tasks")} href="tasks" />
-            </ul>
-          )}
-          {currentWorld && (
-            <ul className="oyk-app-sidebar-nav-list">
-              <OykNavItem
-                icon={ShieldAlert}
-                text={t("Rulebook")}
-                href="world-rulebook"
-                params={{ worldSlug: currentWorld.slug }}
-              />
-              <OykNavItem
-                icon={LibraryBig}
-                text={t("Lore")}
-                href="world-lore"
-                params={{ worldSlug: currentWorld.slug }}
-                disabled
-              />
-              <OykNavItem
-                icon={Earth}
-                text={t("World")}
-                href="world-home"
-                params={{ worldSlug: currentWorld.slug }}
-              />
-              <OykNavItem
-                icon={Users}
-                text={t("Community")}
-                href="world-community"
-                params={{ worldSlug: currentWorld.slug }}
-                disabled
-              />
-              <OykNavItem
-                icon={LifeBuoy}
-                text={t("Support")}
-                href="world-support"
-                params={{ worldSlug: currentWorld.slug }}
-              />
-            </ul>
-          )}
+          <ul className="oyk-app-sidebar-nav-list">
+            <OykAppSidebarNavItem icon={LayoutDashboard} text={t("Dashboard")} href="home" />
+            <OykAppSidebarNavItem icon={Compass} text={t("Discover")} href="discover" />
+            {isAuth && (<OykAppSidebarNavItem icon={ListTodo} text={t("Tasks")} href="tasks" />)}
+          </ul>
         </nav>
       </section>
       <footer className="oyk-app-sidebar-footer">
         <nav className="oyk-app-sidebar-nav">
           <ul className="oyk-app-sidebar-nav-list">
-            <OykNavItem icon={Settings} text={t("Settings")} href="settings" />
-            <OykNavItem icon={Blocks} text={t("Components")} href="dev-components" />
-            <OykNavItem icon={Pickaxe} text={t("Quests")} href="dev-quests" />
+            {isAuth && (<OykAppSidebarNavItem icon={Settings} text={t("Settings")} href="settings" />)}
+            <OykAppSidebarNavItem icon={Blocks} text={t("Components")} href="dev-components" />
           </ul>
         </nav>
       </footer>

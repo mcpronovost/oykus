@@ -41,7 +41,7 @@ export const oykDate = (
   value,
   show = "full",
   lang = "fr",
-  tz = "America/Toronto"
+  tz = "Europe/Paris"
 ) => {
   if (lang === "en") lang = "en-CA";
   let d = value ? new Date(value) : new Date(new Date().toString());
