@@ -35,8 +35,7 @@ class OykApi {
 
       if (!response.ok) {
         if (
-          (url.endsWith("logout/") || url.endsWith("logoutall/")) &&
-          response.status === 401
+          (url.endsWith("logout/") || url.endsWith("logoutall/"))
         ) {
           return {
             success: true,
