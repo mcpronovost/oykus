@@ -117,7 +117,7 @@ export default function SettingsProfile() {
         formData.append("cover", profileForm.coverFile);
       }
       const result = await api.post("/auth/me/edit/", formData);
-      if (result.success && result.user) {
+      if (result.ok) {
         setUser(result.user);
         setProfileForm((prev) => ({
           ...prev,
