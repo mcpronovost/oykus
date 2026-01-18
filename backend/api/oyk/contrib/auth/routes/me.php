@@ -2,18 +2,14 @@
 
 header("Content-Type: application/json");
 
-require __DIR__ . "/../../../core/middlewares.php";
-require __DIR__ . "/../../../core/db.php";
+require OYK_PATH."/core/middlewares.php";
+require OYK_PATH."/core/db.php";
 
-// 🔐 bloque si pas auth
 $authUser = require_auth();
-
-// $authUser contient le payload du JWT
-// ex: sub, username, iat, exp...
 
 try {
     $qry = $pdo->prepare("
-        SELECT name, slug, abbr
+        SELECT name, slug, abbr, avatar, cover
         FROM users
         WHERE id = :id
         LIMIT 1

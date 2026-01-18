@@ -2,8 +2,8 @@
 
 header("Content-Type: application/json");
 
-require __DIR__ . "/../../../core/db.php";
-require_once __DIR__ . "/../../../core/utils/jwt.php";
+require OYK_PATH."/core/db.php";
+require OYK_PATH."/core/utils/jwt.php";
 
 $data = json_decode(file_get_contents("php://input"), true);
 
@@ -17,9 +17,8 @@ if ($username === "" || $password === "") {
 }
 
 try{
-    // Récupérer l'utilisateur
     $stmt = $pdo->prepare("
-        SELECT id, username, password, name
+        SELECT id, username, password, name, slug, abbr
         FROM users
         WHERE username = :username
         LIMIT 1
@@ -38,16 +37,15 @@ if (!$user || !password_verify($password, $user["password"])) {
     exit;
 }
 
-// Générer le JWT
 $token = generate_jwt([
     "sub"      => $user["id"],
     "username" => $user["username"]
 ]);
 
+unset($user["id"], $user["username"], $user["password"]);
+
 echo json_encode([
     "ok" => true,
-    "user" => [
-        "name" => $user["name"]
-    ],
+    "user" => $user,
     "token"  => $token
 ]);
