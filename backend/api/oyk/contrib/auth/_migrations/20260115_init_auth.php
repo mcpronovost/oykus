@@ -17,7 +17,3 @@ CREATE TABLE IF NOT EXISTS users (
 ";
 
 $pdo->exec($sql);
-echo "Auth: users table created.\n";
-
-$sql = "DELETE FROM users;";
-$pdo->exec($sql);
