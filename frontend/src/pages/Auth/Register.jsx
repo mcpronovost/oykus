@@ -88,11 +88,11 @@ export default function Register() {
     <section className="oyk-page oyk-auth">
       <div className="oyk-auth-container">
         <div className="oyk-auth-header">
-          <h1 className="oyk-auth-header-title">Create an account</h1>
+          <h1 className="oyk-auth-header-title">{t("Create an account")}</h1>
           <p className="oyk-auth-header-subtitle">
-            Or{" "}
+            {t("Or")}{" "}
             <OykLink routeName="login" className="oyk-auth-header-subtitle">
-              sign in to an existing account
+              {t("sign in to an existing account")}
             </OykLink>
           </p>
         </div>
