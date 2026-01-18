@@ -18,6 +18,7 @@
   &-nav {
     background-color: var(--oyk-card-bg);
     border-radius: var(--oyk-radius);
+    color: var(--oyk-card-fg);
 
     &-item:not(.oyk-first) {
       border-top: 1px solid var(--oyk-card-divider);
