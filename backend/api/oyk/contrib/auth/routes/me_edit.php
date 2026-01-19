@@ -34,11 +34,11 @@ $new_avatar     = $_FILES["avatar"] ?? null;
 $new_cover      = $_FILES["cover"] ?? null;
 
 if ($new_avatar) {
-    $new_avatar = oyk_save_image($new_avatar, 200, 200, "avatars", 2);
+    $new_avatar = oyk_save_image($new_avatar, 200, 200, "avatars", $user["slug"], 2);
 }
 
 if ($new_cover) {
-    $new_cover = oyk_save_image($new_cover, 1136, 256, "covers", 2);
+    $new_cover = oyk_save_image($new_cover, 1136, 256, "covers", $user["slug"], 2);
 }
 
 try {
@@ -57,6 +57,14 @@ try {
     http_response_code(500);
     echo json_encode(["error" => $e->getCode()]);
     exit;
+}
+
+if ($user["avatar"] && $new_avatar) {
+    unlink(OYK_PATH."/../..".$user["avatar"]);
+}
+
+if ($user["cover"] && $new_cover) {
+    unlink(OYK_PATH."/../..".$user["cover"]);
 }
 
 $user["name"] = $new_name;
