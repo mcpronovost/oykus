@@ -4,6 +4,8 @@ export default function OykFormField({
   name,
   type = "text",
   options = [],
+  optionLabel = "label",
+  optionValue = "value",
   defaultValue,
   required = false,
   disabled = false,
@@ -32,8 +34,8 @@ export default function OykFormField({
         ) : type === "select" ? (
           <select ref={ref} id={`field-${name}`} name={name} defaultValue={defaultValue} onChange={onChange} required={required}>
             {options.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
+              <option key={option[optionValue]} value={option[optionValue]}>
+                {option[optionLabel]}
               </option>
             ))}
           </select>

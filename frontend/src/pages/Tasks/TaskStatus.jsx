@@ -2,12 +2,12 @@ import { useDrop } from "react-dnd";
 
 import TaskStatusHeader from "./TaskStatusHeader";
 
-function TaskStatus({ status, statusOptions = [], onDrop, onTasksUpdate = () => {}, children }) {
+function TaskStatus({ status, statuses = [], onDrop, onTasksUpdate = () => {}, children }) {
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: "TASK",
     drop: (item) => {
       if (item.statusId !== status.id) {
-        onDrop(item.id, status.id, item.statusName, status.name);
+        onDrop(item.id, status.id);
       }
     },
     canDrop: (item) => item.statusId !== status.id,
@@ -24,7 +24,7 @@ function TaskStatus({ status, statusOptions = [], onDrop, onTasksUpdate = () => 
         isOver && canDrop ? "oyk-tasks-status-dropzone-over" : ""
       }`}
     >
-      <TaskStatusHeader status={status} statusOptions={statusOptions} onTasksUpdate={onTasksUpdate} />
+      <TaskStatusHeader status={status} statuses={statuses} onTasksUpdate={onTasksUpdate} />
       {children}
     </div>
   );

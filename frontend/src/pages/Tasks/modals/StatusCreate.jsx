@@ -20,7 +20,11 @@ export default function ModalStatusCreate({
 
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    title: "",
+    color: "",
+    position: 1,
+  });
 
   const handleSubmit = async () => {
     if (isLoading) return;
@@ -43,9 +47,9 @@ export default function ModalStatusCreate({
 
   useEffect(() => {
     setFormData({
-      name: "",
-      colour: "",
-      sort_order: "",
+      title: "",
+      color: "",
+      position: 1,
     });
   }, [isOpen]);
 
@@ -53,24 +57,24 @@ export default function ModalStatusCreate({
     <OykModal title={t("Create a new status")} isOpen={isOpen} onClose={onClose}>
       <OykForm onSubmit={handleSubmit} isLoading={isLoading}>
         <OykFormField
-          label={t("Name")}
-          name="name"
-          defaultValue={formData.name}
+          label={t("Title")}
+          name="title"
+          defaultValue={formData.title}
           onChange={handleChange}
           required
         />
         <OykFormField
           label={t("Color")}
-          name="colour"
+          name="color"
           type="color"
-          defaultValue={formData.colour}
+          defaultValue={formData.color}
           onChange={handleChange}
         />
         <OykFormField
-          label={t("Sort order")}
-          name="sort_order"
+          label={t("Position")}
+          name="position"
           type="number"
-          defaultValue={formData.sort_order}
+          defaultValue={formData.position}
           onChange={handleChange}
         />
         <OykFormMessage hasError={hasError} />

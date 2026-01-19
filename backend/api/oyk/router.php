@@ -47,8 +47,16 @@ if ($method === "GET" && $path === $prefix."/") {
     require __DIR__.$route."tasks.php";
     exit;
 }
+if ($method === "POST" && $path === $prefix."/create/") {
+    require __DIR__.$route."tasks_create.php";
+    exit;
+}
 if ($method === "POST" && $path === $prefix."/status/create/") {
     require __DIR__.$route."status_create.php";
+    exit;
+}
+if ($method === "POST" && $path === $prefix."/status/edit/") {
+    require __DIR__.$route."status_edit.php";
     exit;
 }
 

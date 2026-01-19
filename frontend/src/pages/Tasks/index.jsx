@@ -12,7 +12,7 @@ import AppNotAuthorized from "@/components/core/AppNotAuthorized";
 import { OykButton, OykCard, OykDropdown, OykFeedback, OykGrid, OykHeading, OykLoading } from "@/components/common";
 
 import ModalStatusCreate from "./modals/StatusCreate";
-import ModalTaskCreate from "./modals/ModalTaskCreate";
+import ModalTaskCreate from "./modals/TaskCreate";
 import TaskStatus from "./TaskStatus";
 import TaskCard from "./TaskCard";
 
@@ -24,7 +24,6 @@ function Tasks() {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(null);
   const [tasks, setTasks] = useState([]);
-  const [statusOptions, setStatusOptions] = useState([]);
   const [isModalStatusCreateOpen, setIsModalStatusCreateOpen] = useState(false);
   const [isModalTaskCreateOpen, setIsModalTaskCreateOpen] = useState(false);
 
@@ -35,7 +34,6 @@ function Tasks() {
       const r = await api.get("/tasks/", signal ?? { signal });
       if (!r.ok) throw new Error(r.error || t("An error occurred"));
       setTasks(r.tasks);
-      setStatusOptions(r.status);
     } catch (e) {
       if (e?.name === "AbortError") return;
       setHasError(e.message || t("An error occurred"));
@@ -46,17 +44,21 @@ function Tasks() {
     }
   };
 
-  const updateTaskStatus = async (taskId, newStatusId, oldStatusName, newStatusName) => {
+  const updateTaskStatus = async (taskId, newStatusId) => {
     try {
-      await api.updateTaskStatus(currentWorld.id, taskId, newStatusId, oldStatusName, newStatusName);
+      const r = await api.post("/tasks/edit/", {
+        task: taskId,
+        status: newStatusId
+      });
+      if (!r.ok) throw new Error(r.error || t("An error occurred"));
       await getTasks();
-    } catch (error) {
-      console.error("Error updating task status:", error);
+    } catch (e) {
+      setHasError(e.message || t("An error occurred"));
     }
   };
 
-  const handleDrop = (taskId, newStatusId, oldStatusName, newStatusName) => {
-    updateTaskStatus(taskId, newStatusId, oldStatusName, newStatusName);
+  const handleDrop = (taskId, newStatusId) => {
+    updateTaskStatus(taskId, newStatusId);
   };
 
   const handleStatusCreateClick = () => {
@@ -101,7 +103,7 @@ function Tasks() {
       <ModalTaskCreate
         isOpen={isModalTaskCreateOpen}
         onClose={handleCloseModalTaskCreate}
-        statusOptions={statusOptions}
+        statuses={tasks}
       />
       <OykHeading
         title={t("Tasks")}
@@ -124,14 +126,14 @@ function Tasks() {
         <DndProvider backend={HTML5Backend}>
           <OykGrid className="oyk-tasks-status">
             {tasks.map((status) => (
-              <OykCard key={status.name} className="oyk-tasks-status-item" nop>
-                <TaskStatus status={status} statusOptions={statusOptions} onDrop={handleDrop} onTasksUpdate={getTasks}>
+              <OykCard key={status.title} className="oyk-tasks-status-item" nop>
+                <TaskStatus status={status} statuses={tasks} onDrop={handleDrop} onTasksUpdate={getTasks}>
                   <section
                     className={`oyk-tasks-status-item-content ${
                       status.isCompleted ? "oyk-tasks-status-item-content-completed" : ""
                     }`}
                   >
-                    {status.tasks.map((task) => (
+                    {status.tasks?.map((task) => (
                       <TaskCard
                         key={task.id}
                         task={task}

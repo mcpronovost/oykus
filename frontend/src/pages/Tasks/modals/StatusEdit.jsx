@@ -11,9 +11,10 @@ export default function ModalStatusEdit({ isOpen, onClose, status }) {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
   const [formData, setFormData] = useState({
-    name: status.name,
-    colour: status.colour,
-    sort_order: status.sort_order,
+    status: status.id,
+    title: status.title,
+    color: status.color,
+    position: status.position,
   });
 
   const handleSubmit = async () => {
@@ -21,23 +22,11 @@ export default function ModalStatusEdit({ isOpen, onClose, status }) {
     setIsLoading(true);
     setHasError(null);
     try {
-      const data = await api.updateTasksStatus(currentWorld.slug, status.id, formData);
-      if (!data.success) {
-        throw new Error(
-          data.message || data.error || t("Failed to edit status")
-        );
-      }
+      const r = await api.post("/tasks/status/edit/", formData);
+      if (!r.ok) throw new Error(r.error || t("An error occurred"));
       onClose(true);
-    } catch (error) {
-      if ([401, 403].includes(error?.status)) {
-        setHasError({
-          message: t("You are not allowed to edit this status"),
-        });
-      } else {
-        setHasError({
-          message: t("An error occurred while editing the status"),
-        });
-      }
+    } catch (e) {
+      setHasError(e.message || t("An error occurred"));
     } finally {
       setIsLoading(false);
     }
@@ -51,23 +40,23 @@ export default function ModalStatusEdit({ isOpen, onClose, status }) {
     <OykModal title={t("Edit Status")} isOpen={isOpen} onClose={onClose}>
       <OykForm onSubmit={handleSubmit} isLoading={isLoading}>
         <OykFormField
-          label={t("Name")}
-          name="name"
-          defaultValue={formData.name}
+          label={t("Title")}
+          name="title"
+          defaultValue={formData.title}
           onChange={handleChange}
         />
         <OykFormField
           label={t("Colour")}
-          name="colour"
+          name="color"
           type="color"
-          defaultValue={formData.colour}
+          defaultValue={formData.color}
           onChange={handleChange}
         />
         <OykFormField
-          label={t("Sort Order")}
-          name="sort_order"
+          label={t("Position")}
+          name="position"
           type="number"
-          defaultValue={formData.sort_order}
+          defaultValue={formData.position}
           onChange={handleChange}
         />
         <OykFormMessage hasError={hasError} />

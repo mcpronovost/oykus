@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { api } from "@/services/api";
-import { useStore } from "@/services/store";
+import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
 import {
   OykButton,
@@ -16,9 +16,9 @@ export default function ModalTaskCreate({
   isOpen,
   onClose,
   status,
-  statusOptions,
+  statuses,
 }) {
-  const { currentUser, currentWorld } = useStore();
+  const { currentUser } = useAuth();
   const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -30,17 +30,11 @@ export default function ModalTaskCreate({
     setIsLoading(true);
     setHasError(null);
     try {
-      const data = await api.createTask(currentWorld.id, formData);
-      if (!data.id) {
-        throw new Error(
-          data.message || data.error || t("Failed to create task")
-        );
-      }
+      const r = await api.post("/tasks/create/", formData);
+      if (!r.ok) throw new Error(r.error || t("An error occurred"));
       onClose(true);
-    } catch (error) {
-      setHasError(
-        error.message || error.error || error || t("An error occurred")
-      );
+    } catch (e) {
+      setHasError(e.message || t("An error occurred"));
     } finally {
       setIsLoading(false);
     }
@@ -51,21 +45,20 @@ export default function ModalTaskCreate({
   };
 
   useEffect(() => {
-    if (statusOptions.length > 0 && !formData.statusId) {
+    if (statuses.length > 0 && !formData.statusId) {
       setFormData((prev) => ({
         ...prev,
-        statusId: status?.id || statusOptions[0]?.value || "",
+        statusId: status?.id || statuses[0]?.value || "",
       }));
     }
-  }, [statusOptions, status?.id, formData.statusId]);
+  }, [statuses, status?.id, formData.statusId]);
 
   useEffect(() => {
     setFormData({
       title: "",
       content: "",
-      priority: "",
-      authorId: currentUser.id,
-      statusId: status?.id || statusOptions[0]?.value || "",
+      priority: "medium",
+      statusId: status?.id || statuses[0]?.value || "",
       assignees: [],
       tags: [],
     });
@@ -73,7 +66,7 @@ export default function ModalTaskCreate({
 
   return (
     <OykModal title={t("Create a new task")} isOpen={isOpen} onClose={onClose}>
-      {statusOptions.length > 0 ? (
+      {statuses.length > 0 ? (
         <OykForm onSubmit={handleSubmit} isLoading={isLoading}>
           <OykFormField
             label={t("Title")}
@@ -94,10 +87,9 @@ export default function ModalTaskCreate({
             name="priority"
             type="radio"
             options={[
-              { label: t("PriorityNone"), value: "" },
-              { label: t("PriorityLow"), value: "LOW" },
-              { label: t("PriorityMedium"), value: "MEDIUM" },
-              { label: t("PriorityHigh"), value: "HIGH" },
+              { label: t("PriorityLow"), value: "low" },
+              { label: t("PriorityMedium"), value: "medium" },
+              { label: t("PriorityHigh"), value: "high" },
             ]}
             defaultValue={formData.priority}
             onChange={handleChange}
@@ -106,7 +98,9 @@ export default function ModalTaskCreate({
             label={t("Status")}
             name="statusId"
             type="select"
-            options={statusOptions}
+            options={statuses}
+            optionLabel="title"
+            optionValue="id"
             defaultValue={formData.statusId}
             onChange={handleChange}
             required

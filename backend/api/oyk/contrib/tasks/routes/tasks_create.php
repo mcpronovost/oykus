@@ -10,12 +10,13 @@ $authUser = require_auth();
 $data = json_decode(file_get_contents("php://input"), true);
 
 $title      = trim($data["title"] ?? "");
-$color      = $data["color"] ?? null;
-$position   = $data["position"] ?? 1;
+$content    = trim($data["content"] ?? "");
+$priority   = trim($data["priority"] ?? "medium");
+$statusId   = $data["statusId"] ?? "";
 
 // Validations
 if (
-    $title === "" || $position === "" || $position < 1
+    $title === "" || $priority === "" || $statusId === ""
 ) {
     http_response_code(400);
     echo json_encode(["error" => "Invalid input"]);
@@ -24,14 +25,16 @@ if (
 
 // Create new tasks status
 $qry = $pdo->prepare("
-    INSERT INTO tasks_status (title, color, position)
-    VALUES (:title, :color, :position)
+    INSERT INTO tasks (title, content, priority, status, author)
+    VALUES (:title, :content, :priority, :status, :author)
 ");
 
 $qry->execute([
     "title"     => $title,
-    "color"     => $color,
-    "position"  => $position
+    "content"   => $content,
+    "priority"  => $priority,
+    "status"    => $statusId,
+    "author"    => $authUser["id"]
 ]);
 
 echo json_encode([

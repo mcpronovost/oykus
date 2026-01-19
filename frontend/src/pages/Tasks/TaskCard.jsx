@@ -5,8 +5,8 @@ import { OykChip } from "@/components/common";
 
 import OykTaskCardHeader from "./TaskCardHeader";
 import OykTaskCardFooter from "./TaskCardFooter";
-import ModalTaskEdit from "./modals/ModalTaskEdit";
-import ModalTaskDelete from "./modals/ModalTaskDelete";
+import ModalTaskEdit from "./modals/TaskEdit";
+import ModalTaskDelete from "./modals/TaskDelete";
 
 export default function TaskCard({ task, isCompleted, statusId, statusName, onCloseRefresh = () => {} }) {
   const [isModalTaskEditOpen, setIsModalTaskEditOpen] = useState(false);
@@ -50,18 +50,16 @@ export default function TaskCard({ task, isCompleted, statusId, statusName, onCl
         style={{ opacity: isDragging ? 0.5 : isCompleted ? 0.7 : 1 }}
       >
         <OykTaskCardHeader task={task} isCompleted={isCompleted} />
-        {!isCompleted && ((task.content && task.content != task.title) || task.tags.length > 0) && (
+        {!isCompleted && ((task.content && task.content != task.title) || task.tags?.length > 0) && (
           <section className="oyk-tasks-card-content">
             {task.content && task.content != task.title && (
-              <div className="oyk-tasks-card-content-descritpion">
+              <div className="oyk-tasks-card-content-description">
                 <p>
-                  {task.content.length > 64
-                    ? task.content.slice(0, 64) + "..."
-                    : task.content}
+                  {task.content}
                 </p>
               </div>
             )}
-            {task.tags.length > 0 && (
+            {task.tags?.length > 0 && (
               <div className="oyk-tasks-card-content-tags">
                 {task.tags.map((tag) => (
                   <OykChip key={tag.id} color={tag.color || undefined}>

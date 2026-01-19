@@ -6,7 +6,7 @@ export default function TaskCardFooter({ task }) {
   return (
     <footer className="oyk-tasks-card-footer">
       <div className="oyk-tasks-card-footer-infos">
-        {task.history.length > 0 && (
+        {task.history?.length > 0 && (
           <div className="oyk-tasks-card-footer-infos-count">
             <History size={14} />
             <span className="oyk-tasks-card-footer-infos-count-total">
@@ -14,7 +14,7 @@ export default function TaskCardFooter({ task }) {
             </span>
           </div>
         )}
-        {task.comments.length > 0 && (
+        {task.comments?.length > 0 && (
           <div className="oyk-tasks-card-footer-infos-count">
             <MessagesSquare size={14} />
             <span className="oyk-tasks-card-footer-infos-count-total">
@@ -24,7 +24,7 @@ export default function TaskCardFooter({ task }) {
         )}
         <div className="oyk-tasks-card-footer-infos-assignees">
           <ul>
-            {task.assignees.map((assignee) => (
+            {task.assignees?.map((assignee) => (
               <li key={assignee.id}>
                 <OykAvatar
                   name={assignee.name}

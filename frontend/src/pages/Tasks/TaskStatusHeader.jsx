@@ -5,12 +5,12 @@ import { useStore } from "@/services/store";
 import { useTranslation } from "@/services/translation";
 import { OykDropdown, OykModal } from "@/components/common";
 
-import ModalTaskCreate from "./modals/ModalTaskCreate";
-import ModalStatusEdit from "./modals/ModalStatusEdit";
+import ModalTaskCreate from "./modals/TaskCreate";
+import ModalStatusEdit from "./modals/StatusEdit";
 
 export default function TaskStatusHeader({
   status,
-  statusOptions = [],
+  statuses = [],
   onTasksUpdate = () => {},
 }) {
   const { currentWorld } = useStore();
@@ -59,7 +59,7 @@ export default function TaskStatusHeader({
         isOpen={isModalCreateOpen}
         onClose={handleCloseModalCreate}
         status={status}
-        statusOptions={statusOptions}
+        statuses={statuses}
       />
       <ModalStatusEdit
         isOpen={isModalEditOpen}
@@ -78,14 +78,14 @@ export default function TaskStatusHeader({
           <span
             className="oyk-tasks-status-item-header-icon-dot"
             style={{
-              backgroundColor: status.colour || "var(--oyk-c-primary)",
+              backgroundColor: status.color || "var(--oyk-c-primary)",
             }}
           />
         </div>
         <h2 className="oyk-tasks-status-item-header-title">
-          {status.name}{" "}
+          {status.title}{" "}
           <span className="oyk-tasks-status-item-header-title-count">
-            ({status.tasks.length})
+            ({status.tasks?.length || 0})
           </span>
         </h2>
         <div className="oyk-tasks-status-item-header-actions">
