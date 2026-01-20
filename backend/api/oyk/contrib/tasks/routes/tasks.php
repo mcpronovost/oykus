@@ -23,7 +23,7 @@ try {
     $tasksQry = $pdo->prepare("
         SELECT id, title, content, priority, due_at, status
         FROM tasks
-        WHERE status = :status_id
+        WHERE status = :status_id AND author = :author
         ORDER BY FIELD(priority, 'low', 'medium', 'high') DESC,
                  due_at IS NULL,
                  due_at ASC
@@ -31,8 +31,11 @@ try {
 
     // Attach tasks to each status
     foreach ($tasks as &$s) {
-        $tasksQry->execute(['status_id' => $s['id']]);
-        $s['tasks'] = $tasksQry->fetchAll(PDO::FETCH_ASSOC);
+        $tasksQry->execute([
+            "status_id" => $s["id"],
+            "author"    => $authUser["id"]
+        ]);
+        $s["tasks"] = $tasksQry->fetchAll(PDO::FETCH_ASSOC);
     }
 } catch (Exception $e) {
     http_response_code(500);
