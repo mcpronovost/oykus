@@ -18,7 +18,7 @@ if ($username === "" || $password === "") {
 
 try{
     $stmt = $pdo->prepare("
-        SELECT id, username, password, name, slug, abbr
+        SELECT id, username, password, name, slug, abbr, avatar, cover
         FROM users
         WHERE username = :username
         LIMIT 1
@@ -38,14 +38,14 @@ if (!$user || !password_verify($password, $user["password"])) {
 }
 
 $token = generate_jwt([
-    "id"      => $user["id"],
-    "username" => $user["username"]
+    "id"        => $user["id"],
+    "username"  => $user["username"]
 ]);
 
 unset($user["id"], $user["username"], $user["password"]);
 
 echo json_encode([
-    "ok" => true,
-    "user" => $user,
-    "token"  => $token
+    "ok"    => true,
+    "user"  => $user,
+    "token" => $token
 ]);
