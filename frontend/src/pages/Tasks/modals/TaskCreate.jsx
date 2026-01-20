@@ -48,7 +48,7 @@ export default function ModalTaskCreate({
     if (statuses.length > 0 && !formData.statusId) {
       setFormData((prev) => ({
         ...prev,
-        statusId: status?.id || statuses[0]?.value || "",
+        statusId: status?.id || statuses[0]?.id || "",
       }));
     }
   }, [statuses, status?.id, formData.statusId]);
