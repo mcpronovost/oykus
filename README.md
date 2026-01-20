@@ -48,3 +48,8 @@ Get the project up and running locally with minimal friction:
    ```bash
    php api/oyk/core/scripts/migrate.php
     ```
+
+5. **Run sql statements inside database container**
+   ```bash
+   mysql -u DB_USER -p DB_NAME
+   ```
