@@ -47,8 +47,7 @@ export default function AppHeaderUser() {
           {
             label: t("Your tasks"),
             icon: <ListTodo size={18} />,
-            disabled: true,
-            onClick: () => {},
+            onClick: () => n("tasks"),
           },
           {
             divider: true,
