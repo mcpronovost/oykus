@@ -13,6 +13,7 @@ $title      = trim($data["title"] ?? "") ?? null;
 $content    = trim($data["content"] ?? "") ?? null;
 $priority   = trim($data["priority"] ?? "") ?? null;
 $dueAt      = trim($data["dueAt"] ?? "") ?? null;
+$statusId   = trim($data["status"] ?? "") ?? null;
 
 if ($dueAt === "") $dueAt = null;
 
@@ -48,24 +49,29 @@ if (!$task) {
 $fields = [];
 $params = [];
 
-if (isset($title)) {
+if ($title) {
     $fields[] = "title = :title";
     $params[":title"] = $title;
 }
 
-if (isset($content)) {
+if ($content) {
     $fields[] = "content = :content";
     $params[":content"] = $content;
 }
 
-if (isset($priority)) {
+if ($priority) {
     $fields[] = "priority = :priority";
     $params[":priority"] = $priority;
 }
 
-if (isset($dueAt)) {
+if ($dueAt) {
     $fields[] = "due_at = :dueAt";
     $params[":dueAt"] = $dueAt;
+}
+
+if ($statusId) {
+    $fields[] = "status = :statusId";
+    $params[":statusId"] = $statusId;
 }
 
 $params[":id"] = $taskId;

@@ -46,8 +46,7 @@ function Tasks() {
 
   const updateTaskStatus = async (taskId, newStatusId) => {
     try {
-      const r = await api.post("/tasks/edit/", {
-        task: taskId,
+      const r = await api.post(`/tasks/${taskId}/edit/`, {
         status: newStatusId
       });
       if (!r.ok) throw new Error(r.error || t("An error occurred"));

@@ -26,7 +26,7 @@ export default function TaskCardHeader({ task, isCompleted }) {
                 </OykChip>
               )}
               {task.priority === "medium" && (
-                <OykChip color="warning" outline>
+                <OykChip color="primary" outline>
                   {t("PriorityMedium")}
                 </OykChip>
               )}

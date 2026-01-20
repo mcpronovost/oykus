@@ -47,5 +47,8 @@
     "Manage friends and accept invites": "Gérer vos amis et accepter les invitations",
     "Change Avatar": "Modifier l'avatar",
     "Change Cover": "Modifier la couverture",
-    "Unable to access account data, check your internet connection or try again later": "Impossible d'accéder aux données de votre compte. Veuillez vérifier votre connexion internet ou réessayer plus tard."
+    "Unable to access account data, check your internet connection or try again later": "Impossible d'accéder aux données de votre compte. Veuillez vérifier votre connexion internet ou réessayer plus tard.",
+    "PriorityHigh": "Élevé",
+    "PriorityMedium": "Moyen",
+    "PriorityLow": "Faible"
 }
