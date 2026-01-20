@@ -28,7 +28,7 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
     priority: task.priority,
     tags: task.tags,
     assignees: task.assignees,
-    dueAt: task.dueAt ? task.dueAt.substring(0, 10) : "",
+    dueAt: task.due_at ? task.due_at.substring(0, 10) : "",
   });
 
   const handleSubmit = async () => {
@@ -36,22 +36,11 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
     setIsLoading(true);
     setHasError(null);
     try {
-      const res = await api.updateTask(task.worldId, task.id, formData);
-      if (res.id) {
-        onClose(true);
-      } else {
-        throw new Error("An error occurred while editing the task");
-      }
-    } catch (error) {
-      if ([401, 403].includes(error?.status)) {
-        setHasError({
-          message: t("You are not allowed to edit this task"),
-        });
-      } else {
-        setHasError({
-          message: t("An error occurred while editing the task"),
-        });
-      }
+      const r = await api.post(`/tasks/${task.id}/edit/`, formData);
+      if (!r.ok) throw new Error(r.error || t("An error occurred"));
+      onClose(true);
+    } catch (e) {
+      setHasError(e.message || t("An error occurred while editing the task"));
     } finally {
       setIsLoading(false);
     }

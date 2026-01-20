@@ -1,0 +1,85 @@
+<?php
+
+header("Content-Type: application/json");
+
+require OYK_PATH."/core/middlewares.php";
+require OYK_PATH."/core/db.php";
+
+$authUser = require_auth();
+
+$data = json_decode(file_get_contents("php://input"), true);
+
+$title      = trim($data["title"] ?? "") ?? null;
+$content    = trim($data["content"] ?? "") ?? null;
+$priority   = trim($data["priority"] ?? "") ?? null;
+$dueAt      = trim($data["dueAt"] ?? "") ?? null;
+
+if ($dueAt === "") $dueAt = null;
+
+// Validations
+if (!$taskId) {
+    http_response_code(400);
+    echo json_encode(["error" => "Missing task"]);
+    exit;
+}
+
+try {
+    $qry = $pdo->prepare("
+        SELECT EXISTS (
+            SELECT 1
+            FROM tasks
+            WHERE id = ? AND author = ?
+        )
+    ");
+    $task = $qry->execute([$taskId, $authUser["id"]]);
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(["error" => $e->getCode(), "data" => $data]);
+    exit;
+}
+
+if (!$task) {
+    http_response_code(404);
+    echo json_encode(["error" => "Task not found"]);
+    exit;
+}
+
+// Dynamically set fields and values
+$fields = [];
+$params = [];
+
+if (isset($title)) {
+    $fields[] = "title = :title";
+    $params[":title"] = $title;
+}
+
+if (isset($content)) {
+    $fields[] = "content = :content";
+    $params[":content"] = $content;
+}
+
+if (isset($priority)) {
+    $fields[] = "priority = :priority";
+    $params[":priority"] = $priority;
+}
+
+if (isset($dueAt)) {
+    $fields[] = "due_at = :dueAt";
+    $params[":dueAt"] = $dueAt;
+}
+
+$params[":id"] = $taskId;
+
+// Update tasks status
+$sql = "
+    UPDATE tasks
+    SET ".implode(', ', $fields)."
+    WHERE id = :id
+";
+
+$qry = $pdo->prepare($sql);
+$qry->execute($params);
+
+echo json_encode([
+    "ok" => true
+]);

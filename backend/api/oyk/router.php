@@ -51,6 +51,11 @@ if ($method === "POST" && $path === $prefix."/create/") {
     require __DIR__.$route."tasks_create.php";
     exit;
 }
+if ($method === "POST" && preg_match("#^".$prefix."/([0-9]+)/edit/?$#", $path, $matches)) {
+    $taskId = $matches[1];
+    require __DIR__.$route."tasks_edit.php";
+    exit;
+}
 if ($method === "POST" && $path === $prefix."/status/create/") {
     require __DIR__.$route."status_create.php";
     exit;
