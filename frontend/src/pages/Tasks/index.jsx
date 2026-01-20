@@ -31,7 +31,7 @@ function Tasks() {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get("/tasks/", signal ?? { signal });
+      const r = await api.get("/tasks/", signal ? { signal } : {});
       if (!r.ok) throw new Error(r.error || t("An error occurred"));
       setTasks(r.tasks);
     } catch (e) {
@@ -106,7 +106,7 @@ function Tasks() {
       />
       <OykHeading
         title={t("Tasks")}
-        description={t("Tasks description")}
+        // description={t("Tasks description")}
         actions={
           <>
             {tasks.length > 0 && (
@@ -116,7 +116,7 @@ function Tasks() {
             )}
             <OykDropdown
               toggle={<OykButton icon={Settings} outline />}
-              menu={[{ label: t("New status"), onClick: handleStatusCreateClick }]}
+              menu={[{ label: t("New Status"), onClick: handleStatusCreateClick }]}
             />
           </>
         }
@@ -129,14 +129,14 @@ function Tasks() {
                 <TaskStatus status={status} statuses={tasks} onDrop={handleDrop} onTasksUpdate={getTasks}>
                   <section
                     className={`oyk-tasks-status-item-content ${
-                      status.isCompleted ? "oyk-tasks-status-item-content-completed" : ""
+                      status.is_completed ? "oyk-tasks-status-item-content-completed" : ""
                     }`}
                   >
                     {status.tasks?.map((task) => (
                       <TaskCard
                         key={task.id}
                         task={task}
-                        isCompleted={status.isCompleted}
+                        isCompleted={status.is_completed}
                         statusId={status.id}
                         statusName={status.name}
                         onCloseRefresh={getTasks}

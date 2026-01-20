@@ -232,7 +232,9 @@
 
           > ul {
             text-align: right;
-            display: block;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
 
             > li {
               display: inline-block;

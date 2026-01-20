@@ -28,14 +28,23 @@ try {
     $qry = $pdo->prepare("
         SELECT EXISTS (
             SELECT 1
-            FROM tasks
-            WHERE id = ? AND author = ?
+            FROM tasks t
+            WHERE id = ? AND (
+                author = ?
+                OR EXISTS (
+                    SELECT 1
+                    FROM tasks_assignees ta
+                    WHERE ta.task_id = t.id
+                    AND ta.user_id = ?
+                )
+            )
         )
     ");
-    $task = $qry->execute([$taskId, $authUser["id"]]);
+    $qry->execute([$taskId, $authUser["id"], $authUser["id"]]);
+    $task = $qry->fetch();
 } catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(["error" => $e->getCode(), "data" => $data]);
+    echo json_encode(["error" => $e->getCode()]);
     exit;
 }
 

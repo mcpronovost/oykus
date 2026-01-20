@@ -29,6 +29,7 @@
     "Edit": "Modifier",
     "Save": "Enregistrer",
     "Cancel": "Annuler",
+    "Delete": "Supprimer",
     "Under Construction": "En construction",
     "This page is currently under construction. Please check back later.": "Cette page est actuellement en construction. Veuillez revenir plus tard.",
     "These settings are currently in development and should be available soon": "Ces paramètres sont en cours de développement et devraient être disponibles sous peu.",
@@ -48,7 +49,13 @@
     "Change Avatar": "Modifier l'avatar",
     "Change Cover": "Modifier la couverture",
     "Unable to access account data, check your internet connection or try again later": "Impossible d'accéder aux données de votre compte. Veuillez vérifier votre connexion internet ou réessayer plus tard.",
+    "Priority": "Priorité",
     "PriorityHigh": "Élevé",
     "PriorityMedium": "Moyen",
-    "PriorityLow": "Faible"
+    "PriorityLow": "Faible",
+    "Title": "Titre",
+    "Content": "Contenu",
+    "Status": "Statut",
+    "Colour": "Couleur",
+    "Position": "Position"
 }
