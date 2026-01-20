@@ -114,10 +114,10 @@ function Tasks() {
                 {t("Create a new task")}
               </OykButton>
             )}
-            <OykDropdown
+            {/*<OykDropdown
               toggle={<OykButton icon={Settings} outline />}
               menu={[{ label: t("New Status"), onClick: handleStatusCreateClick }]}
-            />
+            />*/}
           </>
         }
       />

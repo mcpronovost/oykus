@@ -95,7 +95,7 @@ export default function TaskStatusHeader({
           >
             <Plus size={16} />
           </button>
-          <OykDropdown
+          {/*<OykDropdown
             toggle={
               <button className="oyk-tasks-status-item-header-actions-btn">
                 <EllipsisVertical size={16} />
@@ -117,7 +117,7 @@ export default function TaskStatusHeader({
                   ]
                 : []),
             ]}
-          />
+          />*/}
         </div>
       </header>
     </>
