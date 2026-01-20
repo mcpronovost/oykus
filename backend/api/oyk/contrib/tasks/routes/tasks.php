@@ -21,10 +21,12 @@ try {
 
     // Prepare tasks query (with priority ordering)
     $tasksQry = $pdo->prepare("
-        SELECT id, title, content, priority, status
+        SELECT id, title, content, priority, due_at, status
         FROM tasks
         WHERE status = :status_id
-        ORDER BY FIELD(priority, 'low', 'medium', 'high') DESC
+        ORDER BY FIELD(priority, 'low', 'medium', 'high') DESC,
+                 due_at IS NULL,
+                 due_at ASC
     ");
 
     // Attach tasks to each status

@@ -16,7 +16,7 @@ export default function TaskCardHeader({ task, isCompleted }) {
       >
         {task.title}
       </h3>
-      {!isCompleted && (task.priority || task.dueAt) && (
+      {!isCompleted && (task.priority || task.due_at) && (
         <div className="oyk-tasks-card-header-infos">
           {task.priority && (
             <div className="oyk-tasks-card-header-infos-priority">
@@ -37,17 +37,17 @@ export default function TaskCardHeader({ task, isCompleted }) {
               )}
             </div>
           )}
-          {task.dueAt && (
+          {task.due_at && (
             <div
               className="oyk-tasks-card-header-infos-due"
               style={{
-                color: oykDateLessThan(task.dueAt, 7)
+                color: oykDateLessThan(task.due_at, 7)
                   ? "var(--oyk-c-danger)"
                   : "inherit",
               }}
             >
               <span className="oyk-tasks-card-header-infos-due-date">
-                {oykDate(task.dueAt, "date", lang)}
+                {oykDate(task.due_at, "date", lang)}
               </span>
               <Timer
                 size={14}
