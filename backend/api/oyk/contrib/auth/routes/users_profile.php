@@ -2,21 +2,18 @@
 
 header("Content-Type: application/json");
 
-require __DIR__ . "/../../../core/middlewares.php";
-require __DIR__ . "/../../../core/db.php";
-
-// 🔐 bloque si pas auth
+global $pdo;
 $authUser = require_auth();
 
 try {
     $qry = $pdo->prepare("
         SELECT name, slug, abbr, avatar, cover
         FROM users
-        WHERE id = :id
+        WHERE slug = :slug
         LIMIT 1
     ");
 
-    $qry->execute(["id" => $authUser["id"]]);
+    $qry->execute(["slug" => $userSlug]);
     $user = $qry->fetch();
 } catch (Exception $e) {
     http_response_code(500);

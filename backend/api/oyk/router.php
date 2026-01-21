@@ -2,8 +2,13 @@
 
 header("Content-Type: application/json; charset=utf-8");
 
+require_once __DIR__."/core/db.php";
+require_once __DIR__."/core/middlewares.php";
+
 $method = $_SERVER["REQUEST_METHOD"];
 $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+
+update_wio();
 
 if ($method === "GET" && $path === "/api/health") {
     require __DIR__."/core/scripts/migrate.php";
@@ -34,7 +39,7 @@ if ($method === "POST" && $path === $prefix."/me/edit/") {
 }
 if ($method === "GET" && preg_match("#^".$prefix."/users/([a-z0-9-]+)/profile/?$#", $path, $matches)) {
     $userSlug = $matches[1];
-    require __DIR__ . $route ."users_profile.php";
+    require __DIR__.$route."users_profile.php";
     exit;
 }
 
@@ -62,6 +67,16 @@ if ($method === "POST" && $path === $prefix."/status/create/") {
 }
 if ($method === "POST" && $path === $prefix."/status/edit/") {
     require __DIR__.$route."status_edit.php";
+    exit;
+}
+
+// WIO ROUTES
+
+$prefix = "/api/v1/wio";
+$route = "/contrib/wio/routes/";
+
+if ($method === "GET" && $path === $prefix."/") {
+    require __DIR__.$route."wio.php";
     exit;
 }
 

@@ -2,8 +2,9 @@
 
 header("Content-Type: application/json");
 
-require __DIR__ . "/../../../core/db.php";
 require __DIR__ . "/../../../core/utils/formatters.php";
+
+global $pdo;
 
 // Get data
 $data = json_decode(file_get_contents("php://input"), true);

@@ -2,9 +2,7 @@
 
 header("Content-Type: application/json");
 
-require OYK_PATH."/core/middlewares.php";
-require OYK_PATH."/core/db.php";
-
+global $pdo;
 $authUser = require_auth();
 
 $data = json_decode(file_get_contents("php://input"), true);

@@ -2,9 +2,7 @@
 
 header("Content-Type: application/json");
 
-require OYK_PATH."/core/middlewares.php";
-require OYK_PATH."/core/db.php";
-
+global $pdo;
 $authUser = require_auth();
 
 $tasks = [];
@@ -17,7 +15,7 @@ try {
         ORDER BY position ASC
     ");
     $statusQry->execute();
-    $tasks = $statusQry->fetchAll(PDO::FETCH_ASSOC);
+    $tasks = $statusQry->fetchAll();
 
     // Prepare tasks query (with priority ordering)
     $tasksQry = $pdo->prepare("
@@ -76,7 +74,7 @@ try {
         $s["tasks"] = array_map(function ($task) {
             $task["assignees"] = json_decode($task["assignees"], true);
             return $task;
-        }, $tasksQry->fetchAll(PDO::FETCH_ASSOC));
+        }, $tasksQry->fetchAll());
     }
 } catch (Exception $e) {
     http_response_code(500);

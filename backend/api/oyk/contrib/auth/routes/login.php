@@ -2,8 +2,7 @@
 
 header("Content-Type: application/json");
 
-require OYK_PATH."/core/db.php";
-require OYK_PATH."/core/utils/jwt.php";
+global $pdo;
 
 $data = json_decode(file_get_contents("php://input"), true);
 
