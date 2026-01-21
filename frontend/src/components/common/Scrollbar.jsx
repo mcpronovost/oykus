@@ -25,9 +25,6 @@ export default function OykScrollbar({ children, height = 300, className = "" })
 
       if (!containerHeight || !contentHeight) return;
 
-      console.log("contentHeight: ", contentHeight);
-      console.log("containerHeight: ", containerHeight);
-
       if (contentHeight <= containerHeight) {
         setThumbHeight(0);
         setThumbTop(0);
