@@ -2,14 +2,14 @@ import "@/assets/styles/page/_tasks.scss";
 import { useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { Frown, Plus, Settings } from "lucide-react";
+import { Frown, Plus } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
-import { useStore } from "@/services/store";
+import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import AppNotAuthorized from "@/components/core/AppNotAuthorized";
-import { OykButton, OykCard, OykDropdown, OykFeedback, OykGrid, OykHeading, OykLoading } from "@/components/common";
+import { OykButton, OykCard, OykFeedback, OykGrid, OykHeading, OykLoading } from "@/components/common";
 
 import ModalStatusCreate from "./modals/StatusCreate";
 import ModalTaskCreate from "./modals/TaskCreate";
@@ -18,7 +18,7 @@ import TaskCard from "./TaskCard";
 
 function Tasks() {
   const { isAuth } = useAuth();
-  const { currentWorld } = useStore();
+  const { routeTitle } = useRouter();
   const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -85,10 +85,13 @@ function Tasks() {
   useEffect(() => {
     const controller = new AbortController();
 
+    routeTitle(t("Tasks"));
+
     getTasks(controller.signal);
 
     return () => {
       controller.abort();
+      routeTitle();
     };
   }, []);
 

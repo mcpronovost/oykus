@@ -6,7 +6,7 @@ import { useTranslation } from "@/services/translation";
 import { OykBanner, OykCard, OykFeedback, OykGrid } from "@/components/common";
 
 export default function UserProfile() {
-  const { params } = useRouter();
+  const { params, routeTitle } = useRouter();
   const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -21,6 +21,7 @@ export default function UserProfile() {
       const r = await api.get(`/auth/users/${params.userSlug}/profile/`, { signal });
       if (!r?.ok || !r?.user) throw new Error(r.error || t("User doesn't exist"));
       setUserData(r.user);
+      routeTitle(r.user.name);
     } catch (e) {
       if (e?.name === "AbortError") return;
       setHasError(() => ({
@@ -40,6 +41,7 @@ export default function UserProfile() {
 
     return () => {
       controller.abort();
+      routeTitle();
     };
   }, [params]);
 

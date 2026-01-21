@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
@@ -15,7 +16,7 @@ import {
 
 export default function Login() {
   const { setUser, setRat } = useAuth();
-  const { n } = useRouter();
+  const { n, routeTitle } = useRouter();
   const { t } = useTranslation();
 
   const [formData, setFormData] = useState({
@@ -79,6 +80,17 @@ export default function Login() {
       setIsLoading(false);
     }
   };
+  
+  useEffect(() => {
+    const controller = new AbortController();
+
+    routeTitle(t("Login"));
+
+    return () => {
+      controller.abort();
+      routeTitle();
+    };
+  }, []);
 
   return (
     <section className="oyk-page oyk-auth">

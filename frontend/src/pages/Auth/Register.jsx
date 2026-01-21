@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import { api } from "@/services/api";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
@@ -6,7 +7,7 @@ import { validateUsername, validatePassword, validateEmail, validateName } from 
 import { OykButton, OykCard, OykForm, OykFormField, OykFormMessage, OykLink } from "@/components/common";
 
 export default function Register() {
-  const { n } = useRouter();
+  const { n, routeTitle } = useRouter();
   const { t } = useTranslation();
 
   const [formData, setFormData] = useState({
@@ -83,6 +84,17 @@ export default function Register() {
       setIsLoading(false);
     }
   };
+    
+  useEffect(() => {
+    const controller = new AbortController();
+
+    routeTitle(t("Register"));
+
+    return () => {
+      controller.abort();
+      routeTitle();
+    };
+  }, []);
 
   return (
     <section className="oyk-page oyk-auth">

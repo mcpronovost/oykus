@@ -1,9 +1,24 @@
+import { useEffect } from "react";
+
+import { useRouter } from "@/services/router";
 import { Construction } from "lucide-react";
 import { useTranslation } from "@/services/translation";
 import { OykFeedback, OykGrid, OykHeading } from "@/components/common";
 
 export default function About() {
+  const { routeTitle } = useRouter();
   const { t } = useTranslation();
+  
+  useEffect(() => {
+    const controller = new AbortController();
+
+    routeTitle(t("About"));
+
+    return () => {
+      controller.abort();
+      routeTitle();
+    };
+  }, []);
 
   return (
     <section className="oyk-page oyk-about">

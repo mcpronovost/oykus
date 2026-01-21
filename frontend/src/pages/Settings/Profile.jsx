@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { User, Image } from "lucide-react";
+
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
+import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import { OykBanner, OykButton, OykCard, OykForm, OykFormField, OykFormMessage } from "@/components/common";
 
 export default function SettingsProfile() {
   const { currentUser, setUser } = useAuth();
+  const { routeTitle } = useRouter();
   const { t } = useTranslation();
 
   const avatarRef = useRef(null);
@@ -148,6 +151,17 @@ export default function SettingsProfile() {
       }
     };
   }, [profileForm.avatar, profileForm.cover]);
+  
+  useEffect(() => {
+    const controller = new AbortController();
+
+    routeTitle(`${t("Settings")} - ${t("Profile")}`);
+
+    return () => {
+      controller.abort();
+      routeTitle();
+    };
+  }, []);
 
   return (
     <section className="oyk-settings-profile">

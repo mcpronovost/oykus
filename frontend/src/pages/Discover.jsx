@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+
+import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import { OykDisplay, OykGrid, OykHeading } from "@/components/common";
 
@@ -8,6 +11,7 @@ import imgTestCardFarandolePuck from "@/assets/img/edenwood/farandole-puck.webp"
 import imgTestCardSylveSlithy from "@/assets/img/edenwood/sylve-slithy.webp";
 
 export default function Discover() {
+  const { routeTitle } = useRouter();
   const { t } = useTranslation();
 
   const displays = [
@@ -17,6 +21,17 @@ export default function Discover() {
     { img: imgTestCardSylveSlithy, name: "Slithy", type: "Sylve" },
     { img: imgTestCardFarandolePuck, name: "Puck", type: "Farandole" },
   ];
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    routeTitle(t("Discover"));
+
+    return () => {
+      controller.abort();
+      routeTitle();
+    };
+  }, []);
 
   return (
     <section className="oyk-page oyk-discover">

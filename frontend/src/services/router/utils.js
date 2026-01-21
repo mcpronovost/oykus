@@ -143,3 +143,8 @@ export const buildRoutePath = (routeName, params = {}, pathlang) => {
   
   return findRoutePath(ROUTES, routeName);
 };
+
+export const changePageTitle = (title) => {
+  if (title) return window.document.title = `${title} | Oykus`;
+  return window.document.title = "Oykus";
+};

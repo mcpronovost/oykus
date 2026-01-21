@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
+import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import {
   OykAlert,
@@ -14,6 +16,7 @@ import {
 
 export default function SettingsAccount() {
   const { currentUser } = useAuth();
+  const { routeTitle } = useRouter();
   const { t } = useTranslation();
 
   const usernameRef = useRef(null);
@@ -89,10 +92,13 @@ export default function SettingsAccount() {
   useEffect(() => {
     const controller = new AbortController();
 
+    routeTitle(`${t("Settings")} - ${t("Account")}`);
+
     fetchAccountData(controller.signal);
 
     return () => {
       controller.abort();
+      routeTitle();
     };
   }, []);
 

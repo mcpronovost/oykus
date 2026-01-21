@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback, useEffect } from "react";
 import { ROUTES } from "./routes";
-import { getLangFromPath, findRoute, buildRoutePath } from "./utils";
+import { getLangFromPath, findRoute, buildRoutePath, changePageTitle } from "./utils";
 
 const RouterContext = createContext();
 
@@ -82,6 +82,7 @@ export function RouterProvider({ children }) {
     lang,
     history,
     n: (name, params = {}, language = lang) => navigate(name, params, language),
+    routeTitle: (title) => changePageTitle(title),
     refresh,
   };
 
