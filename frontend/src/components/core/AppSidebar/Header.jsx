@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { SquircleDashed  } from "lucide-react";
 import { useStore } from "@/services/store";
-import { OykLink, OykDropdown } from "@/components/common";
+import { OykLink, OykDropdown } from "@/components/ui";
 
 export default function Header() {
   const { currentUser } = useStore();

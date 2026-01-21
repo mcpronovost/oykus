@@ -10,7 +10,7 @@ import {
   OykFeedback,
   OykGrid,
   OykHeading,
-} from "@/components/common";
+} from "@/components/ui";
 import ComponentApiTable from "./ComponentApiTable";
 
 export default function Components() {

@@ -4,7 +4,7 @@ import { api } from "@/services/api";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import { validateUsername, validatePassword, validateEmail, validateName } from "@/utils";
-import { OykButton, OykCard, OykForm, OykFormField, OykFormMessage, OykLink } from "@/components/common";
+import { OykButton, OykCard, OykForm, OykFormField, OykFormMessage, OykLink } from "@/components/ui";
 
 export default function Register() {
   const { n, routeTitle } = useRouter();

@@ -9,7 +9,7 @@ import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import AppNotAuthorized from "@/components/core/AppNotAuthorized";
-import { OykButton, OykCard, OykFeedback, OykGrid, OykHeading, OykLoading } from "@/components/common";
+import { OykButton, OykCard, OykFeedback, OykGrid, OykHeading, OykLoading } from "@/components/ui";
 
 import ModalStatusCreate from "./modals/StatusCreate";
 import ModalTaskCreate from "./modals/TaskCreate";

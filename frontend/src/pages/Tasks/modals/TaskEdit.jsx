@@ -13,7 +13,7 @@ import {
   OykFormField,
   OykFormMessage,
   OykModal,
-} from "@/components/common";
+} from "@/components/ui";
 
 export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
   const { currentUser, currentWorld } = useStore();

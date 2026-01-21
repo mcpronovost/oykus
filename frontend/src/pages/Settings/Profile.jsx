@@ -5,7 +5,7 @@ import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import { OykBanner, OykButton, OykCard, OykForm, OykFormField, OykFormMessage } from "@/components/common";
+import { OykBanner, OykButton, OykCard, OykForm, OykFormField, OykFormMessage } from "@/components/ui";
 
 export default function SettingsProfile() {
   const { currentUser, setUser } = useAuth();

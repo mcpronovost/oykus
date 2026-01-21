@@ -1,7 +1,7 @@
 import { Ghost } from "lucide-react";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import { OykButton, OykFeedback, OykGrid, OykHeading } from "@/components/common";
+import { OykButton, OykFeedback, OykGrid, OykHeading } from "@/components/ui";
 
 export default function Error404() {
   const { n } = useRouter();

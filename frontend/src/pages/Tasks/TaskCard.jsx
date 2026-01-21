@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDrag } from "react-dnd";
 
-import { OykChip } from "@/components/common";
+import { OykChip } from "@/components/ui";
 
 import OykTaskCardHeader from "./TaskCardHeader";
 import OykTaskCardFooter from "./TaskCardFooter";

@@ -2,7 +2,7 @@ import { Timer } from "lucide-react";
 
 import { oykDate, oykDateLessThan } from "@/utils";
 import { useTranslation } from "@/services/translation";
-import { OykChip } from "@/components/common";
+import { OykChip } from "@/components/ui";
 
 export default function TaskCardHeader({ task, isCompleted }) {
   const { t, lang } = useTranslation();

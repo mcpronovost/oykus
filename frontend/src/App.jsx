@@ -1,6 +1,6 @@
 import { createElement, Suspense } from "react";
 import { useRouter } from "@/services/router";
-import { OykScrollbar } from "@/components/common";
+import { OykScrollbar } from "@/components/ui";
 import Providers from "@/components/Providers";
 import OykAppHeader from "@/components/core/AppHeader";
 import OykAppSidebar from "@/components/core/AppSidebar";

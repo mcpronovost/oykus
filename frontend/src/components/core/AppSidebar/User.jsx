@@ -1,6 +1,6 @@
 import { useAuth } from "@/services/auth";
 import { useStore } from "@/services/store";
-import { OykBanner } from "@/components/common";
+import { OykBanner } from "@/components/ui";
 
 export default function User() {
   const { currentUser } = useAuth();

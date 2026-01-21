@@ -12,7 +12,7 @@ import {
   OykFormField,
   OykFormMessage,
   OykLink,
-} from "@/components/common";
+} from "@/components/ui";
 
 export default function Login() {
   const { setUser, setRat } = useAuth();

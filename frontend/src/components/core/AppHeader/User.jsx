@@ -4,7 +4,7 @@ import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import { OykAvatar, OykDropdown } from "@/components/common";
+import { OykAvatar, OykDropdown } from "@/components/ui";
 
 export default function AppHeaderUser() {
   const { currentUser, setUser, setRat } = useAuth();

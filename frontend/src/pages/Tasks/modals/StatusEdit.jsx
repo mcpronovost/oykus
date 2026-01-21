@@ -3,7 +3,7 @@ import { useState } from "react";
 import { api } from "@/services/api";
 import { useStore } from "@/services/store";
 import { useTranslation } from "@/services/translation";
-import { OykButton, OykForm, OykFormField, OykFormMessage, OykModal } from "@/components/common";
+import { OykButton, OykForm, OykFormField, OykFormMessage, OykModal } from "@/components/ui";
 
 export default function ModalStatusEdit({ isOpen, onClose, status }) {
   const { currentWorld } = useStore();

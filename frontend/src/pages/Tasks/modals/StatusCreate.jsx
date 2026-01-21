@@ -9,7 +9,7 @@ import {
   OykFormField,
   OykFormMessage,
   OykModal,
-} from "@/components/common";
+} from "@/components/ui";
 
 export default function ModalStatusCreate({
   isOpen,

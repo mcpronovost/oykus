@@ -1,7 +1,7 @@
 import { Menu } from "lucide-react";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import { OykButton, OykDropdown, OykLink } from "@/components/common";
+import { OykButton, OykDropdown, OykLink } from "@/components/ui";
 
 export default function AppHeaderMenu() {
   const { n } = useRouter();

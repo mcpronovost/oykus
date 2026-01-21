@@ -12,7 +12,7 @@ import {
   OykFormField,
   OykFormMessage,
   OykLoading,
-} from "@/components/common";
+} from "@/components/ui";
 
 export default function SettingsAccount() {
   const { currentUser } = useAuth();

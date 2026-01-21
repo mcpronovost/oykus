@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import { OykBanner, OykCard, OykFeedback, OykGrid } from "@/components/common";
+import { OykBanner, OykCard, OykFeedback, OykGrid } from "@/components/ui";
+import OykAppNotAuthorized from "@/components/core/AppNotAuthorized";
 
 export default function UserProfile() {
   const { params, routeTitle } = useRouter();
@@ -48,7 +49,11 @@ export default function UserProfile() {
   return (
     <section className="oyk-page oyk-userprofile">
       <OykGrid>
-        {(userData && !isLoading && !hasError) ? (
+        {(hasError && hasError.message == 401) ? (
+          <OykAppNotAuthorized />
+        ) : hasError ? (
+          <OykFeedback ghost variant="danger" title={t("Error")} message={hasError.message} />
+        ) : (userData && !isLoading) ? (
           <>
             <OykCard nop>
               <OykBanner avatarSrc={userData.avatar} avatarSize={200} avatarTop={90} avatarBorderSize={8} coverSrc={userData.cover} coverHeight={256} height={298} />
@@ -58,8 +63,6 @@ export default function UserProfile() {
               </section>
             </OykCard>
           </>
-        ) : hasError ? (
-          <OykFeedback ghost variant="danger" title={t("Error")} message={hasError.message} />
         ) : null}
       </OykGrid>
     </section>

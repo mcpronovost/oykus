@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import { OykDisplay, OykGrid, OykHeading } from "@/components/common";
+import { OykDisplay, OykGrid, OykHeading } from "@/components/ui";
 
 import imgTestCardMyrrhSpore from "@/assets/img/edenwood/myrrh-spore.webp";
 import imgTestCardFloreePrele from "@/assets/img/edenwood/floree-prele.webp";

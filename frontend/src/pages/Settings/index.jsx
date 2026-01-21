@@ -9,7 +9,7 @@ import {
   OykGrid,
   OykHeading,
   OykLink,
-} from "@/components/common";
+} from "@/components/ui";
 import OykError404 from "@/pages/Error404";
 import OykSettingsProfile from "./Profile";
 import OykSettingsAccount from "./Account";

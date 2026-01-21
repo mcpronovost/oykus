@@ -8,7 +8,7 @@ import {
 import { useAuth } from "@/services/auth";
 import { useStore } from "@/services/store";
 import { useTranslation } from "@/services/translation";
-import { OykScrollbar } from "@/components/common";
+import { OykScrollbar } from "@/components/ui";
 import OykAppSidebarHeader from "./Header";
 import OykAppSidebarUser from "./User";
 import OykAppSidebarNavItem from "./NavItem";

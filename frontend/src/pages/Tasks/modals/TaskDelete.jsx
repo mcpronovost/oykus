@@ -9,7 +9,7 @@ import {
   OykForm,
   OykFormMessage,
   OykModal,
-} from "@/components/common";
+} from "@/components/ui";
 
 export default function ModalTaskDelete({ isOpen, onClose, task }) {
   const { t } = useTranslation();

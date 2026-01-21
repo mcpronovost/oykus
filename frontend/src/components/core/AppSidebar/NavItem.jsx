@@ -1,4 +1,4 @@
-import { OykChip, OykLink } from "@/components/common";
+import { OykChip, OykLink } from "@/components/ui";
 
 export default function NavItem({
   icon: IconComponent,

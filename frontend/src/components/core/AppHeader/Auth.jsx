@@ -1,6 +1,6 @@
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import { OykAvatar, OykButton } from "@/components/common";
+import { OykAvatar, OykButton } from "@/components/ui";
 
 export default function AppBarAuth() {
   const { n } = useRouter();

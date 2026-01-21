@@ -1,6 +1,6 @@
 import { MessagesSquare, History } from "lucide-react";
 
-import { OykAvatar } from "@/components/common";
+import { OykAvatar } from "@/components/ui";
 
 export default function TaskCardFooter({ task }) {
   return (

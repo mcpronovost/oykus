@@ -3,7 +3,7 @@ import { Construction } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useTranslation } from "@/services/translation";
-import { OykAlert, OykAvatar, OykFeedback, OykGrid, OykHeading, OykLink, OykLoading } from "@/components/common";
+import { OykAlert, OykAvatar, OykFeedback, OykGrid, OykHeading, OykLink, OykLoading } from "@/components/ui";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -64,7 +64,7 @@ export default function Home() {
           />
         ) : !isLoadingWio ? (
           <>
-            <section style={{ display: "flex", flexWrap: "wrap", alignItems: "center" }}>
+            <section style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
               {wioUsers?.length
                 ? wioUsers.map((u) => (
                     <OykLink key={u.slug} routeName={"users-profile"} params={{ userSlug: u.slug }}>
@@ -75,10 +75,9 @@ export default function Home() {
               {wioGuests ? (
                 <OykAvatar
                   abbr={`+${wioGuests}`}
-                  bgColor="transparent"
-                  fgColor="var(--oyk-core-fg)"
-                  borderColor="transparent"
-                  size={48}
+                  bgColor="var(--oyk-card-bg)"
+                  fgColor="var(--oyk-card-fg)"
+                  size={32}
                 />
               ) : null}
             </section>

@@ -1,7 +1,7 @@
 import "@/assets/styles/page/_privacy-policy.scss";
 import { Construction } from "lucide-react";
 import { useTranslation } from "@/services/translation";
-import { OykFeedback, OykGrid, OykHeading } from "@/components/common";
+import { OykFeedback, OykGrid, OykHeading } from "@/components/ui";
 import { oykDate } from "@/utils/formatters";
 
 export default function PrivacyPolicy() {

@@ -11,21 +11,21 @@
 @use "./core/app-notfound" as core-layout-app-notfound;
 
 // Common
-@use "./common/alert" as common-alert;
-@use "./common/avatar" as common-avatar;
-@use "./common/banner" as common-banner;
-@use "./common/button" as common-button;
-@use "./common/card" as common-card;
-@use "./common/chip" as common-chip;
-@use "./common/display" as common-display;
-@use "./common/dropdown" as common-dropdown;
-@use "./common/feedback" as common-feedback;
-@use "./common/form" as common-form;
-@use "./common/grid" as common-grid;
-@use "./common/heading" as common-heading;
-@use "./common/loading" as common-loading;
-@use "./common/modal" as common-modal;
-@use "./common/scrollbar" as common-scrollbar;
+@use "./ui/alert" as common-alert;
+@use "./ui/avatar" as common-avatar;
+@use "./ui/banner" as common-banner;
+@use "./ui/button" as common-button;
+@use "./ui/card" as common-card;
+@use "./ui/chip" as common-chip;
+@use "./ui/display" as common-display;
+@use "./ui/dropdown" as common-dropdown;
+@use "./ui/feedback" as common-feedback;
+@use "./ui/form" as common-form;
+@use "./ui/grid" as common-grid;
+@use "./ui/heading" as common-heading;
+@use "./ui/loading" as common-loading;
+@use "./ui/modal" as common-modal;
+@use "./ui/scrollbar" as common-scrollbar;
 
 // Pages
 @use "./page/_auth" as page-auth;
