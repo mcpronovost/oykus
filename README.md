@@ -26,7 +26,7 @@ Oykus is an **experimental RPG project** blending story-creation with gameplay â
 
 ## ðŸš€ Quick Start (Dev)
 
-Get the project up and running locally with minimal friction:
+Get the project up and running locally with minimal friction (be sure to have Docker Desktop installed):
 
 1. **Clone the repo**
    ```bash
