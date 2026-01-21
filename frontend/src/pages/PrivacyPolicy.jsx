@@ -1,13 +1,19 @@
 import "@/assets/styles/page/_privacy-policy.scss";
+import { Construction } from "lucide-react";
 import { useTranslation } from "@/services/translation";
+import { OykFeedback, OykGrid, OykHeading } from "@/components/common";
 import { oykDate } from "@/utils/formatters";
 
 export default function PrivacyPolicy() {
   const { t, lang } = useTranslation();
 
   return (
-    <section className="oyk-page oyk-privacy-policy">
-      <div className="oyk-privacy-policy-container">
+    <section className="oyk-page">
+      <OykHeading title={t("Privacy Policy")} />
+      <OykGrid>
+        <OykFeedback ghost variant="warning" title={t("Under Construction")} message={t("This page is currently under construction. Please check back later.")} icon={Construction} />
+      </OykGrid>
+      {/*<div className="oyk-privacy-policy-container">
         <h1 className="oyk-privacy-policy-title">{t("Privacy Policy")}</h1>
         
         <div className="oyk-privacy-policy-content">
@@ -174,7 +180,7 @@ export default function PrivacyPolicy() {
             </ul>
           </section>
         </div>
-      </div>
+      </div>*/}
     </section>
   );
 }
