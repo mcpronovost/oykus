@@ -24,8 +24,8 @@ export default function TaskCardFooter({ task }) {
         )}
         <div className="oyk-tasks-card-footer-infos-assignees">
           <ul>
-            {task.assignees?.map((assignee) => (
-              <li key={assignee.id}>
+            {task.assignees?.map((assignee, index) => (
+              <li key={index}>
                 <OykAvatar
                   name={assignee.name}
                   abbr={assignee.abbr}
