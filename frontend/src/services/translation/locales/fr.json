@@ -57,5 +57,7 @@
     "Content": "Contenu",
     "Status": "Statut",
     "Colour": "Couleur",
-    "Position": "Position"
+    "Position": "Position",
+    "Who is online?": "Qui est en ligne ?",
+    "Unable to access who is online data, check your internet connection or try again later": "Impossible de savoir qui est en ligne. Veuillez vérifier votre connexion internet ou réessayer plus tard."
 }
