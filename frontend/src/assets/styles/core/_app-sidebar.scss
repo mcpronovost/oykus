@@ -39,6 +39,12 @@
     }
   }
 
+  &-scrollbar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
   &-header {
     background-color: var(--oyk-app-bar-bg);
     color: var(--oyk-app-bar-fg);

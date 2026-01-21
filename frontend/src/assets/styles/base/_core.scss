@@ -44,7 +44,7 @@ body {
 }
 
 #oyk-app-main {
-  overflow-y: auto;
+  overflow: hidden;
   display: block;
   height: calc(100vh - var(--oyk-app-header-height, 64px));
 }

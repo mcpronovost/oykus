@@ -1,5 +1,6 @@
 import { createElement, Suspense } from "react";
 import { useRouter } from "@/services/router";
+import { OykScrollbar } from "@/components/common";
 import Providers from "@/components/Providers";
 import OykAppHeader from "@/components/core/AppHeader";
 import OykAppSidebar from "@/components/core/AppSidebar";
@@ -13,7 +14,9 @@ function MainLayout() {
     <main id="oyk-app-main">
       {route && route.component ? (
         <Suspense fallback={<OykAppLoading />}>
-          {createElement(route.component)}
+          <OykScrollbar height={"100%"}>
+            {createElement(route.component)}
+          </OykScrollbar>
         </Suspense>
       ) : (
         <OykAppNotFound />

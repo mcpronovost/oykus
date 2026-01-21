@@ -1,0 +1,44 @@
+.oyk-scrollbar {
+  overflow: hidden;
+  position: relative;
+
+  &-content {
+    overflow-y: scroll;
+    height: 100%;
+    padding-right: 0; /* space for custom bar */
+
+    /* hide native scrollbar */
+    scrollbar-width: none;
+  }
+
+  &-content::-webkit-scrollbar {
+    display: none;
+  }
+
+  &-track {
+    background: transparent;
+    width: 8px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 2px;
+    transition: background 0.3s;
+  }
+
+  &-thumb {
+    background: transparent;
+    border-radius: 8px;
+    width: 100%;
+    transition: background 0.3s;
+  }
+
+  &:hover {
+    .oyk-scrollbar-thumb {
+        background: var(--oyk-scrollbar-fg);
+    }
+  }
+}
+
+.oyk-no-select {
+  user-select: none;
+}

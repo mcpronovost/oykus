@@ -15,3 +15,4 @@ export { default as OykHeading } from "./Heading.jsx";
 export { default as OykLink } from "./Link.jsx";
 export { default as OykLoading } from "./Loading.jsx";
 export { default as OykModal } from "./Modal.jsx";
+export { default as OykScrollbar } from "./Scrollbar.jsx";

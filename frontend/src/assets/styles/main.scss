@@ -25,6 +25,7 @@
 @use "./common/heading" as common-heading;
 @use "./common/loading" as common-loading;
 @use "./common/modal" as common-modal;
+@use "./common/scrollbar" as common-scrollbar;
 
 // Pages
 @use "./page/_auth" as page-auth;
