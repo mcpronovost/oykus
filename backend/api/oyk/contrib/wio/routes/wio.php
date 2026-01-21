@@ -13,7 +13,7 @@ try {
             u.avatar
         FROM wio w
         LEFT JOIN users u ON w.user_id = u.id
-        WHERE w.lastlive_at > NOW() - INTERVAL 55 MINUTE
+        WHERE w.lastlive_at > NOW() - INTERVAL 5 MINUTE
             AND w.user_id IS NOT NULL
         ORDER BY w.lastlive_at DESC
     ");
@@ -22,7 +22,7 @@ try {
 
     $guests = (int) $pdo->query("
         SELECT COUNT(*) FROM wio
-        WHERE lastlive_at > NOW() - INTERVAL 55 MINUTE
+        WHERE lastlive_at > NOW() - INTERVAL 5 MINUTE
         AND user_id IS NULL
     ")->fetchColumn();
 
