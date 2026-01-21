@@ -29,6 +29,10 @@ if ($method === "POST" && $path === $prefix."/login/") {
     require __DIR__ . $route."login.php";
     exit;
 }
+if ($method === "POST" && $path === $prefix."/logout/") {
+    require __DIR__ . $route."logout.php";
+    exit;
+}
 if ($method === "GET" && $path === $prefix."/me/") {
     require __DIR__ . $route."me.php";
     exit;

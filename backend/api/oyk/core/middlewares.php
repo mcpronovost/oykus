@@ -9,7 +9,7 @@ function require_auth($is_continue=false) {
     if (!str_starts_with($authHeader, "Oyk ")) {
         if ($is_continue) return null;
         http_response_code(401);
-        echo json_encode(["error" => "Unauthorized (h)"]);
+        echo json_encode(["error" => 401]);
         exit;
     }
 
