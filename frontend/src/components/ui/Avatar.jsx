@@ -1,5 +1,7 @@
 import { User } from "lucide-react";
+
 import { DOMAIN } from "@/services/api/utils";
+import { useAuth } from "@/services/auth";
 
 export default function OykAvatar({
   name = "",
@@ -12,11 +14,13 @@ export default function OykAvatar({
   borderColor = "var(--oyk-card-bg)",
   borderSize = 2,
 }) {
+  const { isAuth } = useAuth();
+
   return (
     <div
       className="oyk-avatar"
       style={{
-        backgroundColor: src ? borderColor : bgColor,
+        backgroundColor: (isAuth && src) ? borderColor : bgColor,
         borderColor: borderColor,
         borderWidth: borderSize ? `${borderSize}px` : "2px",
         color: fgColor,
@@ -24,7 +28,7 @@ export default function OykAvatar({
         height: size,
       }}
     >
-      {src ? (
+      {(isAuth && src) ? (
         <img src={(!src.startsWith("http") && !src.startsWith("blob")) ? `${DOMAIN}${src}` : src} alt={name} className="oyk-avatar-img" />
       ) : abbr || name ? (
         <span className="oyk-avatar-abbr" style={{ fontSize: size * 0.35 }}>
