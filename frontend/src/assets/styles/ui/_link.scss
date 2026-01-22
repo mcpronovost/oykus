@@ -1,0 +1,6 @@
+.oyk-link {
+    &.oyk-disabled {
+        pointer-events: none;
+        cursor: default;
+    }
+}

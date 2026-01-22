@@ -74,6 +74,16 @@ if ($method === "POST" && $path === $prefix."/status/edit/") {
     exit;
 }
 
+// ACHIEVEMENTS ROUTES
+
+$prefix = "/api/v1/achievements";
+$route = "/contrib/achievements/routes/";
+
+if ($method === "GET" && $path === $prefix."/") {
+    require __DIR__.$route."achievements.php";
+    exit;
+}
+
 // WIO ROUTES
 
 $prefix = "/api/v1/wio";

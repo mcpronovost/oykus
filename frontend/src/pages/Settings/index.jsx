@@ -7,6 +7,9 @@ import {
   OykCard,
   OykFeedback,
   OykGrid,
+  OykGridRow,
+  OykGridNav,
+  OykGridMain,
   OykHeading,
   OykLink,
 } from "@/components/ui";
@@ -77,8 +80,8 @@ export default function Settings() {
     <section className="oyk-page oyk-settings">
       <OykHeading title={t("Settings")} />
       <OykGrid>
-        <div className="oyk-settings-grid">
-          <aside className="oyk-settings-grid-nav">
+        <OykGridRow>
+          <OykGridNav className="oyk-settings-grid-nav">
             <nav className="oyk-settings-nav">
               <ul>
                 {menu.map((m, index) => (
@@ -112,8 +115,8 @@ export default function Settings() {
                 ))}
               </ul>
             </nav>
-          </aside>
-          <div className="oyk-settings-grid-main">
+          </OykGridNav>
+          <OykGridMain>
             {params?.section === "profile" ? (
               <OykSettingsProfile />
             ) : params?.section === "account" ? (
@@ -123,8 +126,8 @@ export default function Settings() {
                 <OykFeedback ghost variant="warning" title={t("Under Construction")} message={t("These settings are currently in development and should be available soon")} icon={Construction} />
               </OykCard>
             )}
-          </div>
-        </div>
+          </OykGridMain>
+        </OykGridRow>
       </OykGrid>
     </section>
   );

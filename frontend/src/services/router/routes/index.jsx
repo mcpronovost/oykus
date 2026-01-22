@@ -29,6 +29,22 @@ export const ROUTES = [
     },
   },
   {
+    name: "tasks",
+    component: React.lazy(() => import("../../../pages/Tasks")),
+    paths: {
+      fr: "taches",
+      en: "tasks",
+    },
+  },
+  {
+    name: "achievements",
+    component: React.lazy(() => import("../../../pages/Achievements")),
+    paths: {
+      fr: "succes",
+      en: "achievements",
+    },
+  },
+  {
     name: "privacy-policy",
     component: React.lazy(() => import("../../../pages/PrivacyPolicy")),
     paths: {
@@ -54,14 +70,6 @@ export const ROUTES = [
         },
       },
     ],
-  },
-  {
-    name: "tasks",
-    component: React.lazy(() => import("../../../pages/Tasks")),
-    paths: {
-      fr: "taches",
-      en: "tasks",
-    },
   },
   ...SETTINGS_ROUTES,
   ...DEV_ROUTES,

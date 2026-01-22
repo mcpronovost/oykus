@@ -2,7 +2,7 @@
 require_once __DIR__ . "/../../../core/db.php";
 
 $sql = "
-CREATE TABLE tasks_assignees (
+CREATE TABLE IF NOT EXISTS tasks_assignees (
     task_id INT UNSIGNED NOT NULL,
     user_id INT UNSIGNED NOT NULL,
     assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

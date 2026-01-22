@@ -6,6 +6,7 @@ export default function OykLink({
   routeName,
   params = {},
   disabled = false,
+  className = {},
   ...props
 }) {
   const { n, lang } = useRouter();
@@ -21,7 +22,7 @@ export default function OykLink({
   };
 
   return (
-    <a href={href} onClick={handleClick} {...props}>
+    <a href={href} onClick={handleClick} className={`oyk-link ${disabled ? "oyk-disabled" : ""} ${className}`} {...props}>
       {children}
     </a>
   );

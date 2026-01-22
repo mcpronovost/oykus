@@ -196,7 +196,8 @@
     }
 
     &-item {
-      padding: 8px 8px;
+      position: relative;
+      padding: 8px;
 
       &-link {
         background-color: transparent;
@@ -276,6 +277,40 @@
           right: -8px;
           top: 0;
           margin: 0 4px;
+        }
+      }
+
+      &.oyk-active {
+        color: var(--oyk-c-primary);
+
+        &::before {
+          content: "";
+          background: linear-gradient(to right, var(--oyk-c-primary), transparent);
+          position: absolute;
+          top: 4px;
+          left: 0;
+          right: 0;
+          bottom: 4px;
+          opacity: 0.2;
+        }
+
+        &::after {
+          content: "";
+          background-color: var(--oyk-c-primary);
+          border-top-right-radius: 8px;
+          border-bottom-right-radius: 8px;
+          position: absolute;
+          top: 4px;
+          left: 0;
+          bottom: 4px;
+          width: 4px;
+        }
+
+        .oyk-app-sidebar-nav-item-link {
+          &:not(.disabled):hover {
+            background-color: transparent;
+            transition: background-color 0s;
+          }
         }
       }
     }

@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   ListTodo,
   Settings,
+  Star,
 } from "lucide-react";
 import { useAuth } from "@/services/auth";
 import { useStore } from "@/services/store";
@@ -29,6 +30,7 @@ export default function AppSidebar() {
               <OykAppSidebarNavItem icon={LayoutDashboard} text={t("Dashboard")} href="home" />
               <OykAppSidebarNavItem icon={Compass} text={t("Discover")} href="discover" />
               {isAuth && (<OykAppSidebarNavItem icon={ListTodo} text={t("Tasks")} href="tasks" />)}
+              {isAuth && (<OykAppSidebarNavItem icon={Star} text={t("Achievements")} href="achievements" />)}
             </ul>
           </nav>
         </section>

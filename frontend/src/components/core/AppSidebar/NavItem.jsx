@@ -1,3 +1,4 @@
+import { useRouter } from "@/services/router";
 import { OykChip, OykLink } from "@/components/ui";
 
 export default function NavItem({
@@ -11,17 +12,19 @@ export default function NavItem({
   sideChipColor = "default",
   disabled = false,
 }) {
+  const { route } = useRouter();
+
   if (sideIconColor !== "currentColor") {
     sideIconColor = `var(--oyk-c-${sideIconColor})`;
   }
 
   return (
-    <li className="oyk-app-sidebar-nav-item">
+    <li className={`oyk-app-sidebar-nav-item ${route.name == href ? "oyk-active" : ""}`}>
       <OykLink
         routeName={href}
         params={params}
         className={`oyk-app-sidebar-nav-item-link ${disabled ? "disabled" : ""}`}
-        disabled={disabled}
+        disabled={disabled || route.name == href}
       >
         <span className="oyk-app-sidebar-nav-item-link-icon">
           <IconComponent size={18} />
