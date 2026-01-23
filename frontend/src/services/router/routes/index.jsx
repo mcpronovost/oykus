@@ -21,6 +21,14 @@ export const ROUTES = [
     },
   },
   {
+    name: "devlog",
+    component: React.lazy(() => import("../../../pages/Devlog")),
+    paths: {
+      fr: "devlog",
+      en: "devlog",
+    },
+  },
+  {
     name: "discover",
     component: React.lazy(() => import("../../../pages/Discover")),
     paths: {

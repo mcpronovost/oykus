@@ -14,6 +14,11 @@ export default function AppHeaderMenu() {
       onClick:() => n("about"),
     },
     {
+      label: t("Devlog"),
+      routeName: "devlog",
+      onClick: () => n("devlog")
+    },
+    {
       label: t("Privacy Policy"),
       routeName: "privacy-policy",
       onClick: () => n("privacy-policy"),
