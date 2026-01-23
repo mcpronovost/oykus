@@ -8,23 +8,14 @@
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    gap: 16px;
 
     &-nav {
-      background-color: var(--oyk-card-bg);
-      border-radius: var(--oyk-radius);
-      color: var(--oyk-card-fg);
       flex: 0 0 256px;
-      padding-right: 8px;
-
-      &.oyk-transparent {
-        background-color: transparent;
-        color: var(--oyk-core-fg);
-      }
     }
 
     &-main {
       flex: 1 1 100%;
-      padding-left: 8px;
     }
 
     @media (max-width: 1023px) {
@@ -32,14 +23,10 @@
 
       &-nav {
         flex: 1 1 100%;
-        padding-right: 0;
-        padding-bottom: 8px;
       }
 
       &-main {
         flex: 1 1 100%;
-        padding-top: 8px;
-        padding-left: 0;
       }
     }
   }

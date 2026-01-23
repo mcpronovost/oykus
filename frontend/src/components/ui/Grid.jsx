@@ -1,3 +1,5 @@
+import OykCard from "./Card";
+
 export default function OykGrid({ children, className, ...props }) {
   return (
     <section className={`oyk-grid ${className ? className : ""}`} {...props}>
@@ -14,10 +16,10 @@ export function OykGridRow({ children, className, ...props }) {
   );
 }
 
-export function OykGridNav({ children, className, transparent, ...props }) {
+export function OykGridNav({ children, className, ...props }) {
   return (
-    <aside className={`oyk-grid-row-nav ${transparent ? "oyk-transparent" : ""} ${className ? className : ""}`} {...props}>
-      {children}
+    <aside className={`oyk-grid-row-nav ${className ? className : ""}`} {...props}>
+      <OykCard nop>{children}</OykCard>
     </aside>
   );
 }
