@@ -11,7 +11,7 @@ try {
             u.slug,
             u.abbr,
             u.avatar
-        FROM wio w
+        FROM auth_wio w
         LEFT JOIN users u ON w.user_id = u.id
         WHERE w.lastlive_at > NOW() - INTERVAL 5 MINUTE
             AND w.user_id IS NOT NULL
@@ -21,7 +21,7 @@ try {
     $users = $qry->fetchAll();
 
     $guests = (int) $pdo->query("
-        SELECT COUNT(*) FROM wio
+        SELECT COUNT(*) FROM auth_wio
         WHERE lastlive_at > NOW() - INTERVAL 5 MINUTE
         AND user_id IS NULL
     ")->fetchColumn();

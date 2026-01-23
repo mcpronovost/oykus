@@ -7,7 +7,7 @@ $authUser = require_auth();
 
 try {
     $qry = $pdo->prepare("
-        DELETE FROM wio
+        DELETE FROM auth_wio
         WHERE user_id = :id
     ");
 

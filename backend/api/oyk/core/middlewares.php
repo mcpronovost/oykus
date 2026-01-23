@@ -33,7 +33,7 @@ function update_wio() {
     try {
         if ($user) {
             $stmt = $pdo->prepare("
-                INSERT INTO wio (user_id, lastlive_at)
+                INSERT INTO auth_wio (user_id, lastlive_at)
                 VALUES (:uid, NOW())
                 ON DUPLICATE KEY UPDATE lastlive_at = NOW()
             ");
@@ -42,7 +42,7 @@ function update_wio() {
             $guest = get_guest_id();
 
             $stmt = $pdo->prepare("
-                INSERT INTO wio (guest_id, lastlive_at)
+                INSERT INTO auth_wio (guest_id, lastlive_at)
                 VALUES (:gid, NOW())
                 ON DUPLICATE KEY UPDATE lastlive_at = NOW()
             ");

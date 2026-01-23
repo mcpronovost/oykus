@@ -46,6 +46,10 @@ if ($method === "GET" && preg_match("#^".$prefix."/users/([a-z0-9-]+)/profile/?$
     require __DIR__.$route."users_profile.php";
     exit;
 }
+if ($method === "GET" && $path === $prefix."/wio/") {
+    require __DIR__.$route."wio.php";
+    exit;
+}
 
 // TASKS ROUTES
 
@@ -81,16 +85,6 @@ $route = "/contrib/achievements/routes/";
 
 if ($method === "GET" && $path === $prefix."/") {
     require __DIR__.$route."achievements.php";
-    exit;
-}
-
-// WIO ROUTES
-
-$prefix = "/api/v1/wio";
-$route = "/contrib/wio/routes/";
-
-if ($method === "GET" && $path === $prefix."/") {
-    require __DIR__.$route."wio.php";
     exit;
 }
 

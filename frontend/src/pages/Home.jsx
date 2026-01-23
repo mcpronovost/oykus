@@ -17,7 +17,7 @@ export default function Home() {
     setIsLoadingWio(true);
     setHasErrorWio(null);
     try {
-      const r = await api.get("/wio/", signal ? { signal } : {});
+      const r = await api.get("/auth/wio/", signal ? { signal } : {});
       if (!r?.ok) throw new Error(r.error || t("An error occurred"));
       setWioUsers(r.users);
       setWioGuests(r.guests);
