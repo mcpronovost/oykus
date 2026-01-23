@@ -1,0 +1,117 @@
+.oyk-achievements {
+  &-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 16px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 576px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &-nav {
+    &-item {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px;
+
+      &-icon {
+        display: flex;
+        flex: 0 0 20px;
+        justify-content: flex-start;
+      }
+
+      &-title {
+        font-size: 0.9rem;
+        font-weight: 400;
+        line-height: 1;
+        text-align: left;
+        display: flex;
+        flex: 1 1 100%;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+    }
+  }
+
+  &-card {
+    background-color: var(--oyk-card-bg);
+    border-radius: var(--oyk-radius);
+    color: var(--oyk-card-fg);
+    outline: inset 2px rgba(255, 255, 255, 0.02);
+    overflow: hidden;
+    position: relative;
+
+    &-overlay {
+      background-position: center 20%;
+      background-repeat: no-repeat;
+      background-size: contain;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+      opacity: 0.6;
+      filter: blur(32px) brightness(1.5);
+    }
+    
+    &-wrap {
+      height: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    &-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      height: 100%;
+      min-height: 250px;
+    }
+
+    &-period {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      z-index: 2;
+    }
+
+    &-image {
+      text-align: center;
+      display: flex;
+      flex: 1 1 180px;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    &-info {
+      flex: 1 1 auto;
+      text-align: center;
+      padding: 12px;
+
+      h4 {
+        font-family: "Quicksand", sans-serif;
+        font-size: 1rem;
+        line-height: 1.2;
+        margin: 0 0 6px;
+      }
+
+      p {
+        font-size: 0.8rem;
+        line-height: 1.2;
+        opacity: 0.7;
+      }
+    }
+  }
+}
