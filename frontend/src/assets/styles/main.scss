@@ -11,22 +11,23 @@
 @use "./core/app-notfound" as core-layout-app-notfound;
 
 // Common
-@use "./ui/alert" as common-alert;
-@use "./ui/avatar" as common-avatar;
-@use "./ui/banner" as common-banner;
-@use "./ui/button" as common-button;
-@use "./ui/card" as common-card;
-@use "./ui/chip" as common-chip;
-@use "./ui/display" as common-display;
-@use "./ui/dropdown" as common-dropdown;
-@use "./ui/feedback" as common-feedback;
-@use "./ui/form" as common-form;
-@use "./ui/grid" as common-grid;
-@use "./ui/heading" as common-heading;
-@use "./ui/link" as common-link;
-@use "./ui/loading" as common-loading;
-@use "./ui/modal" as common-modal;
-@use "./ui/scrollbar" as common-scrollbar;
+@use "./ui/alert" as ui-alert;
+@use "./ui/avatar" as ui-avatar;
+@use "./ui/banner" as ui-banner;
+@use "./ui/button" as ui-button;
+@use "./ui/card" as ui-card;
+@use "./ui/chip" as ui-chip;
+@use "./ui/display" as ui-display;
+@use "./ui/dropdown" as ui-dropdown;
+@use "./ui/feedback" as ui-feedback;
+@use "./ui/form" as ui-form;
+@use "./ui/grid" as ui-grid;
+@use "./ui/heading" as ui-heading;
+@use "./ui/link" as ui-link;
+@use "./ui/loading" as ui-loading;
+@use "./ui/modal" as ui-modal;
+@use "./ui/progress" as ui-progress;
+@use "./ui/scrollbar" as ui-scrollbar;
 
 // Pages
 @use "./page/_auth" as page-auth;
