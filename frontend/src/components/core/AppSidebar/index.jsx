@@ -1,6 +1,7 @@
 import {
   Blocks,
   Compass,
+  Component,
   LayoutDashboard,
   ListTodo,
   Settings,
@@ -30,6 +31,7 @@ export default function AppSidebar() {
               <OykAppSidebarNavItem icon={LayoutDashboard} text={t("Dashboard")} href="home" />
               <OykAppSidebarNavItem icon={Compass} text={t("Discover")} href="discover" />
               {isAuth && (<OykAppSidebarNavItem icon={ListTodo} text={t("Tasks")} href="tasks" />)}
+              {isAuth && (<OykAppSidebarNavItem icon={Blocks} text={t("Collectibles")} href="collectibles" disabled />)}
               {isAuth && (<OykAppSidebarNavItem icon={Star} text={t("Achievements")} href="achievements" />)}
             </ul>
           </nav>
@@ -38,7 +40,7 @@ export default function AppSidebar() {
           <nav className="oyk-app-sidebar-nav">
             <ul className="oyk-app-sidebar-nav-list">
               {isAuth && (<OykAppSidebarNavItem icon={Settings} text={t("Settings")} href="settings" />)}
-              <OykAppSidebarNavItem icon={Blocks} text={t("Components")} href="dev-components" />
+              <OykAppSidebarNavItem icon={Component} text={t("Components")} href="dev-components" />
             </ul>
           </nav>
         </footer>
