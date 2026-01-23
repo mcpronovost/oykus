@@ -6,43 +6,6 @@ global $pdo;
 $authUser = require_auth();
 
 try {
-    $stmt = $pdo->prepare("
-        INSERT INTO achievements (id, achievement_key, title, description, category, goal, period)
-        VALUES (1, 'first_login', 'Welcome', 'Log in for the first time.', 'general', 1, 'one-time')
-        ON DUPLICATE KEY UPDATE period = 'one-time';
-    ");
-    $stmt->execute();
-    $stmt = $pdo->prepare("
-        INSERT INTO achievements (id, achievement_key, title, description, category, goal, period)
-        VALUES (2, 'first_collectible', 'My First Shiny', 'Earn your first collectible.', 'collectibles', 1, 'one-time')
-        ON DUPLICATE KEY UPDATE category = 'collectibles';
-    ");
-    $stmt->execute();
-    $stmt = $pdo->prepare("
-        INSERT INTO achievements (id, achievement_key, title, description, category, goal, period)
-        VALUES (3, 'three_new_collectibles', 'Always More', 'Earn three more collectible in the same week.', 'collectibles', 3, 'weekly')
-        ON DUPLICATE KEY UPDATE category = 'collectibles';
-    ");
-    $stmt->execute();
-    $stmt = $pdo->prepare("
-        INSERT INTO achievements_users (id, user_id, achievement_id, unlocked_at, progress)
-        VALUES (1, 2, 1, '2026-01-01', 1)
-        ON DUPLICATE KEY UPDATE progress = 1;
-    ");
-    $stmt->execute();
-    $stmt = $pdo->prepare("
-        INSERT INTO achievements_users (id, user_id, achievement_id, unlocked_at, progress)
-        VALUES (2, 2, 2, '2026-01-03', 1)
-        ON DUPLICATE KEY UPDATE achievement_id = 2;
-    ");
-    $stmt->execute();
-    $stmt = $pdo->prepare("
-        INSERT INTO achievements_users (id, user_id, achievement_id, unlocked_at, progress)
-        VALUES (3, 2, 3, '2026-01-04', 1)
-        ON DUPLICATE KEY UPDATE achievement_id = 3;
-    ");
-    $stmt->execute();
-
     $qry = $pdo->prepare("
         SELECT
             a.id,

@@ -2,6 +2,8 @@
 
 header("Content-Type: application/json");
 
+require OYK_PATH."/contrib/achievements/utils/earn_achievement.php";
+
 global $pdo;
 
 $data = json_decode(file_get_contents("php://input"), true);
@@ -40,6 +42,8 @@ $token = generate_jwt([
     "id"        => $user["id"],
     "username"  => $user["username"]
 ]);
+
+earn_achievement($pdo, "first_login", $user["id"]);
 
 unset($user["id"], $user["username"], $user["password"]);
 
