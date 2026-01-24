@@ -55,5 +55,21 @@ services:
     environment:
       TZ: ${TZ}
 
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: oykus-phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: ${HTTP_DB_USER}
+      PMA_PASSWORD: ${HTTP_DB_PASS}
+      MYSQL_ROOT_PASSWORD: ${HTTP_DB_PASS}
+
 volumes:
   db_data: 
