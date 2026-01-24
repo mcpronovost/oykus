@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Plus, EllipsisVertical, Edit, Trash2 } from "lucide-react";
 
+import { useAuth } from "@/services/auth";
 import { useStore } from "@/services/store";
 import { useTranslation } from "@/services/translation";
 import { OykDropdown, OykModal } from "@/components/ui";
@@ -13,6 +14,7 @@ export default function TaskStatusHeader({
   statuses = [],
   onTasksUpdate = () => {},
 }) {
+  const { isDev } = useAuth();
   const { currentWorld } = useStore();
   const { t } = useTranslation();
 
@@ -95,29 +97,30 @@ export default function TaskStatusHeader({
           >
             <Plus size={16} />
           </button>
-          {/*<OykDropdown
-            toggle={
-              <button className="oyk-tasks-status-item-header-actions-btn">
-                <EllipsisVertical size={16} />
-              </button>
-            }
-            menu={[
-              ...(true
-                ? [
-                    {
-                      label: t("Edit"),
-                      icon: <Edit size={16} />,
-                      onClick: handleEditClick,
-                    },
-                    {
-                      label: t("Delete"),
-                      icon: <Trash2 size={16} />,
-                      onClick: handleDeleteClick,
-                    },
-                  ]
-                : []),
-            ]}
-          />*/}
+          {isDev ? (
+            <OykDropdown
+              toggle={
+                <button className="oyk-tasks-status-item-header-actions-btn">
+                  <EllipsisVertical size={16} />
+                </button>
+              }
+              menu={[
+                ...(true
+                  ? [
+                      {
+                        label: t("Edit"),
+                        icon: <Edit size={16} />,
+                        onClick: handleEditClick,
+                      },
+                      {
+                        label: t("Delete"),
+                        icon: <Trash2 size={16} />,
+                        onClick: handleDeleteClick,
+                      },
+                    ]
+                  : []),
+              ]}
+            />) : null}
         </div>
       </header>
     </>

@@ -23,10 +23,10 @@ CREATE TABLE IF NOT EXISTS auth_users (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    UNIQUE KEY uniq_username (username),
-    UNIQUE KEY uniq_email (email),
+    UNIQUE INDEX uniq_username (username),
+    UNIQUE INDEX uniq_email (email),
 
-    KEY idx_slug (slug)
+    INDEX idx_slug (slug)
 ) ENGINE=InnoDB;
 ";
 

@@ -1,23 +1,23 @@
-import "@/assets/styles/page/_tasks.scss";
+import "@/assets/styles/page/_planner.scss";
 import { useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { Frown, Plus } from "lucide-react";
+import { Frown, Plus, Settings } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import AppNotAuthorized from "@/components/core/AppNotAuthorized";
-import { OykButton, OykCard, OykFeedback, OykGrid, OykHeading, OykLoading } from "@/components/ui";
+import { OykButton, OykCard, OykDropdown, OykFeedback, OykGrid, OykHeading, OykLoading } from "@/components/ui";
 
 import ModalStatusCreate from "./modals/StatusCreate";
 import ModalTaskCreate from "./modals/TaskCreate";
 import TaskStatus from "./TaskStatus";
 import TaskCard from "./TaskCard";
 
-function Tasks() {
-  const { isAuth } = useAuth();
+export default function Planner() {
+  const { isAuth, isDev } = useAuth();
   const { routeTitle } = useRouter();
   const { t } = useTranslation();
 
@@ -31,7 +31,7 @@ function Tasks() {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get("/tasks/", signal ? { signal } : {});
+      const r = await api.get("/planner/", signal ? { signal } : {});
       if (!r.ok) throw new Error(r.error || t("An error occurred"));
       setTasks(r.tasks);
     } catch (e) {
@@ -46,7 +46,7 @@ function Tasks() {
 
   const updateTaskStatus = async (taskId, newStatusId) => {
     try {
-      const r = await api.post(`/tasks/${taskId}/edit/`, {
+      const r = await api.post(`/planner/${taskId}/edit/`, {
         status: newStatusId
       });
       if (!r.ok) throw new Error(r.error || t("An error occurred"));
@@ -85,7 +85,7 @@ function Tasks() {
   useEffect(() => {
     const controller = new AbortController();
 
-    routeTitle(t("Tasks"));
+    routeTitle(t("Planner"));
 
     getTasks(controller.signal);
 
@@ -108,7 +108,7 @@ function Tasks() {
         statuses={tasks}
       />
       <OykHeading
-        title={t("Tasks")}
+        title={t("Planner")}
         // description={t("Tasks description")}
         actions={
           <>
@@ -117,10 +117,12 @@ function Tasks() {
                 {t("Create a new task")}
               </OykButton>
             )}
-            {/*<OykDropdown
-              toggle={<OykButton icon={Settings} outline />}
-              menu={[{ label: t("New Status"), onClick: handleStatusCreateClick }]}
-            />*/}
+            {isDev ? (
+              <OykDropdown
+                toggle={<OykButton icon={Settings} outline />}
+                menu={[{ label: t("New Status"), onClick: handleStatusCreateClick }]}
+              />
+            ) : null}
           </>
         }
       />
@@ -179,5 +181,3 @@ function Tasks() {
     </section>
   );
 }
-
-export default Tasks;

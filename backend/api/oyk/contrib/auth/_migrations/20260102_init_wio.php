@@ -10,10 +10,10 @@ CREATE TABLE IF NOT EXISTS auth_wio (
 
     lastlive_at DATETIME NOT NULL,
 
-    UNIQUE KEY uniq_user (user_id),
-    UNIQUE KEY uniq_guest (guest_id),
+    UNIQUE INDEX uniq_user (user_id),
+    UNIQUE INDEX uniq_guest (guest_id),
 
-    KEY idx_lastlive (lastlive_at)
+    INDEX idx_lastlive (lastlive_at)
 ) ENGINE=InnoDB;
 ";
 

@@ -26,12 +26,12 @@ try {
     $qry = $pdo->prepare("
         SELECT EXISTS (
             SELECT 1
-            FROM tasks t
+            FROM planner_tasks t
             WHERE id = ? AND (
                 author = ?
                 OR EXISTS (
                     SELECT 1
-                    FROM tasks_assignees ta
+                    FROM planner_assignees ta
                     WHERE ta.task_id = t.id
                     AND ta.user_id = ?
                 )
@@ -85,7 +85,7 @@ $params[":id"] = $taskId;
 
 // Update tasks status
 $sql = "
-    UPDATE tasks
+    UPDATE planner_tasks
     SET ".implode(', ', $fields)."
     WHERE id = :id
 ";

@@ -36,7 +36,7 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.post(`/tasks/${task.id}/edit/`, formData);
+      const r = await api.post(`/planner/${task.id}/edit/`, formData);
       if (!r.ok) throw new Error(r.error || t("An error occurred"));
       onClose(true);
     } catch (e) {

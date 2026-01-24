@@ -28,7 +28,7 @@ Oykus is an **experimental RPG project** blending story-creation with gameplay �
 
 - 🔨 **Core**: Core functionality and shared utilities
 - ✅ **Auth**: User authentication, data, online users and guests, friends management
-- ✅ **Tasks**: Tasks management functionality
+- ✅ **Planner**: Tasks management functionality
 - ✅ **Achievements**: Achievements management functionality
 - 🔨 **Collectibles**: Collectibles management functionality
 - 🔨 **Blog**: Blogging functionality

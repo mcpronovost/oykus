@@ -24,7 +24,7 @@ if (
 try {
     $qry = $pdo->prepare("
         SELECT title, color, position
-        FROM tasks_status
+        FROM planner_status
         WHERE id = :id
         LIMIT 1
     ");
@@ -44,7 +44,7 @@ if (!$status) {
 
 // Update tasks status
 $qry = $pdo->prepare("
-        UPDATE tasks_status
+        UPDATE planner_status
         SET title=:title, color=:color, position=:position
         WHERE id=:id
 ");

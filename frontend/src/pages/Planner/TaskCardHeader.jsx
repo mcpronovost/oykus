@@ -20,17 +20,17 @@ export default function TaskCardHeader({ task, isCompleted }) {
         <div className="oyk-tasks-card-header-infos">
           {task.priority && (
             <div className="oyk-tasks-card-header-infos-priority">
-              {task.priority === "high" && (
+              {task.priority === 2 && (
                 <OykChip color="danger" outline>
                   {t("PriorityHigh")}
                 </OykChip>
               )}
-              {task.priority === "medium" && (
+              {task.priority === 1 && (
                 <OykChip color="primary" outline>
                   {t("PriorityMedium")}
                 </OykChip>
               )}
-              {task.priority === "low" && (
+              {task.priority === 0 && (
                 <OykChip color="success" outline>
                   {t("PriorityLow")}
                 </OykChip>

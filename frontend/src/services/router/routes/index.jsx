@@ -37,11 +37,11 @@ export const ROUTES = [
     },
   },
   {
-    name: "tasks",
-    component: React.lazy(() => import("../../../pages/Tasks")),
+    name: "planner",
+    component: React.lazy(() => import("../../../pages/Planner")),
     paths: {
-      fr: "taches",
-      en: "tasks",
+      fr: "planificateur",
+      en: "planner",
     },
   },
   {

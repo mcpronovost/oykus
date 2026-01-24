@@ -11,7 +11,7 @@ try {
     // Fetch all statuses
     $statusQry = $pdo->prepare("
         SELECT id, title, color, position, is_completed
-        FROM tasks_status
+        FROM planner_status
         ORDER BY position ASC
     ");
     $statusQry->execute();
@@ -37,28 +37,28 @@ try {
                         'abbr', u.abbr
                     )
                 )
-                FROM tasks_assignees ta
+                FROM planner_assignees ta
                 JOIN auth_users u ON u.id = ta.user_id
                 WHERE ta.task_id = t.id
             ),
             JSON_ARRAY()
         ) AS assignees
 
-    FROM tasks t
+    FROM planner_tasks t
     WHERE
         t.status = :status_id
         AND (
             t.author = :user_id
             OR EXISTS (
                 SELECT 1
-                FROM tasks_assignees ta2
+                FROM planner_assignees ta2
                 WHERE ta2.task_id = t.id
                 AND ta2.user_id = :assignee_id
             )
         )
 
     ORDER BY
-        FIELD(t.priority, 'low', 'medium', 'high') DESC,
+        t.priority DESC,
         t.due_at IS NULL,
         t.due_at ASC
     ");

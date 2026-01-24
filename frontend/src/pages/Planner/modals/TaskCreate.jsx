@@ -30,7 +30,7 @@ export default function ModalTaskCreate({
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.post("/tasks/create/", formData);
+      const r = await api.post("/planner/create/", formData);
       if (!r.ok) throw new Error(r.error || t("An error occurred"));
       onClose(true);
     } catch (e) {
@@ -57,7 +57,7 @@ export default function ModalTaskCreate({
     setFormData({
       title: "",
       content: "",
-      priority: "medium",
+      priority: 1,
       statusId: status?.id || statuses[0]?.value || "",
       assignees: [],
       tags: [],
@@ -87,9 +87,9 @@ export default function ModalTaskCreate({
             name="priority"
             type="radio"
             options={[
-              { label: t("PriorityLow"), value: "low" },
-              { label: t("PriorityMedium"), value: "medium" },
-              { label: t("PriorityHigh"), value: "high" },
+              { label: t("PriorityLow"), value: 0 },
+              { label: t("PriorityMedium"), value: 1 },
+              { label: t("PriorityHigh"), value: 2 },
             ]}
             defaultValue={formData.priority}
             onChange={handleChange}

@@ -1,4 +1,4 @@
-import { LogOut, ListTodo, GalleryHorizontalEnd } from "lucide-react";
+import { LogOut, ListTodo, GalleryHorizontalEnd, Star } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
@@ -39,15 +39,20 @@ export default function AppHeaderUser() {
             divider: true,
           },
           {
-            label: t("Your cards"),
+            label: t("Your planner"),
+            icon: <ListTodo size={18} />,
+            onClick: () => n("planner"),
+          },
+          {
+            label: t("Your collectibles"),
             icon: <GalleryHorizontalEnd size={18} />,
             disabled: true,
             onClick: () => {},
           },
           {
-            label: t("Your tasks"),
-            icon: <ListTodo size={18} />,
-            onClick: () => n("tasks"),
+            label: t("Your achievements"),
+            icon: <Star size={18} />,
+            onClick: () => n("achievements"),
           },
           {
             divider: true,

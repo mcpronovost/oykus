@@ -1,5 +1,5 @@
 import {
-  Blocks,
+  GalleryHorizontalEnd,
   Compass,
   Component,
   LayoutDashboard,
@@ -31,8 +31,8 @@ export default function AppSidebar() {
             <ul className="oyk-app-sidebar-nav-list">
               <OykAppSidebarNavItem icon={LayoutDashboard} text={t("Dashboard")} href="home" />
               <OykAppSidebarNavItem icon={Compass} text={t("Discover")} href="discover" />
-              {isAuth ? (<OykAppSidebarNavItem icon={ListTodo} text={t("Tasks")} href="tasks" />) : null}
-              {isAuth ? (<OykAppSidebarNavItem icon={Blocks} text={t("Collectibles")} href="collectibles" disabled />) : null}
+              {isAuth ? (<OykAppSidebarNavItem icon={ListTodo} text={t("Planner")} href="planner" />) : null}
+              {isAuth ? (<OykAppSidebarNavItem icon={GalleryHorizontalEnd} text={t("Collectibles")} href="collectibles" disabled />) : null}
               {isAuth ? (<OykAppSidebarNavItem icon={Star} text={t("Achievements")} href="achievements" />) : null}
             </ul>
           </nav>

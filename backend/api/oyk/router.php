@@ -51,10 +51,10 @@ if ($method === "GET" && $path === $prefix."/wio/") {
     exit;
 }
 
-// TASKS ROUTES
+// PLANNER ROUTES
 
-$prefix = "/api/v1/tasks";
-$route = "/contrib/tasks/routes/";
+$prefix = "/api/v1/planner";
+$route = "/contrib/planner/routes/";
 
 if ($method === "GET" && $path === $prefix."/") {
     require __DIR__.$route."tasks.php";
