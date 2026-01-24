@@ -5,7 +5,7 @@ $sql = "
 CREATE TABLE IF NOT EXISTS tasks_assignees (
     task_id INT UNSIGNED NOT NULL,
     user_id INT UNSIGNED NOT NULL,
-    assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    assigned_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (task_id, user_id),
     INDEX (user_id),
