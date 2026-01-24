@@ -4,8 +4,9 @@ import {
   Component,
   LayoutDashboard,
   ListTodo,
+  LoaderPinwheel,
   Settings,
-  Star,
+  Star
 } from "lucide-react";
 import { useAuth } from "@/services/auth";
 import { useStore } from "@/services/store";
@@ -16,7 +17,7 @@ import OykAppSidebarUser from "./User";
 import OykAppSidebarNavItem from "./NavItem";
 
 export default function AppSidebar() {
-  const { isAuth } = useAuth();
+  const { isAuth, isDev } = useAuth();
   const { storeAppSidebarOpen } = useStore();
   const { t } = useTranslation();
 
@@ -30,17 +31,18 @@ export default function AppSidebar() {
             <ul className="oyk-app-sidebar-nav-list">
               <OykAppSidebarNavItem icon={LayoutDashboard} text={t("Dashboard")} href="home" />
               <OykAppSidebarNavItem icon={Compass} text={t("Discover")} href="discover" />
-              {isAuth && (<OykAppSidebarNavItem icon={ListTodo} text={t("Tasks")} href="tasks" />)}
-              {isAuth && (<OykAppSidebarNavItem icon={Blocks} text={t("Collectibles")} href="collectibles" disabled />)}
-              {isAuth && (<OykAppSidebarNavItem icon={Star} text={t("Achievements")} href="achievements" />)}
+              {isAuth ? (<OykAppSidebarNavItem icon={ListTodo} text={t("Tasks")} href="tasks" />) : null}
+              {isAuth ? (<OykAppSidebarNavItem icon={Blocks} text={t("Collectibles")} href="collectibles" disabled />) : null}
+              {isAuth ? (<OykAppSidebarNavItem icon={Star} text={t("Achievements")} href="achievements" />) : null}
             </ul>
           </nav>
         </section>
         <footer className="oyk-app-sidebar-footer">
           <nav className="oyk-app-sidebar-nav">
             <ul className="oyk-app-sidebar-nav-list">
-              {isAuth && (<OykAppSidebarNavItem icon={Settings} text={t("Settings")} href="settings" />)}
-              <OykAppSidebarNavItem icon={Component} text={t("Components")} href="dev-components" />
+              {isAuth ? (<OykAppSidebarNavItem icon={Settings} text={t("Settings")} href="settings" />) : null}
+              {isAuth && isDev ? (<OykAppSidebarNavItem icon={Component} text={t("Components")} href="dev-components" />) : null}
+              {isAuth && isDev ? (<OykAppSidebarNavItem icon={LoaderPinwheel} text={t("Admin")} href="admin" />) : null}
             </ul>
           </nav>
         </footer>

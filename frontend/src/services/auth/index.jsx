@@ -15,6 +15,9 @@ const AuthProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(() => {
     return user ? true : false;
   });
+  const [isDev, setIsDev] = useState(() => {
+    return user && user.is_dev ? true : false;
+  });
 
   const setUser = (user) => {
     if (user) {
@@ -25,10 +28,12 @@ const AuthProvider = ({ children }) => {
       setUserState(() => payload);
       storeSet(KEY_USER, payload);
       setIsAuth(true);
+      setIsDev(user.is_dev);
     } else {
       setUserState(null);
       storeRemove(KEY_USER);
       setIsAuth(false);
+      setIsDev(false);
     }
   };
 
@@ -54,8 +59,10 @@ const AuthProvider = ({ children }) => {
             throw new Error("Invalid token");
           }
         } catch {
-          setRat(null);
-          setUser(null);
+          if (import.meta.env.PROD) {
+            setRat(null);
+            setUser(null);
+          }
         }
       }
     };
@@ -71,7 +78,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ currentUser: user, setUser, setRat, isAuth }}>
+    <AuthContext.Provider value={{ currentUser: user, setUser, setRat, isAuth, isDev }}>
       {children}
     </AuthContext.Provider>
   );

@@ -12,6 +12,7 @@ export const DEV_ROUTES = [
       {
         name: "dev-components",
         component: React.lazy(() => import("../../../pages/Dev/Components")),
+        require_dev: true,
         paths: {
           fr: "composants",
           en: "components",
