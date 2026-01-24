@@ -3,9 +3,9 @@
 function earn_achievement ($pdo, $achievementKey, $userId) {
     try {
         $qry = $pdo->prepare("
-            INSERT INTO achievements (achievement_key, title, description, category, goal, period)
+            INSERT INTO achievements (tag, title, description, category, goal, period)
             VALUES ('first_login', 'Welcome', 'Log in for the first time.', 'general', 1, 'one-time')
-            ON DUPLICATE KEY UPDATE achievement_key = 'first_login';
+            ON DUPLICATE KEY UPDATE tag = 'first_login';
         ");
         $qry->execute();
 
@@ -13,7 +13,7 @@ function earn_achievement ($pdo, $achievementKey, $userId) {
 
         if ($achievementId === 0) {
             $qry = $pdo->prepare("
-                SELECT id FROM achievements WHERE achievement_key = 'first_login' LIMIT 1
+                SELECT id FROM achievements WHERE tag = 'first_login' LIMIT 1
             ");
             $qry->execute();
             $achievementId = (int) $qry->fetchColumn();

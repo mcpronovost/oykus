@@ -54,7 +54,7 @@ try {
 // Hash password
 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-$slug = get_slug($pdo, $name, "users");
+$slug = get_slug($pdo, $name, "auth_users");
 $abbr = get_abbr($name, 3);
 
 // Create new user

@@ -9,7 +9,7 @@ try {
     $qry = $pdo->prepare("
         SELECT
             a.id,
-            a.achievement_key,
+            a.tag,
             a.title,
             a.description,
             a.category,
@@ -38,7 +38,7 @@ try {
     while ($row = $qry->fetch()) {
         // $result[$row["category"]][] = [ // GROUP BY TYPE
         $result[] = [
-            "key"           => $row["achievement_key"],
+            "tag"           => $row["tag"],
             "title"         => $row["title"],
             "description"   => $row["description"],
             "category"      => $row["category"],

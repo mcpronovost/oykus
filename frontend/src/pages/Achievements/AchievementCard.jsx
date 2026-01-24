@@ -8,7 +8,7 @@ import imgThreeNewCollectibles from "@/assets/img/achievements/three_new_collect
 
 export default function AchievementCard({ achievement }) {
   const { t } = useTranslation();
-  const { title, description, key, is_unlocked, period, progress, goal } = achievement;
+  const { title, description, tag, is_unlocked, period, progress, goal } = achievement;
 
   return (
     <article
@@ -16,7 +16,7 @@ export default function AchievementCard({ achievement }) {
       
     >
       <div className="oyk-achievements-card-overlay" style={is_unlocked ? {
-        backgroundImage: `url(${key == "first_login" ? imgFirstLogin : key == "first_collectible" ? imgFirstCollectible : imgThreeNewCollectibles}`,
+        backgroundImage: `url(${tag == "first_login" ? imgFirstLogin : tag == "first_collectible" ? imgFirstCollectible : imgThreeNewCollectibles}`,
       } : {}}></div>
       <div className="oyk-achievements-card-wrap">
         {period !== "one-time" && (
@@ -29,9 +29,9 @@ export default function AchievementCard({ achievement }) {
             {is_unlocked ? (
               <img
                 src={
-                  key == "first_login"
+                  tag == "first_login"
                     ? imgFirstLogin
-                    : key == "first_collectible"
+                    : tag == "first_collectible"
                       ? imgFirstCollectible
                       : imgThreeNewCollectibles
                 }

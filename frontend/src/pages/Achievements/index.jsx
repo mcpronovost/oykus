@@ -92,7 +92,7 @@ export default function Achievements() {
             <OykGridMain>
               <section className="oyk-achievements-grid">
                 {achievements.map((a) => (
-                  <AchievementCard key={a.key} achievement={a} />
+                  <AchievementCard key={a.tag} achievement={a} />
                 ))}
               </section>
             </OykGridMain>

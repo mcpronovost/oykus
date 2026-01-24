@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS achievements_users (
 
     progress INT UNSIGNED NOT NULL DEFAULT 0,
     unlocked_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     reset_at DATETIME NULL,
 
     UNIQUE KEY uniq_user_achievement (user_id, achievement_id),
