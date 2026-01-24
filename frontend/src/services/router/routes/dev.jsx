@@ -3,7 +3,7 @@ import React from "react";
 export const DEV_ROUTES = [
   {
     name: "dev",
-    component: React.lazy(() => import("../../../pages/Error404")),
+    component: React.lazy(() => import("../../../pages/Dev")),
     paths: {
       fr: "dev",
       en: "dev",
