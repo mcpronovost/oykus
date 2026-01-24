@@ -38,7 +38,7 @@ try {
                     )
                 )
                 FROM tasks_assignees ta
-                JOIN users u ON u.id = ta.user_id
+                JOIN auth_users u ON u.id = ta.user_id
                 WHERE ta.task_id = t.id
             ),
             JSON_ARRAY()

@@ -54,9 +54,8 @@ const AuthProvider = ({ children }) => {
             throw new Error("Invalid token");
           }
         } catch {
-          console.log("can't check auth");
-          // setRat(null);
-          // setUser(null);
+          setRat(null);
+          setUser(null);
         }
       }
     };

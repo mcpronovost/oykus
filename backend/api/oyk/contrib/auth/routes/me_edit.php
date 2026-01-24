@@ -15,7 +15,7 @@ $authUser = require_auth();
 */
 $qry = $pdo->prepare("
     SELECT id, name, slug, is_slug_auto, abbr, is_abbr_auto, avatar, cover
-    FROM users
+    FROM auth_users
     WHERE id = :id
     LIMIT 1
 ");
@@ -115,7 +115,7 @@ try {
     }
 
     $sql = "
-        UPDATE users
+        UPDATE auth_users
         SET ".implode(", ", $sets)."
         WHERE id = :id
     ";

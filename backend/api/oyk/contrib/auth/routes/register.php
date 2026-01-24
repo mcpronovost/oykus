@@ -31,7 +31,7 @@ if (
 try {
     // Check if username OR email already exists
     $stmt = $pdo->prepare("
-        SELECT id FROM users
+        SELECT id FROM auth_users
         WHERE username = :username OR email = :email
         LIMIT 1
     ");
@@ -59,7 +59,7 @@ $abbr = get_abbr($name, 3);
 
 // Create new user
 $stmt = $pdo->prepare("
-    INSERT INTO users (username, email, name, password, slug, abbr)
+    INSERT INTO auth_users (username, email, name, password, slug, abbr)
     VALUES (:username, :email, :name, :password_hash, :slug, :abbr)
 ");
 

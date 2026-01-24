@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS tasks_assignees (
         ON DELETE CASCADE,
 
     CONSTRAINT fk_tasks_assignees_user
-        FOREIGN KEY (user_id) REFERENCES users(id)
+        FOREIGN KEY (user_id) REFERENCES auth_users(id)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 ";

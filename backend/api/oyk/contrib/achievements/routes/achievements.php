@@ -17,7 +17,8 @@ try {
             a.period,
 
             COALESCE(au.progress, 0) AS progress,
-            au.unlocked_at
+            au.unlocked_at,
+            au.reset_at
         FROM achievements a
         LEFT JOIN achievements_users au
             ON au.achievement_id = a.id
@@ -40,10 +41,11 @@ try {
             "key"           => $row["achievement_key"],
             "title"         => $row["title"],
             "description"   => $row["description"],
-            "category"          => $row["category"],
+            "category"      => $row["category"],
             "progress"      => (int) $row["progress"],
             "goal"          => (int) $row["goal"],
             "period"        => $row["period"],
+            "reset_at"      => $row["reset_at"],
             "is_unlocked"   => $row["unlocked_at"] !== null,
             "is_completed"  => (int) $row["goal"] === (int) $row["progress"]
         ];

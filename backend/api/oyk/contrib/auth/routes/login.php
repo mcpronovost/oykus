@@ -20,7 +20,7 @@ if ($username === "" || $password === "") {
 try{
     $stmt = $pdo->prepare("
         SELECT id, username, password, name, slug, abbr, avatar, cover
-        FROM users
+        FROM auth_users
         WHERE username = :username
         LIMIT 1
     ");
@@ -28,7 +28,7 @@ try{
     $user = $stmt->fetch();
 } catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(["error" => $e->getCode()]);
+    echo json_encode(["error" => $e->getCode(), "message" => $e->getMessage()]);
     exit;
 }
 

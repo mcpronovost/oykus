@@ -12,7 +12,7 @@ try {
             u.abbr,
             u.avatar
         FROM auth_wio w
-        LEFT JOIN users u ON w.user_id = u.id
+        LEFT JOIN auth_users u ON w.user_id = u.id
         WHERE w.lastlive_at > NOW() - INTERVAL 5 MINUTE
             AND w.user_id IS NOT NULL
         ORDER BY w.lastlive_at DESC
