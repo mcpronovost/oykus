@@ -81,7 +81,7 @@ if (!empty($_FILES["cover"])) {
 |--------------------------------------------------------------------------
 */
 if ($nameChanged && $user["is_slug_auto"]) {
-    $patch["slug"] = get_slug($pdo, $params["name"], "users");
+    $patch["slug"] = get_slug($pdo, $params["name"], "auth_users");
     $params["slug"] = $patch["slug"];
 }
 
