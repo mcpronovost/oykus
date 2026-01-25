@@ -1,7 +1,10 @@
 <?php
 require_once __DIR__ . "/../db.php";
 
-$qry = $pdo->prepare("
-    DELETE FROM auth_wio
-    WHERE w.lastlive_at < NOW() - INTERVAL 5 MINUTE
-");
+try {
+    $pdo->exec("TRUNCATE TABLE auth_wio");
+    echo "auth_wio table truncated successfully.";
+} catch (PDOException $e) {
+    http_response_code(500);
+    echo "Error truncating auth_wio: " . $e->getMessage();
+}
