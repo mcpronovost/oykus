@@ -68,14 +68,14 @@ export const SETTINGS_ROUTES = [
         },
       },
       {
-        name: "settings-friends-invites",
+        name: "settings-friends-requests",
         component: React.lazy(() => import("../../../pages/Settings")),
         paths: {
-          fr: "amis-invitations",
-          en: "friends-invites",
+          fr: "amis-demandes",
+          en: "friends-requests",
         },
         params: {
-          section: "friends-invites"
+          section: "friends-requests"
         },
       },
     ],

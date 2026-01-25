@@ -34,7 +34,7 @@ export default function SettingsAccount() {
     setHasError(null);
     try {
       const r = await api.get("/auth/me/account/", signal ? { signal } : {});
-      if (!r.success || !r.account) throw Error();
+      if (!r.ok || !r.account) throw Error();
       setInitialAccountForm((prev) => ({
         ...prev,
         username: r.account.username,
@@ -51,7 +51,7 @@ export default function SettingsAccount() {
         form: t("An error occurred"),
       });
     } finally {
-      if (!signal.aborted) {
+      if (!signal || !signal.aborted) {
         setIsLoading(false);
       }
     }

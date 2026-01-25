@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS auth_users (
     email VARCHAR(120) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
 
-    name VARCHAR(120) NOT NULL,
+    name VARCHAR(120) NOT NULL UNIQUE,
     slug VARCHAR(120) NOT NULL,
     is_slug_auto BOOL NOT NULL DEFAULT 1,
     abbr VARCHAR(3) NOT NULL,
@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS auth_users (
 
     UNIQUE INDEX uniq_username (username),
     UNIQUE INDEX uniq_email (email),
+    UNIQUE INDEX uniq_name (name),
 
     INDEX idx_slug (slug)
 ) ENGINE=InnoDB;

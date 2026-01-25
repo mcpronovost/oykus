@@ -37,7 +37,7 @@ export default function Achievements() {
         message: e.message || t("An error occurred"),
       }));
     } finally {
-      if (!signal.aborted) {
+      if (!signal || !signal.aborted) {
         setIsLoading(false);
       }
     }

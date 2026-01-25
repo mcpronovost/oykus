@@ -16,6 +16,7 @@ import {
 import OykError404 from "@/pages/Error404";
 import OykSettingsProfile from "./Profile";
 import OykSettingsAccount from "./Account";
+import OykSettingsFriendsRequests from "./FriendsRequests";
 
 export default function Settings() {
   const { isAuth } = useAuth();
@@ -57,7 +58,7 @@ export default function Settings() {
     },
     {
       title: t("Friends"),
-      description: t("Manage friends and accept invites"),
+      description: t("Manage friends and accept requests"),
       Icon: Smile,
       links: [
         {
@@ -66,7 +67,7 @@ export default function Settings() {
         },
         {
           name: t("Invites"),
-          routeName: "settings-friends-invites",
+          routeName: "settings-friends-requests",
         },
       ],
     },
@@ -121,6 +122,8 @@ export default function Settings() {
               <OykSettingsProfile />
             ) : params?.section === "account" ? (
               <OykSettingsAccount />
+            ) : params?.section === "friends-requests" ? (
+              <OykSettingsFriendsRequests />
             ) : (
               <OykCard>
                 <OykFeedback ghost variant="warning" title={t("Under Construction")} message={t("These settings are currently in development and should be available soon")} icon={Construction} />

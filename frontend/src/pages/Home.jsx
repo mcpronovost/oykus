@@ -27,7 +27,7 @@ export default function Home() {
         message: e.message || t("An error occurred"),
       }));
     } finally {
-      if (!signal.aborted) {
+      if (!signal || !signal.aborted) {
         setIsLoadingWio(false);
       }
     }

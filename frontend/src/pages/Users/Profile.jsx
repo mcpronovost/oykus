@@ -19,7 +19,7 @@ export default function UserProfile() {
     setHasError(null);
     try {
       if (!params?.userSlug) throw new Error(t("User doesn't exist"));
-      const r = await api.get(`/auth/users/${params.userSlug}/profile/`, { signal });
+      const r = await api.get(`/auth/users/${params.userSlug}/profile/`, signal ? { signal } : {});
       if (!r?.ok || !r?.user) throw new Error(r.error || t("User doesn't exist"));
       setUserData(r.user);
       routeTitle(r.user.name);
@@ -29,7 +29,7 @@ export default function UserProfile() {
         message: e.message || t("An error occurred")
       }));
     } finally {
-      if (!signal.aborted) {
+      if (!signal || !signal.aborted) {
         setIsLoading(false);
       }
     }

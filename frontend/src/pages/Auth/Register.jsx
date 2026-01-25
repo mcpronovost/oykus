@@ -161,7 +161,7 @@ export default function Register() {
             {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
             <div className="oyk-form-actions">
               <OykButton type="submit" color="primary" disabled={isLoading} block>
-                {isLoading ? "Creating account..." : "Create account"}
+                {isLoading ? t("Creating account...") : t("Create account")}
               </OykButton>
             </div>
           </OykForm>
