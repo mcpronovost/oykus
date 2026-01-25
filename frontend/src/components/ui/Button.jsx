@@ -15,6 +15,7 @@ export default function OykButton({
   plain = false,
   outline = false,
   block = false,
+  small = false,
   className = "",
   style = {},
 }) {
@@ -38,7 +39,7 @@ export default function OykButton({
       disabled={disabled}
       className={`oyk-button ${color ? `oyk-button-${color}` : ""} ${plain ? "oyk-button-plain" : ""} ${
         outline ? "oyk-button-outline" : ""
-      } ${block ? "oyk-button-block" : ""} ${IconComponent && !children ? "oyk-button-icon" : ""} ${className}`}
+      } ${small ? "oyk-button-small" : ""} ${block ? "oyk-button-block" : ""} ${IconComponent && !children ? "oyk-button-icon" : ""} ${className}`}
       style={{
         ...style,
         ...(color?.startsWith("#") && {
