@@ -1,4 +1,4 @@
-import { LogOut, ListTodo, GalleryHorizontalEnd, Star } from "lucide-react";
+import { Contact, LogOut, ListTodo, GalleryHorizontalEnd, Orbit, Settings, Star } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
@@ -44,6 +44,18 @@ export default function AppHeaderUser() {
             onClick: () => n("planner"),
           },
           {
+            label: t("Your universes"),
+            icon: <Orbit size={18} />,
+            disabled: true,
+            onClick: () => {},
+          },
+          {
+            label: t("Your characters"),
+            icon: <Contact size={18} />,
+            disabled: true,
+            onClick: () => {},
+          },
+          {
             label: t("Your collectibles"),
             icon: <GalleryHorizontalEnd size={18} />,
             disabled: true,
@@ -53,6 +65,11 @@ export default function AppHeaderUser() {
             label: t("Your achievements"),
             icon: <Star size={18} />,
             onClick: () => n("achievements"),
+          },
+          {
+            label: t("Your settings"),
+            icon: <Settings size={18} />,
+            onClick: () => n("settings"),
           },
           {
             divider: true,
