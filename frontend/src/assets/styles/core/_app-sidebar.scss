@@ -71,6 +71,7 @@
       &-logo {
         background-color: var(--oyk-c-primary);
         border-radius: 4px;
+        overflow: hidden;
         display: flex;
         flex: 0 0 32px;
         align-items: center;
@@ -115,6 +116,7 @@
         &-logo {
           background-color: var(--oyk-c-primary);
           border-radius: 4px;
+          overflow: hidden;
           display: flex;
           flex: 0 0 32px;
           align-items: center;
