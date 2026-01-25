@@ -7,7 +7,7 @@ import { OykLink, OykDropdown } from "@/components/ui";
 import imgOykus from "@/assets/img/oykus-32.webp";
 
 export default function Header() {
-  const { isAuth } = useAuth();
+  const { isAuth, isDev } = useAuth();
   const { refresh } = useRouter();
 
   const dropdownRef = useRef(null);
@@ -19,7 +19,7 @@ export default function Header() {
   };
 
   const universesMenu = useMemo(() => (
-    [
+    isDev ? [
       {
         label: "Oykus",
         element: (
@@ -34,7 +34,7 @@ export default function Header() {
           </button>
         ),
       }
-    ]
+    ] : []
   ), [isAuth]);
 
   return (

@@ -57,6 +57,10 @@
     .oyk-dropdown {
       flex: 1;
       padding: 8px;
+
+      &-item {
+        padding: 4px;
+      }
     }
 
     &-button {
@@ -69,7 +73,6 @@
       width: 100%;
 
       &-logo {
-        background-color: var(--oyk-c-primary);
         border-radius: 4px;
         overflow: hidden;
         display: flex;
@@ -96,6 +99,7 @@
       }
 
       &-dropdown-item {
+        border-radius: var(--oyk-radius);
         display: flex;
         flex: 1;
         align-items: center;
@@ -103,7 +107,7 @@
         justify-content: flex-start;
         height: 100%;
         width: 100%;
-        padding: 8px;
+        padding: 4px;
 
         &:not(.disabled):hover {
           background-color: var(--oyk-app-sidebar-bg-subtle);
@@ -114,7 +118,6 @@
         }
 
         &-logo {
-          background-color: var(--oyk-c-primary);
           border-radius: 4px;
           overflow: hidden;
           display: flex;
