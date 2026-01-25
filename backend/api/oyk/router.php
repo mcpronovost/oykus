@@ -34,11 +34,19 @@ if ($method === "POST" && $path === $prefix."/logout/") {
     exit;
 }
 if ($method === "GET" && $path === $prefix."/me/") {
-    require __DIR__ . $route."me.php";
+    require __DIR__ . $route."me/me.php";
     exit;
 }
 if ($method === "POST" && $path === $prefix."/me/edit/") {
-    require __DIR__ . $route."me_edit.php";
+    require __DIR__ . $route."me/edit.php";
+    exit;
+}
+if ($method === "GET" && $path === $prefix."/me/account/") {
+    require __DIR__ . $route."me/account.php";
+    exit;
+}
+if ($method === "POST" && $path === $prefix."/me/account/edit/") {
+    require __DIR__ . $route."me/account_edit.php";
     exit;
 }
 if ($method === "GET" && preg_match("#^".$prefix."/users/([a-z0-9-]+)/profile/?$#", $path, $matches)) {

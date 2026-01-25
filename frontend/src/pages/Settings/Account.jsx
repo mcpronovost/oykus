@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
 import { api } from "@/services/api";
-import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import {
@@ -15,7 +14,6 @@ import {
 } from "@/components/ui";
 
 export default function SettingsAccount() {
-  const { currentUser } = useAuth();
   const { routeTitle } = useRouter();
   const { t } = useTranslation();
 
@@ -35,26 +33,24 @@ export default function SettingsAccount() {
     setIsLoading(true);
     setHasError(null);
     try {
-      const result = await api.get("/auth/me/account/", { signal });
-      if (!result.success || !result.account) throw Error();
+      const r = await api.get("/auth/me/account/", signal ? { signal } : {});
+      if (!r.success || !r.account) throw Error();
       setInitialAccountForm((prev) => ({
         ...prev,
-        username: result.account.username,
-        email: result.account.email,
+        username: r.account.username,
+        email: r.account.email,
       }));
       setAccountForm((prev) => ({
         ...prev,
-        username: result.account.username,
-        email: result.account.email,
+        username: r.account.username,
+        email: r.account.email,
       }));
     } catch (e) {
-      // Ignore abort errors
       if (e?.name === "AbortError") return;
       setHasError({
         form: t("An error occurred"),
       });
     } finally {
-      // Avoid state update after unmount
       if (!signal.aborted) {
         setIsLoading(false);
       }
@@ -89,6 +85,24 @@ export default function SettingsAccount() {
     emailRef.current.value = initialAccountForm.email || "";
   };
 
+  const handleSubmit = async () => {
+    setIsSubmitLoading(true);
+    setHasError(null);
+    try {
+      const formData = new FormData();
+      formData.append("username", accountForm.username);
+      formData.append("email", accountForm.email);
+      const r = await api.post("/auth/me/account/edit/", formData);
+      if (!r?.ok) throw new Error(r.error || t("An error occurred"));
+    } catch (e) {
+      setHasError(() => ({
+        message: e.message || t("An error occurred"),
+      }));
+    } finally {
+      setIsSubmitLoading(false);
+    }
+  };
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -119,7 +133,7 @@ export default function SettingsAccount() {
           {isLoading ? (
             <OykLoading />
           ) : (
-            <OykForm className="oyk-settings-form" isLoading={isLoading}>
+            <OykForm className="oyk-settings-form" isLoading={isSubmitLoading} onSubmit={handleSubmit}>
               <h2 className="oyk-settings-form-title">{t("Your Account")}</h2>
               <OykFormField
                 ref={usernameRef}
@@ -143,6 +157,9 @@ export default function SettingsAccount() {
                 required
               />
               {hasError?.email && <OykFormMessage hasError={hasError?.email} />}
+              {hasError?.message && (
+                <OykFormMessage hasError={hasError?.message} />
+              )}
               <div className="oyk-form-actions">
                 <OykButton
                   type="submit"
