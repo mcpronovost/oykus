@@ -7,13 +7,15 @@ CREATE TABLE IF NOT EXISTS auth_wio (
 
     user_id INT UNSIGNED NULL,
     guest_id CHAR(36) NULL,
+    agent VARCHAR(255) NULL,
 
     lastlive_at DATETIME NOT NULL,
 
     UNIQUE INDEX uniq_user (user_id),
     UNIQUE INDEX uniq_guest (guest_id),
 
-    INDEX idx_lastlive (lastlive_at)
+    INDEX idx_lastlive (lastlive_at),
+    INDEX idx_agent (agent)
 ) ENGINE=InnoDB;
 ";
 

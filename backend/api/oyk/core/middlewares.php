@@ -40,13 +40,14 @@ function update_wio() {
             $stmt->execute(["uid" => $user["id"]]);
         } else {
             $guest = get_guest_id();
+            $agent = substr($_SERVER["HTTP_USER_AGENT"] ?? "", 0, 255);
 
             $stmt = $pdo->prepare("
-                INSERT INTO auth_wio (guest_id, lastlive_at)
-                VALUES (:gid, NOW())
+                INSERT INTO auth_wio (guest_id, agent, lastlive_at)
+                VALUES (:gid, :agent, NOW())
                 ON DUPLICATE KEY UPDATE lastlive_at = NOW()
             ");
-            $stmt->execute(["gid" => $guest]);
+            $stmt->execute(["gid" => $guest, "agent" => $agent]);
         }
     } catch (Exception) {
         return;
