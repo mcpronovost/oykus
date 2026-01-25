@@ -61,6 +61,36 @@ export const oykDateLessThan = (date, days) => {
   return new Date(date) < new Date(Date.now() + 1000 * 60 * 60 * 24 * days);
 };
 
+export const oykTimeAgo = (
+  dateString,
+  lang = "en"
+) => {
+  const rtf = new Intl.RelativeTimeFormat(lang, { numeric: "auto" });
+  const date = new Date(dateString);
+  const now = new Date();
+
+  const seconds = Math.floor((date - now) / 1000);
+
+  const divisions = [
+    { amount: 60, name: "second" },
+    { amount: 60, name: "minute" },
+    { amount: 24, name: "hour" },
+    { amount: 7,  name: "day" },
+    { amount: 4.34524, name: "week" },
+    { amount: 12, name: "month" },
+    { amount: Infinity, name: "year" },
+  ];
+
+  let duration = seconds;
+
+  for (const division of divisions) {
+    if (Math.abs(duration) < division.amount) {
+      return rtf.format(Math.round(duration), division.name);
+    }
+    duration /= division.amount;
+  }
+}
+
 export const oykUnit = (num, digits = 2) => {
   const l = [
     { v: 1, u: "" },
