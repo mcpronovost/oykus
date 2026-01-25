@@ -100,7 +100,7 @@ export default function Planner() {
   }
 
   return (
-    <section className="oyk-page oyk-tasks">
+    <section className="oyk-page oyk-planner">
       <ModalStatusCreate isOpen={isModalStatusCreateOpen} onClose={handleCloseModalStatusCreate} />
       <ModalTaskCreate
         isOpen={isModalTaskCreateOpen}
@@ -128,13 +128,13 @@ export default function Planner() {
       />
       {tasks.length > 0 ? (
         <DndProvider backend={HTML5Backend}>
-          <OykGrid className="oyk-tasks-status">
+          <OykGrid className="oyk-planner-status">
             {tasks.map((status) => (
-              <OykCard key={status.title} className="oyk-tasks-status-item" nop>
+              <OykCard key={status.title} className="oyk-planner-status-item" nop>
                 <TaskStatus status={status} statuses={tasks} onDrop={handleDrop} onTasksUpdate={getTasks}>
                   <section
-                    className={`oyk-tasks-status-item-content ${
-                      status.is_completed ? "oyk-tasks-status-item-content-completed" : ""
+                    className={`oyk-planner-status-item-content ${
+                      status.is_completed ? "oyk-planner-status-item-content-completed" : ""
                     }`}
                   >
                     {status.tasks?.map((task) => (
@@ -156,7 +156,7 @@ export default function Planner() {
       ) : isLoading ? (
         <OykLoading />
       ) : !hasError ? (
-        <OykGrid className="oyk-tasks-empty">
+        <OykGrid className="oyk-planner-empty">
           <OykFeedback
             title={t("No tasks found")}
             message={t("Start by creating a new status before adding tasks")}

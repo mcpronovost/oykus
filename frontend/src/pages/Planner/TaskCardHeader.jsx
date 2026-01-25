@@ -8,18 +8,18 @@ export default function TaskCardHeader({ task, isCompleted }) {
   const { t, lang } = useTranslation();
 
   return (
-    <header className="oyk-tasks-card-header">
+    <header className="oyk-planner-card-header">
       <h3
-        className={`oyk-tasks-card-header-title ${
-          isCompleted ? "oyk-tasks-card-header-title-completed" : ""
+        className={`oyk-planner-card-header-title ${
+          isCompleted ? "oyk-planner-card-header-title-completed" : ""
         }`}
       >
         {task.title}
       </h3>
       {!isCompleted && (task.priority || task.due_at) && (
-        <div className="oyk-tasks-card-header-infos">
+        <div className="oyk-planner-card-header-infos">
           {task.priority && (
-            <div className="oyk-tasks-card-header-infos-priority">
+            <div className="oyk-planner-card-header-infos-priority">
               {task.priority === 2 && (
                 <OykChip color="danger" outline>
                   {t("PriorityHigh")}
@@ -39,19 +39,19 @@ export default function TaskCardHeader({ task, isCompleted }) {
           )}
           {task.due_at && (
             <div
-              className="oyk-tasks-card-header-infos-due"
+              className="oyk-planner-card-header-infos-due"
               style={{
                 color: oykDateLessThan(task.due_at, 7)
                   ? "var(--oyk-c-danger)"
                   : "inherit",
               }}
             >
-              <span className="oyk-tasks-card-header-infos-due-date">
+              <span className="oyk-planner-card-header-infos-due-date">
                 {oykDate(task.due_at, "date", lang)}
               </span>
               <Timer
                 size={14}
-                className="oyk-tasks-card-header-infos-due-icon"
+                className="oyk-planner-card-header-infos-due-icon"
               />
             </div>
           )}

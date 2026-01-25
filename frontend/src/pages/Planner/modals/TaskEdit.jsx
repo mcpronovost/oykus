@@ -142,17 +142,17 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
             <OykButton icon={X} action={onClickShowHistory} plain />
           </header>
           <div className="oyk-modal-section-content">
-            <ul className="oyk-tasks-history">
+            <ul className="oyk-planner-history">
               {task.history.map((history) => (
                 <li key={history.id}>
-                  <div className="oyk-tasks-history-avatar">
+                  <div className="oyk-planner-history-avatar">
                     <OykAvatar
                       name={history.changedBy.playerName}
                       abbr={history.changedBy.abbr}
                       size={32}
                     />
                   </div>
-                  <div className="oyk-tasks-history-content">
+                  <div className="oyk-planner-history-content">
                     <p>
                       {history.changedBy.playerName} {t("taskHistoryAsChanged")}{" "}
                       "{t(`taskHistory${history.changeType}`)}"{" "}

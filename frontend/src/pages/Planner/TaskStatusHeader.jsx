@@ -75,24 +75,24 @@ export default function TaskStatusHeader({
       >
         <p>Delete</p>
       </OykModal>
-      <header className="oyk-tasks-status-item-header">
-        <div className="oyk-tasks-status-item-header-icon">
+      <header className="oyk-planner-status-item-header">
+        <div className="oyk-planner-status-item-header-icon">
           <span
-            className="oyk-tasks-status-item-header-icon-dot"
+            className="oyk-planner-status-item-header-icon-dot"
             style={{
               backgroundColor: status.color || "var(--oyk-c-primary)",
             }}
           />
         </div>
-        <h2 className="oyk-tasks-status-item-header-title">
+        <h2 className="oyk-planner-status-item-header-title">
           {status.title}{" "}
-          <span className="oyk-tasks-status-item-header-title-count">
+          <span className="oyk-planner-status-item-header-title-count">
             ({status.tasks?.length || 0})
           </span>
         </h2>
-        <div className="oyk-tasks-status-item-header-actions">
+        <div className="oyk-planner-status-item-header-actions">
           <button
-            className="oyk-tasks-status-item-header-actions-btn"
+            className="oyk-planner-status-item-header-actions-btn"
             onClick={handleCreateClick}
           >
             <Plus size={16} />
@@ -100,7 +100,7 @@ export default function TaskStatusHeader({
           {isDev ? (
             <OykDropdown
               toggle={
-                <button className="oyk-tasks-status-item-header-actions-btn">
+                <button className="oyk-planner-status-item-header-actions-btn">
                   <EllipsisVertical size={16} />
                 </button>
               }

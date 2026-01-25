@@ -20,8 +20,8 @@ function TaskStatus({ status, statuses = [], onDrop, onTasksUpdate = () => {}, c
   return (
     <div
       ref={drop}
-      className={`oyk-tasks-status-dropzone ${
-        isOver && canDrop ? "oyk-tasks-status-dropzone-over" : ""
+      className={`oyk-planner-status-dropzone ${
+        isOver && canDrop ? "oyk-planner-status-dropzone-over" : ""
       }`}
     >
       <TaskStatusHeader status={status} statuses={statuses} onTasksUpdate={onTasksUpdate} />

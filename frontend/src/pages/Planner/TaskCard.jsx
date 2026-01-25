@@ -44,23 +44,23 @@ export default function TaskCard({ task, isCompleted, statusId, statusName, onCl
         ref={drag}
         key={task.id}
         onClick={() => setIsModalTaskEditOpen(true)}
-        className={`oyk-tasks-card ${
-          isDragging ? "oyk-tasks-card-dragging" : ""
+        className={`oyk-planner-card ${
+          isDragging ? "oyk-planner-card-dragging" : ""
         }`}
         style={{ opacity: isDragging ? 0.5 : isCompleted ? 0.7 : 1 }}
       >
         <OykTaskCardHeader task={task} isCompleted={isCompleted} />
         {!isCompleted && ((task.content && task.content != task.title) || task.tags?.length > 0) && (
-          <section className="oyk-tasks-card-content">
+          <section className="oyk-planner-card-content">
             {task.content && task.content != task.title && (
-              <div className="oyk-tasks-card-content-description">
+              <div className="oyk-planner-card-content-description">
                 <p>
                   {task.content}
                 </p>
               </div>
             )}
             {task.tags?.length > 0 && (
-              <div className="oyk-tasks-card-content-tags">
+              <div className="oyk-planner-card-content-tags">
                 {task.tags.map((tag) => (
                   <OykChip key={tag.id} color={tag.color || undefined}>
                     {tag.name}
