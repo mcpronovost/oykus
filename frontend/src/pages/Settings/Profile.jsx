@@ -107,7 +107,7 @@ export default function SettingsProfile() {
     abbrRef.current.value = currentUser.abbr || "";
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     setIsLoading(true);
     setHasError(null);
     try {
@@ -119,23 +119,22 @@ export default function SettingsProfile() {
       if (profileForm.coverFile) {
         formData.append("cover", profileForm.coverFile);
       }
-      const result = await api.post("/auth/me/edit/", formData);
-      if (result.ok) {
-        setUser(result.user);
-        setProfileForm((prev) => ({
-          ...prev,
-          name: result.user.name,
-          slug: result.user.slug,
-          abbr: result.user.abbr
-        }));
-        nameRef.current.value = result.user.name;
-        slugRef.current.value = result.user.slug;
-        abbrRef.current.value = result.user.abbr;
-      } else {
-        throw new Error();
-      }
+      const r = await api.post("/auth/me/edit/", formData);
+      if (!r?.ok) throw new Error(r.error || t("An error occurred"));
+      setUser(r.user);
+      setProfileForm((prev) => ({
+        ...prev,
+        name: r.user.name,
+        slug: r.user.slug,
+        abbr: r.user.abbr
+      }));
+      nameRef.current.value = r.user.name;
+      slugRef.current.value = r.user.slug;
+      abbrRef.current.value = r.user.abbr;
     } catch (e) {
-      setHasError(e.error || t("An error occurred"));
+      setHasError(() => ({
+        message: e.message || t("An error occurred"),
+      }));
     } finally {
       setIsLoading(false);
     }
@@ -245,6 +244,9 @@ export default function SettingsProfile() {
           />
           {hasError?.abbr && (
             <OykFormMessage hasError={hasError?.abbr} />
+          )}
+          {hasError?.message && (
+            <OykFormMessage hasError={hasError?.message} />
           )}
           <div className="oyk-form-actions">
             <OykButton
