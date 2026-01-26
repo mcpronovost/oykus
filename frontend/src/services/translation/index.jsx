@@ -11,7 +11,7 @@ export function TranslationProvider({ children, lang = DEFAULT_LANG }) {
     translationRef.current = translation;
   }, [lang]);
 
-  const handleTranslate = (key, count) => {
+  const handleTranslate = (key, count, vars = {}) => {
     if (!translationRef.current) {
       const translation = loadTranslations(lang);
       translationRef.current = translation;
@@ -29,7 +29,10 @@ export function TranslationProvider({ children, lang = DEFAULT_LANG }) {
     }
 
     if (typeof translation === "string") {
-      return translation;
+      return translation.replace(
+        /\{(\w+)\}/g,
+        (_, varName) => vars[varName] ?? `{${varName}}`
+      );
     }
 
     // eslint-disable-next-line no-console
