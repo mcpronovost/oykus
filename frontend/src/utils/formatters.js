@@ -37,6 +37,10 @@ export const oykCode = (text) => {
 };
 /* eslint-enable quotes */
 
+function oykDateUTC(date) {
+    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()));
+}
+
 export const oykDate = (
   value,
   show = "full",
@@ -44,7 +48,8 @@ export const oykDate = (
   tz = "Europe/Paris"
 ) => {
   if (lang === "en") lang = "en-CA";
-  let d = value ? new Date(value) : new Date(new Date().toString());
+  if (lang === "fr") lang = "fr-FR";
+  let d = value ? oykDateUTC(new Date(value)) : oykDateUTC(new Date(new Date().toString()));
   let o = {
     timeZone: tz,
     hour12: false,
@@ -62,11 +67,12 @@ export const oykDateLessThan = (date, days) => {
 };
 
 export const oykTimeAgo = (
-  dateString,
-  lang = "en"
+  value,
+  lang = "fr",
+  tz = "Europe/Paris"
 ) => {
   const rtf = new Intl.RelativeTimeFormat(lang, { numeric: "auto" });
-  const date = new Date(dateString);
+  const date = oykDateUTC(new Date(value));
   const now = new Date();
 
   const seconds = Math.floor((date - now) / 1000);
