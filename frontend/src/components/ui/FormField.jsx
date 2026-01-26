@@ -30,9 +30,10 @@ export default function OykFormField({
             onChange={onChange}
             rows={6}
             required={required}
+            className={`${hasError ? "oyk-error" : ""}`}
           />
         ) : type === "select" ? (
-          <select ref={ref} id={`field-${name}`} name={name} defaultValue={defaultValue} onChange={onChange} required={required}>
+          <select ref={ref} id={`field-${name}`} name={name} defaultValue={defaultValue} onChange={onChange} required={required} className={`${hasError ? "oyk-error" : ""}`}>
             {options.map((option) => (
               <option key={option[optionValue]} value={option[optionValue]}>
                 {option[optionLabel]}
@@ -66,6 +67,7 @@ export default function OykFormField({
             required={required}
             disabled={disabled}
             autoComplete="off"
+            className={`${hasError ? "oyk-error" : ""}`}
           />
         )}
         {hasError && <p className="oyk-form-field-error">{hasError}</p>}
