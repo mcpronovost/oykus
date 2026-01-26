@@ -10,7 +10,7 @@ export default function OykBanner({
   avatarBorderColor,
   avatarTop = 64,
   showAvatar = true,
-  height = 170,
+  height = 140,
   coverSrc,
   coverHeight = 100,
   coverRadius = "var(--oyk-radius)",
