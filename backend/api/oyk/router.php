@@ -49,12 +49,32 @@ if ($method === "POST" && $path === $prefix."/me/account/edit/") {
     require __DIR__ . $route."me/account_edit.php";
     exit;
 }
+if ($method === "GET" && $path === $prefix."/friends/") {
+    require __DIR__ . $route."friends/friends.php";
+    exit;
+}
 if ($method === "GET" && $path === $prefix."/friends/requests/") {
     require __DIR__ . $route."friends/requests.php";
     exit;
 }
 if ($method === "POST" && $path === $prefix."/friends/add/") {
     require __DIR__ . $route."friends/add.php";
+    exit;
+}
+if ($method === "POST" && $path === $prefix."/friends/accept/") {
+    require __DIR__ . $route."friends/accept.php";
+    exit;
+}
+if ($method === "POST" && $path === $prefix."/friends/reject/") {
+    require __DIR__ . $route."friends/reject.php";
+    exit;
+}
+if ($method === "POST" && $path === $prefix."/friends/cancel/") {
+    require __DIR__ . $route."friends/cancel.php";
+    exit;
+}
+if ($method === "POST" && $path === $prefix."/friends/delete/") {
+    require __DIR__ . $route."friends/delete.php";
     exit;
 }
 if ($method === "GET" && preg_match("#^".$prefix."/users/([a-z0-9-]+)/profile/?$#", $path, $matches)) {

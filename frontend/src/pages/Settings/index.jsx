@@ -16,6 +16,7 @@ import {
 import OykError404 from "@/pages/Error404";
 import OykSettingsProfile from "./Profile";
 import OykSettingsAccount from "./Account";
+import OykSettingsFriends from "./Friends";
 import OykSettingsFriendsRequests from "./FriendsRequests";
 
 export default function Settings() {
@@ -122,6 +123,8 @@ export default function Settings() {
               <OykSettingsProfile />
             ) : params?.section === "account" ? (
               <OykSettingsAccount />
+            ) : params?.section === "friends" ? (
+              <OykSettingsFriends />
             ) : params?.section === "friends-requests" ? (
               <OykSettingsFriendsRequests />
             ) : (

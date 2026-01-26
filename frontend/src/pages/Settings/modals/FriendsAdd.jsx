@@ -57,7 +57,7 @@ export default function ModalFriendsAdd({ isOpen, onClose }) {
           <OykButton type="submit" color="primary">
             {t("Send")}
           </OykButton>
-          <OykButton outline action={onClose}>
+          <OykButton outline onClick={onClose}>
             {t("Cancel")}
           </OykButton>
         </div>

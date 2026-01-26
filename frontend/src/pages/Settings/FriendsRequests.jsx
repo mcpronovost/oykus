@@ -1,19 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Users } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import {
-  OykAlert,
-  OykButton,
-  OykCard,
-  OykFeedback,
-  OykLoading,
-} from "@/components/ui";
+import { OykAlert, OykButton, OykCard, OykFeedback, OykHeading, OykLoading } from "@/components/ui";
 import OykModalFriendsAdd from "./modals/FriendsAdd";
+import OykFriendsRequestsCard from "./FriendsRequestsCard";
 
-export default function SettingsFriendsInvites() {
+export default function SettingsFriendsRequests() {
   const { routeTitle } = useRouter();
   const { t } = useTranslation();
 
@@ -23,14 +18,30 @@ export default function SettingsFriendsInvites() {
   const [friendPendings, setFriendPendings] = useState([]);
   const [isModalFriendsAddOpen, setIsModalFriendsAddOpen] = useState(false);
 
-  const handleFriendsAddClose = (updated) => {
+  const handleModalFriendsAddClose = (updated) => {
     setIsModalFriendsAddOpen(false);
     if (updated) {
-      fetchFriendsInvitesData();
+      fetchFriendsRequestsData();
     }
   };
 
-  const fetchFriendsInvitesData = async (signal) => {
+  const postFriendsRequests = async (action, friendSlug) => {
+    if (!action || !friendSlug) return;
+    setHasError(null);
+    try {
+      const formData = new FormData();
+      formData.append("slug", friendSlug);
+      const r = await api.post(`/auth/friends/${action}/`, formData);
+      if (!r.ok) throw Error();
+      fetchFriendsRequestsData();
+    } catch (e) {
+      setHasError(() => ({
+        [`friend-${friendSlug}`]: e.message || t("An error occurred"),
+      }));
+    }
+  };
+
+  const fetchFriendsRequestsData = async (signal) => {
     setIsLoading(true);
     setHasError(null);
     try {
@@ -53,9 +64,9 @@ export default function SettingsFriendsInvites() {
   useEffect(() => {
     const controller = new AbortController();
 
-    routeTitle(`${t("Settings")} - ${t("Friends Invites")}`);
+    routeTitle(`${t("Settings")} - ${t("Friends Requests")}`);
 
-    fetchFriendsInvitesData(controller.signal);
+    fetchFriendsRequestsData(controller.signal);
 
     return () => {
       controller.abort();
@@ -65,7 +76,18 @@ export default function SettingsFriendsInvites() {
 
   return (
     <section className="oyk-settings-friends-requests">
-      <OykModalFriendsAdd isOpen={isModalFriendsAddOpen} onClose={handleFriendsAddClose} />
+      <OykModalFriendsAdd isOpen={isModalFriendsAddOpen} onClose={handleModalFriendsAddClose} />
+      <OykHeading
+        subtitle
+        tag="h2"
+        title={t("Friends Requests")}
+        ph={0}
+        actions={
+          <OykButton small color="primary" onClick={() => setIsModalFriendsAddOpen(true)}>
+            {t("Add a Friend")}
+          </OykButton>
+        }
+      />
       {hasError?.fetch ? (
         <OykCard>
           <OykAlert
@@ -74,21 +96,43 @@ export default function SettingsFriendsInvites() {
             variant="danger"
           />
         </OykCard>
+      ) : isLoading ? (
+        <OykLoading />
       ) : (
         <OykCard>
-          {isLoading ? (
-            <OykLoading />
-          ) : (
-            <div>
-                {friendRequests?.length > 0 ? (
-                    <div>aaa</div>
-                ) : (
-                    <OykFeedback ghost title={t("No pending requests")} icon={Users}>
-                      <OykButton color="primary" action={() => setIsModalFriendsAddOpen(true)}>{t("Add a Friend")}</OykButton>
-                    </OykFeedback>
-                )}
-            </div>
-          )}
+          {friendRequests?.length > 0 ? (
+            <ul className="oyk-settings-friends-requests-list">
+              {friendRequests.map((f) => (
+                <OykFriendsRequestsCard
+                  key={f.slug}
+                  data={f}
+                  onAccept={postFriendsRequests}
+                  onReject={postFriendsRequests}
+                  hasError={hasError?.[`friend-${f.slug}`]}
+                  isRequest
+                />
+              ))}
+            </ul>
+          ) : null}
+          {friendPendings?.length > 0 ? (
+            <ul className="oyk-settings-friends-requests-list">
+              {friendPendings.map((f) => (
+                <OykFriendsRequestsCard
+                  key={f.slug}
+                  data={f}
+                  onCancel={postFriendsRequests}
+                  hasError={hasError?.[`friend-${f.slug}`]}
+                />
+              ))}
+            </ul>
+          ) : null}
+          {(!friendRequests || friendRequests.length <= 0) && (!friendPendings || friendPendings.length <= 0) ? (
+            <OykFeedback ghost title={t("No pending requests")} icon={Users}>
+              <OykButton color="primary" onClick={() => setIsModalFriendsAddOpen(true)}>
+                {t("Add a Friend")}
+              </OykButton>
+            </OykFeedback>
+          ) : null}
         </OykCard>
       )}
     </section>
