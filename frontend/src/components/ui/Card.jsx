@@ -3,6 +3,7 @@ export default function OykCard({
   nop = false,
   fh = false,
   alignTop = false,
+  alignSpace = false,
   clickable = false,
   className = "",
   style,
@@ -15,6 +16,7 @@ export default function OykCard({
         nop ? "oyk-card-nop" : "",
         fh ? "oyk-card-fh" : "",
         alignTop ? "oyk-card-aligntop" : "",
+        alignSpace ? "oyk-card-alignspace" : "",
         clickable ? "oyk-card-clickable" : "",
         className,
       ]
