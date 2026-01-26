@@ -77,7 +77,6 @@ try {
 
     $pdo->prepare($sql)->execute($params);
     $pdo->commit();
-
 } catch (Exception $e) {
     $pdo->rollBack();
     http_response_code(500);
