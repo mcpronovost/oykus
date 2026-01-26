@@ -58,7 +58,7 @@
     "Friends": "Amis",
     "Manage Friends": "Gérer les amis",
     "Invites": "Demandes",
-    "Friends Invites": "Demandes d'amitié",
+    "Friends Requests": "Demandes d'amitié",
     "Change your avatar and cover images, your name, and more": "Modifier vos images d'avatar et de couverture, votre nom, et plus",
     "Change settings, configure notifications, and more": "Modifier vos paramètres, configurer vos notifications, et plus",
     "Manage friends and accept requests": "Gérer vos amis et accepter les demandes d'amitié",
@@ -80,5 +80,9 @@
     "Position": "Position",
     "Who is online?": "Qui est en ligne ?",
     "Unable to access who is online data, check your internet connection or try again later": "Impossible de savoir qui est en ligne. Veuillez vérifier votre connexion internet ou réessayer plus tard.",
-    "Recents": "Récents"
+    "Recents": "Récents",
+    "No friends": "Aucun ami",
+    "Delete a Friend": "Supprimer un ami",
+    "Do you really want to remove {name} from your friend": "Voulez-vous vraiment supprimer {name} de vos amis ?",
+    "Delete friend": "Supprimer"
 }
