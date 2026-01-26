@@ -84,5 +84,6 @@
     "No friends": "Aucun ami",
     "Delete a Friend": "Supprimer un ami",
     "Do you really want to remove {name} from your friend": "Voulez-vous vraiment supprimer {name} de vos amis ?",
-    "Delete friend": "Supprimer"
+    "Delete friend": "Supprimer",
+    "This name is already in use": "Ce nom est déjà utilisé"
 }

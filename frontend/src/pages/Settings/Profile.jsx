@@ -120,7 +120,7 @@ export default function SettingsProfile() {
         formData.append("cover", profileForm.coverFile);
       }
       const r = await api.post("/auth/me/edit/", formData);
-      if (!r?.ok) throw new Error(r.error || t("An error occurred"));
+      if (!r?.ok) throw new Error(r || t("An error occurred"));
       setUser(r.user);
       setProfileForm((prev) => ({
         ...prev,
@@ -132,9 +132,16 @@ export default function SettingsProfile() {
       slugRef.current.value = r.user.slug;
       abbrRef.current.value = r.user.abbr;
     } catch (e) {
-      setHasError(() => ({
-        message: e.message || t("An error occurred"),
-      }));
+      console.log(e?.message);
+      if (e?.message && e.message.includes("uniq_name")) {
+        setHasError(() => ({
+          name: t("This name is already in use"),
+        }));
+      } else {
+        setHasError(() => ({
+          message: e.message || t("An error occurred"),
+        }));
+      }
     } finally {
       setIsLoading(false);
     }
@@ -213,38 +220,29 @@ export default function SettingsProfile() {
             name="name"
             defaultValue={profileForm.name}
             onChange={handleChange}
-            hasError={hasError?.fields?.name}
+            hasError={hasError?.name}
             required
           />
-          {hasError?.name && (
-            <OykFormMessage hasError={hasError?.name} />
-          )}
           <OykFormField
             ref={slugRef}
             label={t("Slug")}
             name="slug"
             defaultValue={profileForm.slug}
             onChange={handleChange}
-            hasError={hasError?.fields?.slug}
+            hasError={hasError?.slug}
             required
             disabled
           />
-          {hasError?.slug && (
-            <OykFormMessage hasError={hasError?.slug} />
-          )}
           <OykFormField
             ref={abbrRef}
             label={t("Abbreviation")}
             name="abbr"
             defaultValue={profileForm.abbr}
             onChange={handleChange}
-            hasError={hasError?.fields?.abbr}
+            hasError={hasError?.abbr}
             required
             disabled
           />
-          {hasError?.abbr && (
-            <OykFormMessage hasError={hasError?.abbr} />
-          )}
           {hasError?.message && (
             <OykFormMessage hasError={hasError?.message} />
           )}

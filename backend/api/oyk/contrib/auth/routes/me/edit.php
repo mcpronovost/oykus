@@ -126,7 +126,7 @@ try {
 } catch (Exception $e) {
     $pdo->rollBack();
     http_response_code(500);
-    echo json_encode(["error" => $e->getCode()]);
+    echo json_encode(["error" => $e->getMessage(), "code" => $e->getCode()]);
     exit;
 }
 
