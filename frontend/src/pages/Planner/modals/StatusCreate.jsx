@@ -82,7 +82,7 @@ export default function ModalStatusCreate({
           <OykButton type="submit" color="primary">
             {t("Save")}
           </OykButton>
-          <OykButton outline action={onClose}>
+          <OykButton outline onClick={onClose}>
             {t("Cancel")}
           </OykButton>
         </div>

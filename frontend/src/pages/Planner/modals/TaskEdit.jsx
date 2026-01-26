@@ -88,7 +88,7 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
                 : []),
             ]}
           />
-          <OykButton icon={X} action={onClose} plain />
+          <OykButton icon={X} onClick={onClose} plain />
         </>
       }
     >
@@ -130,7 +130,7 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
           <OykButton type="submit" color="primary">
             {t("Save")}
           </OykButton>
-          <OykButton type="button" action={onClose} outline>
+          <OykButton type="button" onClick={onClose} outline>
             {t("Cancel")}
           </OykButton>
         </div>
@@ -139,7 +139,7 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
         <section className="oyk-modal-section">
           <header className="oyk-modal-section-header">
             <h3 className="oyk-modal-section-header-title">{t("History")}</h3>
-            <OykButton icon={X} action={onClickShowHistory} plain />
+            <OykButton icon={X} onClick={onClickShowHistory} plain />
           </header>
           <div className="oyk-modal-section-content">
             <ul className="oyk-planner-history">

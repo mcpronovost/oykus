@@ -64,7 +64,7 @@ export default function ModalStatusEdit({ isOpen, onClose, status }) {
           <OykButton type="submit" color="primary">
             {t("Save")}
           </OykButton>
-          <OykButton type="button" action={onClose} outline>
+          <OykButton type="button" onClick={onClose} outline>
             {t("Cancel")}
           </OykButton>
         </div>

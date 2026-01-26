@@ -12,7 +12,7 @@ export default function Error404() {
       <OykHeading title="404" />
       <OykGrid>
         <OykFeedback ghost title={t("Page Not Found")} message={t("The page you are looking for does not exist. Please check the URL and try again.")} icon={Ghost}>
-          <OykButton action={() => n("home")} color="primary">
+          <OykButton onClick={() => n("home")} color="primary">
             {t("Go to Home")}
           </OykButton>
         </OykFeedback>

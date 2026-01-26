@@ -260,7 +260,7 @@ export default function SettingsProfile() {
               type="reset"
               disabled={isLoading}
               outline
-              action={handleReset}
+              onClick={handleReset}
             >
               {t("Cancel")}
             </OykButton>

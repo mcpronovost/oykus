@@ -113,7 +113,7 @@ export default function Planner() {
         actions={
           <>
             {tasks.length > 0 && (
-              <OykButton color="primary" icon={Plus} action={handleTaskCreateClick}>
+              <OykButton color="primary" icon={Plus} onClick={handleTaskCreateClick}>
                 {t("Create a new task")}
               </OykButton>
             )}
@@ -163,7 +163,7 @@ export default function Planner() {
             icon={Frown}
             ghost
           >
-            <OykButton color="primary" action={handleStatusCreateClick}>
+            <OykButton color="primary" onClick={handleStatusCreateClick}>
               {t("Create a new status")}
             </OykButton>
           </OykFeedback>

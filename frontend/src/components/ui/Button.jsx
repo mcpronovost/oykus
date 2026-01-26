@@ -6,7 +6,7 @@ export default function OykButton({
   children,
   routeName,
   params = {},
-  action,
+  onClick,
   icon: IconComponent,
   type = "button",
   disabled = false,
@@ -27,8 +27,8 @@ export default function OykButton({
     }
     if (!disabled && routeName) {
       n(routeName, params, lang);
-    } else if (!disabled && action) {
-      action();
+    } else if (!disabled && onClick) {
+      onClick();
     }
   };
 

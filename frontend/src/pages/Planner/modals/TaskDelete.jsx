@@ -63,7 +63,7 @@ export default function ModalTaskDelete({ isOpen, onClose, task }) {
             <OykButton type="submit" color="danger">
               {t("Delete")}
             </OykButton>
-            <OykButton type="button" action={onClose} outline>
+            <OykButton type="button" onClick={onClose} outline>
               {t("Cancel")}
             </OykButton>
           </div>

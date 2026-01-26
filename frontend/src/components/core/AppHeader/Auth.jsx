@@ -10,7 +10,7 @@ export default function AppBarAuth() {
     <section className="oyk-app-bar-auth">
       <OykButton
         className="oyk-app-bar-user-button"
-        action={() => n("login")}
+        onClick={() => n("login")}
         plain
         style={{
           padding: "0",

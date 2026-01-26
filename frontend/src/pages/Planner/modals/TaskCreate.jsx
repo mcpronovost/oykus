@@ -110,7 +110,7 @@ export default function ModalTaskCreate({
             <OykButton type="submit" color="primary">
               {t("Save")}
             </OykButton>
-            <OykButton outline action={onClose}>
+            <OykButton outline onClick={onClose}>
               {t("Cancel")}
             </OykButton>
           </div>
@@ -123,7 +123,7 @@ export default function ModalTaskCreate({
         >
           <OykButton
             outline
-            action={() => {
+            onClick={() => {
               onClose();
             }}
           >
