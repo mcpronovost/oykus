@@ -31,7 +31,7 @@ export default function Planner() {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get("/planner/", signal ? { signal } : {});
+      const r = await api.get("/planner/tasks/", signal ? { signal } : {});
       if (!r.ok) throw new Error(r.error || t("An error occurred"));
       setTasks(r.tasks);
     } catch (e) {
@@ -46,7 +46,7 @@ export default function Planner() {
 
   const updateTaskStatus = async (taskId, newStatusId) => {
     try {
-      const r = await api.post(`/planner/${taskId}/edit/`, {
+      const r = await api.post(`/planner/tasks/${taskId}/edit/`, {
         status: newStatusId
       });
       if (!r.ok) throw new Error(r.error || t("An error occurred"));

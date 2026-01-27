@@ -11,7 +11,6 @@ export default function ModalStatusEdit({ isOpen, onClose, status }) {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
   const [formData, setFormData] = useState({
-    status: status.id,
     title: status.title,
     color: status.color,
     position: status.position,
@@ -22,7 +21,7 @@ export default function ModalStatusEdit({ isOpen, onClose, status }) {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.post("/planner/status/edit/", formData);
+      const r = await api.post(`/planner/status/${status.id}/edit/`, formData);
       if (!r.ok) throw new Error(r.error || t("An error occurred"));
       onClose(true);
     } catch (e) {

@@ -1,14 +1,21 @@
-import { useMemo, useRef } from "react";
-import { SquircleDashed  } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Leaf, Stone } from "lucide-react";
 
+import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
+import { useTranslation } from "@/services/translation";
 import { OykLink, OykDropdown } from "@/components/ui";
 import imgOykus from "@/assets/img/oykus-32.webp";
 
 export default function Header() {
   const { isAuth, isDev } = useAuth();
-  const { refresh } = useRouter();
+  const { refresh, routeTitle } = useRouter();
+  const { t } = useTranslation();
+  
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(null);
+  const [universes, setUniverses] = useState([]);
 
   const dropdownRef = useRef(null);
 
@@ -17,6 +24,39 @@ export default function Header() {
     dropdownRef.current?.close();
     refresh();
   };
+  
+  const fetchUniversesData = async (signal) => {
+    setIsLoading(true);
+    setHasError(null);
+    console.log("fetchUniversesData");
+    try {
+      const r = await api.get("/game/universes/", signal ? { signal } : {});
+      if (!r.ok || !r.universes) throw Error();
+      setUniverses(r.universes);
+    } catch (e) {
+      if (e?.name === "AbortError") return;
+      setHasError({
+        fetch: t("An error occurred"),
+      });
+    } finally {
+      if (!signal || !signal.aborted) {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    routeTitle(`${t("Settings")} - ${t("Manage Friends")}`);
+
+    fetchUniversesData(controller.signal);
+
+    return () => {
+      controller.abort();
+      routeTitle();
+    };
+  }, []);
 
   const universesMenu = useMemo(() => (
     isDev ? [
@@ -31,6 +71,34 @@ export default function Header() {
               <img src={imgOykus} width={32} height={32} alt="Oykus" />
             </span>
             <span className="oyk-app-sidebar-header-button-dropdown-item-brand">Oykus</span>
+          </button>
+        ),
+      },
+      {
+        label: "Edenwood",
+        element: (
+          <button className="oyk-app-sidebar-header-button-dropdown-item" onClick={() => handleUniverseClick()}>
+            <span
+              className="oyk-app-sidebar-header-button-dropdown-item-logo"
+              style={{ backgroundColor: "#0e1a14" }}
+            >
+              <Leaf size={18} color="#2a6b52" />
+            </span>
+            <span className="oyk-app-sidebar-header-button-dropdown-item-brand">Edenwood</span>
+          </button>
+        ),
+      },
+      {
+        label: "Rhansidor",
+        element: (
+          <button className="oyk-app-sidebar-header-button-dropdown-item" onClick={() => handleUniverseClick()}>
+            <span
+              className="oyk-app-sidebar-header-button-dropdown-item-logo"
+              style={{ backgroundColor: "#2a1f27" }}
+            >
+              <Stone size={18} color="#9e4092" />
+            </span>
+            <span className="oyk-app-sidebar-header-button-dropdown-item-brand">Rhansidor</span>
           </button>
         ),
       }

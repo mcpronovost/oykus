@@ -7,15 +7,18 @@ $authUser = require_auth();
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-$statusId   = $data["status"] ?? "";
 $title      = trim($data["title"] ?? "");
 $color      = $data["color"] ?? null;
 $position   = $data["position"] ?? 1;
 
 // Validations
-if (
-    $statusId === "" || $title === "" || $position === "" || $position < 1
-) {
+if (!$statusId) {
+    http_response_code(400);
+    echo json_encode(["error" => "Missing status"]);
+    exit;
+}
+
+if ($title === "" || $position === "" || $position < 1) {
     http_response_code(400);
     echo json_encode(["error" => "Invalid input"]);
     exit;
