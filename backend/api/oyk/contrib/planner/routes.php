@@ -1,7 +1,7 @@
 <?php
 
 $api = "/api/v1/planner";
-$path = OYK_PATH."/contrib/planner/routes/";
+$path = OYK_PATH."/contrib/planner/views/";
 
 route("GET", "#^$api/tasks$#", fn() =>
     require $path."tasks.php"

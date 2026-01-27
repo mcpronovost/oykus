@@ -29,9 +29,9 @@ route("GET", "#^/api/health$#", function () {
     echo json_encode(["ok" => true]);
 });
 
-require __DIR__."/core/routes/auth.php";
-require __DIR__."/core/routes/planner.php";
-require __DIR__."/core/routes/achievements.php";
+require __DIR__."/contrib/auth/routes.php";
+require __DIR__."/contrib/planner/routes.php";
+require __DIR__."/contrib/achievements/routes.php";
 
 http_response_code(404);
 echo json_encode(["error" => "Not found"]);
