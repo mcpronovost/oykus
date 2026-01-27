@@ -92,6 +92,31 @@
     }
   }
 
+  &-badge {
+    background-color: var(--oyk-c-primary);
+    color: var(--oyk-c-primary-fg);
+    font-size: 0.7rem;
+    line-height: 1;
+    text-align: right;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+  
+    &.oyk-dot {
+      border: 3px solid var(--oyk-card-bg);
+      border-radius: 50%;
+      height: 12px;
+      width: 12px;
+      top: 7px;
+      right: 6px;
+    }
+  
+    &.oyk-count {
+      border-radius: 12px;
+      padding: 2px 4px;
+    }
+  }
+
   &-default {
     background-color: color-mix(in srgb, var(--oyk-card-fg) 30%, transparent);
     border-color: color-mix(in srgb, var(--oyk-card-fg) 30%, transparent);

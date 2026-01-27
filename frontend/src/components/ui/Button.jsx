@@ -8,6 +8,7 @@ export default function OykButton({
   params = {},
   onClick,
   icon: IconComponent,
+  iconSize = 16,
   type = "button",
   disabled = false,
   isLoading = false,
@@ -16,6 +17,9 @@ export default function OykButton({
   outline = false,
   block = false,
   small = false,
+  badgeDot = false,
+  badgeCount = 0,
+  badgeBorderColor = "var(--oyk-card-bg)",
   className = "",
   style = {},
 }) {
@@ -57,9 +61,15 @@ export default function OykButton({
         className={`oyk-button-content ${isLoading ? "oyk-button-content-loading" : ""}`}
         style={color?.startsWith("#") ? { color: color } : {}}
       >
-        {IconComponent && <IconComponent size={16} />}
+        {IconComponent && <IconComponent size={iconSize} />}
         {children && children}
       </span>
+      {badgeDot ? <span className="oyk-button-badge oyk-dot" style={{ borderColor: badgeBorderColor }}></span> : null}
+      {badgeCount && badgeCount > 0 ? (
+        <span className="oyk-button-badge oyk-count" style={{ borderColor: badgeBorderColor }}>
+          {badgeCount > 99 ? "99+" : badgeCount}
+        </span>
+      ) : null}
     </button>
   );
 }
