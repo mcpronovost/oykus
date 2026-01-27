@@ -43,6 +43,16 @@ $token = generate_jwt([
     "username"  => $user["username"]
 ]);
 
+setcookie(
+    "oyk_rat",
+    $token,
+    strtotime("+1 month"),
+    "/",
+    "",
+    false,
+    true
+);
+
 earn_achievement($pdo, "first_login", $user["id"]);
 
 unset($user["id"], $user["username"], $user["password"]);

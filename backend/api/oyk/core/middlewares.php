@@ -5,15 +5,16 @@ require_once __DIR__ . "/utils/jwt.php";
 function require_auth($is_continue=false) {
     $headers = getallheaders();
     $authHeader = $headers["Authorization"] ?? $headers["authorization"] ?? "";
+    $authCookie = $_COOKIE["oyk_rat"] ?? "";
 
-    if (!str_starts_with($authHeader, "Oyk ")) {
+    if (!$authCookie && !str_starts_with($authHeader, "Oyk ")) {
         if ($is_continue) return null;
         http_response_code(401);
         echo json_encode(["error" => 401]);
         exit;
     }
 
-    $token = substr($authHeader, 4);
+    $token = substr($authHeader, 4) ?: $authCookie;
     $payload = decode_jwt($token);
 
     if (!$payload) {
