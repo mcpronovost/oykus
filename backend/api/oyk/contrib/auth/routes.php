@@ -35,6 +35,10 @@ route("POST", "#^$auth/me/account/edit$#", fn() =>
     require $path."me/account_edit.php"
 );
 
+route("GET", "#^$auth/me/notifications$#", fn() =>
+    require $path."me/notifications.php"
+);
+
 /* ================================================ */
 // USERS ROUTES
 /* ================================================ */

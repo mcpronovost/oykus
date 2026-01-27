@@ -24,7 +24,7 @@ const AuthProvider = ({ children }) => {
       const payload = {
         ...user,
         lastUpdate: Date.now(),
-      }
+      };
       setUserState(() => payload);
       storeSet(KEY_USER, payload);
       setIsAuth(true);
@@ -45,8 +45,28 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const fetchNotifications = async (signal) => {
+    try {
+      const r = await api.get("/auth/me/notifications/", signal ? { signal } : {});
+      if (!r?.ok) throw new Error();
+      setUser({
+        ...user,
+        notifications: {
+          alerts: r.alerts || 0,
+          friends: r.friends || 0,
+          messages: r.messages || 0,
+        },
+      });
+    } catch {
+      // fail silently
+    }
+  };
+
   // Check for existing auth on mount
   useEffect(() => {
+    const controller = new AbortController();
+    const interval = setInterval(fetchNotifications, (1 * 60 * 1000));
+
     const checkAuth = async () => {
       const token = storeGet(KEY_RAT);
       if (token) {
@@ -75,10 +95,26 @@ const AuthProvider = ({ children }) => {
     } else {
       checkAuth();
     }
+
+    setTimeout(() => {
+      fetchNotifications(controller.signal);
+    }, 1000);
+
+    return () => {
+      controller.abort();
+      clearInterval(interval);
+    };
   }, []);
 
   return (
-    <AuthContext.Provider value={{ currentUser: user, setUser, setRat, isAuth, isDev }}>
+    <AuthContext.Provider value={{
+      currentUser: user,
+      setUser,
+      setRat,
+      isAuth,
+      isDev,
+      getUserNotifications: fetchNotifications,
+    }}>
       {children}
     </AuthContext.Provider>
   );
