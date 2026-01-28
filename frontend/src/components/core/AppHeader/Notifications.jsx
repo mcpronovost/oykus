@@ -6,9 +6,11 @@ import { useTranslation } from "@/services/translation";
 import { OykButton } from "@/components/ui";
 
 export default function AppHeaderNotifications() {
-  const { currentUser } = useAuth();
+  const { isAuth, currentUser } = useAuth();
   const { n } = useRouter();
   const { t } = useTranslation();
+
+  if (!isAuth) return null;
 
   return (
     <section className="oyk-app-header-notifications">
@@ -19,6 +21,7 @@ export default function AppHeaderNotifications() {
           iconSize={18}
           badgeDot={currentUser?.notifications?.alerts}
           badgeBorderColor="var(--oyk-app-header-bg)"
+          disabled
         />
       </div>
       <div className="oyk-app-header-notifications-group">
@@ -38,6 +41,7 @@ export default function AppHeaderNotifications() {
           iconSize={18}
           badgeDot={currentUser?.notifications?.messages}
           badgeBorderColor="var(--oyk-app-header-bg)"
+          disabled
         />
       </div>
     </section>
