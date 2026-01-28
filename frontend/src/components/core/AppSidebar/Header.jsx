@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Leaf, Stone } from "lucide-react";
+import { Flame, Leaf, Stone } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
@@ -85,6 +85,20 @@ export default function Header() {
               <Leaf size={18} color="#2a6b52" />
             </span>
             <span className="oyk-app-sidebar-header-button-dropdown-item-brand">Edenwood</span>
+          </button>
+        ),
+      },
+      {
+        label: "Qalatlán",
+        element: (
+          <button className="oyk-app-sidebar-header-button-dropdown-item" onClick={() => handleUniverseClick()}>
+            <span
+              className="oyk-app-sidebar-header-button-dropdown-item-logo"
+              style={{ backgroundColor: "#2d2a23" }}
+            >
+              <Flame size={18} color="#dea125" />
+            </span>
+            <span className="oyk-app-sidebar-header-button-dropdown-item-brand">Qalatlán</span>
           </button>
         ),
       },
