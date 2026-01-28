@@ -1,5 +1,6 @@
-import { UserX } from "lucide-react";
+import { Eye, UserX } from "lucide-react";
 
+import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import { oykTimeAgo } from "@/utils/formatters";
 import { OykAlert, OykAvatar, OykButton } from "@/components/ui";
@@ -12,6 +13,7 @@ export default function FriendsRequestsCard({
   onReject = () => {},
   onCancel = () => {}
 }) {
+  const { n } = useRouter();
   const { t, lang } = useTranslation();
 
   if (!data) return null;
@@ -31,10 +33,12 @@ export default function FriendsRequestsCard({
         {isRequest ? (
           <>
             <OykButton color="primary" onClick={() => onAccept("accept", data.slug)}>{t("Accept")}</OykButton>
+            <OykButton outline icon={Eye} onClick={() => n("users-profile", { userSlug: data.slug })} />
             <OykButton outline color="danger" icon={UserX} onClick={() => onReject("reject", data.slug)} />
           </>
         ) : (
           <>
+            <OykButton outline icon={Eye} onClick={() => n("users-profile", { userSlug: data.slug })} />
             <OykButton outline color="danger" onClick={() => onCancel("cancel", data.slug)}>
               {t("Cancel")}
             </OykButton>
