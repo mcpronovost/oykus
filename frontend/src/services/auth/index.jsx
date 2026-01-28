@@ -46,6 +46,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const fetchNotifications = async (signal) => {
+    if (!user) return;
     try {
       const r = await api.get("/auth/me/notifications/", signal ? { signal } : {});
       if (!r?.ok) throw new Error();
