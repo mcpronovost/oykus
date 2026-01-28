@@ -1,10 +1,11 @@
 import {
-  GalleryHorizontalEnd,
   Compass,
   Component,
+  GalleryHorizontalEnd,
   LayoutDashboard,
   ListTodo,
   LoaderPinwheel,
+  MessagesSquare,
   Settings,
   Star
 } from "lucide-react";
@@ -32,6 +33,7 @@ export default function AppSidebar() {
               <OykAppSidebarNavItem icon={LayoutDashboard} text={t("Dashboard")} href="home" />
               <OykAppSidebarNavItem icon={Compass} text={t("Discover")} href="discover" />
               {isAuth ? (<OykAppSidebarNavItem icon={ListTodo} text={t("Planner")} href="planner" />) : null}
+              {isAuth ? (<OykAppSidebarNavItem icon={MessagesSquare} text={t("Forum")} href="forum" />) : null}
               {isAuth ? (<OykAppSidebarNavItem icon={GalleryHorizontalEnd} text={t("Collectibles")} href="collectibles" disabled />) : null}
               {isAuth ? (<OykAppSidebarNavItem icon={Star} text={t("Achievements")} href="achievements" />) : null}
             </ul>
