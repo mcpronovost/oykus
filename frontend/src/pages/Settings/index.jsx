@@ -50,10 +50,12 @@ export default function Settings() {
         {
           name: t("Change Password"),
           routeName: "settings-account-password",
+          disabled: true,
         },
         {
           name: t("Privacy"),
           routeName: "settings-account-privacy",
+          disabled: true,
         },
       ],
     },
@@ -107,6 +109,7 @@ export default function Settings() {
                           <OykLink
                             routeName={l.routeName}
                             className={`oyk-settings-nav-menu-item-link ${`settings-${params?.section}` === l.routeName ? "oyk-active" : ""}`}
+                            disabled={l.disabled}
                           >
                             {l.name}
                           </OykLink>
