@@ -122,11 +122,6 @@ class OykApi {
     storeRemove(KEY_RAT);
     return result;
   }
-
-  async getCurrentUser() {
-    const result = await this.get("/auth/me/");
-    return result;
-  }
 }
 
 export const api = new OykApi();

@@ -32,6 +32,7 @@ route("GET", "#^/api/health$#", function () {
 require __DIR__."/contrib/auth/routes.php";
 require __DIR__."/contrib/planner/routes.php";
 require __DIR__."/contrib/achievements/routes.php";
+require __DIR__."/contrib/game/routes.php";
 
 http_response_code(404);
 echo json_encode(["error" => "Not found"]);

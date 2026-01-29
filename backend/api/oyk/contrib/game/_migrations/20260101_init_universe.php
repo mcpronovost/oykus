@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS game_universes (
 
     owner INT UNSIGNED NOT NULL,
 
+    is_default BOOL NOT NULL DEFAULT 0,
     is_active BOOL NOT NULL DEFAULT 1,
     is_public BOOL NOT NULL DEFAULT 0,
 

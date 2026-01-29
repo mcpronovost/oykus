@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { api } from "@/services/api";
-import { KEY_RAT, KEY_USER } from "@/services/store/constants";
+import { KEY_RAT, KEY_USER, KEY_GAME_UNIVERSES, KEY_GAME_CURRENT_UNIVERSE } from "@/services/store/constants";
 import { storeGet, storeSet, storeRemove } from "@/services/store/utils";
 
 const REFRESH_INTERVAL = 10 * 60 * 5; // 5 minutes = 1000 * 60 * 5
@@ -9,14 +9,18 @@ const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
   const [user, setUserState] = useState(() => {
-    const encodedUser = storeGet(KEY_USER);
-    return encodedUser ? encodedUser : null;
+    const r = storeGet(KEY_USER);
+    return r ? r : null;
   });
   const [isAuth, setIsAuth] = useState(() => {
     return user ? true : false;
   });
   const [isDev, setIsDev] = useState(() => {
     return user && user.is_dev ? true : false;
+  });
+  const [universes, setUniverses] = useState(() => {
+    const r = storeGet(KEY_GAME_UNIVERSES);
+    return r ? r : null;
   });
 
   const setUser = (user) => {
@@ -34,6 +38,9 @@ const AuthProvider = ({ children }) => {
       storeRemove(KEY_USER);
       setIsAuth(false);
       setIsDev(false);
+      setUniverses(null);
+      storeRemove(KEY_GAME_UNIVERSES);
+      storeRemove(KEY_GAME_CURRENT_UNIVERSE);
     }
   };
 
@@ -42,6 +49,24 @@ const AuthProvider = ({ children }) => {
       storeSet(KEY_RAT, rat);
     } else {
       storeRemove(KEY_RAT);
+    }
+  };
+
+  const fetchUser = async (signal) => {
+    const token = storeGet(KEY_RAT);
+    if (token) {
+      try {
+        // Validate token with backend
+        const r = await api.get("/auth/me/", signal ? { signal } : {});
+        if (!r.ok) throw new Error();
+        setUser(r.user);
+        fetchNotifications(signal);
+      } catch {
+        if (import.meta.env.PROD) {
+          setRat(null);
+          setUser(null);
+        }
+      }
     }
   };
 
@@ -62,44 +87,32 @@ const AuthProvider = ({ children }) => {
       // fail silently
     }
   };
+  
+  const fetchUniverses = async (signal) => {
+    if (!user) return;
+    try {
+      const r = await api.get("/game/universes/", signal ? { signal } : {});
+      if (!r.ok || !r.universes) throw Error();
+      setUniverses(r.universes);
+    } catch {
+      // fail silently
+    }
+  };
 
-  // Check for existing auth on mount
   useEffect(() => {
-    const controller = new AbortController();
-    const interval = setInterval(fetchNotifications, (1 * 60 * 1000));
+    let controller = new AbortController();
 
-    const checkAuth = async () => {
-      const token = storeGet(KEY_RAT);
-      if (token) {
-        try {
-          // Validate token with backend
-          const response = await api.getCurrentUser();
-          if (response.success) {
-            setUser(response.user);
-          } else {
-            throw new Error("Invalid token");
-          }
-        } catch {
-          if (import.meta.env.PROD) {
-            setRat(null);
-            setUser(null);
-          }
-        }
+    const fetchAuth = () => {
+      if (user?.lastUpdate && Date.now() - user?.lastUpdate > REFRESH_INTERVAL) {
+        controller.abort();
+        controller = new AbortController();
+        fetchUser(controller.signal);
       }
     };
 
-    if (user?.lastUpdate) {
-      const now = Date.now();
-      if (now - user?.lastUpdate > REFRESH_INTERVAL) {
-        checkAuth();
-      }
-    } else {
-      checkAuth();
-    }
-
-    setTimeout(() => {
-      fetchNotifications(controller.signal);
-    }, 1000);
+    const interval = setInterval(fetchAuth, 1 * 60 * 1000);
+    fetchAuth();
+    fetchUniverses(controller.signal);
 
     return () => {
       controller.abort();
@@ -108,14 +121,17 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{
-      currentUser: user,
-      setUser,
-      setRat,
-      isAuth,
-      isDev,
-      getUserNotifications: fetchNotifications,
-    }}>
+    <AuthContext.Provider
+      value={{
+        currentUser: user,
+        setUser,
+        setRat,
+        isAuth,
+        isDev,
+        universes,
+        getUserNotifications: fetchNotifications,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
