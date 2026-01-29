@@ -56,7 +56,9 @@ prisma/migrations/dev.db-journal
 # Uploads
 backend/uploads/avatars/*
 backend/uploads/covers/*
+backend/uploads/logos/*
 !backend/uploads/avatars/.empty
 !backend/uploads/covers/.empty
+!backend/uploads/logos/.empty
 
 .htaccess
