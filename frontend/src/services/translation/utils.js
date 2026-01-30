@@ -1,5 +1,7 @@
 export const DEFAULT_LANG = "fr";
 
+export const SUPPORTED_LANGS = ["fr", "en"];
+
 export const getTranslationFiles = (lang = DEFAULT_LANG) => {
   const files = import.meta.glob("./locales/**/*.json", { eager: true });
   return Object.entries(files)

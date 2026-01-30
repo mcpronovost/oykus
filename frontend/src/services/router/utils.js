@@ -1,8 +1,11 @@
+import { DEFAULT_LANG, SUPPORTED_LANGS } from "@/services/translation/utils";
 import { ROUTES } from "./routes";
 
 export const getLangFromPath = (pathname) => {
-  const match = pathname.match(/^\/(fr|en)(\/|$)/);
-  return match ? match[1] : "fr";
+  const match = pathname.match(/^\/([a-z]{2})(\/|$)/);
+  return match && SUPPORTED_LANGS.includes(match[1])
+    ? match[1]
+    : DEFAULT_LANG;
 };
 
 // Helper function to match dynamic path segments
