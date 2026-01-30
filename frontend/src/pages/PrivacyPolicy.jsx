@@ -1,42 +1,36 @@
 import "@/assets/styles/page/_privacy-policy.scss";
-import { Construction } from "lucide-react";
 import { useTranslation } from "@/services/translation";
-import { OykFeedback, OykGrid, OykHeading } from "@/components/ui";
+import { OykCard, OykGrid, OykHeading } from "@/components/ui";
 import { oykDate } from "@/utils/formatters";
 
 export default function PrivacyPolicy() {
   const { t, lang } = useTranslation();
 
   return (
-    <section className="oyk-page">
+    <section className="oyk-page oyk-privacy-policy">
       <OykHeading title={t("Privacy Policy")} />
       <OykGrid>
-        <OykFeedback ghost variant="warning" title={t("Under Construction")} message={t("This page is currently under construction. Please check back later.")} icon={Construction} />
-      </OykGrid>
-      {/*<div className="oyk-privacy-policy-container">
-        <h1 className="oyk-privacy-policy-title">{t("Privacy Policy")}</h1>
-        
-        <div className="oyk-privacy-policy-content">
+        <OykCard>
           <p className="oyk-privacy-policy-last-updated">
             Last update: {oykDate(new Date("2026-01-11"), "date", lang)}
           </p>
 
-          <section className="oyk-privacy-policy-section">
-            <h2>1. Introduction</h2>
+          <section>
+            <OykHeading title={t("1. Introduction")} tag="h2" subtitle ph={0} />
             <p>
               This Privacy Policy explains how Oykus ("we", "our", or "us") collects, uses, and protects your personal information when you use our application. We are committed to protecting your privacy and ensuring compliance with the Personal Information Protection and Electronic Documents Act (PIPEDA) and Quebec's Act Respecting the Protection of Personal Information in the Private Sector.
             </p>
           </section>
 
-          <section className="oyk-privacy-policy-section">
-            <h2>2. Data Controller</h2>
+          <section>
+            <OykHeading title={t("2. Data Controller")} tag="h2" subtitle ph={0} />
             <p>
               Oykus, a Canadian business operating in Quebec, is responsible for processing your personal information. If you have any questions about this Privacy Policy or our data practices, please contact us.
             </p>
           </section>
 
-          <section className="oyk-privacy-policy-section">
-            <h2>3. Personal Information We Collect</h2>
+          <section>
+            <OykHeading title={t("3. Personal Information We Collect")} tag="h2" subtitle ph={0} />
             
             <h3>3.1 Account Information</h3>
             <p>When you create an account, we collect:</p>
@@ -67,8 +61,8 @@ export default function PrivacyPolicy() {
             </ul>
           </section>
 
-          <section className="oyk-privacy-policy-section">
-            <h2>4. Legal Basis for Processing</h2>
+          <section>
+            <OykHeading title={t("4. Legal Basis for Processing")} tag="h2" subtitle ph={0} />
             <p>We process your personal information based on the following legal grounds:</p>
             <ul>
               <li><strong>Consent:</strong> When you provide explicit consent for specific purposes</li>
@@ -78,8 +72,8 @@ export default function PrivacyPolicy() {
             </ul>
           </section>
 
-          <section className="oyk-privacy-policy-section">
-            <h2>5. How We Use Your Information</h2>
+          <section>
+            <OykHeading title={t("5. How We Use Your Information")} tag="h2" subtitle ph={0} />
             <p>We use your personal information to:</p>
             <ul>
               <li>Provide and maintain our application services</li>
@@ -92,8 +86,8 @@ export default function PrivacyPolicy() {
             </ul>
           </section>
 
-          <section className="oyk-privacy-policy-section">
-            <h2>6. Data Storage and Security</h2>
+          <section>
+            <OykHeading title={t("6. Data Storage and Security")} tag="h2" subtitle ph={0} />
             <p>Your information is stored securely using:</p>
             <ul>
               <li>Encrypted passwords and secure authentication</li>
@@ -103,8 +97,8 @@ export default function PrivacyPolicy() {
             </ul>
           </section>
 
-          <section className="oyk-privacy-policy-section">
-            <h2>7. Data Retention</h2>
+          <section>
+            <OykHeading title={t("7. Data Retention")} tag="h2" subtitle ph={0} />
             <p>We retain your personal information for as long as:</p>
             <ul>
               <li>Your account remains active</li>
@@ -114,8 +108,8 @@ export default function PrivacyPolicy() {
             <p>You may request deletion of your account and associated information at any time.</p>
           </section>
 
-          <section className="oyk-privacy-policy-section">
-            <h2>8. Your Rights</h2>
+          <section>
+            <OykHeading title={t("8. Your Rights")} tag="h2" subtitle ph={0} />
             <p>Under Canadian privacy laws, you have the following rights:</p>
             <ul>
               <li><strong>Access:</strong> Request a copy of your personal information</li>
@@ -126,8 +120,8 @@ export default function PrivacyPolicy() {
             </ul>
           </section>
 
-          <section className="oyk-privacy-policy-section">
-            <h2>9. Information Sharing</h2>
+          <section>
+            <OykHeading title={t("9. Information Sharing")} tag="h2" subtitle ph={0} />
             <p>We do not sell, trade, or rent your personal information to third parties. We may share your information only:</p>
             <ul>
               <li>With your explicit consent</li>
@@ -137,8 +131,8 @@ export default function PrivacyPolicy() {
             </ul>
           </section>
 
-          <section className="oyk-privacy-policy-section">
-            <h2>10. Cookies and Local Storage</h2>
+          <section>
+            <OykHeading title={t("10. Cookies and Local Storage")} tag="h2" subtitle ph={0} />
             <p>We use local storage to remember your preferences and authentication state. This includes:</p>
             <ul>
               <li>Authentication tokens</li>
@@ -147,23 +141,23 @@ export default function PrivacyPolicy() {
             </ul>
           </section>
 
-          <section className="oyk-privacy-policy-section">
-            <h2>11. Data Location</h2>
+          <section>
+            <OykHeading title={t("11. Data Location")} tag="h2" subtitle ph={0} />
             <p>Your personal information is processed and stored within Canada, primarily in Quebec, in compliance with Canadian privacy laws and regulations.</p>
           </section>
 
-          <section className="oyk-privacy-policy-section">
-            <h2>12. Children's Privacy</h2>
+          <section>
+            <OykHeading title={t("12. Children's Privacy")} tag="h2" subtitle ph={0} />
             <p>Our application is not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13.</p>
           </section>
 
-          <section className="oyk-privacy-policy-section">
-            <h2>13. Changes to This Policy</h2>
+          <section>
+            <OykHeading title={t("13. Changes to This Policy")} tag="h2" subtitle ph={0} />
             <p>We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new policy on this page and updating the "Last updated" date.</p>
           </section>
 
-          <section className="oyk-privacy-policy-section">
-            <h2>14. Contact Information</h2>
+          <section>
+            <OykHeading title={t("14. Contact Information")} tag="h2" subtitle ph={0} />
             <p>If you have any questions about this Privacy Policy or our data practices, please contact us:</p>
             <ul>
               <li>Email: [Contact email to be provided]</li>
@@ -171,16 +165,16 @@ export default function PrivacyPolicy() {
             </ul>
           </section>
 
-          <section className="oyk-privacy-policy-section">
-            <h2>15. Complaints</h2>
+          <section>
+            <OykHeading title={t("15. Complaints")} tag="h2" subtitle ph={0} />
             <p>If you believe we have not addressed your concerns satisfactorily, you have the right to lodge a complaint with:</p>
             <ul>
               <li>The Privacy Commissioner of Canada</li>
               <li>Quebec's Commission d'accès à l'information (if you are a Quebec resident)</li>
             </ul>
           </section>
-        </div>
-      </div>*/}
+        </OykCard>
+      </OykGrid>
     </section>
   );
 }

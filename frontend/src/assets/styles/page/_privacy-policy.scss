@@ -1,59 +1,9 @@
 .oyk-privacy-policy {
-  display: flex;
-  justify-content: center;
-  min-height: 100%;
-  padding: 2rem 1rem;
-
-  &-container {
-    width: 100%;
-    max-width: 800px;
-  }
-
-  &-title {
-    color: var(--oyk-c-primary-fg);
-    font-family: "Work Sans", sans-serif;
-    font-size: 2rem;
-    font-weight: 600;
-    margin: 0 0 2rem 0;
-    text-align: center;
-  }
-
-  &-content {
-    background: var(--oyk-card-bg);
-    border-radius: var(--oyk-radius);
-    padding: 2rem;
-  }
-
-  &-last-updated {
-    color: var(--oyk-core-fg);
-    font-size: 1rem;
-    font-style: italic;
-    margin: 0 0 2rem 0;
-    text-align: center;
-  }
-
-  &-section {
-    margin-bottom: 2rem;
+  section {
+    margin-bottom: 3rem;
 
     &:last-child {
       margin-bottom: 0;
-    }
-
-    h2 {
-      color: var(--oyk-c-primary-fg);
-      font-family: "Work Sans", sans-serif;
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin: 0 0 1rem 0;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--oyk-card-item-bg);
-    }
-
-    h3 {
-      color: var(--oyk-card-fg);
-      font-size: 1rem;
-      font-weight: 600;
-      margin: 1.5rem 0 0.75rem 0;
     }
 
     p {
