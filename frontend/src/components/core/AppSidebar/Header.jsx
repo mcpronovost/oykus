@@ -1,42 +1,22 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import { SquircleDashed } from "lucide-react";
 
-import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
-import { useTranslation } from "@/services/translation";
-import { OykLink, OykDropdown } from "@/components/ui";
+import { OykAvatar, OykDropdown } from "@/components/ui";
 import imgOykus from "@/assets/img/oykus-32.webp";
 
 export default function Header() {
-  const { isAuth, isDev, universes } = useAuth();
-  const { refresh, routeTitle } = useRouter();
-  const { t } = useTranslation();
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(null);
+  const { isAuth, universes, currentUniverse, setCurrentUniverse } = useAuth();
+  const { n } = useRouter();
 
   const dropdownRef = useRef(null);
 
-  const handleUniverseClick = (uId) => {
-    console.log(uId);
-    // setCurrentUniverse(uId);
+  const handleUniverseClick = (uSlug) => {
+    setCurrentUniverse(uSlug);
     dropdownRef.current?.close();
-    // refresh();
+    n("home");
   };
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    routeTitle(`${t("Settings")} - ${t("Manage Friends")}`);
-
-    // fetchUniversesData(controller.signal);
-
-    return () => {
-      controller.abort();
-      routeTitle();
-    };
-  }, []);
 
   const universesMenu = useMemo(
     () =>
@@ -51,7 +31,7 @@ export default function Header() {
                 >
                   <span className="oyk-app-sidebar-header-button-dropdown-item-logo">
                     {u.logo ? (
-                      <img src={imgOykus} width={32} height={32} alt={u.name} />
+                      <OykAvatar src={u.logo} size={32} name={u.name} borderSize={0} />
                     ) : (
                       <SquircleDashed size={24} color={u.c_primary ? u.c_primary : "var(--oyk-default-primary)"} />
                     )}
@@ -70,12 +50,18 @@ export default function Header() {
       <OykDropdown
         ref={dropdownRef}
         toggle={
-          <OykLink routeName="home" className="oyk-app-sidebar-header-button">
+          <div className="oyk-app-sidebar-header-button">
             <span className="oyk-app-sidebar-header-button-logo">
-              <img src={imgOykus} width={32} height={32} alt="Oykus" />
+              {!currentUniverse ? (
+                <OykAvatar src={imgOykus} size={32} name="Oykus" />
+              ) : currentUniverse.logo ? (
+                <OykAvatar src={currentUniverse.logo} size={32} name={currentUniverse.name} />
+              ) : (
+                <SquircleDashed size={24} color="var(--oyk-c-primary)" />
+              )}
             </span>
-            <span className="oyk-app-sidebar-header-button-brand">Oykus</span>
-          </OykLink>
+            <span className="oyk-app-sidebar-header-button-brand">{currentUniverse.name}</span>
+          </div>
         }
         menu={universesMenu}
         direction="full"

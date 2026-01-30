@@ -18,7 +18,7 @@ import OykAppSidebarUser from "./User";
 import OykAppSidebarNavItem from "./NavItem";
 
 export default function AppSidebar() {
-  const { isAuth, isDev } = useAuth();
+  const { isAuth, isDev, currentUniverse } = useAuth();
   const { storeAppSidebarOpen } = useStore();
   const { t } = useTranslation();
 
@@ -32,10 +32,10 @@ export default function AppSidebar() {
             <ul className="oyk-app-sidebar-nav-list">
               <OykAppSidebarNavItem icon={LayoutDashboard} text={t("Dashboard")} href="home" />
               <OykAppSidebarNavItem icon={Compass} text={t("Discover")} href="discover" />
-              {isAuth ? (<OykAppSidebarNavItem icon={ListTodo} text={t("Planner")} href="planner" />) : null}
-              {isAuth ? (<OykAppSidebarNavItem icon={MessagesSquare} text={t("Forum")} href="forum" />) : null}
-              {isAuth ? (<OykAppSidebarNavItem icon={GalleryHorizontalEnd} text={t("Collectibles")} href="collectibles" disabled />) : null}
-              {isAuth ? (<OykAppSidebarNavItem icon={Star} text={t("Achievements")} href="achievements" />) : null}
+              {isAuth && currentUniverse?.is_mod_planner_active ? (<OykAppSidebarNavItem icon={ListTodo} text={t("Planner")} href="planner" />) : null}
+              {isAuth && currentUniverse?.is_mod_forum_active ? (<OykAppSidebarNavItem icon={MessagesSquare} text={t("Forum")} href="forum" />) : null}
+              {isAuth && currentUniverse?.is_mod_collectibles_active ? (<OykAppSidebarNavItem icon={GalleryHorizontalEnd} text={t("Collectibles")} href="collectibles" disabled />) : null}
+              {isAuth && currentUniverse?.is_mod_achievements_active ? (<OykAppSidebarNavItem icon={Star} text={t("Achievements")} href="achievements" />) : null}
             </ul>
           </nav>
         </section>
