@@ -1,19 +1,22 @@
-// import { useRouter } from "@/services/router";
+import { Ghost } from "lucide-react";
+import { useRouter } from "@/services/router";
+import { useTranslation } from "@/services/translation";
+import { OykButton, OykFeedback, OykGrid, OykHeading } from "@/components/ui";
 
 export default function AppNotfound() {
-  // const { n } = useRouter();
+  const { n } = useRouter();
+  const { t } = useTranslation();
 
   return (
-    <section className="oyk-app-not-found">
-      <div className="oyk-app-not-found-content">
-        <h1>404</h1>
-        <p>Page not found.</p>
-      </div>
-      <div className="oyk-app-not-found-actions">
-        <button className="oyk-app-not-found-actions-button" onClick={() => /* n("home") */ {}}>
-          Go to home
-        </button>
-      </div>
+    <section className="oyk-page oyk-error404">
+      <OykHeading title="404" />
+      <OykGrid>
+        <OykFeedback ghost title={t("Page Not Found")} message={t("The page you are looking for does not exist. Please check the URL and try again.")} icon={Ghost}>
+          <OykButton onClick={() => n("home")} color="primary">
+            {t("Go to Home")}
+          </OykButton>
+        </OykFeedback>
+      </OykGrid>
     </section>
   );
 }
