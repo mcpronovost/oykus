@@ -1,5 +1,6 @@
 import "@/assets/styles/page/_settings.scss";
 import { CircleUser, Cog, Smile, Construction } from "lucide-react";
+
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
