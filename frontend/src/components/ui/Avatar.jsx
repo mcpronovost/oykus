@@ -13,6 +13,7 @@ export default function OykAvatar({
   fgColor = "var(--oyk-c-primary-fg)",
   borderColor = "var(--oyk-card-bg)",
   borderSize = 2,
+  borderRadius = "50%",
 }) {
   const { isAuth } = useAuth();
 
@@ -22,7 +23,8 @@ export default function OykAvatar({
       style={{
         backgroundColor: (isAuth && src) ? borderColor : bgColor,
         borderColor: borderColor,
-        borderWidth: borderSize ? `${borderSize}px` : "2px",
+        borderWidth: `${borderSize}px`,
+        borderRadius: borderRadius,
         color: fgColor,
         width: size,
         height: size,
