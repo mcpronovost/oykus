@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Blocks, Flame, Star } from "lucide-react";
 
 import { api } from "@/services/api";
+import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
 import {
   OykAlert,
@@ -13,9 +14,11 @@ import {
   OykHeading,
   OykLoading,
 } from "@/components/ui";
+import AppNotAuthorized from "@/components/core/AppNotAuthorized";
 import AchievementCard from "./AchievementCard";
 
 export default function Achievements() {
+  const { isAuth, currentUniverse } = useAuth();
   const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -44,6 +47,7 @@ export default function Achievements() {
   };
 
   useEffect(() => {
+    if (!isAuth || (currentUniverse && !currentUniverse.is_mod_achievements_active)) return;
     const controller = new AbortController();
 
     fetchAchievements(controller.signal);
@@ -52,6 +56,10 @@ export default function Achievements() {
       controller.abort();
     };
   }, []);
+
+  if (!isAuth || (currentUniverse && !currentUniverse.is_mod_achievements_active)) {
+    return <AppNotAuthorized />;
+  }
 
   return (
     <section className="oyk-page oyk-achievements">

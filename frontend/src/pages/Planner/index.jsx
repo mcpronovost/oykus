@@ -17,7 +17,7 @@ import TaskStatus from "./TaskStatus";
 import TaskCard from "./TaskCard";
 
 export default function Planner() {
-  const { isAuth, isDev } = useAuth();
+  const { isAuth, isDev, currentUniverse } = useAuth();
   const { routeTitle } = useRouter();
   const { t } = useTranslation();
 
@@ -83,6 +83,7 @@ export default function Planner() {
   };
 
   useEffect(() => {
+    if (!isAuth || (currentUniverse && !currentUniverse.is_mod_planner_active)) return;
     const controller = new AbortController();
 
     routeTitle(t("Planner"));
@@ -95,7 +96,7 @@ export default function Planner() {
     };
   }, []);
 
-  if (!isAuth || [401, 403].includes(hasError)) {
+  if (!isAuth || (currentUniverse && !currentUniverse.is_mod_planner_active)) {
     return <AppNotAuthorized />;
   }
 
