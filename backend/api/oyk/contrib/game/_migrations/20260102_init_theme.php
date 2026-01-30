@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../../../core/db.php";
+global $pdo;
 
 $sql = "
 CREATE TABLE IF NOT EXISTS game_themes (
