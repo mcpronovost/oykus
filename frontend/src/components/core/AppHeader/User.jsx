@@ -27,7 +27,7 @@ export default function AppHeaderUser() {
         toggle={
           <button className="oyk-app-header-user-button">
             <span className="oyk-app-header-user-button-name">{currentUser.name}</span>
-            <OykAvatar size={36} src={currentUser.avatar} name={currentUser.name} abbr={currentUser.abbr} />
+            <OykAvatar size={36} src={currentUser.avatar} name={currentUser.name} abbr={currentUser.abbr} borderColor="var(--oyk-app-header-bg)" />
           </button>
         }
         menu={[
