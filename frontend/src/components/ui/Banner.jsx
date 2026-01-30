@@ -34,7 +34,7 @@ export default function OykBanner({
           style={{
             backgroundImage: coverSrc
               ? `url(${
-                  (!coverSrc.startsWith("http") && !coverSrc.startsWith("blob")) ? `${DOMAIN}${coverSrc}` : coverSrc
+                  (!coverSrc.startsWith("http") && !coverSrc.startsWith("blob") && !coverSrc.startsWith("data")) ? `${DOMAIN}${coverSrc}` : coverSrc
                 })`
               : "none",
             height: `${coverHeight}px`,

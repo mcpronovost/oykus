@@ -60,7 +60,7 @@ export default function Header() {
                 <SquircleDashed size={24} color="var(--oyk-c-primary)" />
               )}
             </span>
-            <span className="oyk-app-sidebar-header-button-brand">{currentUniverse.name}</span>
+            <span className="oyk-app-sidebar-header-button-brand">{currentUniverse?.name || "Oykus"}</span>
           </div>
         }
         menu={universesMenu}
