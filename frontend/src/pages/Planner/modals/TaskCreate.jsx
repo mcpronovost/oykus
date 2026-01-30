@@ -57,7 +57,7 @@ export default function ModalTaskCreate({
     setFormData({
       title: "",
       content: "",
-      priority: 1,
+      priority: 2,
       statusId: status?.id || statuses[0]?.value || "",
       assignees: [],
       tags: [],
@@ -87,9 +87,9 @@ export default function ModalTaskCreate({
             name="priority"
             type="radio"
             options={[
-              { label: t("PriorityLow"), value: 0 },
-              { label: t("PriorityMedium"), value: 1 },
-              { label: t("PriorityHigh"), value: 2 },
+              { label: t("PriorityLow"), value: "1" },
+              { label: t("PriorityMedium"), value: "2" },
+              { label: t("PriorityHigh"), value: "3" },
             ]}
             defaultValue={formData.priority}
             onChange={handleChange}

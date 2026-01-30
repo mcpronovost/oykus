@@ -25,7 +25,7 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
   const [formData, setFormData] = useState({
     title: task.title,
     content: task.content,
-    priority: task.priority,
+    priority: task.priority.toString(),
     tags: task.tags,
     assignees: task.assignees,
     dueAt: task.due_at ? task.due_at.substring(0, 10) : "",
@@ -58,6 +58,14 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
     setIsLoading(false);
     setHasError(null);
     setIsShowHistory(false);
+    setFormData({
+      title: task.title,
+      content: task.content,
+      priority: task.priority.toString(),
+      tags: task.tags,
+      assignees: task.assignees,
+      dueAt: task.due_at ? task.due_at.substring(0, 10) : "",
+    });
   }, [isOpen]);
 
   return (
@@ -111,9 +119,9 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
           name="priority"
           type="radio"
           options={[
-            { label: t("PriorityLow"), value: "low" },
-            { label: t("PriorityMedium"), value: "medium" },
-            { label: t("PriorityHigh"), value: "high" },
+            { label: t("PriorityLow"), value: "1" },
+            { label: t("PriorityMedium"), value: "2" },
+            { label: t("PriorityHigh"), value: "3" },
           ]}
           defaultValue={formData.priority}
           onChange={handleChange}
