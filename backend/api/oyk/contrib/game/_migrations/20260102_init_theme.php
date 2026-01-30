@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS game_themes (
 
     core_bg VARCHAR(7),
     core_fg VARCHAR(7),
+    core_bg_img VARCHAR(255),
     core_divider VARCHAR(7),
 
     c_danger VARCHAR(7),

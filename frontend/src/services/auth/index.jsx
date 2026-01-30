@@ -139,6 +139,7 @@ const AuthProvider = ({ children }) => {
         --oyk-c-primary-fg: ${theme.c_primary_fg};
 
         ${theme.core_bg ? `--oyk-core-bg: ${theme.core_bg};` : ""}
+        ${theme.core_bg_img ? `--oyk-core-bg-img: url('${theme.core_bg_img}');` : ""}
         ${theme.core_fg ? `--oyk-core-fg: ${theme.core_fg};` : ""}
         ${theme.core_divider ? `--oyk-core-divider: ${theme.core_divider};` : ""}
 

@@ -44,7 +44,15 @@ body {
 }
 
 #oyk-app-main {
+  background-image: var(--oyk-core-bg-img);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   overflow: hidden;
   display: block;
   height: calc(100vh - var(--oyk-app-header-height, 64px));
+}
+
+.oyk-page {
+  padding-bottom: 32px;
 }
