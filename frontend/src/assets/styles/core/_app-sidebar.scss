@@ -46,13 +46,13 @@
   }
 
   &-header {
-    background-color: var(--oyk-app-bar-bg);
-    color: var(--oyk-app-bar-fg);
+    background-color: var(--oyk-app-header-bg);
+    color: var(--oyk-app-header-fg);
     display: flex;
     align-items: center;
     flex-direction: row;
     justify-content: flex-start;
-    height: var(--oyk-app-bar-height);
+    height: var(--oyk-app-header-height);
 
     .oyk-dropdown {
       flex: 1;
@@ -110,7 +110,8 @@
         padding: 4px;
 
         &:not(.disabled):hover {
-          background-color: var(--oyk-app-sidebar-bg-subtle);
+          background-color: var(--oyk-popper-item-bg);
+          color: var(--oyk-popper-item-fg);
         }
 
         &:not(.disabled):active {
