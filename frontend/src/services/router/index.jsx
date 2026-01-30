@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useCallback, useEffect } from "react";
+import { DEFAULT_LANG, SUPPORTED_LANGS } from "@/services/translation/utils";
 import { ROUTES } from "./routes";
 import { getLangFromPath, findRoute, buildRoutePath, changePageTitle } from "./utils";
 
@@ -22,6 +23,11 @@ export function RouterProvider({ children }) {
   const [lang, setLang] = useState(INITIAL_STATE.lang);
   const [route, setRoute] = useState(INITIAL_STATE.route);
   const [params, setParams] = useState(INITIAL_STATE.params);
+
+  if (route === null && !SUPPORTED_LANGS.some(l => window.location.pathname.startsWith(`/${l}`))) {
+    window.location.pathname=`/${DEFAULT_LANG}${window.location.pathname}`;
+    return null;
+  }
 
   const navigate = useCallback(
     (name, params = {}, language = lang) => {
