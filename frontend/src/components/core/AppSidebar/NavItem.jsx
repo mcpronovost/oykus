@@ -19,12 +19,12 @@ export default function NavItem({
   }
 
   return (
-    <li className={`oyk-app-sidebar-nav-item ${route.name == href ? "oyk-active" : ""}`}>
+    <li className={`oyk-app-sidebar-nav-item ${route?.name == href ? "oyk-active" : ""}`}>
       <OykLink
         routeName={href}
         params={params}
         className={`oyk-app-sidebar-nav-item-link ${disabled ? "disabled" : ""}`}
-        disabled={disabled || route.name == href}
+        disabled={disabled || route?.name == href}
       >
         <span className="oyk-app-sidebar-nav-item-link-icon">
           <IconComponent size={18} />
