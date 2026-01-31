@@ -6,13 +6,11 @@ import { TranslationProvider } from "@/services/translation";
 export default function OykProviders({ children }) {
   return (
     <StoreProvider>
-      <RouterProvider>
-        <AuthProvider>
-          <TranslationProvider>
-            {children}
-          </TranslationProvider>
-        </AuthProvider>
-      </RouterProvider>
+      <AuthProvider>
+        <RouterProvider>
+          <TranslationProvider>{children}</TranslationProvider>
+        </RouterProvider>
+      </AuthProvider>
     </StoreProvider>
   );
 }
