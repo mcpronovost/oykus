@@ -42,7 +42,22 @@ try {
                 WHERE ta.task_id = t.id
             ),
             JSON_ARRAY()
-        ) AS assignees
+        ) AS assignees,
+
+        COALESCE(
+            (
+                SELECT JSON_OBJECT(
+                    'name', au.name,
+                    'avatar', au.avatar,
+                    'slug', au.slug,
+                    'abbr', au.abbr
+                )
+                FROM auth_users au
+                WHERE t.author = au.id
+                LIMIT 1
+            ),
+            NULL
+        ) AS author
 
     FROM planner_tasks t
     WHERE
@@ -73,6 +88,7 @@ try {
 
         $s["tasks"] = array_map(function ($task) {
             $task["assignees"] = json_decode($task["assignees"], true);
+            $task["author"] = json_decode($task["author"], true);
             return $task;
         }, $tasksQry->fetchAll());
     }
