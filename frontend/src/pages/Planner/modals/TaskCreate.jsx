@@ -18,7 +18,7 @@ export default function ModalTaskCreate({
   status,
   statuses,
 }) {
-  const { currentUser } = useAuth();
+  const { currentUniverse } = useAuth();
   const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -57,10 +57,11 @@ export default function ModalTaskCreate({
     setFormData({
       title: "",
       content: "",
-      priority: 2,
+      priority: "2",
       statusId: status?.id || statuses[0]?.value || "",
       assignees: [],
       tags: [],
+      universe: currentUniverse?.slug || null,
     });
   }, [isOpen]);
 

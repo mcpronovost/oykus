@@ -115,6 +115,7 @@ export default function TaskStatusHeader({
                       {
                         label: t("Delete"),
                         icon: <Trash2 size={16} />,
+                        color: "danger",
                         onClick: handleDeleteClick,
                       },
                     ]

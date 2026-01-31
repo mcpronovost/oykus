@@ -31,7 +31,7 @@ export default function Planner() {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get("/planner/tasks/", signal ? { signal } : {});
+      const r = await api.get(`/planner/tasks/${currentUniverse ? `?universe=${currentUniverse.slug}` : ""}`, signal ? { signal } : {});
       if (!r.ok) throw new Error(r.error || t("An error occurred"));
       setTasks(r.tasks);
     } catch (e) {

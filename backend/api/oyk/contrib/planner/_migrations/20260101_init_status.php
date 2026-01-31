@@ -4,13 +4,18 @@ require_once __DIR__ . "/../../../core/db.php";
 $sql = "
 CREATE TABLE IF NOT EXISTS planner_status (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    universe INT UNSIGNED NULL,
 
     title VARCHAR(120) NOT NULL,
     color CHAR(7) NULL,
-    position SMALLINT UNSIGNED NOT NULL,
+    position TINYINT UNSIGNED NOT NULL DEFAULT 1,
     is_completed TINYINT(1) NOT NULL DEFAULT 0,
 
-    UNIQUE INDEX uniq_position (position)
+    CONSTRAINT uq_position UNIQUE (position, universe),
+
+    CONSTRAINT fk_planner_status_universe
+        FOREIGN KEY (universe) REFERENCES game_universes(id)
+        ON DELETE SET NULL
 ) ENGINE=InnoDB;
 ";
 

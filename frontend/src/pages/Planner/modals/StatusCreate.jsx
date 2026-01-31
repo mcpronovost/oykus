@@ -1,30 +1,17 @@
 import { useEffect, useState } from "react";
 
 import { api } from "@/services/api";
-import { useStore } from "@/services/store";
+import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
-import {
-  OykButton,
-  OykForm,
-  OykFormField,
-  OykFormMessage,
-  OykModal,
-} from "@/components/ui";
+import { OykButton, OykForm, OykFormField, OykFormMessage, OykModal } from "@/components/ui";
 
-export default function ModalStatusCreate({
-  isOpen,
-  onClose,
-}) {
-  const { currentWorld } = useStore();
+export default function ModalStatusCreate({ isOpen, onClose }) {
+  const { currentUniverse } = useAuth();
   const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
-  const [formData, setFormData] = useState({
-    title: "",
-    color: "",
-    position: 1,
-  });
+  const [formData, setFormData] = useState({});
 
   const handleSubmit = async () => {
     if (isLoading) return;
@@ -50,19 +37,14 @@ export default function ModalStatusCreate({
       title: "",
       color: "",
       position: 1,
+      universe: currentUniverse?.slug || null,
     });
   }, [isOpen]);
 
   return (
     <OykModal title={t("Create a new status")} isOpen={isOpen} onClose={onClose}>
       <OykForm onSubmit={handleSubmit} isLoading={isLoading}>
-        <OykFormField
-          label={t("Title")}
-          name="title"
-          defaultValue={formData.title}
-          onChange={handleChange}
-          required
-        />
+        <OykFormField label={t("Title")} name="title" defaultValue={formData.title} onChange={handleChange} required />
         <OykFormField
           label={t("Color")}
           name="color"

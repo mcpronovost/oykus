@@ -6,15 +6,39 @@ global $pdo;
 $authUser = require_auth();
 
 $tasks = [];
+$universeSlug = $_GET["universe"] ?? null;
+
+// Get universe
+try {
+    if ($universeSlug) {
+        $qry = $pdo->prepare("
+            SELECT id, is_default
+            FROM game_universes
+            WHERE slug = ?
+            LIMIT 1
+        ");
+        $qry->execute([$universeSlug]);
+        $universe = $qry->fetch();
+    }
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(["error" => "Universe not found"]);
+    exit;
+}
+
+$universeId = $universe ? $universe["id"] : null;
+$isDefault  = !$universe || ($universe && $universe["is_default"]) ? true : null;
 
 try {
-    // Fetch all statuses
+    // Fetch statuses
     $statusQry = $pdo->prepare("
         SELECT id, title, color, position, is_completed
         FROM planner_status
+        WHERE (? IS NOT NULL AND universe IS NULL)
+           OR (? IS NOT NULL AND universe = ?)
         ORDER BY position ASC
     ");
-    $statusQry->execute();
+    $statusQry->execute([$isDefault, $universeId, $universeId]);
     $tasks = $statusQry->fetchAll();
 
     // Prepare tasks query (with priority ordering)
@@ -71,6 +95,10 @@ try {
                 AND ta2.user_id = :assignee_id
             )
         )
+        AND (
+            (:isUniverseDefault IS NOT NULL AND universe IS NULL)
+            OR (:universeId1 IS NOT NULL AND universe = :universeId2)
+        )
 
     ORDER BY
         t.priority DESC,
@@ -81,9 +109,12 @@ try {
     // Attach tasks to each status
     foreach ($tasks as &$s) {
         $tasksQry->execute([
-            "status_id" => $s["id"],
-            "user_id"   => $authUser["id"],
-            "assignee_id" => $authUser["id"]
+            "status_id"   => $s["id"],
+            "user_id"     => $authUser["id"],
+            "assignee_id" => $authUser["id"],
+            "isUniverseDefault" => $isDefault,
+            "universeId1" => $universeId,
+            "universeId2" => $universeId,
         ]);
 
         $s["tasks"] = array_map(function ($task) {
