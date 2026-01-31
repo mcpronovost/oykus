@@ -22,22 +22,11 @@ export default function ModalTaskDelete({ isOpen, onClose, task }) {
     setIsLoading(true);
     setHasError(null);
     try {
-      const res = await api.deleteTask(task.worldId, task.id);
-      if (res.status === 204) {
-        onClose(true);
-      } else {
-        throw new Error("An error occurred while deleting the task");
-      }
-    } catch (error) {
-      if ([401, 403].includes(error?.status)) {
-        setHasError({
-          message: t("You are not allowed to delete this task"),
-        });
-      } else {
-        setHasError({
-          message: t("An error occurred while deleting the task"),
-        });
-      }
+      const r = await api.post(`/planner/tasks/${task.id}/delete/`);
+      if (!r.ok) throw new Error(r.error || t("An error occurred"));
+      onClose(true);
+    } catch (e) {
+      setHasError(e.message || t("An error occurred while deleting the task"));
     } finally {
       setIsLoading(false);
     }
