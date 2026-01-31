@@ -16,7 +16,7 @@ import {
 } from "@/components/ui";
 
 export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
-  const { currentUser, currentWorld } = useStore();
+  const { currentUser } = useStore();
   const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -70,7 +70,7 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
 
   return (
     <OykModal
-      title={statusName}
+      title={task.title}
       isOpen={isOpen}
       onClose={onClose}
       actions={
@@ -83,9 +83,7 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
                 icon: <History size={16} />,
                 onClick: () => onClickShowHistory(),
               },
-              ...(task.author?.id === currentUser?.id ||
-              ["OWNER", "ADMINISTRATOR"].includes(currentWorld.staff.role)
-                ? [
+              ...(task.author?.slug === currentUser.slug ? [
                     {
                       label: t("Delete"),
                       icon: <Trash2 size={16} />,
@@ -151,18 +149,18 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
           </header>
           <div className="oyk-modal-section-content">
             <ul className="oyk-planner-history">
-              {task.history.map((history) => (
+              {task.history?.map((history) => (
                 <li key={history.id}>
                   <div className="oyk-planner-history-avatar">
                     <OykAvatar
-                      name={history.changedBy.playerName}
+                      name={history.changedBy.name}
                       abbr={history.changedBy.abbr}
                       size={32}
                     />
                   </div>
                   <div className="oyk-planner-history-content">
                     <p>
-                      {history.changedBy.playerName} {t("taskHistoryAsChanged")}{" "}
+                      {history.changedBy.name} {t("taskHistoryAsChanged")}{" "}
                       "{t(`taskHistory${history.changeType}`)}"{" "}
                       {t("taskHistoryFrom")} "
                       {history.changeType === "PRIORITY"
