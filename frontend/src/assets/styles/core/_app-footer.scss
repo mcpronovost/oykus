@@ -1,0 +1,27 @@
+.oyk-app-footer {
+  &-nav {
+    text-align: center;
+
+    &-list {
+      font-size: 0.9rem;
+      line-height: 1.2;
+      text-align: center;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    &-item {
+      &-link {
+        opacity: 0.6;
+        transition: opacity 0.3s;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

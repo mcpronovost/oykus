@@ -9,12 +9,13 @@ export default function OykBanner({
   avatarBorderSize,
   avatarBorderColor,
   avatarTop = 64,
+  avatarLevel,
   showAvatar = true,
   height = 140,
   coverSrc,
   coverHeight = 100,
   coverRadius = "var(--oyk-radius)",
-  className,
+  className
 }) {
   return (
     <div
@@ -49,6 +50,7 @@ export default function OykBanner({
             size={avatarSize}
             borderSize={avatarBorderSize}
             borderColor={avatarBorderColor}
+            level={avatarLevel}
           />
         </div>
       )}

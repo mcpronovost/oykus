@@ -22,6 +22,8 @@ CREATE TABLE IF NOT EXISTS game_themes (
 
     app_header_bg VARCHAR(7),
     app_header_fg VARCHAR(7),
+    app_header_bg_subtle VARCHAR(7),
+    app_header_fg_subtle VARCHAR(7),
 
     app_sidebar_bg VARCHAR(7),
     app_sidebar_fg VARCHAR(7),

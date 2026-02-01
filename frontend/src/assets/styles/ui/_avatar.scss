@@ -1,16 +1,22 @@
 .oyk-avatar {
-  background-color: var(--oyk-c-primary);
-  border: 2px solid var(--oyk-card-bg);
-  border-radius: 50%;
-  box-sizing: content-box;
-  color: var(--oyk-c-primary-fg);
-  overflow: hidden;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  transition: width 0.3s, height 0.3s;
+  width: 64px;
+  height: 64px;
+  position: relative;
+
+  &-content {
+    background-color: var(--oyk-c-primary);
+    border: 2px solid var(--oyk-card-bg);
+    border-radius: 50%;
+    box-sizing: content-box;
+    color: var(--oyk-c-primary-fg);
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    transition: width 0.3s, height 0.3s;
+  }
 
   &-img {
     width: 100%;
@@ -32,5 +38,22 @@
     justify-content: center;
     width: 100%;
     height: 100%;
+  }
+
+  &-level {
+    background-color: var(--oyk-c-primary);
+    border: 2px solid var(--oyk-card-bg);
+    border-radius: 50%;
+    color: var(--oyk-c-primary-fg);
+    font-size: 0.9rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: -2px;
+    bottom: -2px;
+    aspect-ratio: 1;
+    padding: 4px;
   }
 }

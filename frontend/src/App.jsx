@@ -5,12 +5,13 @@ import { OykScrollbar } from "@/components/ui";
 import Providers from "@/components/Providers";
 import OykAppHeader from "@/components/core/AppHeader";
 import OykAppSidebar from "@/components/core/AppSidebar";
+import OykAppFooter from "@/components/core/AppFooter";
 import OykAppLoading from "@/components/core/AppLoading";
 import OykAppNotAuthorized from "@/components/core/AppNotAuthorized";
 import OykAppNotFound from "@/components/core/AppNotFound";
 
 function MainLayout() {
-  const { isDev } = useAuth();
+  const { isAuth, isDev } = useAuth();
   const { route } = useRouter();
 
   return (
@@ -18,9 +19,12 @@ function MainLayout() {
       {route && route.component ? (
         <Suspense fallback={<OykAppLoading />}>
           <OykScrollbar height={"100%"}>
-            {route.require_dev && !isDev ? (
-              <OykAppNotAuthorized />
-            ) : createElement(route.component)}
+            <>
+              {route.require_dev && !isDev ? (
+                <OykAppNotAuthorized />
+              ) : createElement(route.component)}
+              {isAuth ? <OykAppFooter /> : null}
+            </>
           </OykScrollbar>
         </Suspense>
       ) : (

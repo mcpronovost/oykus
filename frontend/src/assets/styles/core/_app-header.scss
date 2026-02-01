@@ -100,6 +100,27 @@
     }
   }
 
+  &-leveling {
+    white-space: nowrap;
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+
+    &-level {
+      font-family: "Quicksand", sans-serif;
+      font-size: 0.9rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .oyk-progress {
+      width: 200px;
+    }
+  }
+
   &-notifications {
     flex: 0 0 auto;
     height: var(--oyk-app-header-height);

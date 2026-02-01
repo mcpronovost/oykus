@@ -28,16 +28,16 @@ const AuthProvider = ({ children }) => {
   });
 
 
-  const setUser = (user) => {
-    if (user) {
+  const setUser = (u) => {
+    if (u) {
       const payload = {
-        ...user,
+        ...u,
         lastUpdate: Date.now(),
       };
       setUserState(() => payload);
       storeSet(KEY_USER, payload);
       setIsAuth(true);
-      setIsDev(user.is_dev);
+      setIsDev(u.is_dev);
     } else {
       setUserState(null);
       storeRemove(KEY_USER);
@@ -80,14 +80,14 @@ const AuthProvider = ({ children }) => {
     try {
       const r = await api.get("/auth/me/notifications/", signal ? { signal } : {});
       if (!r?.ok) throw new Error();
-      setUser({
-        ...user,
+      setUserState((prev) => ({
+        ...prev,
         notifications: {
           alerts: r.alerts || 0,
           friends: r.friends || 0,
           messages: r.messages || 0,
         },
-      });
+      }));
     } catch {
       // fail silently
     }
@@ -149,6 +149,8 @@ const AuthProvider = ({ children }) => {
 
         ${theme.app_header_bg ? `--oyk-app-header-bg: ${theme.app_header_bg};` : ""}
         ${theme.app_header_fg ? `--oyk-app-header-fg: ${theme.app_header_fg};` : ""}
+        ${theme.app_header_bg_subtle ? `--oyk-app-header-bg-subtle: ${theme.app_header_bg_subtle};` : ""}
+        ${theme.app_header_fg_subtle ? `--oyk-app-header-fg-subtle: ${theme.app_header_fg_subtle};` : ""}
 
         ${theme.app_sidebar_bg ? `--oyk-app-sidebar-bg: ${theme.app_sidebar_bg};` : ""}
         ${theme.app_sidebar_fg ? `--oyk-app-sidebar-fg: ${theme.app_sidebar_fg};` : ""}

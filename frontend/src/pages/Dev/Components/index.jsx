@@ -100,7 +100,7 @@ export default function Components() {
         <article id="avatar" className="oyk-components-list-item">
           <OykHeading title={t("Avatar")} ph={0} />
           <div className="oyk-components-list-item-example">
-            <OykAvatar /> <OykAvatar size={24} /> <OykAvatar name="John Johnson" /> <OykAvatar abbr="JJ" />{" "}
+            <OykAvatar level={54} /> <OykAvatar size={24} /> <OykAvatar name="John Johnson" /> <OykAvatar abbr="JJ" />{" "}
             <OykAvatar abbr="JJ" size={32} />{" "}
             <OykAvatar src="https://testingbot.com/free-online-tools/random-avatar/140" />{" "}
             <OykAvatar src="https://testingbot.com/free-online-tools/random-avatar/64" name="John Johnson" size={48} />{" "}
