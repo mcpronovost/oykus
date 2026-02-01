@@ -1,6 +1,6 @@
 .oyk-avatar {
-  width: 64px;
-  height: 64px;
+  width: 68px;
+  height: 68px;
   position: relative;
 
   &-content {
@@ -13,8 +13,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
+    width: 64px;
+    height: 64px;
     transition: width 0.3s, height 0.3s;
   }
 
@@ -41,11 +41,12 @@
   }
 
   &-level {
-    background-color: var(--oyk-c-primary);
+    background-color: var(--oyk-card-subtle-bg);
     border: 2px solid var(--oyk-card-bg);
     border-radius: 999px;
-    color: var(--oyk-c-primary-fg);
+    color: var(--oyk-card-subtle-fg);
     font-size: 12px;
+    font-weight: 600;
     line-height: 1;
     display: flex;
     align-items: center;
@@ -53,8 +54,8 @@
     width: max-content;
     min-width: 24px;
     position: absolute;
-    right: -2px;
-    bottom: -2px;
+    right: 0;
+    bottom: 0;
     padding: 4px;
   }
 }

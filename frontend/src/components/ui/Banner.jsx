@@ -10,6 +10,9 @@ export default function OykBanner({
   avatarBorderColor,
   avatarTop = 64,
   avatarLevel,
+  avatarLevelSize = 24,
+  avatarLevelBorderSize = 2,
+  avatarLevelBorderColor = "var(--oyk-card-bg)",
   showAvatar = true,
   height = 140,
   coverSrc,
@@ -51,6 +54,9 @@ export default function OykBanner({
             borderSize={avatarBorderSize}
             borderColor={avatarBorderColor}
             level={avatarLevel}
+            levelSize={avatarLevelSize}
+            levelBorderSize={avatarLevelBorderSize}
+            levelBorderColor={avatarLevelBorderColor}
           />
         </div>
       )}

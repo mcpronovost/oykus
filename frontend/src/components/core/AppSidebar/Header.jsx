@@ -53,7 +53,7 @@ export default function Header() {
           <div className="oyk-app-sidebar-header-button">
             <span className="oyk-app-sidebar-header-button-logo">
               {!currentUniverse ? (
-                <OykAvatar src={imgOykus} size={32} name="Oykus" borderSize={0} />
+                <OykAvatar src={imgOykus} size={32} name="Oykus" borderSize={0} isPrivate={false} />
               ) : currentUniverse.logo ? (
                 <OykAvatar src={currentUniverse.logo} size={32} name={currentUniverse.name} borderRadius="8px" borderSize={0} />
               ) : (

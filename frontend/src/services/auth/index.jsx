@@ -44,6 +44,8 @@ const AuthProvider = ({ children }) => {
       setIsAuth(false);
       setIsDev(false);
       setUniverses(null);
+      setUniverse(null);
+      clearUniverseTheme();
       storeRemove(KEY_GAME_UNIVERSES);
       storeRemove(KEY_GAME_CURRENT_UNIVERSE);
     }
@@ -185,6 +187,16 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     let controller = new AbortController();
 
+    fetchUniverses(controller.signal);
+
+    return () => {
+      controller.abort();
+    };
+  }, [isAuth]);
+
+  useEffect(() => {
+    let controller = new AbortController();
+
     const fetchAuth = () => {
       if (user?.lastUpdate && Date.now() - user?.lastUpdate > REFRESH_INTERVAL) {
         controller.abort();
@@ -196,7 +208,6 @@ const AuthProvider = ({ children }) => {
     const interval = setInterval(fetchAuth, 1 * 60 * 1000);
     fetchAuth();
     fetchUniverses(controller.signal);
-    applyUniverseTheme();
 
     return () => {
       controller.abort();
