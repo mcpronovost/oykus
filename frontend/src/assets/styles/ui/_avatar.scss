@@ -2,6 +2,7 @@
   width: 68px;
   height: 68px;
   position: relative;
+  transition: width 0.3s, height 0.3s;
 
   &-content {
     background-color: var(--oyk-c-primary);
@@ -57,5 +58,6 @@
     right: 0;
     bottom: 0;
     padding: 4px;
+    transition: font-size 0.3s, min-width 0.3s, border-width 0.3s;
   }
 }

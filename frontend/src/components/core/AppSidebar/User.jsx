@@ -19,7 +19,9 @@ export default function User() {
         avatarSize={storeAppSidebarOpen ? 96 : 32}
         avatarTop={storeAppSidebarOpen ? 24 : 12}
         avatarLevel={1}
-        avatarLevelBorderSize={4}
+        avatarLevelSize={storeAppSidebarOpen ? 24 : 16}
+        avatarLevelBorderSize={storeAppSidebarOpen ? 4 : 2}
+        avatarLevelBorderColor="var(--oyk-app-sidebar-bg)"
         coverSrc={currentUser.cover}
         coverHeight={storeAppSidebarOpen ? 72 : 32}
         coverRadius="0"
