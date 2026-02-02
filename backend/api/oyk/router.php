@@ -29,6 +29,10 @@ route("GET", "#^/api/health$#", function () {
     echo json_encode(["ok" => true]);
 });
 
+route("GET", "#^/api/v1/theme.php$#", function () {
+    require __DIR__."/../theme.php";
+});
+
 require __DIR__."/contrib/auth/routes.php";
 require __DIR__."/contrib/planner/routes.php";
 require __DIR__."/contrib/achievements/routes.php";

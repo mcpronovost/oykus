@@ -1,7 +1,7 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { api } from "@/services/api";
 import { KEY_RAT, KEY_USER, KEY_GAME_UNIVERSES, KEY_GAME_CURRENT_UNIVERSE } from "@/services/store/constants";
-import { storeGet, storeSet, storeRemove } from "@/services/store/utils";
+import { storeGet, storeSet, storeRemove, oykCookieSet, oykCookieDelete } from "@/services/store/utils";
 
 const REFRESH_INTERVAL = 10 * 60 * 5; // 5 minutes = 1000 * 60 * 5
 
@@ -26,7 +26,9 @@ const AuthProvider = ({ children }) => {
     const r = storeGet(KEY_GAME_CURRENT_UNIVERSE);
     return r ? r : null;
   });
+  const [theme, setTheme] = useState(null);
 
+  const appliedThemeRef = useRef(new Set());
 
   const setUser = (u) => {
     if (u) {
@@ -94,8 +96,9 @@ const AuthProvider = ({ children }) => {
       // fail silently
     }
   };
-  
+
   const fetchUniverses = async (signal) => {
+    console.log("fetchUniverses");
     if (!user) return;
     try {
       const r = await api.get("/game/universes/", signal ? { signal } : {});
@@ -108,8 +111,9 @@ const AuthProvider = ({ children }) => {
       // fail silently
     }
   };
-  
+
   const fetchCurrentUniverse = async (slug = universe?.slug, signal) => {
+    console.log("fetchCurrentUniverse");
     if (!slug) return;
 
     try {
@@ -117,72 +121,54 @@ const AuthProvider = ({ children }) => {
       if (!r.ok || !r.universe) throw Error();
       setUniverse(r.universe);
       storeSet(KEY_GAME_CURRENT_UNIVERSE, r.universe);
-      if (r.theme) applyUniverseTheme(r.theme);
-      else clearUniverseTheme();
+      oykCookieSet("oyk-theme", r.universe.slug);
+      if (r.theme) {
+        setTheme(r.theme);
+      } else setTheme(null);
     } catch {
       // fail silently
     }
   };
 
   const applyUniverseTheme = (theme = universe) => {
+    console.log("applyUniverseTheme", theme);
     if (!theme) return;
-    const id = "oyk-universe-theme";
-    let style = document.getElementById(id);
+    let styleNode = document.getElementById("oyk-theme");
 
-    if (!style) {
-      style = document.createElement("style");
-      style.id = id;
-      document.head.appendChild(style);
+    if (!styleNode) {
+      styleNode = document.createElement("style");
+      styleNode.id = "oyk-theme";
+      document.head.appendChild(styleNode);
     }
 
-    style.textContent = `
+    styleNode.textContent = `
       :root {
         --oyk-c-primary: ${theme.c_primary};
         --oyk-c-primary-fg: ${theme.c_primary_fg};
 
-        ${theme.core_bg ? `--oyk-core-bg: ${theme.core_bg};` : ""}
-        ${theme.core_bg_img ? `--oyk-core-bg-img: url('${theme.core_bg_img}');` : ""}
-        ${theme.core_fg ? `--oyk-core-fg: ${theme.core_fg};` : ""}
-        ${theme.core_divider ? `--oyk-core-divider: ${theme.core_divider};` : ""}
-
-        ${theme.c_danger ? `--oyk-c-danger: ${theme.c_danger};` : ""}
-        ${theme.c_warning ? `--oyk-c-warning: ${theme.c_warning};` : ""}
-        ${theme.c_success ? `--oyk-c-success: ${theme.c_success};` : ""}
-
-        ${theme.app_header_bg ? `--oyk-app-header-bg: ${theme.app_header_bg};` : ""}
-        ${theme.app_header_fg ? `--oyk-app-header-fg: ${theme.app_header_fg};` : ""}
-        ${theme.app_header_bg_subtle ? `--oyk-app-header-bg-subtle: ${theme.app_header_bg_subtle};` : ""}
-        ${theme.app_header_fg_subtle ? `--oyk-app-header-fg-subtle: ${theme.app_header_fg_subtle};` : ""}
-
-        ${theme.app_sidebar_bg ? `--oyk-app-sidebar-bg: ${theme.app_sidebar_bg};` : ""}
-        ${theme.app_sidebar_fg ? `--oyk-app-sidebar-fg: ${theme.app_sidebar_fg};` : ""}
-        ${theme.app_sidebar_bg_subtle ? `--oyk-app-sidebar-bg-subtle: ${theme.app_sidebar_bg_subtle};` : ""}
-
-        ${theme.popper_bg ? `--oyk-popper-bg: ${theme.popper_bg};` : ""}
-        ${theme.popper_fg ? `--oyk-popper-fg: ${theme.popper_fg};` : ""}
-        ${theme.popper_item_bg ? `--oyk-popper-item-bg: ${theme.popper_item_bg};` : ""}
-        ${theme.popper_item_fg ? `--oyk-popper-item-fg: ${theme.popper_item_fg};` : ""}
-
-        ${theme.card_bg ? `--oyk-card-bg: ${theme.card_bg};` : ""}
-        ${theme.card_fg ? `--oyk-card-fg: ${theme.card_fg};` : ""}
-        ${theme.card_subtle_bg ? `--oyk-card-subtle-bg: ${theme.card_subtle_bg};` : ""}
-        ${theme.card_subtle_fg ? `--oyk-card-subtle-fg: ${theme.card_subtle_fg};` : ""}
-        ${theme.card_item_bg ? `--oyk-card-item-bg: ${theme.card_item_bg};` : ""}
-        ${theme.card_item_fg ? `--oyk-card-item-fg: ${theme.card_item_fg};` : ""}
-        ${theme.card_item_subtle ? `--oyk-card-item-subtle: ${theme.card_item_subtle};` : ""}
-        ${theme.card_divider ? `--oyk-card-divider: ${theme.card_divider};` : ""}
-
-        ${theme.scrollbar ? `--oyk-scrollbar: ${theme.scrollbar};` : ""}
-
-        ${theme.radius ? `--oyk-radius: ${theme.radius};` : ""}
+        ${Object.entries(theme.stylesheet)
+          .map(([k, v]) => `--${k}: ${v};`)
+          .join("\n")}
       }
     `;
   };
 
   const clearUniverseTheme = () => {
-    const style = document.getElementById("oyk-universe-theme");
-    if (style) style.remove();
+    console.log("clearUniverseTheme");
+    const styleNode = document.getElementById("oyk-theme");
+
+    if (!styleNode) return;
+
+    styleNode.remove();
   };
+
+  useEffect(() => {
+    if (theme) applyUniverseTheme(theme);
+
+    return () => {
+      clearUniverseTheme();
+    };
+  }, [theme]);
 
   useEffect(() => {
     let controller = new AbortController();
@@ -207,7 +193,6 @@ const AuthProvider = ({ children }) => {
 
     const interval = setInterval(fetchAuth, 1 * 60 * 1000);
     fetchAuth();
-    fetchUniverses(controller.signal);
 
     return () => {
       controller.abort();
