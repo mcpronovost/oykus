@@ -84,7 +84,7 @@ export default function SettingsFriendsRequests() {
         subtitle
         tag="h2"
         title={t("Friends Requests")}
-        ph={0}
+        nop
         actions={
           <OykButton small color="primary" onClick={() => setIsModalFriendsAddOpen(true)}>
             {t("Add a Friend")}

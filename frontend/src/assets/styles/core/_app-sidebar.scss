@@ -1,7 +1,7 @@
 .oyk-app-sidebar {
   background-color: var(--oyk-app-sidebar-bg, #0e120f);
   color: var(--oyk-app-sidebar-fg, #FFFFFF);
-  flex: 0 1 var(--oyk-app-sidebar-width, 64px);
+  flex: 0 0 var(--oyk-app-sidebar-width, 64px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -196,7 +196,7 @@
 
   &-nav {
     &-list + &-list {
-      border-top: 1px solid var(--oyk-app-sidebar-bg-subtle);
+      border-top: 1px solid var(--oyk-app-sidebar-subtle-bg);
       margin-top: 16px;
       padding-top: 16px;
     }
@@ -220,7 +220,7 @@
         transition: background-color 0.3s, gap 0.3s;
 
         &:not(.disabled):hover {
-          background-color: var(--oyk-app-sidebar-bg-subtle);
+          background-color: var(--oyk-app-sidebar-subtle-bg);
         }
 
         &:not(.disabled):active {

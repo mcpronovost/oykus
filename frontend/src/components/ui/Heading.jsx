@@ -1,6 +1,10 @@
-export default function OykHeading({ title, description, subtitle, actions, ph = 32, tag: Heading = "h1" }) {
+export default function OykHeading({ title, description, subtitle, actions, nop, tag: Heading = "h1", className }) {
   return (
-    <header className={`oyk-heading ${subtitle ? "oyk-subtitle" : ""}`} style={{ padding: `0 ${ph}px` }}>
+    <header
+      className={["oyk-heading", nop ? "oyk-heading-nop" : "", subtitle ? "oyk-subtitle" : "", className]
+        .filter(Boolean)
+        .join(" ")}
+    >
       <div className="oyk-heading-wrapper">
         <div className={`oyk-heading-content ${subtitle ? "oyk-subtitle" : ""}`}>
           {title && <Heading className={`oyk-heading-content-${subtitle ? "subtitle" : "title"}`}>{title}</Heading>}

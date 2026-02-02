@@ -49,7 +49,7 @@ export default function SettingsFriends() {
 
   return (
     <section className="oyk-settings-friends">
-      <OykHeading subtitle tag="h2" title={t("Manage Friends")} ph={0} />
+      <OykHeading subtitle tag="h2" title={t("Manage Friends")} nop />
       {hasError?.fetch ? (
         <OykCard>
           <OykAlert

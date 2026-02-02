@@ -41,6 +41,11 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
+  max-width: 100%;
+
+  @media (max-width: 1023px) {
+    max-width: calc(100% - var(--oyk-app-sidebar-width, 64px));
+  }
 }
 
 #oyk-app-main {

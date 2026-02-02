@@ -16,13 +16,13 @@
 
   --oyk-app-header-bg: #0E0F12;
   --oyk-app-header-fg: #838489;
-  --oyk-app-header-bg-subtle: #151619;
-  --oyk-app-header-fg-subtle: #3a3b3f;
+  --oyk-app-header-subtle-bg: #151619;
+  --oyk-app-header-subtle-fg: #3a3b3f;
   --oyk-app-header-height: 48px;
 
   --oyk-app-sidebar-bg: #0E0F12;
   --oyk-app-sidebar-fg: #838489;
-  --oyk-app-sidebar-bg-subtle: #17181d;
+  --oyk-app-sidebar-subtle-bg: #17181d;
   --oyk-app-sidebar-width: 48px;
   --oyk-app-sidebar-width-open: 220px;
 

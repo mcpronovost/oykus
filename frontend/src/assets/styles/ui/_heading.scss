@@ -5,8 +5,16 @@
   padding: 0 32px;
   margin: 32px auto;
 
+  @media (max-width: 1023px) {
+    padding: 0 8px;
+  }
+
   &.oyk-subtitle {
     margin: 0 auto 16px;
+  }
+
+  &-nop {
+    padding: 0;
   }
 
   &-wrapper {

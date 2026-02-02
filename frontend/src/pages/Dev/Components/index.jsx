@@ -20,7 +20,7 @@ export default function Components() {
     <section className="oyk-page oyk-components">
       <OykGrid className="oyk-components-list">
         <article id="predefined-colours" className="oyk-components-list-item">
-          <OykHeading title={t("Predefined Colours")} ph={0} />
+          <OykHeading title={t("Predefined Colours")} nop />
           <div className="oyk-components-list-item-example">
             <span style={{ color: "var(--oyk-core-fg)" }}>Default text</span>
             <span style={{ color: "var(--oyk-c-primary)" }}>Primary</span>
@@ -43,7 +43,7 @@ export default function Components() {
         </article>
 
         <article id="alert" className="oyk-components-list-item">
-          <OykHeading title={t("Alert")} ph={0} />
+          <OykHeading title={t("Alert")} nop />
           <div className="oyk-components-list-item-example column">
             <OykAlert title="Default Alert" message="Message here" />
             <br />
@@ -98,7 +98,7 @@ export default function Components() {
         </article>
 
         <article id="avatar" className="oyk-components-list-item">
-          <OykHeading title={t("Avatar")} ph={0} />
+          <OykHeading title={t("Avatar")} nop />
           <div className="oyk-components-list-item-example">
             <OykAvatar level={543} /> <OykAvatar size={24} /> <OykAvatar name="John Johnson" /> <OykAvatar abbr="JJ" />{" "}
             <OykAvatar abbr="JJ" size={32} />{" "}
@@ -163,7 +163,7 @@ export default function Components() {
         </article>
 
         <article id="button" className="oyk-components-list-item">
-          <OykHeading title={t("Button")} ph={0} />
+          <OykHeading title={t("Button")} nop />
           <div className="oyk-components-list-item-example">
             <div>
               <OykButton>Default Button</OykButton> <OykButton color="primary">Primary Button</OykButton>{" "}
@@ -251,7 +251,7 @@ export default function Components() {
         </article>
 
         <article id="chip" className="oyk-components-list-item">
-          <OykHeading title={t("Chip")} ph={0} />
+          <OykHeading title={t("Chip")} nop />
           <div className="oyk-components-list-item-example column">
             <OykChip>Default Chip</OykChip> <OykChip color="primary">Primary Chip</OykChip>{" "}
             <OykChip color="danger">Danger Chip</OykChip> <OykChip color="success">Success Chip</OykChip>
@@ -288,7 +288,7 @@ export default function Components() {
         </article>
 
         <article id="feedback" className="oyk-components-list-item">
-          <OykHeading title={t("Feedback")} ph={0} />
+          <OykHeading title={t("Feedback")} nop />
           <div
             className="oyk-components-list-item-example"
             style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "16px" }}
@@ -355,7 +355,7 @@ export default function Components() {
         </article>
 
         <article className="oyk-components-list-item">
-          <OykHeading title={t("Heading")} ph={0} />
+          <OykHeading title={t("Heading")} nop />
           <code className="full">{`<OykHeading title={t("Components")} />`}</code>
           <ComponentApiTable
             items={[

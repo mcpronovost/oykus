@@ -9,9 +9,9 @@ export default function AppHeaderLeveling() {
         goal={100}
         height={10}
         borderSize={2}
-        borderColor="var(--oyk-app-header-bg-subtle)"
-        trackColor="var(--oyk-app-header-bg-subtle)"
-        thumbColor="linear-gradient(to right, var(--oyk-app-header-fg-subtle), var(--oyk-c-primary))"
+        borderColor="var(--oyk-app-header-subtle-bg)"
+        trackColor="var(--oyk-app-header-subtle-bg)"
+        thumbColor="linear-gradient(to right, var(--oyk-app-header-subtle-fg), var(--oyk-c-primary))"
       />
     </section>
   );
