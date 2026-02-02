@@ -8,7 +8,18 @@ export default defineConfig(({ mode }) => {
   const API = mode === "development" ? "localhost:8080/api/v1" : "oykus.ovh/api/v1";
 
   return {
-    plugins: [react()],
+    plugins: [react(),
+    {
+      name: "oyk-endofhead-theme",
+      transformIndexHtml(html) {
+        html = html.replace(
+          /(<\/head>)/,
+          `<link rel="stylesheet" href="${PROTOCOL}://${API}/theme.php" id="oyk-theme">$1`
+        );
+
+        return html;
+      }
+    }],
     define: {
       "import.meta.env.VITE_DOMAIN": JSON.stringify(DOMAIN),
       "import.meta.env.VITE_PROTOCOL": JSON.stringify(PROTOCOL),

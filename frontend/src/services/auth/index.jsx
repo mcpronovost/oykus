@@ -98,7 +98,6 @@ const AuthProvider = ({ children }) => {
   };
 
   const fetchUniverses = async (signal) => {
-    console.log("fetchUniverses");
     if (!user) return;
     try {
       const r = await api.get("/game/universes/", signal ? { signal } : {});
@@ -113,7 +112,6 @@ const AuthProvider = ({ children }) => {
   };
 
   const fetchCurrentUniverse = async (slug = universe?.slug, signal) => {
-    console.log("fetchCurrentUniverse");
     if (!slug) return;
 
     try {
@@ -131,7 +129,6 @@ const AuthProvider = ({ children }) => {
   };
 
   const applyUniverseTheme = (theme = universe) => {
-    console.log("applyUniverseTheme", theme);
     if (!theme) return;
     let styleNode = document.getElementById("oyk-theme");
 
@@ -146,15 +143,14 @@ const AuthProvider = ({ children }) => {
         --oyk-c-primary: ${theme.c_primary};
         --oyk-c-primary-fg: ${theme.c_primary_fg};
 
-        ${Object.entries(theme.stylesheet)
+        ${theme.stylesheet ? Object.entries(theme.stylesheet)
           .map(([k, v]) => `--${k}: ${v};`)
-          .join("\n")}
+          .join("\n") : ""}
       }
     `;
   };
 
   const clearUniverseTheme = () => {
-    console.log("clearUniverseTheme");
     const styleNode = document.getElementById("oyk-theme");
 
     if (!styleNode) return;
