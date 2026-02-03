@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
 
-const OykDropdown = forwardRef(({ toggle, menu, direction = "left", disabled = false }, ref) => {
+const OykDropdown = forwardRef(({ toggle, menu, direction = "left", float = false, disabled = false }, ref) => {
   const dropdownRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -46,7 +46,7 @@ const OykDropdown = forwardRef(({ toggle, menu, direction = "left", disabled = f
         {toggle}
       </div>
       {isOpen && (
-        <div className={`oyk-dropdown-menu direction-${direction}`}>
+        <div className={`oyk-dropdown-menu direction-${direction} ${float ? "oyk-float" : ""}`}>
           {menu.map((item, index) => (
             <div key={index} className="oyk-dropdown-item">
               {item.divider ? (

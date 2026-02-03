@@ -120,6 +120,7 @@ export default function Planner() {
             )}
             {isDev ? (
               <OykDropdown
+                float
                 toggle={<OykButton icon={Settings} outline />}
                 menu={[{ label: t("New Status"), onClick: handleStatusCreateClick }]}
               />

@@ -76,6 +76,7 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
       actions={
         <>
           <OykDropdown
+            float
             toggle={<OykButton icon={Ellipsis} plain />}
             menu={[
               {

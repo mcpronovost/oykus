@@ -85,7 +85,7 @@
           input[type="radio"]:checked + &-btn {
             background-color: color-mix(in srgb, var(--oyk-c-primary) 20%, transparent);
             border-color: color-mix(in srgb, var(--oyk-c-primary) 40%, transparent);
-            color: var(--oyk-c-primary-fg);
+            color: var(--oyk-c-primary);
           }
 
           &-btn {

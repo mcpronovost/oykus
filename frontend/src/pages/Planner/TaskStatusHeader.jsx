@@ -99,6 +99,7 @@ export default function TaskStatusHeader({
           </button>
           {isDev ? (
             <OykDropdown
+              float
               toggle={
                 <button className="oyk-planner-status-item-header-actions-btn">
                   <EllipsisVertical size={16} />

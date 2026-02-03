@@ -15,8 +15,11 @@
 
   &-menu {
     background: var(--oyk-popper-bg);
-    border-radius: 2px;
-    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.4);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: var(--oyk-radius);
+    border-bottom-right-radius: var(--oyk-radius);
+    box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.4);
     color: var(--oyk-popper-fg);
     min-width: 200px;
     position: absolute;
@@ -27,13 +30,18 @@
     margin-top: 0.25rem;
     animation: dropdown-fade-in 0.15s ease-out;
 
+    &.oyk-float {
+      border-top-left-radius: var(--oyk-radius);
+      border-top-right-radius: var(--oyk-radius);
+      box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.4);
+    }
+
     &.direction-right {
       left: 0;
       right: auto;
     }
 
     &.direction-full {
-      box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.4);
       min-width: 100%;
       left: 0;
       right: auto;
