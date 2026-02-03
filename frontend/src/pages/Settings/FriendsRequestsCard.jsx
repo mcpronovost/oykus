@@ -33,12 +33,12 @@ export default function FriendsRequestsCard({
         {isRequest ? (
           <>
             <OykButton color="primary" onClick={() => onAccept("accept", data.slug)}>{t("Accept")}</OykButton>
-            <OykButton outline icon={Eye} onClick={() => n("users-profile", { userSlug: data.slug })} />
+            <OykButton outline icon={Eye} onClick={() => n("community-user-profile", { userSlug: data.slug })} />
             <OykButton outline color="danger" icon={UserX} onClick={() => onReject("reject", data.slug)} />
           </>
         ) : (
           <>
-            <OykButton outline icon={Eye} onClick={() => n("users-profile", { userSlug: data.slug })} />
+            <OykButton outline icon={Eye} onClick={() => n("community-user-profile", { userSlug: data.slug })} />
             <OykButton outline color="danger" onClick={() => onCancel("cancel", data.slug)}>
               {t("Cancel")}
             </OykButton>

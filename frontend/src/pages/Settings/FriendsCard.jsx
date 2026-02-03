@@ -35,7 +35,7 @@ export default function SettingsFriendsCard({ friend, fetchData = () => {} }) {
           </div>
         </header>
         <div className="oyk-settings-friends-list-item-actions">
-          <OykButton outline icon={Eye} onClick={() => n("users-profile", { userSlug: friend.slug })} />
+          <OykButton outline icon={Eye} onClick={() => n("community-user-profile", { userSlug: friend.slug })} />
           <OykButton outline color="danger" icon={UserX} onClick={() => setIsModalFriendsDeleteOpen(true)} />
         </div>
       </OykCard>

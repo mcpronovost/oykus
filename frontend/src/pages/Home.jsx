@@ -67,7 +67,7 @@ export default function Home() {
             <section style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
               {wioUsers?.length
                 ? wioUsers.map((u) => (
-                    <OykLink key={u.slug} routeName={"users-profile"} params={{ userSlug: u.slug }}>
+                    <OykLink key={u.slug} routeName={"community-user-profile"} params={{ userSlug: u.slug }}>
                       <OykAvatar name={u.name} abbr={u.abbr} src={u.avatar} borderSize={6} size={48} />
                     </OykLink>
                   ))

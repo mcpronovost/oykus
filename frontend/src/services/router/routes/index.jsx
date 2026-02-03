@@ -1,5 +1,7 @@
 import React from "react";
 import { AUTH_ROUTES } from "./auth";
+import { COMMUNITY_ROUTES } from "./community";
+import { UNIVERSES_ROUTES } from "./universes";
 import { SETTINGS_ROUTES } from "./settings";
 import { DEV_ROUTES } from "./dev";
 
@@ -61,24 +63,8 @@ export const ROUTES = [
     },
   },
   ...AUTH_ROUTES,
-  {
-    name: "users",
-    component: React.lazy(() => import("../../../pages/Users/Profile")),
-    paths: {
-      fr: "u",
-      en: "u",
-    },
-    children: [
-      {
-        name: "users-profile",
-        component: React.lazy(() => import("../../../pages/Users/Profile")),
-        paths: {
-          fr: "{userSlug}",
-          en: "{userSlug}",
-        },
-      },
-    ],
-  },
+  ...COMMUNITY_ROUTES,
+  ...UNIVERSES_ROUTES,
   ...SETTINGS_ROUTES,
   ...DEV_ROUTES,
   {

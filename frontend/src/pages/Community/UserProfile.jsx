@@ -1,4 +1,4 @@
-import "@/assets/styles/page/_users-profile.scss";
+import "@/assets/styles/page/_community-user-profile.scss";
 import { useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { useRouter } from "@/services/router";
@@ -6,7 +6,7 @@ import { useTranslation } from "@/services/translation";
 import { OykBanner, OykCard, OykFeedback, OykGrid } from "@/components/ui";
 import OykAppNotAuthorized from "@/components/core/AppNotAuthorized";
 
-export default function UserProfile() {
+export default function CommunityProfile() {
   const { params, routeTitle } = useRouter();
   const { t } = useTranslation();
 
