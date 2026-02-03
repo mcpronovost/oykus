@@ -8,7 +8,7 @@ import OykAppHeaderAuth from "./Auth";
 import OykAppHeaderUser from "./User";
 
 export default function AppHeader() {
-  const { isAuth } = useAuth();
+  const { isAuth, currentUniverse } = useAuth();
   const { storeAppSidebarOpen, setStoreAppSidebarOpen } = useStore();
 
   const handleToggleSidebar = () => {
@@ -22,7 +22,7 @@ export default function AppHeader() {
           {storeAppSidebarOpen ? <ArrowLeftFromLine size={18} /> : <ArrowRightFromLine size={18} />}
         </button>
       </section>
-      {isAuth ? <OykAppHeaderLeveling /> : <OykAppHeaderMenu />}
+      {isAuth ? currentUniverse?.is_mod_leveling_active ? <OykAppHeaderLeveling /> : null : <OykAppHeaderMenu />}
       <OykAppHeaderNotifications />
       <section className="oyk-app-header-user">{isAuth ? <OykAppHeaderUser /> : <OykAppHeaderAuth />}</section>
     </header>

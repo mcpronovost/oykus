@@ -17,6 +17,8 @@ try {
                gu.is_public,
                gu.is_mod_planner_active,
                gu.is_mod_forum_active,
+               gu.is_mod_game_active,
+               gu.is_mod_leveling_active,
                gu.is_mod_collectibles_active,
                gu.is_mod_achievements_active,
                gu.created_at,

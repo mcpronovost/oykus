@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS game_universes (
     is_mod_planner_active BOOL NOT NULL DEFAULT 0,
     is_mod_forum_active BOOL NOT NULL DEFAULT 0,
     is_mod_game_active BOOL NOT NULL DEFAULT 0,
+    is_mod_leveling_active BOOL NOT NULL DEFAULT 0,
     is_mod_collectibles_active BOOL NOT NULL DEFAULT 0,
     is_mod_achievements_active BOOL NOT NULL DEFAULT 0,
 

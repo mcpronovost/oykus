@@ -21,7 +21,7 @@ export default function OykAvatar({
   levelBorderColor = "var(--oyk-card-bg)",
   isPrivate = true,
 }) {
-  const { isAuth } = useAuth();
+  const { isAuth, currentUniverse } = useAuth();
 
   const showImg = useMemo(() => !isPrivate || (isPrivate && isAuth), [isPrivate, isAuth]);
 
@@ -65,7 +65,7 @@ export default function OykAvatar({
           </span>
         )}
       </div>
-      {level ? (
+      {level && currentUniverse?.is_mod_leveling_active ? (
         <span
           className="oyk-avatar-level"
           style={{
