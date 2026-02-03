@@ -30,6 +30,12 @@ function update_wio() {
     global $pdo;
     $user = require_auth(true);
 
+    $ignore_paths = ["/api/v1/theme.php"];
+
+    if (in_array($_SERVER["REQUEST_URI"], $ignore_paths)) {
+        return;
+    }
+
     try {
         if ($user) {
             $stmt = $pdo->prepare("
