@@ -1,12 +1,10 @@
 import { useState } from "react";
 
 import { api } from "@/services/api";
-import { useStore } from "@/services/store";
 import { useTranslation } from "@/services/translation";
 import { OykButton, OykForm, OykFormField, OykFormMessage, OykModal } from "@/components/ui";
 
 export default function ModalStatusEdit({ isOpen, onClose, status }) {
-  const { currentWorld } = useStore();
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);

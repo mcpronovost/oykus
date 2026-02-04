@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Plus, EllipsisVertical, Edit, Trash2 } from "lucide-react";
 
 import { useAuth } from "@/services/auth";
-import { useStore } from "@/services/store";
 import { useTranslation } from "@/services/translation";
 import { OykDropdown, OykModal } from "@/components/ui";
 
@@ -15,7 +14,6 @@ export default function TaskStatusHeader({
   onTasksUpdate = () => {},
 }) {
   const { isDev } = useAuth();
-  const { currentWorld } = useStore();
   const { t } = useTranslation();
 
   const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);

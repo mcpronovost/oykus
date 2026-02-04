@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Ellipsis, History, Trash2, X } from "lucide-react";
 
 import { api } from "@/services/api";
-import { useStore } from "@/services/store";
+import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
 import { oykDate } from "@/utils/formatters";
 import {
@@ -16,7 +16,7 @@ import {
 } from "@/components/ui";
 
 export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
-  const { currentUser } = useStore();
+  const { currentUser } = useAuth();
   const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);
