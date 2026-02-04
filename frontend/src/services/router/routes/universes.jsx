@@ -3,20 +3,56 @@ import React from "react";
 export const UNIVERSES_ROUTES = [
   {
     name: "universes",
-    component: React.lazy(() => import("../../../pages/Dev")),
+    component: React.lazy(() => import("../../../pages/Universes")),
     paths: {
       fr: "u",
       en: "u",
     },
     children: [
       {
-        name: "dev-components",
-        component: React.lazy(() => import("../../../pages/Dev/Components")),
-        require_dev: true,
+        name: "universe",
+        component: React.lazy(() => import("../../../pages/Universes/Admin")),
         paths: {
-          fr: "composants",
-          en: "components",
+          fr: "{universeSlug}",
+          en: "{universeSlug}",
         },
+        children: [
+          {
+            name: "universe-admin",
+            component: React.lazy(() => import("../../../pages/Universes/Admin")),
+            paths: {
+              fr: "admin",
+              en: "admin",
+            },
+            params: {
+              section: "profile",
+            },
+            children: [
+              {
+                name: "universe-admin-profile",
+                component: React.lazy(() => import("../../../pages/Universes/Admin")),
+                paths: {
+                  fr: "profil",
+                  en: "profile",
+                },
+                params: {
+                  section: "profile",
+                },
+              },
+              {
+                name: "universe-admin-modules",
+                component: React.lazy(() => import("../../../pages/Universes/Admin")),
+                paths: {
+                  fr: "modules",
+                  en: "modules",
+                },
+                params: {
+                  section: "modules",
+                },
+              },
+            ],
+          },
+        ],
       },
     ],
   },
