@@ -1,11 +1,9 @@
 import { Info } from "lucide-react";
 
-import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import { OykBanner, OykButton, OykCard } from "@/components/ui";
 
-export default function UniverseAdminModulesCard({ module, fetchData = () => {} }) {
-  const { n } = useRouter();
+export default function UniverseAdminModulesCard({ module }) {
   const { t } = useTranslation();
 
   return (
