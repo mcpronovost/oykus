@@ -17,6 +17,7 @@
     # Variables
     SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
 
+    SetEnv HTTP_ISPROD true
     SetEnv HTTP_DB_HOST example
     SetEnv HTTP_DB_NAME example
     SetEnv HTTP_DB_USER example
