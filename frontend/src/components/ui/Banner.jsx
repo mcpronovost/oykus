@@ -5,6 +5,7 @@ export default function OykBanner({
   children,
   avatarSrc,
   avatarAbbr,
+  avatarIcon,
   avatarSize,
   avatarBorderSize,
   avatarBorderColor,
@@ -50,6 +51,7 @@ export default function OykBanner({
           <OykAvatar
             src={avatarSrc}
             abbr={avatarAbbr}
+            icon={avatarIcon}
             size={avatarSize}
             borderSize={avatarBorderSize}
             borderColor={avatarBorderColor}
