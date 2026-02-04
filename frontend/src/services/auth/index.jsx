@@ -28,8 +28,6 @@ const AuthProvider = ({ children }) => {
   });
   const [theme, setTheme] = useState(null);
 
-  const appliedThemeRef = useRef(new Set());
-
   const setUser = (u) => {
     if (u) {
       const payload = {
@@ -48,6 +46,7 @@ const AuthProvider = ({ children }) => {
       setUniverses(null);
       setUniverse(null);
       clearUniverseTheme();
+      oykCookieDelete("oyk-theme");
       storeRemove(KEY_GAME_UNIVERSES);
       storeRemove(KEY_GAME_CURRENT_UNIVERSE);
     }
@@ -64,16 +63,15 @@ const AuthProvider = ({ children }) => {
   const fetchUser = async (signal) => {
     const token = storeGet(KEY_RAT);
     if (token) {
-      try {
-        // Validate token with backend
-        const r = await api.get("/auth/me/", signal ? { signal } : {});
-        if (!r.ok) throw new Error();
-        setUser(r.user);
-        fetchNotifications(signal);
-      } catch {
-        if (import.meta.env.PROD) {
+    try {
+      const r = await api.get("/auth/me/", signal ? { signal } : {});
+      if (!r.ok) throw new Error();
+      setUser(r.user);
+      fetchNotifications(signal);
+    } catch {
+      if (import.meta.env.PROD) {
           setRat(null);
-          setUser(null);
+        setUser(null);
         }
       }
     }
