@@ -37,18 +37,22 @@ class OykApi {
     }
 
     try {
-      const response = await fetch(url, fetchOptions);
+      let response = await fetch(url, fetchOptions);
 
       if (response.status === 401) {
         await this.refresh();
 
-        response = await fetch(url, fetchOptions);
+        response = await fetch(url, {
+          ...fetchOptions,
+          headers: {
+            ...fetchOptions.headers,
+            Authorization: `Oyk ${this.rat}`,
+          },
+        });
       }
 
       if (!response.ok) {
-        if (
-          (url.endsWith("logout/") || url.endsWith("logoutall/"))
-        ) {
+        if (url.endsWith("logout/") || url.endsWith("logoutall/")) {
           return {
             success: true,
           };
