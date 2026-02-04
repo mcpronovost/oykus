@@ -1,13 +1,13 @@
 import { API_URL, API_HEADERS, oykEncode, oykDecode } from "./utils";
 import { KEY_USER, KEY_RAT } from "@/services/store/constants";
-import { storeGet, storeRemove } from "@/services/store/utils";
+import { storeGet, storeSet, storeRemove } from "@/services/store/utils";
 
 class OykApi {
   get lang() {
     return window.document.documentElement.lang;
   }
 
-  get token() {
+  get rat() {
     return storeGet(KEY_RAT);
   }
 
@@ -23,15 +23,27 @@ class OykApi {
       delete headers["Content-Type"];
     }
 
-    if (this.token) {
-      headers.Authorization = `Oyk ${this.token}`;
+    if (this.rat) {
+      headers.Authorization = `Oyk ${this.rat}`;
+    }
+
+    const fetchOptions = {
+      ...options,
+      headers,
+    };
+
+    if (options.withCredentials === true) {
+      fetchOptions.credentials = "include";
     }
 
     try {
-      const response = await fetch(url, {
-        ...options,
-        headers,
-      });
+      const response = await fetch(url, fetchOptions);
+
+      if (response.status === 401) {
+        await this.refresh();
+
+        response = await fetch(url, fetchOptions);
+      }
 
       if (!response.ok) {
         if (
@@ -112,15 +124,29 @@ class OykApi {
   }
 
   async login(data) {
-    const result = await this.post("/auth/login/", data);
-    return result;
+    const r = await this.post("/auth/login/", data, { withCredentials: true });
+    return r;
+  }
+
+  async refresh() {
+    try {
+      const r = await this.post("/auth/refresh/", {}, { withCredentials: true });
+      if (!r.ok) throw new Error(401);
+      storeSet(KEY_RAT, r.rat);
+    } catch {
+      this.logout();
+    }
+    return;
   }
 
   async logout() {
-    const result = await this.post("/auth/logout/");
-    storeRemove(KEY_USER);
-    storeRemove(KEY_RAT);
-    return result;
+    try {
+      await this.post("/auth/logout/", {}, { withCredentials: true });
+    } finally {
+      storeRemove(KEY_USER);
+      storeRemove(KEY_RAT);
+      return;
+    }
   }
 }
 

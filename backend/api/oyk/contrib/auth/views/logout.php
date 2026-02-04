@@ -3,7 +3,21 @@
 header("Content-Type: application/json");
 
 global $pdo;
-$authUser = require_auth();
+
+$isProd = getenv("HTTP_ISPROD");
+$authUser = require_auth(true);
+
+setcookie(
+    "oyk-rat",
+    "",
+    [
+        "expires"  => time() - 3600,
+        "path"     => "/",
+        "secure"   => $isProd,
+        "httponly" => true,
+        "samesite" => $isProd ? "Lax" : "None",
+    ]
+);
 
 try {
     $qry = $pdo->prepare("

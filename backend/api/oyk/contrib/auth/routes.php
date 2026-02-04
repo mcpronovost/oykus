@@ -11,6 +11,10 @@ route("POST", "#^$auth/login$#", fn() =>
     require $path."login.php"
 );
 
+route("POST", "#^$auth/refresh$#", fn() =>
+    require $path."refresh.php"
+);
+
 route("POST", "#^$auth/logout$#", fn() =>
     require $path."logout.php"
 );

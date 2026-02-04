@@ -16,7 +16,10 @@ function generate_jwt($payload) {
 
     $payload["iss"] = JWT_ISSUER;
     $payload["iat"] = time();
-    $payload["exp"] = time() + JWT_EXPIRATION;
+
+    if (!isset($payload["exp"])) {
+        $payload["exp"] = time() + JWT_EXPIRATION;
+    }
 
     $base64Header  = base64url_encode(json_encode($header));
     $base64Payload = base64url_encode(json_encode($payload));
@@ -80,10 +83,10 @@ function decode_jwt($token) {
 }
 
 function get_guest_id(): string {
-    if (!isset($_COOKIE["oyk_gid"])) {
+    if (!isset($_COOKIE["oyk-gid"])) {
         $token = bin2hex(random_bytes(16));
         setcookie(
-            "oyk_gid",
+            "oyk-gid",
             $token,
             time() + 86400,
             "/",
@@ -94,5 +97,5 @@ function get_guest_id(): string {
         return $token;
     }
 
-    return $_COOKIE["oyk_gid"];
+    return $_COOKIE["oyk-gid"];
 }

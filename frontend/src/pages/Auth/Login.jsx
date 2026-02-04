@@ -69,7 +69,7 @@ export default function Login() {
     try {
       const r = await api.login(formData);
       if (!r.ok) throw new Error(r.error || t("An error occurred"));
-      setRat(r.token);
+      setRat(r.rat);
       setUser(r.user);
       n("home");
     } catch (e) {
