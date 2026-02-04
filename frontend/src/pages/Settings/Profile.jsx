@@ -5,7 +5,7 @@ import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import { OykBanner, OykButton, OykCard, OykForm, OykFormField, OykFormMessage } from "@/components/ui";
+import { OykBanner, OykButton, OykCard, OykForm, OykFormField, OykFormMessage, OykHeading } from "@/components/ui";
 
 export default function SettingsProfile() {
   const { currentUser, setUser } = useAuth();
@@ -25,7 +25,7 @@ export default function SettingsProfile() {
     cover: currentUser.cover || null,
     name: currentUser.name || "",
     slug: currentUser.slug || "",
-    abbr: currentUser.abbr || ""
+    abbr: currentUser.abbr || "",
   });
 
   const handleChange = (e) => {
@@ -46,11 +46,11 @@ export default function SettingsProfile() {
       }));
     }
   };
-  
+
   const handleImageClick = (field) => {
     setHasError((prev) => ({
       ...prev,
-      [field]: null
+      [field]: null,
     }));
     if (field === "avatar") avatarRef.current?.click();
     if (field === "cover") coverRef.current?.click();
@@ -100,7 +100,7 @@ export default function SettingsProfile() {
       cover: currentUser.cover || null,
       name: currentUser.name || "",
       slug: currentUser.slug || "",
-      abbr: currentUser.abbr || ""
+      abbr: currentUser.abbr || "",
     });
     nameRef.current.value = currentUser.name || "";
     slugRef.current.value = currentUser.slug || "";
@@ -126,7 +126,7 @@ export default function SettingsProfile() {
         ...prev,
         name: r.user.name,
         slug: r.user.slug,
-        abbr: r.user.abbr
+        abbr: r.user.abbr,
       }));
       nameRef.current.value = r.user.name;
       slugRef.current.value = r.user.slug;
@@ -156,7 +156,7 @@ export default function SettingsProfile() {
       }
     };
   }, [profileForm.avatar, profileForm.cover]);
-  
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -173,9 +173,16 @@ export default function SettingsProfile() {
       <article className="oyk-settings-profile-visual">
         <div className="oyk-settings-profile-visual-preview">
           <OykCard nop fh alignTop>
-            <OykBanner avatarSize={80} avatarBorderSize={8} avatarTop={48} avatarSrc={profileForm.avatar} coverSrc={profileForm.cover} height={150} />
+            <OykBanner
+              avatarSize={80}
+              avatarBorderSize={8}
+              avatarTop={48}
+              avatarSrc={profileForm.avatar}
+              coverSrc={profileForm.cover}
+              height={150}
+            />
             {(hasError?.avatar || hasError?.cover) && (
-              <OykFormMessage hasError={hasError?.avatar || hasError?.cover} style={{margin: "0 16px 16px"}} />
+              <OykFormMessage hasError={hasError?.avatar || hasError?.cover} style={{ margin: "0 16px 16px" }} />
             )}
           </OykCard>
         </div>
@@ -211,8 +218,8 @@ export default function SettingsProfile() {
         </div>
       </article>
       <OykCard>
+        <OykHeading subtitle tag="h2" title={t("Your Profile")} nop />
         <OykForm className="oyk-settings-form" isLoading={isLoading} onSubmit={handleSubmit}>
-          <h2 className="oyk-settings-form-title">{t("Your Profile")}</h2>
           <OykFormField
             ref={nameRef}
             label={t("Public Name")}
@@ -242,23 +249,12 @@ export default function SettingsProfile() {
             required
             disabled
           />
-          {hasError?.message && (
-            <OykFormMessage hasError={hasError?.message} />
-          )}
+          {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
           <div className="oyk-form-actions">
-            <OykButton
-              type="submit"
-              color="primary"
-              disabled={isLoading}
-            >
+            <OykButton type="submit" color="primary" disabled={isLoading}>
               {isLoading ? t("Saving...") : t("Save")}
             </OykButton>
-            <OykButton
-              type="reset"
-              disabled={isLoading}
-              outline
-              onClick={handleReset}
-            >
+            <OykButton type="reset" disabled={isLoading} outline onClick={handleReset}>
               {t("Cancel")}
             </OykButton>
           </div>

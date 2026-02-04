@@ -54,7 +54,7 @@ export default function UniverseAdminModules() {
         <OykCard>
           <OykAlert
             title={t("An error occurred")}
-            message={`${t("Unable to access friends requests")}. ${t("Check your internet connection or try again later")}`}
+            message={`${t("Unable to access modules list")}. ${t("Check your internet connection or try again later")}`}
             variant="danger"
           />
         </OykCard>
