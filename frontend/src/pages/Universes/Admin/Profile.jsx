@@ -8,11 +8,11 @@ import { useTranslation } from "@/services/translation";
 import { OykBanner, OykButton, OykCard, OykForm, OykFormField, OykFormMessage, OykHeading } from "@/components/ui";
 
 export default function UniverseAdminProfile() {
-  const { currentUser, setUser } = useAuth();
+  const { setUser, currentUniverse } = useAuth();
   const { routeTitle } = useRouter();
   const { t } = useTranslation();
 
-  const avatarRef = useRef(null);
+  const logoRef = useRef(null);
   const coverRef = useRef(null);
   const nameRef = useRef(null);
   const slugRef = useRef(null);
@@ -21,11 +21,11 @@ export default function UniverseAdminProfile() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
   const [profileForm, setProfileForm] = useState({
-    avatar: currentUser.avatar || null,
-    cover: currentUser.cover || null,
-    name: currentUser.name || "",
-    slug: currentUser.slug || "",
-    abbr: currentUser.abbr || "",
+    logo: currentUniverse.logo || null,
+    cover: currentUniverse.cover || null,
+    name: currentUniverse.name || "",
+    slug: currentUniverse.slug || "",
+    abbr: currentUniverse.abbr || "",
   });
 
   const handleChange = (e) => {
@@ -52,7 +52,7 @@ export default function UniverseAdminProfile() {
       ...prev,
       [field]: null,
     }));
-    if (field === "avatar") avatarRef.current?.click();
+    if (field === "logo") logoRef.current?.click();
     if (field === "cover") coverRef.current?.click();
   };
 
@@ -96,15 +96,15 @@ export default function UniverseAdminProfile() {
 
   const handleReset = async (e) => {
     setProfileForm({
-      logo: currentUser.logo || null,
-      cover: currentUser.cover || null,
-      name: currentUser.name || "",
-      slug: currentUser.slug || "",
-      abbr: currentUser.abbr || "",
+      logo: currentUniverse.logo || null,
+      cover: currentUniverse.cover || null,
+      name: currentUniverse.name || "",
+      slug: currentUniverse.slug || "",
+      abbr: currentUniverse.abbr || "",
     });
-    nameRef.current.value = currentUser.name || "";
-    slugRef.current.value = currentUser.slug || "";
-    abbrRef.current.value = currentUser.abbr || "";
+    nameRef.current.value = currentUniverse.name || "";
+    slugRef.current.value = currentUniverse.slug || "";
+    abbrRef.current.value = currentUniverse.abbr || "";
   };
 
   const handleSubmit = async () => {
@@ -113,8 +113,8 @@ export default function UniverseAdminProfile() {
     try {
       const formData = new FormData();
       formData.append("name", profileForm.name);
-      if (profileForm.avatarFile) {
-        formData.append("avatar", profileForm.avatarFile);
+      if (profileForm.logoFile) {
+        formData.append("logo", profileForm.logoFile);
       }
       if (profileForm.coverFile) {
         formData.append("cover", profileForm.coverFile);
@@ -148,14 +148,14 @@ export default function UniverseAdminProfile() {
 
   useEffect(() => {
     return () => {
-      if (profileForm.avatar?.startsWith("blob:")) {
-        URL.revokeObjectURL(profileForm.avatar);
+      if (profileForm.logo?.startsWith("blob:")) {
+        URL.revokeObjectURL(profileForm.logo);
       }
       if (profileForm.cover?.startsWith("blob:")) {
         URL.revokeObjectURL(profileForm.cover);
       }
     };
-  }, [profileForm.avatar, profileForm.cover]);
+  }, [profileForm.logo, profileForm.cover]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -174,30 +174,31 @@ export default function UniverseAdminProfile() {
         <div className="oyk-settings-profile-visual-preview">
           <OykCard nop fh alignTop>
             <OykBanner
+              avatarAbbr={profileForm.abbr}
               avatarSize={80}
               avatarBorderSize={8}
               avatarTop={48}
-              avatarSrc={profileForm.avatar}
+              avatarSrc={profileForm.logo}
               coverSrc={profileForm.cover}
               height={150}
             />
-            {(hasError?.avatar || hasError?.cover) && (
-              <OykFormMessage hasError={hasError?.avatar || hasError?.cover} style={{ margin: "0 16px 16px" }} />
+            {(hasError?.logo || hasError?.cover) && (
+              <OykFormMessage hasError={hasError?.logo || hasError?.cover} style={{ margin: "0 16px 16px" }} />
             )}
           </OykCard>
         </div>
         <div className="oyk-settings-profile-visual-avatar">
-          <OykCard fh clickable onClick={() => handleImageClick("avatar")}>
+          <OykCard fh clickable onClick={() => handleImageClick("logo")}>
             <User size={24} color={"var(--oyk-c-primary)"} />
-            <p className="oyk-settings-profile-visual-avatar-title">{t("Change Avatar")}</p>
+            <p className="oyk-settings-profile-visual-avatar-title">{t("Change Logo")}</p>
             <small className="oyk-settings-profile-visual-avatar-max">{t("200x200px (max 2MB)")}</small>
             <input
-              ref={avatarRef}
-              name="avatar"
+              ref={logoRef}
+              name="logo"
               type="file"
               accept="image/png, image/jpeg, image/webp"
               hidden
-              onChange={handleAvatarChange}
+              onChange={handleLogoChange}
             />
           </OykCard>
         </div>
