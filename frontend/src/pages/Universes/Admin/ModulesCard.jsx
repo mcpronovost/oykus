@@ -19,7 +19,11 @@ export default function UniverseAdminModulesCard({ module }) {
           </div>
         </header>
         <div className="oyk-universes-admin-modules-list-item-actions">
-          {module.active ? (
+          {module.disabled ? (
+            <OykButton outline disabled>
+              <span>{t("Locked")}</span>
+            </OykButton>
+          ) : module.active ? (
             <OykButton outline color="danger" onClick={() => {}}>
               <span>{t("Deactivate")}</span>
             </OykButton>
@@ -28,7 +32,7 @@ export default function UniverseAdminModulesCard({ module }) {
               <span>{t("Activate")}</span>
             </OykButton>
           )}
-          <OykButton outline icon={Info} />
+          {/*!module.disabled ? (<OykButton outline icon={Info} />) : null*/}
         </div>
       </OykCard>
     </li>

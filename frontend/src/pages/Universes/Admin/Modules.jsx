@@ -30,10 +30,18 @@ export default function UniverseAdminModules() {
           active: r.universe.is_mod_planner_active || 0,
         },
         {
+          name: t("Forum"),
+          description: t("Discuss and interact with other members"),
+          icon: MessagesSquare,
+          active: r.universe.is_mod_forum_active || 0,
+          disabled: true,
+        },
+        {
           name: t("Collectibles"),
           description: t("Collect and manage items and rewards"),
           icon: GalleryHorizontalEnd,
           active: r.universe.is_mod_collectibles_active || 0,
+          disabled: true,
         },
         {
           name: t("Achievements"),
@@ -42,16 +50,11 @@ export default function UniverseAdminModules() {
           active: r.universe.is_mod_achievements_active || 0,
         },
         {
-          name: t("Forum"),
-          description: t("Discuss and interact with other members"),
-          icon: MessagesSquare,
-          active: r.universe.is_mod_forum_active || 0,
-        },
-        {
           name: t("Game"),
           description: t("Game mechanics specific to this universe"),
           icon: Swords,
           active: r.universe.is_mod_game_active || 0,
+          disabled: true,
         },
         {
           name: t("Leveling"),
