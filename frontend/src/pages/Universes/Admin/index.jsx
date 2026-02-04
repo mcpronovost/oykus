@@ -1,4 +1,4 @@
-import "@/assets/styles/page/_settings.scss";
+import "@/assets/styles/page/_universes-admin.scss";
 import { Orbit, Construction } from "lucide-react";
 
 import { useAuth } from "@/services/auth";
@@ -48,35 +48,35 @@ export default function UniverseAdmin() {
   }
 
   return (
-    <section className="oyk-page oyk-settings">
+    <section className="oyk-page oyk-universes-admin">
       <OykHeading title={t("Administration")} />
       <OykGrid>
         <OykGridRow>
-          <OykGridNav className="oyk-settings-grid-nav">
-            <nav className="oyk-settings-nav">
+          <OykGridNav className="oyk-universes-admin-grid-nav">
+            <nav className="oyk-universes-admin-nav">
               <ul>
                 {menu.map((m, index) => (
-                  <li key={index} className={`oyk-settings-nav-item ${index <= 0 ? "oyk-first": ""}`}>
-                    <header className="oyk-settings-nav-header">
-                      <span className="oyk-settings-nav-header-icon">
+                  <li key={index} className={`oyk-universes-admin-nav-item ${index <= 0 ? "oyk-first": ""}`}>
+                    <header className="oyk-universes-admin-nav-header">
+                      <span className="oyk-universes-admin-nav-header-icon">
                         <m.Icon size={24} color={"var(--oyk-c-primary)"} />
                       </span>
-                      <span className="oyk-settings-nav-header-title">
-                        <span className="oyk-settings-nav-header-title-name">
+                      <span className="oyk-universes-admin-nav-header-title">
+                        <span className="oyk-universes-admin-nav-header-title-name">
                           {m.title}
                         </span>
-                        <small className="oyk-settings-nav-header-title-desc">
+                        <small className="oyk-universes-admin-nav-header-title-desc">
                           {m.description}
                         </small>
                       </span>
                     </header>
-                    <ul className="oyk-settings-nav-menu">
+                    <ul className="oyk-universes-admin-nav-menu">
                       {m.links.map((l, li) => (
-                        <li key={li} className="oyk-settings-nav-menu-item">
+                        <li key={li} className="oyk-universes-admin-nav-menu-item">
                           <OykLink
                             routeName={l.routeName}
                             params={{ universeSlug: params?.universeSlug }}
-                            className={`oyk-settings-nav-menu-item-link ${`universe-admin-${params?.section}` === l.routeName ? "oyk-active" : ""}`}
+                            className={`oyk-universes-admin-nav-menu-item-link ${`universe-admin-${params?.section}` === l.routeName ? "oyk-active" : ""}`}
                             disabled={l.disabled}
                           >
                             {l.name}

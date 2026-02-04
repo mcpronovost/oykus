@@ -16,7 +16,7 @@ try {
                gt.c_primary_fg
         FROM game_universes gu
         LEFT JOIN game_themes gt ON gt.universe = gu.id AND gt.is_active = 1
-        WHERE gu.is_public = 1 OR
+        WHERE gu.visibility = 4 OR
               gu.owner = ?
         ORDER BY gu.is_default DESC,
                 (gu.owner = ?) DESC,

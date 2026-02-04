@@ -1,6 +1,12 @@
 <?php
 global $pdo;
 
+# VISIBILITY
+#   1 = OWNER
+#   2 = ADMINS
+#   3 = MODOS
+#   4 = PUBLIC
+
 $sql = "
 CREATE TABLE IF NOT EXISTS game_universes (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -18,7 +24,8 @@ CREATE TABLE IF NOT EXISTS game_universes (
 
     is_default BOOL NOT NULL DEFAULT 0,
     is_active BOOL NOT NULL DEFAULT 1,
-    is_public BOOL NOT NULL DEFAULT 0,
+    
+    visibility TINYINT NOT NULL DEFAULT 1,
 
     is_mod_planner_active BOOL NOT NULL DEFAULT 0,
     is_mod_forum_active BOOL NOT NULL DEFAULT 0,

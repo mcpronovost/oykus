@@ -14,7 +14,7 @@ try {
                gu.logo,
                gu.cover,
                gu.is_default,
-               gu.is_public,
+               gu.visibility,
                gu.is_mod_planner_active,
                gu.is_mod_forum_active,
                gu.is_mod_game_active,
@@ -25,7 +25,7 @@ try {
                gu.updated_at
         FROM game_universes gu
         WHERE gu.slug = ? AND 
-             (gu.is_public = 1 OR gu.owner = ?)
+             (gu.visibility = 4 OR gu.owner = ?)
         LIMIT 1;
     ");
 

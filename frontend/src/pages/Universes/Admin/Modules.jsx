@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Frown } from "lucide-react";
+import { CircleFadingArrowUp, Frown, GalleryHorizontalEnd, ListTodo, MessagesSquare, Star, Swords } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import { OykAlert, OykCard, OykFeedback, OykHeading, OykLoading } from "@/components/ui";
-import OykFriendsCard from "./FriendsCard";
+import OykModulesCard from "./ModulesCard";
 
 export default function UniverseAdminModules() {
   const { routeTitle, params } = useRouter();
@@ -18,10 +18,48 @@ export default function UniverseAdminModules() {
   const fetchModulesData = async (signal) => {
     setIsLoading(true);
     setHasError(null);
+    setModules([]);
     try {
-      const r = await api.get(`/universes/${params?.universeSlug}/admin/modules/`, signal ? { signal } : {});
-      if (!r.ok || !r.modules) throw Error();
-      setModules(r.modules);
+      const r = await api.get(`/game/universes/${params?.universeSlug}/`, signal ? { signal } : {});
+      if (!r.ok || !r.universe) throw Error();
+      setModules([
+        {
+          name: t("Planner"),
+          description: t("Plan and track tasks, assign people, and more"),
+          icon: ListTodo,
+          active: r.universe.is_mod_planner_active || 0,
+        },
+        {
+          name: t("Collectibles"),
+          description: t("Collect and manage items and rewards"),
+          icon: GalleryHorizontalEnd,
+          active: r.universe.is_mod_collectibles_active || 0,
+        },
+        {
+          name: t("Achievements"),
+          description: t("Unlock achievements based on activity and interactions"),
+          icon: Star,
+          active: r.universe.is_mod_achievements_active || 0,
+        },
+        {
+          name: t("Forum"),
+          description: t("Discuss and interact with other members"),
+          icon: MessagesSquare,
+          active: r.universe.is_mod_forum_active || 0,
+        },
+        {
+          name: t("Game"),
+          description: t("Game mechanics specific to this universe"),
+          icon: Swords,
+          active: r.universe.is_mod_game_active || 0,
+        },
+        {
+          name: t("Leveling"),
+          description: t("Gain levels through interactions and activity"),
+          icon: CircleFadingArrowUp,
+          active: r.universe.is_mod_leveling_active || 0,
+        },
+      ]);
     } catch (e) {
       if (e?.name === "AbortError") return;
       setHasError({
@@ -48,7 +86,7 @@ export default function UniverseAdminModules() {
   }, []);
 
   return (
-    <section className="oyk-settings-friends">
+    <section className="oyk-universes-admin-modules">
       <OykHeading subtitle tag="h2" title={t("Manage Modules")} nop />
       {hasError?.fetch ? (
         <OykCard>
@@ -62,15 +100,15 @@ export default function UniverseAdminModules() {
         <OykLoading />
       ) : (
         <>
-          {friend?.length > 0 ? (
-            <ul className="oyk-settings-friends-list">
-              {friend.map((f) => (
-                <OykFriendsCard key={f.slug} friend={f} fetchData={fetchFriendsData} />
+          {modules?.length > 0 ? (
+            <ul className="oyk-universes-admin-modules-list">
+              {modules.map((m) => (
+                <OykModulesCard key={m.name} module={m} />
               ))}
             </ul>
           ) : (
             <OykCard>
-              <OykFeedback ghost title={t("No friends")} icon={Frown} />
+              <OykFeedback ghost title={t("No modules found")} icon={Frown} />
             </OykCard>
           )}
         </>

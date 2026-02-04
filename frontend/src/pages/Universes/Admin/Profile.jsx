@@ -169,9 +169,9 @@ export default function UniverseAdminProfile() {
   }, []);
 
   return (
-    <section className="oyk-settings-profile">
-      <article className="oyk-settings-profile-visual">
-        <div className="oyk-settings-profile-visual-preview">
+    <section className="oyk-universes-admin-profile">
+      <article className="oyk-universes-admin-profile-visual">
+        <div className="oyk-universes-admin-profile-visual-preview">
           <OykCard nop fh alignTop>
             <OykBanner
               avatarAbbr={profileForm.abbr}
@@ -187,11 +187,11 @@ export default function UniverseAdminProfile() {
             )}
           </OykCard>
         </div>
-        <div className="oyk-settings-profile-visual-avatar">
+        <div className="oyk-universes-admin-profile-visual-avatar">
           <OykCard fh clickable onClick={() => handleImageClick("logo")}>
             <User size={24} color={"var(--oyk-c-primary)"} />
-            <p className="oyk-settings-profile-visual-avatar-title">{t("Change Logo")}</p>
-            <small className="oyk-settings-profile-visual-avatar-max">{t("200x200px (max 2MB)")}</small>
+            <p className="oyk-universes-admin-profile-visual-avatar-title">{t("Change Logo")}</p>
+            <small className="oyk-universes-admin-profile-visual-avatar-max">{t("200x200px (max 2MB)")}</small>
             <input
               ref={logoRef}
               name="logo"
@@ -202,11 +202,11 @@ export default function UniverseAdminProfile() {
             />
           </OykCard>
         </div>
-        <div className="oyk-settings-profile-visual-cover">
+        <div className="oyk-universes-admin-profile-visual-cover">
           <OykCard fh clickable onClick={() => handleImageClick("cover")}>
             <Image size={24} color={"var(--oyk-c-primary)"} />
-            <p className="oyk-settings-profile-visual-cover-title">{t("Change Cover")}</p>
-            <small className="oyk-settings-profile-visual-cover-max">{t("1136x256px (max 2MB)")}</small>
+            <p className="oyk-universes-admin-profile-visual-cover-title">{t("Change Cover")}</p>
+            <small className="oyk-universes-admin-profile-visual-cover-max">{t("1136x256px (max 2MB)")}</small>
             <input
               ref={coverRef}
               name="cover"
@@ -220,7 +220,7 @@ export default function UniverseAdminProfile() {
       </article>
       <OykCard>
         <OykHeading subtitle tag="h2" title={t("Universe Profile")} nop />
-        <OykForm className="oyk-settings-form" isLoading={isLoading} onSubmit={handleSubmit}>
+        <OykForm className="oyk-universes-admin-form" isLoading={isLoading} onSubmit={handleSubmit}>
           <OykFormField
             ref={nameRef}
             label={t("Name")}
