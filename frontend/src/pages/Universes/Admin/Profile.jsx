@@ -132,7 +132,6 @@ export default function UniverseAdminProfile() {
       slugRef.current.value = r.user.slug;
       abbrRef.current.value = r.user.abbr;
     } catch (e) {
-      console.log(e?.message);
       if (e?.message && e.message.includes("uniq_name")) {
         setHasError(() => ({
           name: t("This name is already in use"),
