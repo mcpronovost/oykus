@@ -39,7 +39,7 @@ export default function OykAvatar({
           backgroundColor: showImg && src ? borderColor : bgColor,
           borderColor: borderColor,
           borderWidth: `${borderSize}px`,
-          borderRadius: borderRadius,
+          borderRadius: borderRadius.endsWith("px") ? `${Number(borderRadius.replace("px", "")) + (Number(borderRadius.replace("px", "")) / 2)}px` : borderRadius,
           color: fgColor,
           width: `${size}px`,
           height: `${size}px`,
@@ -54,6 +54,9 @@ export default function OykAvatar({
             }
             alt={name}
             className="oyk-avatar-img"
+            style= {{
+              borderRadius: borderRadius
+            }}
           />
         ) : abbr || name ? (
           <span className="oyk-avatar-abbr" style={{ fontSize: size * 0.35 }}>

@@ -31,7 +31,7 @@ export default function Header() {
                 >
                   <span className="oyk-app-sidebar-header-button-dropdown-item-logo">
                     {u.logo ? (
-                      <OykAvatar src={u.logo} size={32} name={u.name} borderRadius="8px" borderSize={0} />
+                      <OykAvatar src={u.logo} size={32} name={u.name} borderColor="transparent" borderRadius="6px" borderSize={0} />
                     ) : (
                       <SquircleDashed size={24} color={u.c_primary ? u.c_primary : "var(--oyk-default-primary)"} />
                     )}
@@ -53,9 +53,9 @@ export default function Header() {
           <div className="oyk-app-sidebar-header-button">
             <span className="oyk-app-sidebar-header-button-logo">
               {!currentUniverse ? (
-                <OykAvatar src={imgOykus} size={32} name="Oykus" borderSize={0} isPrivate={false} />
+                <OykAvatar src={imgOykus} size={32} name="Oykus" borderColor="transparent" borderRadius="6px" borderSize={0} isPrivate={false} />
               ) : currentUniverse.logo ? (
-                <OykAvatar src={currentUniverse.logo} size={32} name={currentUniverse.name} borderRadius="8px" borderSize={0} />
+                <OykAvatar src={currentUniverse.logo} size={32} name={currentUniverse.name} borderColor="transparent" borderRadius="6px" borderSize={0} />
               ) : (
                 <SquircleDashed size={24} color="var(--oyk-c-primary)" />
               )}

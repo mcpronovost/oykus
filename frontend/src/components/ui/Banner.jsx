@@ -9,6 +9,7 @@ export default function OykBanner({
   avatarSize,
   avatarBorderSize,
   avatarBorderColor,
+  avatarBorderRadius,
   avatarTop = 64,
   avatarLevel,
   avatarLevelSize = 24,
@@ -53,8 +54,9 @@ export default function OykBanner({
             abbr={avatarAbbr}
             icon={avatarIcon}
             size={avatarSize}
-            borderSize={avatarBorderSize}
             borderColor={avatarBorderColor}
+            borderSize={avatarBorderSize}
+            borderRadius={avatarBorderRadius}
             level={avatarLevel}
             levelSize={avatarLevelSize}
             levelBorderSize={avatarLevelBorderSize}
