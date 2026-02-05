@@ -25,12 +25,19 @@ try {
                gu.updated_at
         FROM game_universes gu
         WHERE gu.slug = ? AND 
-             (gu.visibility = 4 OR gu.owner = ?)
+             (gu.visibility = 4 OR gu.owner = ?) AND
+             gu.is_active = 1
         LIMIT 1;
     ");
 
     $qry->execute([$universeSlug, $authUser["id"]]);
-    $universe = $qry->fetch() ?: null;
+    $universe = $qry->fetch();
+
+    if (!$universe) {
+        http_response_code(404);
+        echo json_encode(["error" => "Universe not found"]);
+        exit;
+    }
 
     $qry = $pdo->prepare("
         SELECT c_primary, c_primary_fg, stylesheet

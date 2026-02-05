@@ -19,8 +19,8 @@ import OykUniverseAdminProfile from "./Profile";
 import OykUniverseAdminModules from "./Modules";
 
 export default function UniverseAdmin() {
-  const { isAuth } = useAuth();
-  const { params } = useRouter();
+  const { isAuth, currentUniverse } = useAuth();
+  const { n, params } = useRouter();
   const { t } = useTranslation();
 
   const menu = [
@@ -43,7 +43,8 @@ export default function UniverseAdmin() {
     },
   ];
 
-  if (!isAuth) {
+  if (!isAuth || !currentUniverse || currentUniverse.slug !== params?.universeSlug) {
+    () => n("404");
     return <OykError404 />;
   }
 

@@ -122,10 +122,11 @@ const AuthProvider = ({ children }) => {
       if (!r.ok || !r.universes) throw Error();
       setUniverses(r.universes);
       storeSet(KEY_GAME_UNIVERSES, r.universes);
-      if (!universe) fetchCurrentUniverse(r.universes[0].slug, signal);
+      if (!universe) fetchCurrentUniverse(r.universes?.[0]?.slug, signal);
       else fetchCurrentUniverse(universe.slug, signal);
     } catch {
-      // fail silently
+      setUniverses([]);
+      storeRemove(KEY_GAME_UNIVERSES);
     }
   };
 
@@ -142,7 +143,10 @@ const AuthProvider = ({ children }) => {
         setTheme(r.theme);
       } else setTheme(null);
     } catch {
-      // fail silently
+      setUniverse(null);
+      storeRemove(KEY_GAME_CURRENT_UNIVERSE);
+      oykCookieDelete("oyk-theme");
+      setTheme(null);
     }
   };
 

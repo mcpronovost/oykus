@@ -14,17 +14,28 @@ $authUser = require_auth();
 |--------------------------------------------------------------------------
 */
 $qry = $pdo->prepare("
-    SELECT id, name, slug, is_slug_auto, abbr, is_abbr_auto, logo, cover
+    SELECT id, name, slug, is_slug_auto, abbr, is_abbr_auto, logo, cover, owner
     FROM game_universes
-    WHERE slug = ? and owner = ?
+    WHERE slug = ? AND is_active = 1
     LIMIT 1
 ");
-$qry->execute([$universeSlug, $authUser["id"]]);
+$qry->execute([$universeSlug]);
 $universe = $qry->fetch();
 
 if (!$universe) {
     http_response_code(404);
     echo json_encode(["error" => "Universe not found"]);
+    exit;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Check edit permission
+|--------------------------------------------------------------------------
+*/
+if ($universe["owner"] !== $authUser["id"]) {
+    http_response_code(403);
+    echo json_encode(["error" => "Forbidden"]);
     exit;
 }
 

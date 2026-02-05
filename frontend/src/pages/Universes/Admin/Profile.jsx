@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { User, Image } from "lucide-react";
+import { SquircleDashed, Image } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
@@ -191,7 +191,7 @@ export default function UniverseAdminProfile() {
         </div>
         <div className="oyk-universes-admin-profile-visual-avatar">
           <OykCard fh clickable onClick={() => handleImageClick("logo")}>
-            <User size={24} color={"var(--oyk-c-primary)"} />
+            <SquircleDashed size={24} color={"var(--oyk-c-primary)"} />
             <p className="oyk-universes-admin-profile-visual-avatar-title">{t("Change Logo")}</p>
             <small className="oyk-universes-admin-profile-visual-avatar-max">{t("200x200px (max 2MB)")}</small>
             <input
