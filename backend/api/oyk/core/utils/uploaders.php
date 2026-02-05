@@ -7,6 +7,12 @@ function oyk_save_image($file, $dstSizeW = 200, $dstSizeH = 200, $field = "avata
     }
 
     $dst = imagecreatetruecolor($dstSizeW, $dstSizeH);
+
+    imagealphablending($dst, false);
+    imagesavealpha($dst, true);
+    $transparent = imagecolorallocatealpha($dst, 0, 0, 0, 127);
+    imagefill($dst, 0, 0, $transparent);
+
     $src = imagecreatefromstring(file_get_contents($file["tmp_name"]));
     $srcW = imagesx($src);
     $srcH = imagesy($src);
