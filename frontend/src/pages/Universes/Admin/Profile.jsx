@@ -8,7 +8,7 @@ import { useTranslation } from "@/services/translation";
 import { OykBanner, OykButton, OykCard, OykForm, OykFormField, OykFormMessage, OykHeading } from "@/components/ui";
 
 export default function UniverseAdminProfile() {
-  const { setUser, currentUniverse } = useAuth();
+  const { currentUniverse, setUniverse, getUniverses } = useAuth();
   const { routeTitle } = useRouter();
   const { t } = useTranslation();
 
@@ -121,6 +121,8 @@ export default function UniverseAdminProfile() {
       }
       const r = await api.post(`/game/universes/${currentUniverse.slug}/edit/`, formData);
       if (!r?.ok) throw new Error(r || t("An error occurred"));
+      setUniverse(r.universe);
+      getUniverses();
       setProfileForm((prev) => ({
         ...prev,
         name: r.universe.name,
@@ -175,7 +177,8 @@ export default function UniverseAdminProfile() {
             <OykBanner
               avatarAbbr={profileForm.abbr}
               avatarSize={80}
-              avatarBorderSize={8}
+              avatarBorderSize={6}
+              avatarBorderRadius="8px"
               avatarTop={48}
               avatarSrc={profileForm.logo}
               coverSrc={profileForm.cover}

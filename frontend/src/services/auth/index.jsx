@@ -22,7 +22,7 @@ const AuthProvider = ({ children }) => {
     const r = storeGet(KEY_GAME_UNIVERSES);
     return r ? r : null;
   });
-  const [universe, setUniverse] = useState(() => {
+  const [universe, setUniverseState] = useState(() => {
     const r = storeGet(KEY_GAME_CURRENT_UNIVERSE);
     return r ? r : null;
   });
@@ -44,7 +44,7 @@ const AuthProvider = ({ children }) => {
       setIsAuth(false);
       setIsDev(false);
       setUniverses(null);
-      setUniverse(null);
+      setUniverseState(null);
       clearUniverseTheme();
       oykCookieDelete("oyk-theme");
       storeRemove(KEY_GAME_UNIVERSES);
@@ -94,6 +94,26 @@ const AuthProvider = ({ children }) => {
       // fail silently
     }
   };
+
+  const setUniverse = (u, clean = false) => {
+    if (u) {
+      let payload = {};
+      if (clean) {
+        payload = u;
+      } else {
+        payload = {
+          ...universe,
+          ...u,
+        };
+      }
+      setUniverseState(payload);
+      storeSet(KEY_GAME_CURRENT_UNIVERSE, payload);
+    } else {
+      setUniverseState(null);
+      storeRemove(KEY_GAME_CURRENT_UNIVERSE);
+    }
+  };
+
 
   const fetchUniverses = async (signal) => {
     if (!user) return;
@@ -204,6 +224,8 @@ const AuthProvider = ({ children }) => {
         isDev,
         universes,
         currentUniverse: universe,
+        setUniverse,
+        getUniverses: fetchUniverses,
         setCurrentUniverse: fetchCurrentUniverse,
         getUserNotifications: fetchNotifications,
       }}
