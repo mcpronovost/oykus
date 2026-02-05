@@ -10,21 +10,21 @@ $authUser = require_auth();
 
 /*
 |--------------------------------------------------------------------------
-| Load current user
+| Load current universe
 |--------------------------------------------------------------------------
 */
 $qry = $pdo->prepare("
-    SELECT id, name, slug, is_slug_auto, abbr, is_abbr_auto, avatar, cover
-    FROM auth_users
-    WHERE id = :id
+    SELECT id, name, slug, is_slug_auto, abbr, is_abbr_auto, logo, cover
+    FROM game_universes
+    WHERE slug = ? and owner = ?
     LIMIT 1
 ");
-$qry->execute(["id" => $authUser["id"]]);
-$user = $qry->fetch();
+$qry->execute([$universeSlug, $authUser["id"]]);
+$universe = $qry->fetch();
 
-if (!$user) {
+if (!$universe) {
     http_response_code(404);
-    echo json_encode(["error" => "User not found"]);
+    echo json_encode(["error" => "Universe not found"]);
     exit;
 }
 
@@ -34,30 +34,30 @@ if (!$user) {
 |--------------------------------------------------------------------------
 */
 $patch = [];
-$params = ["id" => $user["id"]];
+$params = ["id" => $universe["id"]];
 
 $nameChanged = false;
 
 /* ---------- Name ---------- */
-if (isset($_POST["name"]) && $_POST["name"] !== $user["name"]) {
+if (isset($_POST["name"]) && $_POST["name"] !== $universe["name"]) {
     $patch["name"] = $_POST["name"];
     $params["name"] = $_POST["name"];
     $nameChanged = true;
 }
 
 /* ---------- Avatar ---------- */
-if (!empty($_FILES["avatar"])) {
-    $newAvatar = oyk_save_image(
-        $_FILES["avatar"],
+if (!empty($_FILES["logo"])) {
+    $newLogo = oyk_save_image(
+        $_FILES["logo"],
         200,
         200,
-        "avatars",
-        $user["slug"],
+        "logos",
+        $universe["slug"],
         2
     );
 
-    $patch["avatar"] = $newAvatar;
-    $params["avatar"] = $newAvatar;
+    $patch["logo"] = $newLogo;
+    $params["logo"] = $newLogo;
 }
 
 /* ---------- Cover ---------- */
@@ -67,7 +67,7 @@ if (!empty($_FILES["cover"])) {
         1136,
         256,
         "covers",
-        $user["slug"],
+        $universe["slug"],
         2
     );
 
@@ -80,12 +80,12 @@ if (!empty($_FILES["cover"])) {
 | Auto fields (depend on name change)
 |--------------------------------------------------------------------------
 */
-if ($nameChanged && $user["is_slug_auto"]) {
-    $patch["slug"] = get_slug($pdo, $params["name"], "auth_users");
+if ($nameChanged && $universe["is_slug_auto"]) {
+    $patch["slug"] = get_slug($pdo, $params["name"], "game_universes");
     $params["slug"] = $patch["slug"];
 }
 
-if ($nameChanged && $user["is_abbr_auto"]) {
+if ($nameChanged && $universe["is_abbr_auto"]) {
     $patch["abbr"] = get_abbr($params["name"], 3);
     $params["abbr"] = $patch["abbr"];
 }
@@ -96,8 +96,8 @@ if ($nameChanged && $user["is_abbr_auto"]) {
 |--------------------------------------------------------------------------
 */
 if (!$patch) {
-    unset($user["id"], $user["is_slug_auto"], $user["is_abbr_auto"]);
-    echo json_encode(["ok" => true, "user" => $user]);
+    unset($universe["id"], $universe["is_slug_auto"], $universe["is_abbr_auto"]);
+    echo json_encode(["ok" => true, "universe" => $universe]);
     exit;
 }
 
@@ -115,7 +115,7 @@ try {
     }
 
     $sql = "
-        UPDATE auth_users
+        UPDATE game_universes
         SET ".implode(", ", $sets)."
         WHERE id = :id
     ";
@@ -135,15 +135,15 @@ try {
 | Cleanup old files AFTER commit
 |--------------------------------------------------------------------------
 */
-if (isset($patch["avatar"]) && $user["avatar"]) {
-    $path = OYK_PATH."/../..".$user["avatar"];
+if (isset($patch["logo"]) && $universe["logo"]) {
+    $path = OYK_PATH."/../..".$universe["logo"];
     if (is_file($path)) {
         unlink($path);
     }
 }
 
-if (isset($patch["cover"]) && $user["cover"]) {
-    $path = OYK_PATH."/../..".$user["cover"];
+if (isset($patch["cover"]) && $universe["cover"]) {
+    $path = OYK_PATH."/../..".$universe["cover"];
     if (is_file($path)) {
         unlink($path);
     }
@@ -154,10 +154,10 @@ if (isset($patch["cover"]) && $user["cover"]) {
 | Return updated resource
 |--------------------------------------------------------------------------
 */
-$user = array_merge($user, $patch);
-unset($user["id"], $user["is_slug_auto"], $user["is_abbr_auto"]);
+$universe = array_merge($universe, $patch);
+unset($universe["is_slug_auto"], $universe["is_abbr_auto"]);
 
 echo json_encode([
     "ok" => true,
-    "user" => $user
+    "universe" => $universe
 ]);

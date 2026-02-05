@@ -119,18 +119,17 @@ export default function UniverseAdminProfile() {
       if (profileForm.coverFile) {
         formData.append("cover", profileForm.coverFile);
       }
-      const r = await api.post("/auth/me/edit/", formData);
+      const r = await api.post(`/game/universes/${currentUniverse.slug}/edit/`, formData);
       if (!r?.ok) throw new Error(r || t("An error occurred"));
-      setUser(r.user);
       setProfileForm((prev) => ({
         ...prev,
-        name: r.user.name,
-        slug: r.user.slug,
-        abbr: r.user.abbr,
+        name: r.universe.name,
+        slug: r.universe.slug,
+        abbr: r.universe.abbr,
       }));
-      nameRef.current.value = r.user.name;
-      slugRef.current.value = r.user.slug;
-      abbrRef.current.value = r.user.abbr;
+      nameRef.current.value = r.universe.name;
+      slugRef.current.value = r.universe.slug;
+      abbrRef.current.value = r.universe.abbr;
     } catch (e) {
       if (e?.message && e.message.includes("uniq_name")) {
         setHasError(() => ({
