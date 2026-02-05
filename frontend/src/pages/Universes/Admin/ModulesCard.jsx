@@ -1,9 +1,9 @@
-import { Info } from "lucide-react";
+// import { Info } from "lucide-react";
 
 import { useTranslation } from "@/services/translation";
-import { OykBanner, OykButton, OykCard } from "@/components/ui";
+import { OykAlert, OykBanner, OykButton, OykCard } from "@/components/ui";
 
-export default function UniverseAdminModulesCard({ module }) {
+export default function UniverseAdminModulesCard({ module, onActivate = () => {}, onDeactivate = () => {}, isLoading = false, hasError = null}) {
   const { t } = useTranslation();
 
   return (
@@ -14,21 +14,27 @@ export default function UniverseAdminModulesCard({ module }) {
           <div className="oyk-universes-admin-modules-list-item-header-name">
             <span>{module.name}</span>
           </div>
-          <div className="oyk-universes-admin-modules-list-item-header-title">
-            <span>{module.description}</span>
-          </div>
+          {!hasError ? (
+            <div className="oyk-universes-admin-modules-list-item-header-description">
+              <span>{module.description}</span>
+            </div>
+          ) : (
+            <div className="oyk-universes-admin-modules-list-item-header-alert">
+              <OykAlert variant="danger" message={t(hasError)} iconSize={20} small />
+            </div>
+          )}
         </header>
         <div className="oyk-universes-admin-modules-list-item-actions">
-          {module.disabled ? (
+          {module.active ? (
+            <OykButton small outline color="danger" isLoading={isLoading} onClick={() => {onDeactivate(module)}}>
+              <span>{t("Deactivate")}</span>
+            </OykButton>
+          ) : module.disabled ? (
             <OykButton small outline disabled>
               <span>{t("Unavailable")}</span>
             </OykButton>
-          ) : module.active ? (
-            <OykButton small outline color="danger" onClick={() => {}}>
-              <span>{t("Deactivate")}</span>
-            </OykButton>
           ) : (
-            <OykButton small outline color="success" onClick={() => {}}>
+            <OykButton small outline color="success" isLoading={isLoading} onClick={() => {onActivate(module)}}>
               <span>{t("Activate")}</span>
             </OykButton>
           )}

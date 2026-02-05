@@ -28,11 +28,13 @@ CREATE TABLE IF NOT EXISTS game_universes (
     visibility TINYINT NOT NULL DEFAULT 1,
 
     is_mod_planner_active BOOL NOT NULL DEFAULT 0,
+    is_mod_blog_active BOOL NOT NULL DEFAULT 0,
     is_mod_forum_active BOOL NOT NULL DEFAULT 0,
-    is_mod_game_active BOOL NOT NULL DEFAULT 0,
-    is_mod_leveling_active BOOL NOT NULL DEFAULT 0,
+    is_mod_courrier_active BOOL NOT NULL DEFAULT 0,
     is_mod_collectibles_active BOOL NOT NULL DEFAULT 0,
     is_mod_achievements_active BOOL NOT NULL DEFAULT 0,
+    is_mod_game_active BOOL NOT NULL DEFAULT 0,
+    is_mod_leveling_active BOOL NOT NULL DEFAULT 0,
 
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

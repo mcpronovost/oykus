@@ -2,6 +2,7 @@
   background-color: color-mix(in srgb, var(--oyk-core-fg) 10%, transparent);
   border: 1px solid color-mix(in srgb, var(--oyk-core-fg) 10%, transparent);
   border-radius: var(--oyk-radius);
+  text-align: left;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -39,8 +40,10 @@
   }
 
   &-icon {
-    height: 24px;
-    width: 24px;
+    font-size: 0;
+    line-height: 0;
+    height: auto;
+    width: auto;
   }
 
   &-content {
@@ -56,6 +59,20 @@
     &-message {
       font-size: 1rem;
       font-weight: 400;
+    }
+  }
+
+  &.oyk-small {
+    padding: 8px;
+
+    .oyk-alert-content {
+      &-title {
+        font-size: 1rem;
+      }
+
+      &-message {
+        font-size: 0.86rem;
+      }
     }
   }
 }

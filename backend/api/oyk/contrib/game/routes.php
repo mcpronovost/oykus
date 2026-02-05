@@ -14,3 +14,7 @@ route("GET", "#^$view/universes/([0-9a-z-]+)$#", function ($universeSlug) use ($
 route("POST", "#^$view/universes/([0-9a-z-]+)/edit$#", function ($universeSlug) use ($path) {
     require $path."universes/edit.php";
 });
+
+route("POST", "#^$view/universes/([0-9a-z-]+)/modules/edit$#", function ($universeSlug) use ($path) {
+    require $path."universes/modules_edit.php";
+});

@@ -8,9 +8,10 @@ export default function OykAlert({
   showIcon = true,
   icon: IconComponent,
   iconSize = 24,
+  small = false
 }) {
   return (
-    <div className={`oyk-alert oyk-alert-variant-${variant}`}>
+    <div className={`oyk-alert oyk-alert-variant-${variant} ${small ? "oyk-small" : ""}`}>
       {showIcon && (
         <div className="oyk-alert-icon">
           {IconComponent ? (
