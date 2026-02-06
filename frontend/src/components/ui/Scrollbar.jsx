@@ -23,8 +23,6 @@ export default function OykScrollbar({ children, height = 300, className = "" })
       const containerHeight = container.clientHeight;
       const contentHeight = content.scrollHeight;
 
-      console.log(">>contentHeight ", contentHeight);
-
       if (!containerHeight || !contentHeight) return;
 
       if (contentHeight <= containerHeight) {
