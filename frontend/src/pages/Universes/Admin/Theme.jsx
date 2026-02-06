@@ -171,8 +171,57 @@ export default function UniverseAdminProfile() {
 
   return (
     <section className="oyk-universes-admin-profile">
-      <OykHeading subtitle tag="h2" title={t("Universe Profile")} nop />
+      <article className="oyk-universes-admin-profile-visual">
+        <div className="oyk-universes-admin-profile-visual-preview">
+          <OykCard nop fh alignTop>
+            <OykBanner
+              avatarAbbr={profileForm.abbr}
+              avatarSize={80}
+              avatarBorderSize={6}
+              avatarBorderRadius="8px"
+              avatarTop={48}
+              avatarSrc={profileForm.logo}
+              coverSrc={profileForm.cover}
+              height={150}
+            />
+            {(hasError?.logo || hasError?.cover) && (
+              <OykFormMessage hasError={hasError?.logo || hasError?.cover} style={{ margin: "0 16px 16px" }} />
+            )}
+          </OykCard>
+        </div>
+        <div className="oyk-universes-admin-profile-visual-avatar">
+          <OykCard fh clickable onClick={() => handleImageClick("logo")}>
+            <SquircleDashed size={24} color={"var(--oyk-c-primary)"} />
+            <p className="oyk-universes-admin-profile-visual-avatar-title">{t("Change Logo")}</p>
+            <small className="oyk-universes-admin-profile-visual-avatar-max">{t("200x200px (max 2MB)")}</small>
+            <input
+              ref={logoRef}
+              name="logo"
+              type="file"
+              accept="image/png, image/jpeg, image/webp"
+              hidden
+              onChange={handleLogoChange}
+            />
+          </OykCard>
+        </div>
+        <div className="oyk-universes-admin-profile-visual-cover">
+          <OykCard fh clickable onClick={() => handleImageClick("cover")}>
+            <Image size={24} color={"var(--oyk-c-primary)"} />
+            <p className="oyk-universes-admin-profile-visual-cover-title">{t("Change Cover")}</p>
+            <small className="oyk-universes-admin-profile-visual-cover-max">{t("1136x256px (max 2MB)")}</small>
+            <input
+              ref={coverRef}
+              name="cover"
+              type="file"
+              accept="image/png, image/jpeg, image/webp"
+              hidden
+              onChange={handleCoverChange}
+            />
+          </OykCard>
+        </div>
+      </article>
       <OykCard>
+        <OykHeading subtitle tag="h2" title={t("Universe Profile")} nop />
         <OykForm className="oyk-universes-admin-form" isLoading={isLoading} onSubmit={handleSubmit}>
           <OykFormField
             ref={nameRef}

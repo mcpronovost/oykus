@@ -4,16 +4,8 @@ import { CircleUser, Cog, Smile, Construction } from "lucide-react";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import {
-  OykCard,
-  OykFeedback,
-  OykGrid,
-  OykGridRow,
-  OykGridNav,
-  OykGridMain,
-  OykHeading,
-  OykLink,
-} from "@/components/ui";
+import { OykCard, OykFeedback, OykGrid, OykGridRow, OykGridNav, OykGridMain, OykHeading } from "@/components/ui";
+import { OykSidenav } from "@/components/common";
 import OykError404 from "@/pages/Error404";
 import OykSettingsProfile from "./Profile";
 import OykSettingsAccount from "./Account";
@@ -28,9 +20,7 @@ export default function Settings() {
   const menu = [
     {
       title: t("Profile"),
-      description: t(
-        "Change your avatar and cover images, your name, and more"
-      ),
+      description: t("Change your avatar and cover images, your name, and more"),
       Icon: CircleUser,
       links: [
         {
@@ -87,40 +77,7 @@ export default function Settings() {
       <OykGrid>
         <OykGridRow>
           <OykGridNav className="oyk-settings-grid-nav">
-            <nav className="oyk-settings-nav">
-              <ul>
-                {menu.map((m, index) => (
-                  <li key={index} className={`oyk-settings-nav-item ${index <= 0 ? "oyk-first": ""}`}>
-                    <header className="oyk-settings-nav-header">
-                      <span className="oyk-settings-nav-header-icon">
-                        <m.Icon size={24} color={"var(--oyk-c-primary)"} />
-                      </span>
-                      <span className="oyk-settings-nav-header-title">
-                        <span className="oyk-settings-nav-header-title-name">
-                          {m.title}
-                        </span>
-                        <small className="oyk-settings-nav-header-title-desc">
-                          {m.description}
-                        </small>
-                      </span>
-                    </header>
-                    <ul className="oyk-settings-nav-menu">
-                      {m.links.map((l, li) => (
-                        <li key={li} className="oyk-settings-nav-menu-item">
-                          <OykLink
-                            routeName={l.routeName}
-                            className={`oyk-settings-nav-menu-item-link ${`settings-${params?.section}` === l.routeName ? "oyk-active" : ""}`}
-                            disabled={l.disabled}
-                          >
-                            {l.name}
-                          </OykLink>
-                        </li>
-                      ))}
-                    </ul>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+            <OykSidenav menu={menu} />
           </OykGridNav>
           <OykGridMain>
             {params?.section === "profile" ? (
@@ -133,7 +90,13 @@ export default function Settings() {
               <OykSettingsFriendsRequests />
             ) : (
               <OykCard>
-                <OykFeedback ghost variant="warning" title={t("Under Construction")} message={t("These settings are currently in development and should be available soon")} icon={Construction} />
+                <OykFeedback
+                  ghost
+                  variant="warning"
+                  title={t("Under Construction")}
+                  message={t("These settings are currently in development and should be available soon")}
+                  icon={Construction}
+                />
               </OykCard>
             )}
           </OykGridMain>

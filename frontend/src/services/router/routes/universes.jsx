@@ -50,6 +50,28 @@ export const UNIVERSES_ROUTES = [
                   section: "modules",
                 },
               },
+              {
+                name: "universe-admin-theme",
+                component: React.lazy(() => import("../../../pages/Universes/Admin")),
+                paths: {
+                  fr: "theme",
+                  en: "theme",
+                },
+                params: {
+                  section: "theme",
+                },
+              },
+              {
+                name: "universe-admin-stylesheet",
+                component: React.lazy(() => import("../../../pages/Universes/Admin")),
+                paths: {
+                  fr: "stylesheet",
+                  en: "stylesheet",
+                },
+                params: {
+                  section: "stylesheet",
+                },
+              },
             ],
           },
         ],
