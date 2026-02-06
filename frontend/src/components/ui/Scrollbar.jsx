@@ -23,6 +23,8 @@ export default function OykScrollbar({ children, height = 300, className = "" })
       const containerHeight = container.clientHeight;
       const contentHeight = content.scrollHeight;
 
+      console.log(">>contentHeight ", contentHeight);
+
       if (!containerHeight || !contentHeight) return;
 
       if (contentHeight <= containerHeight) {
@@ -47,9 +49,8 @@ export default function OykScrollbar({ children, height = 300, className = "" })
 
     // 🔴 critical part: delayed re-measure
     scheduleUpdate();
-    setTimeout(scheduleUpdate, 0);
-    setTimeout(scheduleUpdate, 50);
-    setTimeout(scheduleUpdate, 150);
+    setTimeout(scheduleUpdate, 500);
+    setTimeout(scheduleUpdate, 1000);
 
     return () => {
       cancelAnimationFrame(rafId);

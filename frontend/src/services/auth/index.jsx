@@ -165,8 +165,8 @@ const AuthProvider = ({ children }) => {
         --oyk-c-primary: ${theme.c_primary};
         --oyk-c-primary-fg: ${theme.c_primary_fg};
 
-        ${theme.stylesheet ? Object.entries(theme.stylesheet)
-          .map(([k, v]) => `--${k}: ${v};`)
+        ${theme.variables ? Object.entries(theme.variables)
+          .map(([k, v]) => `--oyk-${k}: ${v};`)
           .join("\n") : ""}
       }
     `;

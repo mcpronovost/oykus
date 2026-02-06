@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS game_themes (
     c_primary VARCHAR(7) NOT NULL,
     c_primary_fg VARCHAR(7) NOT NULL,
     
-    stylesheet JSON NOT NULL,
+    variables JSON NOT NULL,
 
     is_active BOOL NOT NULL DEFAULT 0,
 

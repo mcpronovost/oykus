@@ -17,7 +17,7 @@ if (!$universeSlug) {
 
 try {
     $qry = $pdo->prepare("
-        SELECT t.c_primary, t.c_primary_fg, t.stylesheet
+        SELECT t.c_primary, t.c_primary_fg, t.variables
         FROM game_themes t
         JOIN game_universes u ON u.id = t.universe
         WHERE u.slug = ? AND
@@ -34,13 +34,13 @@ try {
 }
 
 if ($theme) {
-    $theme["stylesheet"] = json_decode($theme["stylesheet"]);
+    $theme["variables"] = json_decode($theme["variables"]);
 
     echo ":root {\n";
     echo "--oyk-c-primary: ".$theme['c_primary'].";\n";
     echo "--oyk-c-primary-fg: ".$theme['c_primary_fg'].";\n";
 
-    foreach ($theme["stylesheet"] as $k => $v) {
+    foreach ($theme["variables"] as $k => $v) {
       echo "--$k: $v;\n";
     }
     echo "}\n";

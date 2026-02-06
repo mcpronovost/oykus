@@ -12,14 +12,17 @@ export default function OykFormField({
   onChange,
   hasError,
   block = false,
+  hideLabel = false,
   ...props
 }) {
   return (
     <div className={`oyk-form-field ${block ? "oyk-form-field--block" : ""}`} {...props}>
-      <label className="oyk-form-field-label" htmlFor={`field-${name}`}>
-        {label}
-        {required && <span className="oyk-form-field-required">*</span>}
-      </label>
+      {!hideLabel ? (
+        <label className="oyk-form-field-label" htmlFor={`field-${name}`}>
+          {label}
+          {required && <span className="oyk-form-field-required">*</span>}
+        </label>
+      ) : null}
       <div className="oyk-form-field-input">
         {type === "textarea" ? (
           <textarea
@@ -33,7 +36,15 @@ export default function OykFormField({
             className={`${hasError ? "oyk-error" : ""}`}
           />
         ) : type === "select" ? (
-          <select ref={ref} id={`field-${name}`} name={name} defaultValue={defaultValue} onChange={onChange} required={required} className={`${hasError ? "oyk-error" : ""}`}>
+          <select
+            ref={ref}
+            id={`field-${name}`}
+            name={name}
+            defaultValue={defaultValue}
+            onChange={onChange}
+            required={required}
+            className={`${hasError ? "oyk-error" : ""}`}
+          >
             {options.map((option) => (
               <option key={option[optionValue]} value={option[optionValue]}>
                 {option[optionLabel]}
@@ -55,6 +66,33 @@ export default function OykFormField({
                 <span className="oyk-form-field-input-radio-label-btn">{option.label}</span>
               </label>
             ))}
+          </div>
+        ) : type === "color" ? (
+          <div className="oyk-form-field-input-color">
+            <input
+              ref={ref}
+              type="color"
+              id={`field-${name}`}
+              name={name}
+              value={defaultValue}
+              onChange={onChange}
+              required={required}
+              disabled={disabled}
+              autoComplete="off"
+              className={`${hasError ? "oyk-error" : ""}`}
+            />
+            <input
+              ref={ref}
+              type="text"
+              id={`field-${name}-text`}
+              name={name}
+              value={defaultValue}
+              onChange={onChange}
+              required={required}
+              disabled={disabled}
+              autoComplete="off"
+              className={`${hasError ? "oyk-error" : ""}`}
+            />
           </div>
         ) : (
           <input

@@ -10,7 +10,7 @@ import OykError404 from "@/pages/Error404";
 import OykUniverseAdminProfile from "./Profile";
 import OykUniverseAdminModules from "./Modules";
 import OykUniverseAdminTheme from "./Theme";
-// import OykUniverseAdminStylesheet from "./Stylesheet";
+// import OykUniverseAdminThemeStylesheet from "./ThemeStylesheet";
 
 export default function UniverseAdmin() {
   const { isAuth, currentUniverse } = useAuth();

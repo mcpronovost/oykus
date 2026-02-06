@@ -18,3 +18,11 @@ route("POST", "#^$view/universes/([0-9a-z-]+)/edit$#", function ($universeSlug) 
 route("POST", "#^$view/universes/([0-9a-z-]+)/modules/edit$#", function ($universeSlug) use ($path) {
     require $path."universes/modules_edit.php";
 });
+
+route("GET", "#^$view/universes/([0-9a-z-]+)/theme$#", function ($universeSlug) use ($path) {
+    require $path."universes/theme.php";
+});
+
+route("POST", "#^$view/universes/([0-9a-z-]+)/theme/edit$#", function ($universeSlug) use ($path) {
+    require $path."universes/theme_edit.php";
+});

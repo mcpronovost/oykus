@@ -71,6 +71,8 @@
     "Manage Friends": "Gérer les amis",
     "Invites": "Demandes",
     "Friends Requests": "Demandes d'amitié",
+    "Theme": "Thème",
+    "Universe Theme": "Thème de l'univers",
     "Change your avatar and cover images, your name, and more": "Modifier vos images d'avatar et de couverture, votre nom, et plus",
     "Change settings, configure notifications, and more": "Modifier vos paramètres, configurer vos notifications, et plus",
     "Manage friends and accept requests": "Gérer vos amis et accepter les demandes d'amitié",
@@ -102,5 +104,7 @@
     "Do you really want to remove {name} from your friend": "Voulez-vous vraiment supprimer {name} de vos amis ?",
     "Delete friend": "Supprimer",
     "This name is already in use": "Ce nom est déjà utilisé",
-    "Stylesheet": "Feuille de style"
+    "Stylesheet": "Feuille de style",
+    "Abbreviation": "Abréviation",
+    "Description": "Description"
 }

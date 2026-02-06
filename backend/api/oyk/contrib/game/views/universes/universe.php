@@ -42,7 +42,7 @@ try {
     }
 
     $qry = $pdo->prepare("
-        SELECT c_primary, c_primary_fg, stylesheet
+        SELECT c_primary, c_primary_fg, variables
         FROM game_themes
         WHERE universe = ? AND
               is_active = 1
@@ -60,7 +60,7 @@ try {
 unset($universe["id"]);
 
 if ($theme) {
-    $theme["stylesheet"] = json_decode($theme["stylesheet"]);
+    $theme["variables"] = json_decode($theme["variables"]);
 }
 
 echo json_encode([

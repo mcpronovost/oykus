@@ -43,7 +43,7 @@ export default function AppSidebar() {
           <nav className="oyk-app-sidebar-nav">
             <ul className="oyk-app-sidebar-nav-list">
               {isAuth ? (<OykAppSidebarNavItem icon={Settings} text={t("Settings")} href="settings" />) : null}
-              {isAuth && isDev ? (<OykAppSidebarNavItem icon={Component} text={t("Components")} href="dev-components" />) : null}
+              {/* isAuth && isDev ? (<OykAppSidebarNavItem icon={Component} text={t("Components")} href="dev-components" />) : null */}
               {isAuth && currentUniverse ? (<OykAppSidebarNavItem icon={LoaderPinwheel} text={t("Admin")} href="universe-admin" params={ { universeSlug: currentUniverse.slug }} />) : null}
             </ul>
           </nav>

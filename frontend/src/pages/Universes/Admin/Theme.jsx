@@ -5,32 +5,74 @@ import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import { OykBanner, OykButton, OykCard, OykForm, OykFormField, OykFormMessage, OykHeading } from "@/components/ui";
+import {
+  OykBanner,
+  OykButton,
+  OykCard,
+  OykForm,
+  OykFormField,
+  OykFormMessage,
+  OykHeading,
+  OykLoading,
+} from "@/components/ui";
 
-export default function UniverseAdminProfile() {
-  const { currentUniverse, setUniverse, getUniverses } = useAuth();
+export default function UniverseAdminTheme() {
+  const { currentUniverse, setCurrentUniverse } = useAuth();
   const { routeTitle } = useRouter();
   const { t } = useTranslation();
 
   const logoRef = useRef(null);
   const coverRef = useRef(null);
-  const nameRef = useRef(null);
-  const slugRef = useRef(null);
-  const abbrRef = useRef(null);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [hasError, setHasError] = useState(null);
-  const [profileForm, setProfileForm] = useState({
+  const [initialThemeForm, setInitialThemeForm] = useState({
     logo: currentUniverse.logo || null,
     cover: currentUniverse.cover || null,
-    name: currentUniverse.name || "",
-    slug: currentUniverse.slug || "",
-    abbr: currentUniverse.abbr || "",
   });
+  const [themeForm, setThemeForm] = useState(initialThemeForm);
+
+  const fetchThemeData = async (signal) => {
+    setIsLoading(true);
+    setHasError(null);
+    try {
+      const r = await api.get(`/game/universes/${currentUniverse.slug}/theme/`, signal ? { signal } : {});
+      if (!r.ok || !r.theme) throw Error();
+      const payload = {
+        c_primary: r.theme.c_primary,
+        c_primary_fg: r.theme.c_primary_fg
+      };
+      for (const [key, value] of Object.entries(r.theme.variables)) {
+        if (key === "radius") {
+          payload.radius = value.replace("px", "");
+        } else {
+          payload[key.replaceAll("-", "_")] = value;
+        }
+      };
+      setInitialThemeForm((prev) => ({
+        ...prev,
+        ...payload
+      }));
+      setThemeForm((prev) => ({
+        ...prev,
+        ...payload
+      }));
+    } catch (e) {
+      if (e?.name === "AbortError") return;
+      setHasError({
+        message: e.message || t("An error occurred"),
+      });
+    } finally {
+      if (!signal || !signal.aborted) {
+        setIsLoading(false);
+      }
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProfileForm((prev) => ({
+    setThemeForm((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -68,7 +110,7 @@ export default function UniverseAdminProfile() {
 
     const previewUrl = URL.createObjectURL(file);
 
-    setProfileForm((prev) => ({
+    setThemeForm((prev) => ({
       ...prev,
       logo: previewUrl,
       logoFile: file,
@@ -87,81 +129,73 @@ export default function UniverseAdminProfile() {
 
     const previewUrl = URL.createObjectURL(file);
 
-    setProfileForm((prev) => ({
+    setThemeForm((prev) => ({
       ...prev,
       cover: previewUrl,
       coverFile: file,
     }));
   };
 
-  const handleReset = async (e) => {
-    setProfileForm({
-      logo: currentUniverse.logo || null,
-      cover: currentUniverse.cover || null,
-      name: currentUniverse.name || "",
-      slug: currentUniverse.slug || "",
-      abbr: currentUniverse.abbr || "",
-    });
-    nameRef.current.value = currentUniverse.name || "";
-    slugRef.current.value = currentUniverse.slug || "";
-    abbrRef.current.value = currentUniverse.abbr || "";
+  const handleReset = async () => {
+    setThemeForm(initialThemeForm);
   };
 
   const handleSubmit = async () => {
-    setIsLoading(true);
+    setIsLoadingSubmit(true);
     setHasError(null);
     try {
       const formData = new FormData();
-      formData.append("name", profileForm.name);
-      if (profileForm.logoFile) {
-        formData.append("logo", profileForm.logoFile);
+      let variables = {};
+      for (const [key, value] of Object.entries(themeForm)) {
+        if (key !== "logo" && key !== "cover") {
+          if (key !== "c_primary" && key !== "c_primary_fg") {
+            variables[key.replaceAll("_", "-")] = value.toUpperCase();
+          } else {
+            formData.append(key, value);
+          }
+        };
+      };
+      formData.append("variables", JSON.stringify(variables));
+      if (themeForm.logoFile) {
+        formData.append("logo", themeForm.logoFile);
       }
-      if (profileForm.coverFile) {
-        formData.append("cover", profileForm.coverFile);
+      if (themeForm.coverFile) {
+        formData.append("cover", themeForm.coverFile);
       }
-      const r = await api.post(`/game/universes/${currentUniverse.slug}/edit/`, formData);
-      if (!r?.ok) throw new Error(r || t("An error occurred"));
-      setUniverse(r.universe);
-      getUniverses();
-      setProfileForm((prev) => ({
+      const r = await api.post(`/game/universes/${currentUniverse.slug}/theme/edit/`, formData);
+      if (!r?.ok || !r.theme) throw new Error(r || t("An error occurred"));
+      setThemeForm((prev) => ({
         ...prev,
-        name: r.universe.name,
-        slug: r.universe.slug,
-        abbr: r.universe.abbr,
+        c_primary: r.theme.c_primary,
+        c_primary_fg: r.theme.c_primary_fg,
       }));
-      nameRef.current.value = r.universe.name;
-      slugRef.current.value = r.universe.slug;
-      abbrRef.current.value = r.universe.abbr;
+      setCurrentUniverse();
     } catch (e) {
-      if (e?.message && e.message.includes("uniq_name")) {
-        setHasError(() => ({
-          name: t("This name is already in use"),
-        }));
-      } else {
-        setHasError(() => ({
-          message: e.message || t("An error occurred"),
-        }));
-      }
+      setHasError(() => ({
+        message: e.message || t("An error occurred"),
+      }));
     } finally {
-      setIsLoading(false);
+      setIsLoadingSubmit(false);
     }
   };
 
   useEffect(() => {
     return () => {
-      if (profileForm.logo?.startsWith("blob:")) {
-        URL.revokeObjectURL(profileForm.logo);
+      if (themeForm.logo?.startsWith("blob:")) {
+        URL.revokeObjectURL(themeForm.logo);
       }
-      if (profileForm.cover?.startsWith("blob:")) {
-        URL.revokeObjectURL(profileForm.cover);
+      if (themeForm.cover?.startsWith("blob:")) {
+        URL.revokeObjectURL(themeForm.cover);
       }
     };
-  }, [profileForm.logo, profileForm.cover]);
+  }, [themeForm.logo, themeForm.cover]);
 
   useEffect(() => {
     const controller = new AbortController();
 
-    routeTitle(`${t("Admin")} - ${t("Profile")}`);
+    routeTitle(`${t("Admin")} - ${t("Universe Theme")}`);
+
+    fetchThemeData(controller.signal);
 
     return () => {
       controller.abort();
@@ -175,13 +209,13 @@ export default function UniverseAdminProfile() {
         <div className="oyk-universes-admin-profile-visual-preview">
           <OykCard nop fh alignTop>
             <OykBanner
-              avatarAbbr={profileForm.abbr}
+              avatarAbbr={currentUniverse.abbr}
               avatarSize={80}
               avatarBorderSize={6}
               avatarBorderRadius="8px"
               avatarTop={48}
-              avatarSrc={profileForm.logo}
-              coverSrc={profileForm.cover}
+              avatarSrc={themeForm.logo}
+              coverSrc={themeForm.cover}
               height={150}
             />
             {(hasError?.logo || hasError?.cover) && (
@@ -221,47 +255,256 @@ export default function UniverseAdminProfile() {
         </div>
       </article>
       <OykCard>
-        <OykHeading subtitle tag="h2" title={t("Universe Profile")} nop />
-        <OykForm className="oyk-universes-admin-form" isLoading={isLoading} onSubmit={handleSubmit}>
-          <OykFormField
-            ref={nameRef}
-            label={t("Name")}
-            name="name"
-            defaultValue={profileForm.name}
-            onChange={handleChange}
-            hasError={hasError?.name}
-            required
-          />
-          <OykFormField
-            ref={slugRef}
-            label={t("Slug")}
-            name="slug"
-            defaultValue={profileForm.slug}
-            onChange={handleChange}
-            hasError={hasError?.slug}
-            required
-            disabled
-          />
-          <OykFormField
-            ref={abbrRef}
-            label={t("Abbreviation")}
-            name="abbr"
-            defaultValue={profileForm.abbr}
-            onChange={handleChange}
-            hasError={hasError?.abbr}
-            required
-            disabled
-          />
-          {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
-          <div className="oyk-form-actions">
-            <OykButton type="submit" color="primary" disabled={isLoading}>
-              {isLoading ? t("Saving...") : t("Save")}
-            </OykButton>
-            <OykButton type="reset" disabled={isLoading} outline onClick={handleReset}>
-              {t("Cancel")}
-            </OykButton>
-          </div>
-        </OykForm>
+        {isLoading ? (
+          <OykLoading />
+        ) : (
+          <OykForm className="oyk-universes-admin-form" isLoading={isLoading} onSubmit={handleSubmit}>
+            <section>
+              <OykHeading subtitle tag="h2" title={t("Universe Theme")} nop />
+              <OykFormField
+                label={t("Primary Colour")}
+                name="c_primary"
+                type="color"
+                defaultValue={themeForm.c_primary}
+                onChange={handleChange}
+                hasError={hasError?.c_primary}
+              />
+              <OykFormField
+                label={t("Foreground Primary Colour")}
+                name="c_primary_fg"
+                type="color"
+                defaultValue={themeForm.c_primary_fg}
+                onChange={handleChange}
+                hasError={hasError?.c_primary_fg}
+              />
+              <OykFormField
+                label={t("Border Radius")}
+                name="radius"
+                type="number"
+                defaultValue={themeForm.radius}
+                onChange={handleChange}
+                hasError={hasError?.radius}
+              />
+            </section>
+            <hr />
+            <section>
+              <OykHeading subtitle tag="h3" title={t("Core Colours")} nop />
+              <OykFormField
+                label={t("Core Background")}
+                name="core_bg"
+                type="color"
+                defaultValue={themeForm.core_bg}
+                onChange={handleChange}
+                hasError={hasError?.core_bg}
+              />
+              <OykFormField
+                label={t("Core Foreground")}
+                name="core_fg"
+                type="color"
+                defaultValue={themeForm.core_fg}
+                onChange={handleChange}
+                hasError={hasError?.core_fg}
+              />
+              <OykFormField
+                label={t("Core Divider")}
+                name="core_divider"
+                type="color"
+                defaultValue={themeForm.core_divider}
+                onChange={handleChange}
+                hasError={hasError?.core_divider}
+              />
+            </section>
+            <hr />
+            <section>
+              <OykHeading subtitle tag="h3" title={t("Header Colours")} nop />
+              <OykFormField
+                label={t("Header Background")}
+                name="app_header_bg"
+                type="color"
+                defaultValue={themeForm.app_header_bg}
+                onChange={handleChange}
+                hasError={hasError?.app_header_bg}
+              />
+              <OykFormField
+                label={t("Header Foreground")}
+                name="app_header_fg"
+                type="color"
+                defaultValue={themeForm.app_header_fg}
+                onChange={handleChange}
+                hasError={hasError?.app_header_fg}
+              />
+              <OykFormField
+                label={t("Header Subtle Background")}
+                name="app_header_subtle_bg"
+                type="color"
+                defaultValue={themeForm.app_header_subtle_bg}
+                onChange={handleChange}
+                hasError={hasError?.app_header_subtle_bg}
+              />
+              <OykFormField
+                label={t("Header Subtle Foreground")}
+                name="app_header_subtle_fg"
+                type="color"
+                defaultValue={themeForm.app_header_subtle_fg}
+                onChange={handleChange}
+                hasError={hasError?.app_header_subtle_fg}
+              />
+            </section>
+            <hr />
+            <section>
+              <OykHeading subtitle tag="h3" title={t("Sidebar Colours")} nop />
+              <OykFormField
+                label={t("Sidebar Background")}
+                name="app_sidebar_bg"
+                type="color"
+                defaultValue={themeForm.app_sidebar_bg}
+                onChange={handleChange}
+                hasError={hasError?.app_sidebar_bg}
+              />
+              <OykFormField
+                label={t("Sidebar Foreground")}
+                name="app_sidebar_fg"
+                type="color"
+                defaultValue={themeForm.app_sidebar_fg}
+                onChange={handleChange}
+                hasError={hasError?.app_sidebar_fg}
+              />
+              <OykFormField
+                label={t("Sidebar Subtle Background")}
+                name="app_sidebar_subtle_bg"
+                type="color"
+                defaultValue={themeForm.app_sidebar_subtle_bg}
+                onChange={handleChange}
+                hasError={hasError?.app_sidebar_subtle_bg}
+              />
+              <OykFormField
+                label={t("Sidebar Subtle Foreground")}
+                name="app_sidebar_subtle_fg"
+                type="color"
+                defaultValue={themeForm.app_sidebar_subtle_fg}
+                onChange={handleChange}
+                hasError={hasError?.app_sidebar_subtle_fg}
+              />
+            </section>
+            <hr />
+            <section>
+              <OykHeading subtitle tag="h3" title={t("Card Colours")} nop />
+              <OykFormField
+                label={t("Card Background")}
+                name="card_bg"
+                type="color"
+                defaultValue={themeForm.card_bg}
+                onChange={handleChange}
+                hasError={hasError?.card_bg}
+              />
+              <OykFormField
+                label={t("Card Foreground")}
+                name="card_fg"
+                type="color"
+                defaultValue={themeForm.card_fg}
+                onChange={handleChange}
+                hasError={hasError?.card_fg}
+              />
+              <OykFormField
+                label={t("Card Subtle Background")}
+                name="card_subtle_bg"
+                type="color"
+                defaultValue={themeForm.card_subtle_bg}
+                onChange={handleChange}
+                hasError={hasError?.card_subtle_bg}
+              />
+              <OykFormField
+                label={t("Card Subtle Foreground")}
+                name="card_subtle_fg"
+                type="color"
+                defaultValue={themeForm.card_subtle_fg}
+                onChange={handleChange}
+                hasError={hasError?.card_subtle_fg}
+              />
+              <OykFormField
+                label={t("Card Item Background")}
+                name="card_item_bg"
+                type="color"
+                defaultValue={themeForm.card_item_bg}
+                onChange={handleChange}
+                hasError={hasError?.card_item_bg}
+              />
+              <OykFormField
+                label={t("Card Item Foreground")}
+                name="card_item_fg"
+                type="color"
+                defaultValue={themeForm.card_item_fg}
+                onChange={handleChange}
+                hasError={hasError?.card_item_fg}
+              />
+              <OykFormField
+                label={t("Card Divider")}
+                name="card_divider"
+                type="color"
+                defaultValue={themeForm.card_divider}
+                onChange={handleChange}
+                hasError={hasError?.card_divider}
+              />
+            </section>
+            <hr />
+            <section>
+              <OykHeading subtitle tag="h3" title={t("Popper Colours")} nop />
+              <OykFormField
+                label={t("Popper Background")}
+                name="popper_bg"
+                type="color"
+                defaultValue={themeForm.popper_bg}
+                onChange={handleChange}
+                hasError={hasError?.popper_bg}
+              />
+              <OykFormField
+                label={t("Popper Foreground")}
+                name="popper_fg"
+                type="color"
+                defaultValue={themeForm.popper_fg}
+                onChange={handleChange}
+                hasError={hasError?.popper_fg}
+              />
+              <OykFormField
+                label={t("Popper Subtle Background")}
+                name="popper_subtle_bg"
+                type="color"
+                defaultValue={themeForm.popper_subtle_bg}
+                onChange={handleChange}
+                hasError={hasError?.popper_subtle_bg}
+              />
+              <OykFormField
+                label={t("Popper Subtle Foreground")}
+                name="popper_subtle_fg"
+                type="color"
+                defaultValue={themeForm.popper_subtle_fg}
+                onChange={handleChange}
+                hasError={hasError?.popper_subtle_fg}
+              />
+            </section>
+            <hr />
+            <section>
+              <OykHeading subtitle tag="h3" title={t("Scrollbar Colours")} nop />
+              <OykFormField
+                label={t("Scrollbar Foreground")}
+                name="scrollbar"
+                type="color"
+                defaultValue={themeForm.scrollbar}
+                onChange={handleChange}
+                hasError={hasError?.scrollbar}
+              />
+            </section>
+            {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
+            <div className="oyk-form-actions">
+              <OykButton type="submit" color="primary" disabled={isLoading || isLoadingSubmit}>
+                {isLoadingSubmit ? t("Saving...") : t("Save")}
+              </OykButton>
+              <OykButton type="reset" disabled={isLoading || isLoadingSubmit} outline onClick={handleReset}>
+                {t("Cancel")}
+              </OykButton>
+            </div>
+          </OykForm>
+        )}
       </OykCard>
     </section>
   );

@@ -73,6 +73,14 @@ textarea {
   resize: vertical;
 }
 
+hr {
+  background: var(--oyk-card-divider);
+  border: none;
+  height: 1px;
+  padding: 0;
+  margin: 16px 0;
+}
+
 code {
   background-color: var(--oyk-card-bg);
   border-radius: var(--oyk-radius);
