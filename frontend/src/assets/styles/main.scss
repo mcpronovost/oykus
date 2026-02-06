@@ -10,7 +10,7 @@
 @use "./core/app-loading" as core-layout-app-loading;
 @use "./core/app-notfound" as core-layout-app-notfound;
 
-// Common
+// UI
 @use "./ui/alert" as ui-alert;
 @use "./ui/avatar" as ui-avatar;
 @use "./ui/banner" as ui-banner;
@@ -28,6 +28,9 @@
 @use "./ui/modal" as ui-modal;
 @use "./ui/progress" as ui-progress;
 @use "./ui/scrollbar" as ui-scrollbar;
+
+// Common
+@use "./common/sidenav" as common-sidenav;
 
 // Pages
 @use "./page/_auth" as page-auth;
