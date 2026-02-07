@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
-export default function OykScrollbar({ children, height = 300, className = "" }) {
+export default function OykScrollbar({ children, height = "100%", className = "" }) {
   const containerRef = useRef(null);
   const contentRef = useRef(null);
   const thumbRef = useRef(null);
 
   const [thumbHeight, setThumbHeight] = useState(0);
   const [thumbTop, setThumbTop] = useState(0);
+  const [boxHeight, setBoxHeight] = useState(height);
   const [dragging, setDragging] = useState(false);
   const dragStartY = useRef(0);
   const scrollStartTop = useRef(0);
@@ -20,7 +21,7 @@ export default function OykScrollbar({ children, height = 300, className = "" })
     let rafId = null;
 
     const updateThumb = () => {
-      const containerHeight = container.clientHeight;
+      const containerHeight = container.parentElement.clientHeight;
       const contentHeight = content.scrollHeight;
 
       if (!containerHeight || !contentHeight) return;
@@ -30,6 +31,8 @@ export default function OykScrollbar({ children, height = 300, className = "" })
         setThumbTop(0);
         return;
       }
+
+      setBoxHeight(containerHeight);
 
       const ratio = containerHeight / contentHeight;
       setThumbHeight(Math.min(Math.max(containerHeight * ratio, 20), containerHeight));
@@ -62,7 +65,8 @@ export default function OykScrollbar({ children, height = 300, className = "" })
 
     if (!container || !content) return;
 
-    const maxScroll = content.scrollHeight - container.clientHeight;
+    const containerHeight = container.parentElement.clientHeight;
+    const maxScroll = content.scrollHeight - containerHeight;
 
     if (maxScroll <= 0) {
       setThumbTop(0);
@@ -71,7 +75,9 @@ export default function OykScrollbar({ children, height = 300, className = "" })
 
     const scrollRatio = content.scrollTop / maxScroll;
 
-    setThumbTop(scrollRatio * (container.clientHeight - thumbHeight));
+    console.log("scrollRatio : ", scrollRatio);
+
+    setThumbTop(scrollRatio * (containerHeight - thumbHeight));
   };
 
   const onMouseDown = (e) => {
@@ -87,12 +93,13 @@ export default function OykScrollbar({ children, height = 300, className = "" })
     const onMouseMove = (e) => {
       const container = containerRef.current;
       const content = contentRef.current;
+      const containerHeight = container.parentElement.clientHeight;
 
       const delta = e.clientY - dragStartY.current;
 
-      const scrollableHeight = content.scrollHeight - container.clientHeight;
+      const scrollableHeight = content.scrollHeight - containerHeight;
 
-      const thumbScrollable = container.clientHeight - thumbHeight;
+      const thumbScrollable = containerHeight - thumbHeight;
 
       content.scrollTop = scrollStartTop.current + (delta / thumbScrollable) * scrollableHeight;
     };
@@ -112,7 +119,7 @@ export default function OykScrollbar({ children, height = 300, className = "" })
   }, [dragging, thumbHeight]);
 
   return (
-    <div className="oyk-scrollbar" ref={containerRef} style={{ height }}>
+    <div className="oyk-scrollbar" ref={containerRef} style={{ height: boxHeight }}>
       <div className={`oyk-scrollbar-content ${className}`} ref={contentRef} onScroll={onScroll}>
         {children}
       </div>
