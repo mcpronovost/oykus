@@ -165,8 +165,9 @@ export default function SettingsAccount() {
                   type="submit"
                   color="primary"
                   disabled={isLoading || isSubmitLoading}
+                  isLoading={isSubmitLoading}
                 >
-                  {isSubmitLoading ? t("Saving...") : t("Save")}
+                  {t("Save")}
                 </OykButton>
                 <OykButton
                   type="reset"

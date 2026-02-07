@@ -496,8 +496,8 @@ export default function UniverseAdminTheme() {
             </section>
             {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
             <div className="oyk-form-actions">
-              <OykButton type="submit" color="primary" disabled={isLoading || isLoadingSubmit}>
-                {isLoadingSubmit ? t("Saving...") : t("Save")}
+              <OykButton type="submit" color="primary" disabled={isLoading || isLoadingSubmit} isLoading={isLoadingSubmit}>
+                {t("Save")}
               </OykButton>
               <OykButton type="reset" disabled={isLoading || isLoadingSubmit} outline onClick={handleReset}>
                 {t("Cancel")}

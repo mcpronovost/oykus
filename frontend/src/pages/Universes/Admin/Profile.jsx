@@ -143,8 +143,8 @@ export default function UniverseAdminProfile() {
           )}
           {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
           <div className="oyk-form-actions">
-            <OykButton type="submit" color="primary" disabled={isLoading}>
-              {isLoading ? t("Saving...") : t("Save")}
+            <OykButton type="submit" color="primary" disabled={isLoading} isLoading={isLoading}>
+              {t("Save")}
             </OykButton>
             <OykButton type="reset" disabled={isLoading} outline onClick={handleReset}>
               {t("Cancel")}

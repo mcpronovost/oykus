@@ -22,7 +22,7 @@ export default function AppHeader() {
           {storeAppSidebarOpen ? <ArrowLeftFromLine size={18} /> : <ArrowRightFromLine size={18} />}
         </button>
       </section>
-      {isAuth ? currentUniverse?.is_mod_leveling_active ? <OykAppHeaderLeveling /> : null : <OykAppHeaderMenu />}
+      {isAuth ? currentUniverse?.is_mod_leveling_active ? <OykAppHeaderLeveling /> : <div className="oyk-app-header-space"></div> : <OykAppHeaderMenu />}
       <OykAppHeaderNotifications />
       <section className="oyk-app-header-user">{isAuth ? <OykAppHeaderUser /> : <OykAppHeaderAuth />}</section>
     </header>
