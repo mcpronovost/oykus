@@ -58,7 +58,7 @@ $params = [];
 
 if ($title) {
     $fields[] = "title = :title";
-    $params[":title"] = $title;
+    $params[":title"] = substr($title, 0, 120);
 }
 
 if ($content) {
@@ -83,15 +83,21 @@ if ($statusId) {
 
 $params[":id"] = $taskId;
 
-// Update tasks status
-$sql = "
-    UPDATE planner_tasks
-    SET ".implode(', ', $fields)."
-    WHERE id = :id
-";
+try {
+    // Update tasks status
+    $sql = "
+        UPDATE planner_tasks
+        SET ".implode(', ', $fields)."
+        WHERE id = :id
+    ";
 
-$qry = $pdo->prepare($sql);
-$qry->execute($params);
+    $qry = $pdo->prepare($sql);
+    $qry->execute($params);
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(["error" => $e->getCode(), "message" => $e->getMessage()]);
+    exit;
+}
 
 echo json_encode([
     "ok" => true
