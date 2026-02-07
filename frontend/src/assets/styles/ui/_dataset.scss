@@ -1,0 +1,24 @@
+.oyk-dataset {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+
+  &-term {
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: block;
+    flex: 0 0 150px;
+    width: 150px;
+    padding: 12px 0;
+    margin: 0;
+  }
+
+  &-value {
+    flex: 1 1 calc(100% - 200px);
+    width: 100%;
+    padding: 12px 0;
+    margin: 0;
+  }
+}

@@ -4,6 +4,8 @@ export { default as OykBanner } from "./Banner.jsx";
 export { default as OykButton } from "./Button.jsx";
 export { default as OykCard } from "./Card.jsx";
 export { default as OykChip } from "./Chip.jsx";
+export { default as OykDataset } from "./Dataset.jsx";
+export { default as OykDatasetField } from "./DatasetField.jsx";
 export { default as OykDisplay } from "./Display.jsx";
 export { default as OykDropdown } from "./Dropdown.jsx";
 export { default as OykFeedback } from "./Feedback.jsx";
