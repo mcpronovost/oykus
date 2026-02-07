@@ -5,6 +5,9 @@ header("Content-Type: application/json; charset=utf-8");
 require_once __DIR__."/core/db.php";
 require_once __DIR__."/core/middlewares.php";
 
+require_once __DIR__."/contrib/world/services/UniverseService.php";
+require_once __DIR__."/contrib/world/services/ThemeService.php";
+
 update_wio();
 
 function route(string $method, string $pattern, callable $handler): bool {

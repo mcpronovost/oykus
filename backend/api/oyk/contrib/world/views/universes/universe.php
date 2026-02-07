@@ -5,8 +5,10 @@ header("Content-Type: application/json");
 global $pdo;
 $authUser = require_auth();
 
+$themeService = new ThemeService($pdo);
+
 try {
-    $qry = $pdo->prepare("
+  $qry = $pdo->prepare("
         SELECT gu.id,
                gu.name,
                gu.slug,
@@ -32,39 +34,27 @@ try {
         LIMIT 1;
     ");
 
-    $qry->execute([$universeSlug, $authUser["id"]]);
-    $universe = $qry->fetch();
+  $qry->execute([$universeSlug, $authUser["id"]]);
+  $universe = $qry->fetch();
 
-    if (!$universe) {
-        http_response_code(404);
-        echo json_encode(["error" => "Universe not found"]);
-        exit;
-    }
-
-    $qry = $pdo->prepare("
-        SELECT c_primary, c_primary_fg, variables
-        FROM world_themes
-        WHERE universe = ? AND
-              is_active = 1
-        LIMIT 1;
-    ");
-
-    $qry->execute([$universe["id"]]);
-    $theme = $qry->fetch() ?: null;
-} catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(["error" => $e->getCode(), "message" => $e->getMessage()]);
+  if (!$universe) {
+    http_response_code(404);
+    echo json_encode(["error" => "Universe not found"]);
     exit;
+  }
 }
+catch (Exception $e) {
+  http_response_code(500);
+  echo json_encode(["error" => $e->getCode(), "message" => $e->getMessage()]);
+  exit;
+}
+
+$theme = $themeService->getActiveTheme($universe["id"]);
 
 unset($universe["id"]);
 
-if ($theme) {
-    $theme["variables"] = json_decode($theme["variables"]);
-}
-
 echo json_encode([
-    "ok"        => true,
-    "universe"  => $universe,
-    "theme"     => $theme
+  "ok" => TRUE,
+  "universe" => $universe,
+  "theme" => $theme
 ]);

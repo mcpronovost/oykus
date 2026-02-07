@@ -5,34 +5,11 @@ header("Content-Type: application/json");
 global $pdo;
 $authUser = require_auth();
 
-try {
-    $qry = $pdo->prepare("
-        SELECT gu.name,
-               gu.slug,
-               gu.abbr,
-               gu.logo,
-               gu.cover,
-               gt.c_primary,
-               gt.c_primary_fg
-        FROM world_universes gu
-        LEFT JOIN world_themes gt ON gt.universe = gu.id AND gt.is_active = 1
-        WHERE (gu.visibility = 4 OR
-              gu.owner = ?) AND
-              gu.is_active = 1
-        ORDER BY gu.is_default DESC,
-                (gu.owner = ?) DESC,
-                 gu.name ASC;
-    ");
+$universeService = new UniverseService($pdo);
 
-    $qry->execute([$authUser["id"], $authUser["id"]]);
-    $universes = $qry->fetchAll();
-} catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(["error" => $e->getCode(), "message" => $e->getMessage()]);
-    exit;
-}
+$universes = $universeService->getUniverses($authUser["id"]);
 
 echo json_encode([
-    "ok"        => true,
-    "universes" => $universes
+  "ok" => TRUE,
+  "universes" => $universes
 ]);
