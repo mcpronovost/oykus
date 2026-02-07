@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
 
+import { OykScrollbar } from "@/components/ui";
+
 export default function Modal({ children, isOpen, onClose, title, size = "medium", actions }) {
   const modalRef = useRef(null);
 
@@ -38,7 +40,11 @@ export default function Modal({ children, isOpen, onClose, title, size = "medium
             {actions && <div className="oyk-modal-header-actions">{actions}</div>}
           </header>
         )}
-        <div className="oyk-modal-content">{children}</div>
+        <div className="oyk-modal-wrapper">
+          <OykScrollbar height={"100%"}>
+            <div className="oyk-modal-content">{children}</div>
+          </OykScrollbar>
+        </div>
       </div>
     </div>
   );
