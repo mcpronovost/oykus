@@ -14,8 +14,8 @@ $authUser = require_auth();
 |--------------------------------------------------------------------------
 */
 $qry = $pdo->prepare("
-    SELECT id, name, slug, is_slug_auto, abbr, is_abbr_auto, logo, cover, owner
-    FROM game_universes
+    SELECT id, name, slug, is_slug_auto, abbr, is_abbr_auto, logo, cover, owner, visibility, is_default
+    FROM world_universes
     WHERE slug = ? AND is_active = 1
     LIMIT 1
 ");
@@ -56,34 +56,16 @@ if (isset($_POST["name"]) && $_POST["name"] !== $universe["name"]) {
     $nameChanged = true;
 }
 
-/* ---------- Avatar ---------- */
-if (!empty($_FILES["logo"])) {
-    $newLogo = oyk_save_image(
-        $_FILES["logo"],
-        200,
-        200,
-        "logos",
-        $universe["slug"],
-        2
-    );
+/* ---------- Visibility ---------- */
+if (isset($_POST["visibility"]) && $_POST["visibility"] !== $universe["visibility"]) {
+    if ($universe["is_default"] === 1 && $_POST["visibility"] != 4) {
+        http_response_code(403);
+        echo json_encode(["error" => "Default universe need to be public"]);
+        exit;
+    }
 
-    $patch["logo"] = $newLogo;
-    $params["logo"] = $newLogo;
-}
-
-/* ---------- Cover ---------- */
-if (!empty($_FILES["cover"])) {
-    $newCover = oyk_save_image(
-        $_FILES["cover"],
-        1136,
-        256,
-        "covers",
-        $universe["slug"],
-        2
-    );
-
-    $patch["cover"] = $newCover;
-    $params["cover"] = $newCover;
+    $patch["visibility"] = $_POST["visibility"];
+    $params["visibility"] = $_POST["visibility"];
 }
 
 /*
@@ -92,7 +74,7 @@ if (!empty($_FILES["cover"])) {
 |--------------------------------------------------------------------------
 */
 if ($nameChanged && $universe["is_slug_auto"]) {
-    $patch["slug"] = get_slug($pdo, $params["name"], "game_universes");
+    $patch["slug"] = get_slug($pdo, $params["name"], "world_universes");
     $params["slug"] = $patch["slug"];
 }
 
@@ -126,7 +108,7 @@ try {
     }
 
     $sql = "
-        UPDATE game_universes
+        UPDATE world_universes
         SET ".implode(", ", $sets)."
         WHERE id = :id
     ";

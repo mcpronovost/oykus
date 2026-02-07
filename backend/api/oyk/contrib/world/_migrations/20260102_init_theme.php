@@ -2,7 +2,7 @@
 global $pdo;
 
 $sql = "
-CREATE TABLE IF NOT EXISTS game_themes (
+CREATE TABLE IF NOT EXISTS world_themes (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     universe INT UNSIGNED NOT NULL,
 
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS game_themes (
 
     INDEX idx_universe (universe),
 
-    FOREIGN KEY (universe) REFERENCES game_universes(id) ON DELETE CASCADE
+    FOREIGN KEY (universe) REFERENCES world_universes(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 ";
 

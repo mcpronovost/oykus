@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS planner_status (
     CONSTRAINT uq_position UNIQUE (position, universe),
 
     CONSTRAINT fk_planner_status_universe
-        FOREIGN KEY (universe) REFERENCES game_universes(id)
+        FOREIGN KEY (universe) REFERENCES world_universes(id)
         ON DELETE SET NULL
 ) ENGINE=InnoDB;
 ";

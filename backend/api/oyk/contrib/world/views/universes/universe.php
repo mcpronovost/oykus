@@ -25,7 +25,7 @@ try {
                gu.is_mod_leveling_active,
                gu.created_at,
                gu.updated_at
-        FROM game_universes gu
+        FROM world_universes gu
         WHERE gu.slug = ? AND 
              (gu.visibility = 4 OR gu.owner = ?) AND
              gu.is_active = 1
@@ -43,7 +43,7 @@ try {
 
     $qry = $pdo->prepare("
         SELECT c_primary, c_primary_fg, variables
-        FROM game_themes
+        FROM world_themes
         WHERE universe = ? AND
               is_active = 1
         LIMIT 1;

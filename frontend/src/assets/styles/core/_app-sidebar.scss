@@ -110,8 +110,8 @@
         padding: 4px;
 
         &:not(.disabled):hover {
-          background-color: var(--oyk-popper-item-bg);
-          color: var(--oyk-popper-item-fg);
+          background-color: var(--oyk-popper-subtle-bg);
+          color: var(--oyk-popper-subtle-fg);
         }
 
         &:not(.disabled):active {
@@ -221,6 +221,7 @@
 
         &:not(.disabled):hover {
           background-color: var(--oyk-app-sidebar-subtle-bg);
+          color: var(--oyk-app-sidebar-subtle-fg);
         }
 
         &:not(.disabled):active {

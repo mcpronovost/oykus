@@ -8,7 +8,7 @@ global $pdo;
 #   4 = PUBLIC
 
 $sql = "
-CREATE TABLE IF NOT EXISTS game_universes (
+CREATE TABLE IF NOT EXISTS world_universes (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
     name VARCHAR(120) NOT NULL UNIQUE,
@@ -51,19 +51,25 @@ CREATE TABLE IF NOT EXISTS game_universes (
 $pdo->exec($sql);
 
 $qry = $pdo->prepare("
-    INSERT INTO game_universes (id, name, slug, abbr, owner, is_public)
-    VALUES (1, 'Oykus', 'oykus', 'O', 1, 1)
+    INSERT INTO world_universes (id, name, slug, abbr, owner, visibility, is_default)
+    VALUES (1, 'Oykus', 'oykus', 'O', 1, 4, 1)
     ON DUPLICATE KEY UPDATE id = 1;
 ")->execute();
 
 $qry = $pdo->prepare("
-    INSERT INTO game_universes (id, name, slug, abbr, owner, is_public)
-    VALUES (2, 'Edenwood', 'edenwood', 'E', 1, 1)
-    ON DUPLICATE KEY UPDATE id = 2;
+    INSERT INTO world_universes (id, name, slug, abbr, owner, visibility)
+    VALUES (2, 'Qalatlán', 'qalatlan', 'Q', 1, 1)
+    ON DUPLICATE KEY UPDATE id = 1;
 ")->execute();
 
 $qry = $pdo->prepare("
-    INSERT INTO game_universes (id, name, slug, abbr, owner, is_public)
-    VALUES (3, 'Rhansidor', 'rhansidor', 'R', 1, 1)
+    INSERT INTO world_universes (id, name, slug, abbr, owner, visibility)
+    VALUES (3, 'Edenwood', 'edenwood', 'E', 1, 1)
     ON DUPLICATE KEY UPDATE id = 3;
+")->execute();
+
+$qry = $pdo->prepare("
+    INSERT INTO world_universes (id, name, slug, abbr, owner, visibility)
+    VALUES (4, 'Rhansidor', 'rhansidor', 'R', 1, 3)
+    ON DUPLICATE KEY UPDATE id = 4;
 ")->execute();

@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { api } from "@/services/api";
-import { KEY_RAT, KEY_USER, KEY_GAME_UNIVERSES, KEY_GAME_CURRENT_UNIVERSE } from "@/services/store/constants";
+import { KEY_RAT, KEY_USER, KEY_WORLD_UNIVERSES, KEY_WORLD_CURRENT_UNIVERSE } from "@/services/store/constants";
 import { storeGet, storeSet, storeRemove, oykCookieSet, oykCookieDelete } from "@/services/store/utils";
 
 const REFRESH_INTERVAL = 10 * 60 * 5; // 5 minutes = 1000 * 60 * 5
@@ -19,11 +19,11 @@ const AuthProvider = ({ children }) => {
     return user && user.is_dev ? true : false;
   });
   const [universes, setUniverses] = useState(() => {
-    const r = storeGet(KEY_GAME_UNIVERSES);
+    const r = storeGet(KEY_WORLD_UNIVERSES);
     return r ? r : null;
   });
   const [universe, setUniverseState] = useState(() => {
-    const r = storeGet(KEY_GAME_CURRENT_UNIVERSE);
+    const r = storeGet(KEY_WORLD_CURRENT_UNIVERSE);
     return r ? r : null;
   });
   const [theme, setTheme] = useState(null);
@@ -47,8 +47,8 @@ const AuthProvider = ({ children }) => {
       setUniverseState(null);
       clearUniverseTheme();
       oykCookieDelete("oyk-theme");
-      storeRemove(KEY_GAME_UNIVERSES);
-      storeRemove(KEY_GAME_CURRENT_UNIVERSE);
+      storeRemove(KEY_WORLD_UNIVERSES);
+      storeRemove(KEY_WORLD_CURRENT_UNIVERSE);
     }
   };
 
@@ -107,26 +107,25 @@ const AuthProvider = ({ children }) => {
         };
       }
       setUniverseState(payload);
-      storeSet(KEY_GAME_CURRENT_UNIVERSE, payload);
+      storeSet(KEY_WORLD_CURRENT_UNIVERSE, payload);
     } else {
       setUniverseState(null);
-      storeRemove(KEY_GAME_CURRENT_UNIVERSE);
+      storeRemove(KEY_WORLD_CURRENT_UNIVERSE);
     }
   };
-
 
   const fetchUniverses = async (signal) => {
     if (!user) return;
     try {
-      const r = await api.get("/game/universes/", signal ? { signal } : {});
+      const r = await api.get("/world/universes/", signal ? { signal } : {});
       if (!r.ok || !r.universes) throw Error();
       setUniverses(r.universes);
-      storeSet(KEY_GAME_UNIVERSES, r.universes);
+      storeSet(KEY_WORLD_UNIVERSES, r.universes);
       if (!universe) fetchCurrentUniverse(r.universes?.[0]?.slug, signal);
       else fetchCurrentUniverse(universe.slug, signal);
     } catch {
       setUniverses([]);
-      storeRemove(KEY_GAME_UNIVERSES);
+      storeRemove(KEY_WORLD_UNIVERSES);
     }
   };
 
@@ -134,17 +133,17 @@ const AuthProvider = ({ children }) => {
     if (!slug) return;
 
     try {
-      const r = await api.get(`/game/universes/${slug}/`, signal ? { signal } : {});
+      const r = await api.get(`/world/universes/${slug}/`, signal ? { signal } : {});
       if (!r.ok || !r.universe) throw Error();
       setUniverse(r.universe);
-      storeSet(KEY_GAME_CURRENT_UNIVERSE, r.universe);
+      storeSet(KEY_WORLD_CURRENT_UNIVERSE, r.universe);
       oykCookieSet("oyk-theme", r.universe.slug);
       if (r.theme) {
         setTheme(r.theme);
       } else setTheme(null);
     } catch {
       setUniverse(null);
-      storeRemove(KEY_GAME_CURRENT_UNIVERSE);
+      storeRemove(KEY_WORLD_CURRENT_UNIVERSE);
       oykCookieDelete("oyk-theme");
       setTheme(null);
     }

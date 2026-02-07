@@ -12,7 +12,7 @@ $authUser = require_auth();
 */
 $qry = $pdo->prepare("
     SELECT id, name, owner
-    FROM game_universes
+    FROM world_universes
     WHERE slug = ? AND is_active = 1
     LIMIT 1
 ");
@@ -44,8 +44,8 @@ if ($universe["owner"] !== $authUser["id"]) {
 try {
     $qry = $pdo->prepare("
         SELECT t.c_primary, t.c_primary_fg, t.variables
-        FROM game_themes t
-        JOIN game_universes u ON u.id = t.universe
+        FROM world_themes t
+        JOIN world_universes u ON u.id = t.universe
         WHERE u.slug = ? AND
               t.is_active = 1
         LIMIT 1;
@@ -56,8 +56,8 @@ try {
 
     if (!$theme) {
         $qry = $pdo->prepare("
-            INSERT INTO game_themes (universe, name, variables, is_active)
-            VALUES (?, ?, '{}', 1);
+            INSERT INTO world_themes (universe, name, c_primary, c_primary_fg, variables, is_active)
+            VALUES (?, ?, '#3DA5CB', '#FFFFFF', '{}', 1);
         ");
 
         $qry->execute([$universe["id"], $universe["name"]]);
@@ -66,7 +66,7 @@ try {
 
         $qry = $pdo->prepare("
             SELECT *
-            FROM game_themes
+            FROM world_themes
             WHERE id = ?
             LIMIT 1
         ");

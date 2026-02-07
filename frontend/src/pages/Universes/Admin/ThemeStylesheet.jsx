@@ -35,7 +35,7 @@ export default function UniverseAdminThemeStylesheet() {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get(`/game/universes/${currentUniverse.slug}/theme/`, signal ? { signal } : {});
+      const r = await api.get(`/world/universes/${currentUniverse.slug}/theme/`, signal ? { signal } : {});
       if (!r.ok || !r.theme) throw Error();
       setInitialThemeForm((prev) => ({
         ...prev,
@@ -89,7 +89,7 @@ export default function UniverseAdminThemeStylesheet() {
     try {
       const formData = new FormData();
       formData.append("stylesheet", themeForm.stylesheet);
-      const r = await api.post(`/game/universes/${currentUniverse.slug}/theme/edit/`, formData);
+      const r = await api.post(`/world/universes/${currentUniverse.slug}/theme/edit/`, formData);
       if (!r?.ok || !r.theme) throw new Error(r || t("An error occurred"));
       setThemeForm((prev) => ({
         ...prev,

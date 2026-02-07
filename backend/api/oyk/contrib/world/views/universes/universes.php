@@ -14,8 +14,8 @@ try {
                gu.cover,
                gt.c_primary,
                gt.c_primary_fg
-        FROM game_universes gu
-        LEFT JOIN game_themes gt ON gt.universe = gu.id AND gt.is_active = 1
+        FROM world_universes gu
+        LEFT JOIN world_themes gt ON gt.universe = gu.id AND gt.is_active = 1
         WHERE (gu.visibility = 4 OR
               gu.owner = ?) AND
               gu.is_active = 1

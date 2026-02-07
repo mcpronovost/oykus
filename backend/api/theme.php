@@ -18,8 +18,8 @@ if (!$universeSlug) {
 try {
     $qry = $pdo->prepare("
         SELECT t.c_primary, t.c_primary_fg, t.variables
-        FROM game_themes t
-        JOIN game_universes u ON u.id = t.universe
+        FROM world_themes t
+        JOIN world_universes u ON u.id = t.universe
         WHERE u.slug = ? AND
               t.is_active = 1
         LIMIT 1;
@@ -41,7 +41,7 @@ if ($theme) {
     echo "--oyk-c-primary-fg: ".$theme['c_primary_fg'].";\n";
 
     foreach ($theme["variables"] as $k => $v) {
-      echo "--$k: $v;\n";
+      echo "--oyk-$k: $v;\n";
     }
     echo "}\n";
     exit;

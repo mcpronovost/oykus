@@ -51,7 +51,7 @@ if (!empty($_FILES["avatar"])) {
         $_FILES["avatar"],
         200,
         200,
-        "avatars",
+        "a/u/avatars",
         $user["slug"],
         2
     );
@@ -66,7 +66,7 @@ if (!empty($_FILES["cover"])) {
         $_FILES["cover"],
         1136,
         256,
-        "covers",
+        "a/u/covers",
         $user["slug"],
         2
     );

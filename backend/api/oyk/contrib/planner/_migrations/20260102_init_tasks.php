@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS planner_tasks (
     INDEX idx_author (author),
 
     CONSTRAINT fk_planner_tasks_universe
-        FOREIGN KEY (universe) REFERENCES game_universes(id)
+        FOREIGN KEY (universe) REFERENCES world_universes(id)
         ON DELETE SET NULL,
     CONSTRAINT fk_planner_tasks_status
         FOREIGN KEY (status) REFERENCES planner_status(id)

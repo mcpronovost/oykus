@@ -48,7 +48,7 @@ export default function OykScrollbar({ children, height = 300, className = "" })
     // 🔴 critical part: delayed re-measure
     scheduleUpdate();
     setTimeout(scheduleUpdate, 500);
-    setTimeout(scheduleUpdate, 1000);
+    setTimeout(scheduleUpdate, 2000);
 
     return () => {
       cancelAnimationFrame(rafId);

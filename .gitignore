@@ -54,11 +54,8 @@ prisma/migrations/dev.db-journal
 *.local
 
 # Uploads
-backend/uploads/avatars/*
-backend/uploads/covers/*
-backend/uploads/logos/*
-!backend/uploads/avatars/.empty
-!backend/uploads/covers/.empty
-!backend/uploads/logos/.empty
+backend/uploads/**
+!backend/uploads/**/
+!backend/uploads/**/.empty
 
 .htaccess

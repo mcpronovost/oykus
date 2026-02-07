@@ -27,7 +27,7 @@ try {
     if ($universeSlug) {
         $qry = $pdo->prepare("
             SELECT id
-            FROM game_universes
+            FROM world_universes
             WHERE slug = ?
             LIMIT 1
         ");

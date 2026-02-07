@@ -36,7 +36,7 @@ route("GET", "#^/api/v1/theme.php$#", function () {
 require __DIR__."/contrib/auth/routes.php";
 require __DIR__."/contrib/planner/routes.php";
 require __DIR__."/contrib/achievements/routes.php";
-require __DIR__."/contrib/game/routes.php";
+require __DIR__."/contrib/world/routes.php";
 
 http_response_code(404);
 echo json_encode(["error" => "Not found"]);

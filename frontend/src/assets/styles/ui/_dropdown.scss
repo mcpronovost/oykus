@@ -69,8 +69,8 @@
       }
 
       &:not(:disabled):hover {
-        background-color: var(--oyk-popper-item-bg);
-        color: var(--oyk-popper-item-fg);
+        background-color: var(--oyk-popper-subtle-bg);
+        color: var(--oyk-popper-subtle-fg);
       }
 
       &:not(:disabled):active {
@@ -97,7 +97,7 @@
     }
 
     &-divider {
-      background-color: var(--oyk-popper-item-bg);
+      background-color: var(--oyk-popper-subtle-bg);
       height: 1px;
       margin: 0.5rem 0;
     }

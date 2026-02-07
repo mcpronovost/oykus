@@ -24,7 +24,7 @@ export default function UniverseAdminModules() {
     setHasError(null);
     setModules([]);
     try {
-      const r = await api.get(`/game/universes/${params?.universeSlug}/`, signal ? { signal } : {});
+      const r = await api.get(`/world/universes/${params?.universeSlug}/`, signal ? { signal } : {});
       if (!r.ok || !r.universe) throw Error();
       setModules([
         {
@@ -108,7 +108,7 @@ export default function UniverseAdminModules() {
       const formData = new FormData();
       formData.append("module", module);
       formData.append("action", action);
-      const r = await api.post(`/game/universes/${params?.universeSlug}/modules/edit/`, formData);
+      const r = await api.post(`/world/universes/${params?.universeSlug}/modules/edit/`, formData);
       if (!r.ok || !r.module) throw Error();
       setCurrentUniverse();
       setModules((prev) => {

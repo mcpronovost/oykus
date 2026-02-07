@@ -16,7 +16,7 @@ $authUser = require_auth();
 */
 $qry = $pdo->prepare("
     SELECT id, slug, logo, cover, owner
-    FROM game_universes
+    FROM world_universes
     WHERE slug = ? AND is_active = 1
     LIMIT 1
 ");
@@ -47,7 +47,7 @@ if ($universe["owner"] !== $authUser["id"]) {
 */
 $qry = $pdo->prepare("
     SELECT id, c_primary, c_primary_fg, variables
-    FROM game_themes
+    FROM world_themes
     WHERE universe = ? AND is_active = 1
     LIMIT 1
 ");
@@ -74,7 +74,7 @@ if (!empty($_FILES["logo"])) {
         $_FILES["logo"],
         200,
         200,
-        "logos",
+        "w/u/logos",
         $universe["slug"],
         2
     );
@@ -89,7 +89,7 @@ if (!empty($_FILES["cover"])) {
         $_FILES["cover"],
         1136,
         256,
-        "covers",
+        "w/u/covers",
         $universe["slug"],
         2
     );
@@ -177,7 +177,7 @@ try {
         }
 
         $sql = "
-            UPDATE game_universes
+            UPDATE world_universes
             SET ".implode(", ", $sets)."
             WHERE id = :id
         ";
@@ -192,7 +192,7 @@ try {
         }
 
         $sql = "
-            UPDATE game_themes
+            UPDATE world_themes
             SET ".implode(", ", $sets)."
             WHERE id = :id
         ";

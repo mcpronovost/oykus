@@ -1,32 +1,59 @@
-import { useEffect, useRef, useState } from "react";
-import { SquircleDashed, Image } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import { OykBanner, OykButton, OykCard, OykForm, OykFormField, OykFormMessage, OykHeading } from "@/components/ui";
+import { OykButton, OykCard, OykForm, OykFormField, OykFormHelp, OykFormMessage, OykHeading } from "@/components/ui";
 
 export default function UniverseAdminProfile() {
   const { currentUniverse, setUniverse, getUniverses } = useAuth();
   const { routeTitle } = useRouter();
   const { t } = useTranslation();
 
-  const logoRef = useRef(null);
-  const coverRef = useRef(null);
-  const nameRef = useRef(null);
-  const slugRef = useRef(null);
-  const abbrRef = useRef(null);
-
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
-  const [profileForm, setProfileForm] = useState({
-    logo: currentUniverse.logo || null,
-    cover: currentUniverse.cover || null,
+  const [initialProfileForm, setInitialProfileForm] = useState({
     name: currentUniverse.name || "",
     slug: currentUniverse.slug || "",
     abbr: currentUniverse.abbr || "",
+    visibility: `${currentUniverse.visibility}` || "1",
   });
+  const [profileForm, setProfileForm] = useState(initialProfileForm);
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    setHasError(null);
+    try {
+      const formData = new FormData();
+      for (const [key, value] of Object.entries(profileForm)) {
+        formData.append(key, value);
+      };
+      const r = await api.post(`/world/universes/${currentUniverse.slug}/edit/`, formData);
+      if (!r?.ok) throw new Error(r || t("An error occurred"));
+      setUniverse(r.universe);
+      getUniverses();
+      setProfileForm((prev) => ({
+        ...prev,
+        name: r.universe.name,
+        slug: r.universe.slug,
+        abbr: r.universe.abbr,
+        visibility: `${r.universe.visibility}`,
+      }));
+    } catch (e) {
+      if (e?.message && e.message.includes("uniq_name")) {
+        setHasError(() => ({
+          name: t("This name is already in use"),
+        }));
+      } else {
+        setHasError(() => ({
+          message: e.message || t("An error occurred"),
+        }));
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,116 +74,9 @@ export default function UniverseAdminProfile() {
     }
   };
 
-  const handleImageClick = (field) => {
-    setHasError((prev) => ({
-      ...prev,
-      [field]: null,
-    }));
-    if (field === "logo") logoRef.current?.click();
-    if (field === "cover") coverRef.current?.click();
-  };
-
-  const handleLogoChange = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    // Optional validation
-    if (file.size > 2 * 1024 * 1024) {
-      setHasError({ logo: t("Logo image must be smaller than 2MB") });
-      return;
-    }
-
-    const previewUrl = URL.createObjectURL(file);
-
-    setProfileForm((prev) => ({
-      ...prev,
-      logo: previewUrl,
-      logoFile: file,
-    }));
-  };
-
-  const handleCoverChange = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    // Optional validation
-    if (file.size > 2 * 1024 * 1024) {
-      setHasError({ cover: t("Cover image must be smaller than 2MB") });
-      return;
-    }
-
-    const previewUrl = URL.createObjectURL(file);
-
-    setProfileForm((prev) => ({
-      ...prev,
-      cover: previewUrl,
-      coverFile: file,
-    }));
-  };
-
   const handleReset = async (e) => {
-    setProfileForm({
-      logo: currentUniverse.logo || null,
-      cover: currentUniverse.cover || null,
-      name: currentUniverse.name || "",
-      slug: currentUniverse.slug || "",
-      abbr: currentUniverse.abbr || "",
-    });
-    nameRef.current.value = currentUniverse.name || "";
-    slugRef.current.value = currentUniverse.slug || "";
-    abbrRef.current.value = currentUniverse.abbr || "";
+    setProfileForm(initialProfileForm);
   };
-
-  const handleSubmit = async () => {
-    setIsLoading(true);
-    setHasError(null);
-    try {
-      const formData = new FormData();
-      formData.append("name", profileForm.name);
-      if (profileForm.logoFile) {
-        formData.append("logo", profileForm.logoFile);
-      }
-      if (profileForm.coverFile) {
-        formData.append("cover", profileForm.coverFile);
-      }
-      const r = await api.post(`/game/universes/${currentUniverse.slug}/edit/`, formData);
-      if (!r?.ok) throw new Error(r || t("An error occurred"));
-      setUniverse(r.universe);
-      getUniverses();
-      setProfileForm((prev) => ({
-        ...prev,
-        name: r.universe.name,
-        slug: r.universe.slug,
-        abbr: r.universe.abbr,
-      }));
-      nameRef.current.value = r.universe.name;
-      slugRef.current.value = r.universe.slug;
-      abbrRef.current.value = r.universe.abbr;
-    } catch (e) {
-      if (e?.message && e.message.includes("uniq_name")) {
-        setHasError(() => ({
-          name: t("This name is already in use"),
-        }));
-      } else {
-        setHasError(() => ({
-          message: e.message || t("An error occurred"),
-        }));
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    return () => {
-      if (profileForm.logo?.startsWith("blob:")) {
-        URL.revokeObjectURL(profileForm.logo);
-      }
-      if (profileForm.cover?.startsWith("blob:")) {
-        URL.revokeObjectURL(profileForm.cover);
-      }
-    };
-  }, [profileForm.logo, profileForm.cover]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -175,7 +95,6 @@ export default function UniverseAdminProfile() {
       <OykCard>
         <OykForm className="oyk-universes-admin-form" isLoading={isLoading} onSubmit={handleSubmit}>
           <OykFormField
-            ref={nameRef}
             label={t("Name")}
             name="name"
             defaultValue={profileForm.name}
@@ -184,25 +103,44 @@ export default function UniverseAdminProfile() {
             required
           />
           <OykFormField
-            ref={slugRef}
             label={t("Slug")}
             name="slug"
             defaultValue={profileForm.slug}
             onChange={handleChange}
             hasError={hasError?.slug}
-            required
             disabled
           />
           <OykFormField
-            ref={abbrRef}
             label={t("Abbreviation")}
             name="abbr"
             defaultValue={profileForm.abbr}
             onChange={handleChange}
             hasError={hasError?.abbr}
-            required
             disabled
           />
+          <OykFormField
+            label={t("Visibility")}
+            name="visibility"
+            type="radio"
+            options={[
+              { label: t("Private (OWNER)"), value: "1" },
+              { label: t("Restricted (ADMINS)"), value: "2" },
+              { label: t("Restricted (MODOS)"), value: "3" },
+              { label: t("Public"), value: "4" },
+            ]}
+            defaultValue={profileForm.visibility}
+            onChange={handleChange}
+            hasError={hasError?.visibility}
+          />
+          {profileForm.visibility === "1" ? (
+            <OykFormHelp helptext={t("Only the owner can see the universe")} />
+          ) : profileForm.visibility === "2" ? (
+            <OykFormHelp helptext={t("The owner and administrators can see the universe")} />
+          ) : profileForm.visibility === "3" ? (
+            <OykFormHelp helptext={t("The owner, administrators, and moderators can see the universe")} />
+          ) : profileForm.visibility === "4" && (
+            <OykFormHelp helptext={t("Anyone can see the universe")} />
+          )}
           {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
           <div className="oyk-form-actions">
             <OykButton type="submit" color="primary" disabled={isLoading}>

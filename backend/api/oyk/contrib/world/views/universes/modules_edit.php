@@ -15,7 +15,7 @@ $authUser = require_auth();
 */
 $qry = $pdo->prepare("
     SELECT id, name, slug, is_slug_auto, abbr, is_abbr_auto, logo, cover, owner
-    FROM game_universes
+    FROM world_universes
     WHERE slug = ? AND is_active = 1
     LIMIT 1
 ");
@@ -79,7 +79,7 @@ if ($module) {
     $pdo->beginTransaction();
     try {
         $update  = $pdo->prepare("
-            UPDATE game_universes
+            UPDATE world_universes
             SET $module = $action
             WHERE slug = ? AND is_active = 1
         ");
@@ -87,7 +87,7 @@ if ($module) {
 
         $qry = $pdo->prepare("
             SELECT $module
-            FROM game_universes
+            FROM world_universes
             WHERE slug = ? AND is_active = 1
         ");
         $qry->execute([$universeSlug]);

@@ -17,7 +17,7 @@ import {
 } from "@/components/ui";
 
 export default function UniverseAdminTheme() {
-  const { currentUniverse, setCurrentUniverse } = useAuth();
+  const { currentUniverse, getUniverses } = useAuth();
   const { routeTitle } = useRouter();
   const { t } = useTranslation();
 
@@ -37,7 +37,7 @@ export default function UniverseAdminTheme() {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get(`/game/universes/${currentUniverse.slug}/theme/`, signal ? { signal } : {});
+      const r = await api.get(`/world/universes/${currentUniverse.slug}/theme/`, signal ? { signal } : {});
       if (!r.ok || !r.theme) throw Error();
       const payload = {
         c_primary: r.theme.c_primary,
@@ -67,6 +67,45 @@ export default function UniverseAdminTheme() {
       if (!signal || !signal.aborted) {
         setIsLoading(false);
       }
+    }
+  };
+
+  const handleSubmit = async () => {
+    setIsLoadingSubmit(true);
+    setHasError(null);
+    try {
+      const formData = new FormData();
+      let variables = {};
+      for (const [key, value] of Object.entries(themeForm)) {
+        if (key !== "logo" && key !== "logoFile" && key !== "cover" && key !== "coverFile") {
+          if (key !== "c_primary" && key !== "c_primary_fg") {
+            variables[key.replaceAll("_", "-")] = `${value}`.toUpperCase();
+          } else {
+            formData.append(key, value);
+          }
+        };
+      };
+      formData.append("variables", JSON.stringify(variables));
+      if (themeForm.logoFile) {
+        formData.append("logo", themeForm.logoFile);
+      }
+      if (themeForm.coverFile) {
+        formData.append("cover", themeForm.coverFile);
+      }
+      const r = await api.post(`/world/universes/${currentUniverse.slug}/theme/edit/`, formData);
+      if (!r?.ok || !r.theme) throw new Error(r || t("An error occurred"));
+      setThemeForm((prev) => ({
+        ...prev,
+        c_primary: r.theme.c_primary,
+        c_primary_fg: r.theme.c_primary_fg,
+      }));
+      getUniverses();
+    } catch (e) {
+      setHasError(() => ({
+        message: e.message || t("An error occurred"),
+      }));
+    } finally {
+      setIsLoadingSubmit(false);
     }
   };
 
@@ -138,45 +177,6 @@ export default function UniverseAdminTheme() {
 
   const handleReset = async () => {
     setThemeForm(initialThemeForm);
-  };
-
-  const handleSubmit = async () => {
-    setIsLoadingSubmit(true);
-    setHasError(null);
-    try {
-      const formData = new FormData();
-      let variables = {};
-      for (const [key, value] of Object.entries(themeForm)) {
-        if (key !== "logo" && key !== "cover") {
-          if (key !== "c_primary" && key !== "c_primary_fg") {
-            variables[key.replaceAll("_", "-")] = value.toUpperCase();
-          } else {
-            formData.append(key, value);
-          }
-        };
-      };
-      formData.append("variables", JSON.stringify(variables));
-      if (themeForm.logoFile) {
-        formData.append("logo", themeForm.logoFile);
-      }
-      if (themeForm.coverFile) {
-        formData.append("cover", themeForm.coverFile);
-      }
-      const r = await api.post(`/game/universes/${currentUniverse.slug}/theme/edit/`, formData);
-      if (!r?.ok || !r.theme) throw new Error(r || t("An error occurred"));
-      setThemeForm((prev) => ({
-        ...prev,
-        c_primary: r.theme.c_primary,
-        c_primary_fg: r.theme.c_primary_fg,
-      }));
-      setCurrentUniverse();
-    } catch (e) {
-      setHasError(() => ({
-        message: e.message || t("An error occurred"),
-      }));
-    } finally {
-      setIsLoadingSubmit(false);
-    }
   };
 
   useEffect(() => {
