@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Ellipsis, History, Trash2, X } from "lucide-react";
+import { Ellipsis, History, Pencil, Trash2, X } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
@@ -8,6 +8,8 @@ import { oykDate } from "@/utils/formatters";
 import {
   OykAvatar,
   OykButton,
+  OykDataset,
+  OykDatasetField,
   OykDropdown,
   OykForm,
   OykFormField,
@@ -21,6 +23,7 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
 
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
+  const [isShowEdit, setIsShowEdit] = useState(false);
   const [isShowHistory, setIsShowHistory] = useState(false);
   const [formData, setFormData] = useState({
     title: task.title,
@@ -50,6 +53,10 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const onClickShowEdit = () => {
+    setIsShowEdit(!isShowEdit);
+  };
+
   const onClickShowHistory = () => {
     setIsShowHistory(!isShowHistory);
   };
@@ -57,6 +64,7 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
   useEffect(() => {
     setIsLoading(false);
     setHasError(null);
+    setIsShowEdit(false);
     setIsShowHistory(false);
     setFormData({
       title: task.title,
@@ -80,10 +88,15 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
             toggle={<OykButton icon={Ellipsis} plain />}
             menu={[
               {
+                label: isShowEdit ? t("Hide edit") : t("Edit task"),
+                icon: <Pencil size={16} />,
+                onClick: () => onClickShowEdit(),
+              },
+              {/*
                 label: isShowHistory ? t("Hide history") : t("Show history"),
                 icon: <History size={16} />,
                 onClick: () => onClickShowHistory(),
-              },
+              */},
               ...(task.author?.slug === currentUser.slug ? [
                     {
                       label: t("Delete"),
@@ -99,49 +112,63 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
         </>
       }
     >
-      <OykForm onSubmit={handleSubmit} isLoading={isLoading}>
-        <OykFormField
-          label={t("Title")}
-          name="title"
-          defaultValue={formData.title}
-          onChange={handleChange}
-        />
-        <OykFormField
-          label={t("Content")}
-          name="content"
-          type="textarea"
-          defaultValue={formData.content}
-          onChange={handleChange}
-        />
-        <OykFormField
-          label={t("Priority")}
-          name="priority"
-          type="radio"
-          options={[
-            { label: t("PriorityLow"), value: "1" },
-            { label: t("PriorityMedium"), value: "2" },
-            { label: t("PriorityHigh"), value: "3" },
-          ]}
-          defaultValue={formData.priority}
-          onChange={handleChange}
-        />
-        <OykFormField
-          label={t("Due At")}
-          name="dueAt"
-          type="date"
-          defaultValue={formData.dueAt}
-          onChange={handleChange}
-        />
-        <OykFormMessage hasError={hasError} />
-        <div className="oyk-form-actions">
-          <OykButton type="submit" color="primary">
-            {t("Save")}
-          </OykButton>
-          <OykButton type="button" onClick={onClose} outline>
-            {t("Cancel")}
-          </OykButton>
-        </div>
-      </OykForm>
+      {!isShowEdit ? (
+        <OykDataset>
+          <OykDatasetField term={t("Content")} value={formData.content} preline />
+          <OykDatasetField term={t("Priority")} value={
+            formData.priority === "1"
+              ? t("PriorityLow")
+              : formData.priority === "2"
+              ? t("PriorityMedium")
+              : t("PriorityHigh")
+          } />
+          <OykDatasetField term={t("Due Date")} value={formData.dueAt} />
+        </OykDataset>
+      ) : (
+        <OykForm onSubmit={handleSubmit} isLoading={isLoading}>
+          <OykFormField
+            label={t("Title")}
+            name="title"
+            defaultValue={formData.title}
+            onChange={handleChange}
+          />
+          <OykFormField
+            label={t("Content")}
+            name="content"
+            type="textarea"
+            defaultValue={formData.content}
+            onChange={handleChange}
+          />
+          <OykFormField
+            label={t("Priority")}
+            name="priority"
+            type="radio"
+            options={[
+              { label: t("PriorityLow"), value: "1" },
+              { label: t("PriorityMedium"), value: "2" },
+              { label: t("PriorityHigh"), value: "3" },
+            ]}
+            defaultValue={formData.priority}
+            onChange={handleChange}
+          />
+          <OykFormField
+            label={t("Due Date")}
+            name="dueAt"
+            type="date"
+            defaultValue={formData.dueAt}
+            onChange={handleChange}
+          />
+          <OykFormMessage hasError={hasError} />
+          <div className="oyk-form-actions">
+            <OykButton type="submit" color="primary">
+              {t("Save")}
+            </OykButton>
+            <OykButton type="button" onClick={onClose} outline>
+              {t("Cancel")}
+            </OykButton>
+          </div>
+        </OykForm>
+      )}
       {isShowHistory && (
         <section className="oyk-modal-section">
           <header className="oyk-modal-section-header">
