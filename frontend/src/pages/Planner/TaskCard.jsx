@@ -54,9 +54,7 @@ export default function TaskCard({ task, isCompleted, statusId, statusName, onCl
           <section className="oyk-planner-card-content">
             {task.content && task.content != task.title && (
               <div className="oyk-planner-card-content-description">
-                <p>
-                  {task.content}
-                </p>
+                {task.content}
               </div>
             )}
             {task.tags?.length > 0 && (
