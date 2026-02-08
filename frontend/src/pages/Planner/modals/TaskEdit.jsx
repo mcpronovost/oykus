@@ -8,6 +8,7 @@ import { oykDate } from "@/utils/formatters";
 import {
   OykAvatar,
   OykButton,
+  OykChip,
   OykDataset,
   OykDatasetField,
   OykDropdown,
@@ -88,15 +89,15 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
             toggle={<OykButton icon={Ellipsis} plain />}
             menu={[
               {
-                label: isShowEdit ? t("Hide edit") : t("Edit task"),
+                label: isShowEdit ? t("Show task") : t("Edit task"),
                 icon: <Pencil size={16} />,
                 onClick: () => onClickShowEdit(),
               },
-              {/*
+              /*{
                 label: isShowHistory ? t("Hide history") : t("Show history"),
                 icon: <History size={16} />,
                 onClick: () => onClickShowHistory(),
-              */},
+              },*/
               ...(task.author?.slug === currentUser.slug ? [
                     {
                       label: t("Delete"),
@@ -117,10 +118,10 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
           <OykDatasetField term={t("Content")} value={formData.content} preline />
           <OykDatasetField term={t("Priority")} value={
             formData.priority === "1"
-              ? t("PriorityLow")
+              ? <OykChip color="success" outline>{t("PriorityLow")}</OykChip>
               : formData.priority === "2"
-              ? t("PriorityMedium")
-              : t("PriorityHigh")
+              ? <OykChip color="primary" outline>{t("PriorityMedium")}</OykChip>
+              : <OykChip color="danger" outline>{t("PriorityHigh")}</OykChip>
           } />
           <OykDatasetField term={t("Due Date")} value={formData.dueAt} />
         </OykDataset>

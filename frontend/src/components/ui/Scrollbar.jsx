@@ -75,8 +75,6 @@ export default function OykScrollbar({ children, height = "100%", className = ""
 
     const scrollRatio = content.scrollTop / maxScroll;
 
-    console.log("scrollRatio : ", scrollRatio);
-
     setThumbTop(scrollRatio * (containerHeight - thumbHeight));
   };
 
@@ -119,7 +117,7 @@ export default function OykScrollbar({ children, height = "100%", className = ""
   }, [dragging, thumbHeight]);
 
   return (
-    <div className="oyk-scrollbar" ref={containerRef} style={{ height: boxHeight }}>
+    <div className="oyk-scrollbar" ref={containerRef} style={{ flex: "1 1 100%" }}>
       <div className={`oyk-scrollbar-content ${className}`} ref={contentRef} onScroll={onScroll}>
         {children}
       </div>

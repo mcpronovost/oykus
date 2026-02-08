@@ -54,7 +54,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   overflow: hidden;
-  display: block;
+  display: flex;
   height: calc(100vh - var(--oyk-app-header-height, 64px));
 }
 
