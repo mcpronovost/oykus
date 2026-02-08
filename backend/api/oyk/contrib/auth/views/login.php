@@ -66,7 +66,7 @@ setcookie(
     ]
 );
 
-earn_achievement($pdo, "first_login", $user["id"]);
+EventBus::dispatch("user.login", ["user_id" => $user["id"]]);
 
 unset($user["id"], $user["username"], $user["password"]);
 
