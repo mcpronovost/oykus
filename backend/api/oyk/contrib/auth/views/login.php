@@ -2,7 +2,7 @@
 
 header("Content-Type: application/json");
 
-require OYK_PATH."/contrib/achievements/utils/earn_achievement.php";
+require OYK."/contrib/achievements/utils/earn_achievement.php";
 
 global $pdo;
 

@@ -2,8 +2,8 @@
 
 header("Content-Type: application/json");
 
-require OYK_PATH."/core/utils/uploaders.php";
-require OYK_PATH."/core/utils/formatters.php";
+require OYK."/core/utils/uploaders.php";
+require OYK."/core/utils/formatters.php";
 
 global $pdo;
 $authUser = require_auth();
@@ -136,14 +136,14 @@ try {
 |--------------------------------------------------------------------------
 */
 if (isset($patch["avatar"]) && $user["avatar"]) {
-    $path = OYK_PATH."/../..".$user["avatar"];
+    $path = OYK."/../..".$user["avatar"];
     if (is_file($path)) {
         unlink($path);
     }
 }
 
 if (isset($patch["cover"]) && $user["cover"]) {
-    $path = OYK_PATH."/../..".$user["cover"];
+    $path = OYK."/../..".$user["cover"];
     if (is_file($path)) {
         unlink($path);
     }

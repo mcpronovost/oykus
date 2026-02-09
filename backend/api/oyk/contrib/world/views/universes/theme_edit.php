@@ -2,9 +2,9 @@
 
 header("Content-Type: application/json");
 
-require OYK_PATH . "/core/utils/formatters.php";
-require OYK_PATH . "/core/utils/uploaders.php";
-require OYK_PATH . "/core/utils/validaters.php";
+require OYK . "/core/utils/formatters.php";
+require OYK . "/core/utils/uploaders.php";
+require OYK . "/core/utils/validaters.php";
 
 global $pdo;
 $authUser = require_auth();
@@ -214,14 +214,14 @@ catch (Exception $e) {
 |--------------------------------------------------------------------------
 */
 if (isset($patch["logo"]) && $universe["logo"]) {
-  $path = OYK_PATH . "/../.." . $universe["logo"];
+  $path = OYK . "/../.." . $universe["logo"];
   if (is_file($path)) {
     unlink($path);
   }
 }
 
 if (isset($patch["cover"]) && $universe["cover"]) {
-  $path = OYK_PATH . "/../.." . $universe["cover"];
+  $path = OYK . "/../.." . $universe["cover"];
   if (is_file($path)) {
     unlink($path);
   }

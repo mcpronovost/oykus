@@ -11,8 +11,7 @@ global $pdo;
 $universeSlug = $_COOKIE["oyk-theme"] ?? null;
 
 if (!$universeSlug) {
-    http_response_code(404);
-    exit;
+    Response::notFound();
 }
 
 try {
@@ -47,5 +46,4 @@ if ($theme) {
     exit;
 }
 
-http_response_code(404);
-exit;
+Response::notFound();

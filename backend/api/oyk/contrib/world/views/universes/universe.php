@@ -51,8 +51,6 @@ catch (Exception $e) {
 
 $theme = $themeService->getActiveTheme($universe["id"]);
 
-unset($universe["id"]);
-
 echo json_encode([
   "ok" => TRUE,
   "universe" => $universe,

@@ -1,92 +1,56 @@
 <?php
 
-$auth = "/api/v1/auth";
-$path = OYK_PATH."/contrib/auth/views/";
+$api = "/api/v1/auth";
+$view = OYK . "/contrib/auth/views/";
 
-route("POST", "#^$auth/register$#", fn() =>
-    require $path."register.php"
-);
+Router::post("{$api}/register", "{$view}register.php");
 
-route("POST", "#^$auth/login$#", fn() =>
-    require $path."login.php"
-);
+Router::post("{$api}/login", "{$view}login.php");
 
-route("POST", "#^$auth/refresh$#", fn() =>
-    require $path."refresh.php"
-);
+Router::post("{$api}/refresh", "{$view}refresh.php");
 
-route("POST", "#^$auth/logout$#", fn() =>
-    require $path."logout.php"
-);
+Router::post("{$api}/logout", "{$view}logout.php");
 
 /* ================================================ */
 // ME ROUTES
 /* ================================================ */
 
-route("GET", "#^$auth/me$#", fn() =>
-    require $path."me/me.php"
-);
+Router::get("{$api}/me", "{$view}me/me.php");
 
-route("POST", "#^$auth/me/edit$#", fn() =>
-    require $path."me/edit.php"
-);
+Router::post("{$api}/me/edit", "{$view}me/edit.php");
 
-route("GET", "#^$auth/me/account$#", fn() =>
-    require $path."me/account.php"
-);
+Router::get("{$api}/me/account", "{$view}me/account.php");
 
-route("POST", "#^$auth/me/account/edit$#", fn() =>
-    require $path."me/account_edit.php"
-);
+Router::post("{$api}/me/account/edit", "{$view}me/account_edit.php");
 
-route("GET", "#^$auth/me/notifications$#", fn() =>
-    require $path."me/notifications.php"
-);
+Router::get("{$api}/me/notifications", "{$view}me/notifications.php");
 
 /* ================================================ */
 // USERS ROUTES
 /* ================================================ */
 
-route("GET", "#^$auth/users/([a-z0-9-]+)/profile$#", function ($userSlug) use ($path) {
-    require $path."users_profile.php";
-});
+Router::get("{$api}/users/{slug}/profile", "{$view}users_profile.php");
 
 /* ================================================ */
 // FRIENDS ROUTES
 /* ================================================ */
 
-route("GET", "#^$auth/friends$#", fn() =>
-    require $path."friends/friends.php"
-);
+Router::get("{$api}/friends", "{$view}friends/friends.php");
 
-route("GET", "#^$auth/friends/requests$#", fn() =>
-    require $path."friends/requests.php"
-);
+Router::get("{$api}/friends/requests", "{$view}friends/requests.php");
 
-route("POST", "#^$auth/friends/add$#", fn() =>
-    require $path."friends/add.php"
-);
+Router::post("{$api}/friends/add", "{$view}friends/add.php");
 
-route("POST", "#^$auth/friends/accept$#", fn() =>
-    require $path."friends/accept.php"
-);
+Router::post("{$api}/friends/accept", "{$view}friends/accept.php");
 
-route("POST", "#^$auth/friends/reject$#", fn() =>
-    require $path."friends/reject.php"
-);
+Router::post("{$api}/friends/reject", "{$view}friends/reject.php");
 
-route("POST", "#^$auth/friends/cancel$#", fn() =>
-    require $path."friends/cancel.php"
-);
+Router::post("{$api}/friends/cancel", "{$view}friends/cancel.php");
 
-route("POST", "#^$auth/friends/delete$#", fn() =>
-    require $path."friends/delete.php"
-);
+Router::post("{$api}/friends/delete", "{$view}friends/delete.php");
 
 /* ================================================ */
 // WIO ROUTES
 /* ================================================ */
 
-route("GET", "#^$auth/wio$#", fn() =>
-    require $path."wio.php"
-);
+Router::get("{$api}/wio", "{$view}wio.php");

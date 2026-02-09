@@ -2,8 +2,8 @@
 
 header("Content-Type: application/json");
 
-require OYK_PATH . "/core/utils/uploaders.php";
-require OYK_PATH . "/core/utils/formatters.php";
+require OYK . "/core/utils/uploaders.php";
+require OYK . "/core/utils/formatters.php";
 
 global $pdo;
 $authUser = require_auth();

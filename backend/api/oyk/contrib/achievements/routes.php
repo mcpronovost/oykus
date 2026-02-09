@@ -1,8 +1,6 @@
 <?php
 
 $api = "/api/v1/achievements";
-$path = OYK_PATH."/contrib/achievements/views/";
+$view = OYK . "/contrib/achievements/views/";
 
-route("GET", "#^$api$#", fn() =>
-    require $path."achievements.php"
-);
+Router::get("{$api}", "{$view}achievements.php");
