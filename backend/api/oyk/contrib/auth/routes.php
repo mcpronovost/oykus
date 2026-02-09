@@ -29,7 +29,7 @@ Router::get("{$api}/me/notifications", "{$view}me/notifications.php");
 // USERS ROUTES
 /* ================================================ */
 
-Router::get("{$api}/users/{slug}/profile", "{$view}users_profile.php");
+Router::get("{$api}/users/{userSlug}/profile", "{$view}users_profile.php");
 
 /* ================================================ */
 // FRIENDS ROUTES

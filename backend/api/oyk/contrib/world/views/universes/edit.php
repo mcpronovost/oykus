@@ -1,7 +1,5 @@
 <?php
 
-header("Content-Type: application/json");
-
 require OYK . "/core/utils/uploaders.php";
 require OYK . "/core/utils/formatters.php";
 
@@ -14,18 +12,16 @@ $authUser = require_auth();
 |--------------------------------------------------------------------------
 */
 $qry = $pdo->prepare("
-    SELECT id, name, slug, is_slug_auto, abbr, is_abbr_auto, owner, visibility, is_default
-    FROM world_universes
-    WHERE slug = ? AND is_active = 1
-    LIMIT 1
+  SELECT id, name, slug, is_slug_auto, abbr, is_abbr_auto, owner, visibility, is_default
+  FROM world_universes
+  WHERE slug = ? AND is_active = 1
+  LIMIT 1
 ");
 $qry->execute([$universeSlug]);
 $universe = $qry->fetch();
 
 if (!$universe) {
-  http_response_code(404);
-  echo json_encode(["error" => "Universe not found"]);
-  exit;
+  Response::notFound("Universe not found");
 }
 
 /*
@@ -34,9 +30,7 @@ if (!$universe) {
 |--------------------------------------------------------------------------
 */
 if ($universe["owner"] !== $authUser["id"]) {
-  http_response_code(403);
-  echo json_encode(["error" => "Forbidden"]);
-  exit;
+  Response::forbidden();
 }
 
 /*
@@ -59,9 +53,7 @@ if (isset($_POST["name"]) && $_POST["name"] !== $universe["name"]) {
 /* ---------- Visibility ---------- */
 if (isset($_POST["visibility"]) && $_POST["visibility"] !== $universe["visibility"]) {
   if ($universe["is_default"] === 1 && $_POST["visibility"] != 4) {
-    http_response_code(403);
-    echo json_encode(["error" => "Default universe need to be public"]);
-    exit;
+    Response::forbidden("Default universe need to be public")
   }
 
   $patch["visibility"] = $_POST["visibility"];
@@ -89,8 +81,8 @@ if ($nameChanged && $universe["is_abbr_auto"]) {
 |--------------------------------------------------------------------------
 */
 if (!$patch) {
-  unset($universe["id"], $universe["is_slug_auto"], $universe["is_abbr_auto"]);
-  echo json_encode(["ok" => TRUE, "universe" => $universe]);
+  unset($universe["is_slug_auto"], $universe["is_abbr_auto"]);
+  Response::json(["ok" => TRUE, "universe" => $universe]);
   exit;
 }
 
@@ -108,10 +100,10 @@ try {
   }
 
   $sql = "
-        UPDATE world_universes
-        SET " . implode(", ", $sets) . "
-        WHERE id = :id
-    ";
+    UPDATE world_universes
+    SET " . implode(", ", $sets) . "
+    WHERE id = :id
+  ";
 
   $pdo->prepare($sql)->execute($params);
   $pdo->commit();
@@ -119,9 +111,7 @@ try {
 }
 catch (Exception $e) {
   $pdo->rollBack();
-  http_response_code(500);
-  echo json_encode(["error" => $e->getMessage(), "code" => $e->getCode()]);
-  exit;
+  Response::serverError();
 }
 
 /*
@@ -132,7 +122,7 @@ catch (Exception $e) {
 $universe = array_merge($universe, $patch);
 unset($universe["is_slug_auto"], $universe["is_abbr_auto"]);
 
-echo json_encode([
+Response::json([
   "ok" => TRUE,
   "universe" => $universe
 ]);

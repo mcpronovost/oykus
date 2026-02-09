@@ -1,9 +1,7 @@
 <?php
 
-header("Content-Type: application/json");
-
-require OYK."/core/utils/uploaders.php";
-require OYK."/core/utils/formatters.php";
+require OYK . "/core/utils/uploaders.php";
+require OYK . "/core/utils/formatters.php";
 
 global $pdo;
 $authUser = require_auth();
@@ -14,18 +12,16 @@ $authUser = require_auth();
 |--------------------------------------------------------------------------
 */
 $qry = $pdo->prepare("
-    SELECT id, name, slug, is_slug_auto, abbr, is_abbr_auto, avatar, cover
-    FROM auth_users
-    WHERE id = :id
-    LIMIT 1
+  SELECT id, name, slug, is_slug_auto, abbr, is_abbr_auto, avatar, cover
+  FROM auth_users
+  WHERE id = ?
+  LIMIT 1
 ");
-$qry->execute(["id" => $authUser["id"]]);
+$qry->execute([$authUser["id"]]);
 $user = $qry->fetch();
 
 if (!$user) {
-    http_response_code(404);
-    echo json_encode(["error" => "User not found"]);
-    exit;
+  Response::notFound("User not found");
 }
 
 /*
@@ -36,43 +32,43 @@ if (!$user) {
 $patch = [];
 $params = ["id" => $user["id"]];
 
-$nameChanged = false;
+$nameChanged = FALSE;
 
 /* ---------- Name ---------- */
 if (isset($_POST["name"]) && $_POST["name"] !== $user["name"]) {
-    $patch["name"] = $_POST["name"];
-    $params["name"] = $_POST["name"];
-    $nameChanged = true;
+  $patch["name"] = $_POST["name"];
+  $params["name"] = $_POST["name"];
+  $nameChanged = TRUE;
 }
 
 /* ---------- Avatar ---------- */
 if (!empty($_FILES["avatar"])) {
-    $newAvatar = oyk_save_image(
-        $_FILES["avatar"],
-        200,
-        200,
-        "a/u/avatars",
-        $user["slug"],
-        2
-    );
+  $newAvatar = oyk_save_image(
+    $_FILES["avatar"],
+    200,
+    200,
+    "a/u/avatars",
+    $user["slug"],
+    2
+  );
 
-    $patch["avatar"] = $newAvatar;
-    $params["avatar"] = $newAvatar;
+  $patch["avatar"] = $newAvatar;
+  $params["avatar"] = $newAvatar;
 }
 
 /* ---------- Cover ---------- */
 if (!empty($_FILES["cover"])) {
-    $newCover = oyk_save_image(
-        $_FILES["cover"],
-        1136,
-        256,
-        "a/u/covers",
-        $user["slug"],
-        2
-    );
+  $newCover = oyk_save_image(
+    $_FILES["cover"],
+    1136,
+    256,
+    "a/u/covers",
+    $user["slug"],
+    2
+  );
 
-    $patch["cover"] = $newCover;
-    $params["cover"] = $newCover;
+  $patch["cover"] = $newCover;
+  $params["cover"] = $newCover;
 }
 
 /*
@@ -81,13 +77,13 @@ if (!empty($_FILES["cover"])) {
 |--------------------------------------------------------------------------
 */
 if ($nameChanged && $user["is_slug_auto"]) {
-    $patch["slug"] = get_slug($pdo, $params["name"], "auth_users");
-    $params["slug"] = $patch["slug"];
+  $patch["slug"] = get_slug($pdo, $params["name"], "auth_users");
+  $params["slug"] = $patch["slug"];
 }
 
 if ($nameChanged && $user["is_abbr_auto"]) {
-    $patch["abbr"] = get_abbr($params["name"], 3);
-    $params["abbr"] = $patch["abbr"];
+  $patch["abbr"] = get_abbr($params["name"], 3);
+  $params["abbr"] = $patch["abbr"];
 }
 
 /*
@@ -96,9 +92,8 @@ if ($nameChanged && $user["is_abbr_auto"]) {
 |--------------------------------------------------------------------------
 */
 if (!$patch) {
-    unset($user["id"], $user["is_slug_auto"], $user["is_abbr_auto"]);
-    echo json_encode(["ok" => true, "user" => $user]);
-    exit;
+  unset($user["is_slug_auto"], $user["is_abbr_auto"]);
+  Response::json(["ok" => TRUE, "user" => $user]);
 }
 
 /*
@@ -109,25 +104,24 @@ if (!$patch) {
 $pdo->beginTransaction();
 
 try {
-    $sets = [];
-    foreach ($patch as $field => $_) {
-        $sets[] = "$field = :$field";
-    }
+  $sets = [];
+  foreach ($patch as $field => $_) {
+    $sets[] = "$field = :$field";
+  }
 
-    $sql = "
-        UPDATE auth_users
-        SET ".implode(", ", $sets)."
-        WHERE id = :id
-    ";
+  $sql = "
+    UPDATE auth_users
+    SET " . implode(", ", $sets) . "
+    WHERE id = :id
+  ";
 
-    $pdo->prepare($sql)->execute($params);
-    $pdo->commit();
+  $pdo->prepare($sql)->execute($params);
+  $pdo->commit();
 
-} catch (Exception $e) {
-    $pdo->rollBack();
-    http_response_code(500);
-    echo json_encode(["error" => $e->getMessage(), "code" => $e->getCode()]);
-    exit;
+}
+catch (Exception $e) {
+  $pdo->rollBack();
+  Response::serverError();
 }
 
 /*
@@ -136,17 +130,17 @@ try {
 |--------------------------------------------------------------------------
 */
 if (isset($patch["avatar"]) && $user["avatar"]) {
-    $path = OYK."/../..".$user["avatar"];
-    if (is_file($path)) {
-        unlink($path);
-    }
+  $path = OYK . "/../.." . $user["avatar"];
+  if (is_file($path)) {
+    unlink($path);
+  }
 }
 
 if (isset($patch["cover"]) && $user["cover"]) {
-    $path = OYK."/../..".$user["cover"];
-    if (is_file($path)) {
-        unlink($path);
-    }
+  $path = OYK . "/../.." . $user["cover"];
+  if (is_file($path)) {
+    unlink($path);
+  }
 }
 
 /*
@@ -155,9 +149,9 @@ if (isset($patch["cover"]) && $user["cover"]) {
 |--------------------------------------------------------------------------
 */
 $user = array_merge($user, $patch);
-unset($user["id"], $user["is_slug_auto"], $user["is_abbr_auto"]);
+unset($user["is_slug_auto"], $user["is_abbr_auto"]);
 
-echo json_encode([
-    "ok" => true,
-    "user" => $user
+Response::json([
+  "ok" => TRUE,
+  "user" => $user
 ]);

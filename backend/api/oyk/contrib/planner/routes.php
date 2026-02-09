@@ -13,4 +13,4 @@ Router::post("{$api}/tasks/{taskId}/delete", "{$view}tasks_delete.php");
 
 Router::post("{$api}/status/create", "{$view}status_create.php");
 
-Router::post("{$api}/status/{taskId}/edit", "{$view}status_edit.php");
+Router::post("{$api}/status/{statusId}/edit", "{$view}status_edit.php");

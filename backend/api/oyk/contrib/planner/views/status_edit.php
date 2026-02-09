@@ -1,64 +1,50 @@
 <?php
 
-header("Content-Type: application/json");
-
 global $pdo;
 $authUser = require_auth();
 
-$data = json_decode(file_get_contents("php://input"), true);
+$data = json_decode(file_get_contents("php://input"), TRUE);
 
-$title      = trim($data["title"] ?? "");
-$color      = $data["color"] ?? null;
-$position   = $data["position"] ?? 1;
-
-// Validations
-if (!$statusId) {
-    http_response_code(400);
-    echo json_encode(["error" => "Missing status"]);
-    exit;
-}
+$title = trim($data["title"] ?? "");
+$color = $data["color"] ?? NULL;
+$position = $data["position"] ?? 1;
 
 if ($title === "" || $position === "" || $position < 1) {
-    http_response_code(400);
-    echo json_encode(["error" => "Invalid input"]);
-    exit;
+  Response::badRequest("Invalid data");
 }
 
 try {
-    $qry = $pdo->prepare("
-        SELECT title, color, position
-        FROM planner_status
-        WHERE id = :id
-        LIMIT 1
-    ");
-    $qry->execute(["id" => $statusId]);
-    $status = $qry->fetch();
-} catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(["error" => $e->getCode()]);
-    exit;
+  $qry = $pdo->prepare("
+    SELECT title, color, position
+    FROM planner_status
+    WHERE id = ?
+    LIMIT 1
+  ");
+  $qry->execute([$statusId]);
+  $status = $qry->fetch();
+}
+catch (Exception $e) {
+  Response::serverError();
 }
 
 if (!$status) {
-    http_response_code(404);
-    echo json_encode(["error" => "Status not found"]);
-    exit;
+  Response::notFound("Status not found");
 }
 
 // Update tasks status
 $qry = $pdo->prepare("
-        UPDATE planner_status
-        SET title=:title, color=:color, position=:position
-        WHERE id=:id
+  UPDATE planner_status
+  SET title=:title, color=:color, position=:position
+  WHERE id=:id
 ");
 
 $qry->execute([
-    "id"        => $statusId,
-    "title"     => $title,
-    "color"     => $color,
-    "position"  => $position
+  "id" => $statusId,
+  "title" => $title,
+  "color" => $color,
+  "position" => $position
 ]);
 
-echo json_encode([
-    "ok" => true
+Response::json([
+  "ok" => TRUE
 ]);

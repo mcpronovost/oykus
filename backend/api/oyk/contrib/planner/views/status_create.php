@@ -1,58 +1,53 @@
 <?php
 
-header("Content-Type: application/json");
-
 global $pdo;
 $authUser = require_auth();
 
-$data = json_decode(file_get_contents("php://input"), true);
+$data = json_decode(file_get_contents("php://input"), TRUE);
 
-$title        = trim($data["title"] ?? "");
-$color        = $data["color"] ?? null;
-$position     = $data["position"] ?? 1;
-$universeSlug = $data["universe"] ?? null;
-$universe     = null;
+$title = trim($data["title"] ?? "");
+$color = $data["color"] ?? NULL;
+$position = $data["position"] ?? 1;
+$universeSlug = $data["universe"] ?? NULL;
+$universe = NULL;
 
 // Validations
 if (
-    $title === "" || $position === "" || $position < 1
+  $title === "" || $position === "" || $position < 1
 ) {
-    http_response_code(400);
-    echo json_encode(["error" => "Invalid input"]);
-    exit;
+  Response::badRequest("Invalid data");
 }
 
 // Get universe
 try {
-    if ($universeSlug) {
-        $qry = $pdo->prepare("
-            SELECT id
-            FROM world_universes
-            WHERE slug = ?
-            LIMIT 1
-        ");
-        $qry->execute([$universeSlug]);
-        $universe = $qry->fetch();
-    }
-} catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(["error" => "Universe not found"]);
-    exit;
+  if ($universeSlug) {
+    $qry = $pdo->prepare("
+      SELECT id
+      FROM world_universes
+      WHERE slug = ?
+      LIMIT 1
+    ");
+    $qry->execute([$universeSlug]);
+    $universe = $qry->fetch();
+  }
+}
+catch (Exception $e) {
+  Response::serverError();
 }
 
 // Create new tasks status
 $qry = $pdo->prepare("
-    INSERT INTO planner_status (title, color, position, universe)
-    VALUES (:title, :color, :position, :universe)
+  INSERT INTO planner_status (title, color, position, universe)
+  VALUES (:title, :color, :position, :universe)
 ");
 
 $qry->execute([
-    "title"     => $title,
-    "color"     => $color,
-    "position"  => $position,
-    "universe"  => $universe ? $universe["id"] : null
+  "title" => $title,
+  "color" => $color,
+  "position" => $position,
+  "universe" => $universe ? $universe["id"] : NULL
 ]);
 
-echo json_encode([
-    "ok" => true
+Response::json([
+  "ok" => TRUE
 ]);

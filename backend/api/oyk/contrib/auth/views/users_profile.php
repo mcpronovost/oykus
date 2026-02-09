@@ -1,33 +1,28 @@
 <?php
 
-header("Content-Type: application/json");
-
 global $pdo;
 $authUser = require_auth();
 
 try {
-    $qry = $pdo->prepare("
-        SELECT name, slug, abbr, avatar, cover
-        FROM auth_users
-        WHERE slug = :slug
-        LIMIT 1
-    ");
+  $qry = $pdo->prepare("
+    SELECT name, slug, abbr, avatar, cover
+    FROM auth_users
+    WHERE slug = ?
+    LIMIT 1
+  ");
 
-    $qry->execute(["slug" => $userSlug]);
-    $user = $qry->fetch();
-} catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(["error" => $e->getCode()]);
-    exit;
+  $qry->execute([$userSlug]);
+  $user = $qry->fetch();
+}
+catch (Exception $e) {
+  Response::serverError();
 }
 
 if (!$user) {
-    http_response_code(404);
-    echo json_encode(["error" => "User not found"]);
-    exit;
+  Response::notFound("User not found");
 }
 
-echo json_encode([
-    "ok" => true,
-    "user" => $user
+Response::json([
+  "ok" => TRUE,
+  "user" => $user
 ]);

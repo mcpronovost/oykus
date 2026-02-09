@@ -1,48 +1,45 @@
 <?php
 
-header("Content-Type: application/json");
-
 global $pdo;
 $authUser = require_auth();
 
 $tasks = [];
-$universeSlug = $_GET["universe"] ?? null;
+$universeSlug = $_GET["universe"] ?? NULL;
 
 // Get universe
 try {
-    if ($universeSlug) {
-        $qry = $pdo->prepare("
-            SELECT id, is_default
-            FROM world_universes
-            WHERE slug = ?
-            LIMIT 1
-        ");
-        $qry->execute([$universeSlug]);
-        $universe = $qry->fetch();
-    }
-} catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(["error" => "Universe not found"]);
-    exit;
+  if ($universeSlug) {
+    $qry = $pdo->prepare("
+      SELECT id, is_default
+      FROM world_universes
+      WHERE slug = ?
+      LIMIT 1
+    ");
+    $qry->execute([$universeSlug]);
+    $universe = $qry->fetch();
+  }
+}
+catch (Exception $e) {
+  Response::serverError();
 }
 
-$universeId = $universe ? $universe["id"] : null;
-$isDefault  = !$universe || ($universe && $universe["is_default"]) ? true : null;
+$universeId = $universe ? $universe["id"] : NULL;
+$isDefault = !$universe || ($universe && $universe["is_default"]) ? TRUE : NULL;
 
 try {
-    // Fetch statuses
-    $statusQry = $pdo->prepare("
-        SELECT id, title, color, position, is_completed
-        FROM planner_status
-        WHERE (? IS NOT NULL AND universe IS NULL)
-           OR (? IS NOT NULL AND universe = ?)
-        ORDER BY position ASC
-    ");
-    $statusQry->execute([$isDefault, $universeId, $universeId]);
-    $tasks = $statusQry->fetchAll();
+  // Fetch statuses
+  $statusQry = $pdo->prepare("
+    SELECT id, title, color, position, is_completed
+    FROM planner_status
+    WHERE (? IS NOT NULL AND universe IS NULL)
+       OR (? IS NOT NULL AND universe = ?)
+    ORDER BY position ASC
+  ");
+  $statusQry->execute([$isDefault, $universeId, $universeId]);
+  $tasks = $statusQry->fetchAll();
 
-    // Prepare tasks query (with priority ordering)
-    $tasksQry = $pdo->prepare("
+  // Prepare tasks query (with priority ordering)
+  $tasksQry = $pdo->prepare("
     SELECT
         t.id,
         t.title,
@@ -106,30 +103,29 @@ try {
         t.due_at ASC
     ");
 
-    // Attach tasks to each status
-    foreach ($tasks as &$s) {
-        $tasksQry->execute([
-            "status_id"   => $s["id"],
-            "user_id"     => $authUser["id"],
-            "assignee_id" => $authUser["id"],
-            "isUniverseDefault" => $isDefault,
-            "universeId1" => $universeId,
-            "universeId2" => $universeId,
-        ]);
+  // Attach tasks to each status
+  foreach ($tasks as &$s) {
+    $tasksQry->execute([
+      "status_id" => $s["id"],
+      "user_id" => $authUser["id"],
+      "assignee_id" => $authUser["id"],
+      "isUniverseDefault" => $isDefault,
+      "universeId1" => $universeId,
+      "universeId2" => $universeId,
+    ]);
 
-        $s["tasks"] = array_map(function ($task) {
-            $task["assignees"] = json_decode($task["assignees"], true);
-            $task["author"] = json_decode($task["author"], true);
-            return $task;
-        }, $tasksQry->fetchAll());
-    }
-} catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(["error" => $e->getCode(), "message" => $e->getMessage()]);
-    exit;
+    $s["tasks"] = array_map(function ($task) {
+      $task["assignees"] = json_decode($task["assignees"], TRUE);
+      $task["author"] = json_decode($task["author"], TRUE);
+      return $task;
+    }, $tasksQry->fetchAll());
+  }
+}
+catch (Exception $e) {
+  Response::serverError();
 }
 
-echo json_encode([
-    "ok" => true,
-    "tasks" => $tasks
+Response::json([
+  "ok" => TRUE,
+  "tasks" => $tasks
 ]);

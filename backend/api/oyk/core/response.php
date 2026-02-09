@@ -45,6 +45,10 @@ class Response {
     self::error($message, 404);
   }
 
+  public static function conflict(string $message = "Conflict") {
+    self::error($message, 409);
+  }
+
   public static function serverError(string $message = "Server error") {
     self::error($message, 500);
   }

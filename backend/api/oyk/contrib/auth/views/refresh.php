@@ -1,14 +1,9 @@
 <?php
 
-header("Content-Type: application/json");
-
-global $pdo;
-
-$refreshToken = $_COOKIE["oyk-rat"] ?? null;
+$refreshToken = $_COOKIE["oyk-rat"] ?? NULL;
 
 if (!$refreshToken) {
-    http_response_code(403);
-    exit;
+  Response::forbidden("Invalid token");
 }
 
 $payload = decode_jwt($refreshToken);
@@ -16,11 +11,11 @@ $payload = decode_jwt($refreshToken);
 // Optional: check jti in DB (revocation / rotation)
 
 $newAccessToken = generate_jwt([
-    "id" => $payload["id"],
-    "exp" => time() + 900
+  "id" => $payload["id"],
+  "exp" => time() + 900
 ]);
 
-echo json_encode([
-    "ok"  => true,
-    "rat" => $newAccessToken
+Response::json([
+  "ok" => TRUE,
+  "rat" => $newAccessToken
 ]);

@@ -1,7 +1,5 @@
 <?php
 
-header("Content-Type: application/json");
-
 require OYK . "/core/utils/formatters.php";
 require OYK . "/core/utils/uploaders.php";
 require OYK . "/core/utils/validaters.php";
@@ -17,18 +15,16 @@ $themeService = new ThemeService($pdo);
 |--------------------------------------------------------------------------
 */
 $qry = $pdo->prepare("
-    SELECT id, slug, logo, cover, owner
-    FROM world_universes
-    WHERE slug = ? AND is_active = 1
-    LIMIT 1
+  SELECT id, slug, logo, cover, owner
+  FROM world_universes
+  WHERE slug = ? AND is_active = 1
+  LIMIT 1
 ");
 $qry->execute([$universeSlug]);
 $universe = $qry->fetch();
 
 if (!$universe) {
-  http_response_code(404);
-  echo json_encode(["error" => "Universe not found"]);
-  exit;
+  Response::notFound("Universe not found");
 }
 
 /*
@@ -37,9 +33,7 @@ if (!$universe) {
 |--------------------------------------------------------------------------
 */
 if ($universe["owner"] !== $authUser["id"]) {
-  http_response_code(403);
-  echo json_encode(["error" => "Forbidden"]);
-  exit;
+  Response::forbidden();
 }
 
 /*
@@ -50,9 +44,7 @@ if ($universe["owner"] !== $authUser["id"]) {
 $theme = $themeService->getActiveTheme($universe["id"]);
 
 if (!$theme) {
-  http_response_code(404);
-  echo json_encode(["error" => "Theme not found"]);
-  exit;
+  Response::notFound("Theme not found");
 }
 
 /*
@@ -107,9 +99,7 @@ if (isset($_POST["c_primary"]) && $_POST["c_primary"] !== $theme["c_primary"]) {
     $_POST["c_primary"] = "#3DA5CB";
   }
   else if (!is_string($_POST["c_primary"]) || !isHexColor($_POST["c_primary"])) {
-    http_response_code(400);
-    echo json_encode(["error" => "Invalid colour value for 'c_primary'", "code" => "400"]);
-    exit;
+    Response::badRequest("Invalid colour value for 'c_primary'");
   }
 
   $patchTheme["c_primary"] = $_POST["c_primary"];
@@ -122,9 +112,7 @@ if (isset($_POST["c_primary_fg"]) && $_POST["c_primary_fg"] !== $theme["c_primar
     $_POST["c_primary_fg"] = "#FFFFFF";
   }
   else if (!is_string($_POST["c_primary_fg"]) || !isHexColor($_POST["c_primary_fg"])) {
-    http_response_code(400);
-    echo json_encode(["error" => "Invalid colour value for 'c_primary_fg'", "code" => "400"]);
-    exit;
+    Response::badRequest("Invalid colour value for 'c_primary_fg'");
   }
 
   $patchTheme["c_primary_fg"] = $_POST["c_primary_fg"];
@@ -141,9 +129,7 @@ if (isset($_POST["variables"]) && $_POST["variables"] !== $theme["variables"]) {
     }
     if ($key === "radius") {
       if ((int) $value < 0) {
-        http_response_code(400);
-        echo json_encode(["error" => "Invalid value for '$key'", "code" => "400"]);
-        exit;
+        Response::badRequest("Invalid value for 'radius'");
       }
       else {
         $decoded_json[$key] = $value . "px";
@@ -151,9 +137,7 @@ if (isset($_POST["variables"]) && $_POST["variables"] !== $theme["variables"]) {
       }
     }
     else if (!is_string($value) || !isHexColor($value)) {
-      http_response_code(400);
-      echo json_encode(["error" => "Invalid colour value for '$key'", "code" => "400"]);
-      exit;
+      Response::badRequest("Invalid colour value for '{$key}'");
     }
   }
 
@@ -176,10 +160,10 @@ try {
     }
 
     $sql = "
-            UPDATE world_universes
-            SET " . implode(", ", $sets) . "
-            WHERE id = :id
-        ";
+      UPDATE world_universes
+      SET " . implode(", ", $sets) . "
+      WHERE id = :id
+    ";
 
     $pdo->prepare($sql)->execute($params);
   }
@@ -191,10 +175,10 @@ try {
     }
 
     $sql = "
-            UPDATE world_themes
-            SET " . implode(", ", $sets) . "
-            WHERE id = :id
-        ";
+      UPDATE world_themes
+      SET " . implode(", ", $sets) . "
+      WHERE id = :id
+    ";
 
     $pdo->prepare($sql)->execute($paramsTheme);
   }
@@ -203,9 +187,7 @@ try {
 }
 catch (Exception $e) {
   $pdo->rollBack();
-  http_response_code(500);
-  echo json_encode(["error" => $e->getMessage(), "code" => $e->getCode()]);
-  exit;
+  Response::serverError();
 }
 
 /*
@@ -232,16 +214,15 @@ if (isset($patch["cover"]) && $universe["cover"]) {
 | Return updated resource
 |--------------------------------------------------------------------------
 */
-unset($universe["id"], $universe["owner"]);
+unset($universe["owner"]);
 $universe = array_merge($universe, $patch);
-unset($theme["id"]);
 $theme = array_merge($theme, $patchTheme);
 
 if ($theme) {
   $theme["variables"] = json_decode($theme["variables"]);
 }
 
-echo json_encode([
+Response::json([
   "ok" => TRUE,
   "universe" => $universe,
   "theme" => $theme

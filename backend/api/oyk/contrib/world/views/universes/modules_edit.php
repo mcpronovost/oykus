@@ -1,7 +1,5 @@
 <?php
 
-header("Content-Type: application/json");
-
 require OYK . "/core/utils/uploaders.php";
 require OYK . "/core/utils/formatters.php";
 
@@ -18,9 +16,7 @@ $universeService = new UniverseService($pdo);
 $universeId = $universeService->getEditableUniverseId($universeSlug, $authUser["id"]);
 
 if (!$universeId) {
-  http_response_code(403);
-  echo json_encode(["error" => "Universe not found"]);
-  exit;
+  Response::notFound("Universe not found");
 }
 
 /*
@@ -49,9 +45,7 @@ $allowedModules = [
 ];
 
 if (!in_array($module, $allowedModules, TRUE)) {
-  http_response_code(400);
-  echo json_encode(["error" => "Invalid module"]);
-  exit;
+  Response::badRequest("Invalid module");
 }
 
 /*
@@ -80,9 +74,7 @@ if ($module) {
     $pdo->commit();
   }
   catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(["error" => $e->getMessage(), "code" => $e->getCode()]);
-    exit;
+    Response::serverError();
   }
 }
 
@@ -91,7 +83,7 @@ if ($module) {
 | Return updated resource
 |--------------------------------------------------------------------------
 */
-echo json_encode([
+Response::json([
   "ok" => TRUE,
   "module" => $module
 ]);
