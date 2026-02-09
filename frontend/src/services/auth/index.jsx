@@ -208,7 +208,7 @@ const AuthProvider = ({ children }) => {
       }
     };
 
-    const interval = setInterval(fetchAuth, 1 * 60 * 1000);
+    const interval = setInterval(fetchAuth, 5 * 60 * 1000);
     fetchAuth();
 
     return () => {

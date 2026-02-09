@@ -31,7 +31,11 @@ export default function Planner() {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get(`/planner/tasks/${currentUniverse ? `?universe=${currentUniverse.slug}` : ""}`, signal ? { signal } : {});
+      const url =
+        !currentUniverse || currentUniverse.is_default
+          ? "/planner/tasks/"
+          : `/planner/u/${currentUniverse.slug}/tasks/`;
+      const r = await api.get(url, signal ? { signal } : {});
       if (!r.ok) throw new Error(r.error || t("An error occurred"));
       setTasks(r.tasks);
     } catch (e) {
@@ -46,9 +50,13 @@ export default function Planner() {
 
   const updateTaskStatus = async (taskId, newStatusId) => {
     try {
-      const r = await api.post(`/planner/tasks/${taskId}/edit/`, {
-        status: newStatusId
-      });
+      const url =
+        !currentUniverse || currentUniverse.is_default
+          ? `/planner/tasks/${taskId}/edit/`
+          : `/planner/u/${currentUniverse.slug}/tasks/${taskId}/edit/`;
+      const formData = new FormData();
+      formData.append("status", newStatusId);
+      const r = await api.post(url, formData);
       if (!r.ok) throw new Error(r.error || t("An error occurred"));
       await getTasks();
     } catch (e) {
@@ -103,11 +111,7 @@ export default function Planner() {
   return (
     <section className="oyk-page oyk-planner">
       <ModalStatusCreate isOpen={isModalStatusCreateOpen} onClose={handleCloseModalStatusCreate} />
-      <ModalTaskCreate
-        isOpen={isModalTaskCreateOpen}
-        onClose={handleCloseModalTaskCreate}
-        statuses={tasks}
-      />
+      <ModalTaskCreate isOpen={isModalTaskCreateOpen} onClose={handleCloseModalTaskCreate} statuses={tasks} />
       <OykHeading
         title={t("Planner")}
         // description={t("Tasks description")}

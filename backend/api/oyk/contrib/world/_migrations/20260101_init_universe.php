@@ -44,7 +44,9 @@ CREATE TABLE IF NOT EXISTS world_universes (
     INDEX idx_slug (slug),
     INDEX idx_owner (owner),
 
-    FOREIGN KEY (owner) REFERENCES auth_users(id) ON DELETE CASCADE
+    CONSTRAINT fk_world_universes_owner
+        FOREIGN KEY (owner) REFERENCES auth_users(id)
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 ";
 

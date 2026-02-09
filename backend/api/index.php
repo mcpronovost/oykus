@@ -1,7 +1,6 @@
 <?php
 
 require_once __DIR__ . "/oyk/bootstrap.php";
-require_once __DIR__ . "/oyk/core/response.php";
 require_once __DIR__ . "/oyk/core/router.php";
 
 update_wio();

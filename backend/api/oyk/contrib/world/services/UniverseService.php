@@ -1,10 +1,34 @@
 <?php
 
 class UniverseService {
-  protected $pdo;
+  public function __construct(private PDO $pdo) {}
 
-  public function __construct($pdo) {
-    $this->pdo = $pdo;
+  public function getContext(?string $slug, int $userId): array {
+      // Default universe if no context
+      if (!$slug) {
+        return [
+          "id" => null,
+          "isDefault" => true
+        ];
+      }
+
+      $qry = $this->pdo->prepare("
+        SELECT id, is_default
+        FROM world_universes
+        WHERE slug = ?
+        LIMIT 1
+      ");
+      $qry->execute([$slug]);
+      $universe = $qry->fetch();
+
+      if (!$universe) {
+        Response::notFound("Universe not found");
+      }
+
+      return [
+        "id" => (int)$universe["id"],
+        "isDefault" => (bool)$universe["is_default"]
+      ];
   }
 
   public function getEditableUniverseId($universeSlug, $userId) {

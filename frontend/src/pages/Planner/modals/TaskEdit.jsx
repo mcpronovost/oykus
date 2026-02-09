@@ -26,7 +26,7 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
   const [hasError, setHasError] = useState(null);
   const [isShowEdit, setIsShowEdit] = useState(false);
   const [isShowHistory, setIsShowHistory] = useState(false);
-  const [formData, setFormData] = useState({
+  const [taskForm, setTaskForm] = useState({
     title: task.title,
     content: task.content,
     priority: task.priority.toString(),
@@ -40,6 +40,10 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
     setIsLoading(true);
     setHasError(null);
     try {
+      const formData = new FormData();
+      for (const [key, value] of Object.entries(taskForm)) {
+        formData.append(key, value);
+      };
       const r = await api.post(`/planner/tasks/${task.id}/edit/`, formData);
       if (!r.ok) throw new Error(r.error || t("An error occurred"));
       onClose(true);
@@ -51,7 +55,7 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setTaskForm({ ...taskForm, [e.target.name]: e.target.value });
   };
 
   const onClickShowEdit = () => {
@@ -67,7 +71,7 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
     setHasError(null);
     setIsShowEdit(false);
     setIsShowHistory(false);
-    setFormData({
+    setTaskForm({
       title: task.title,
       content: task.content,
       priority: task.priority.toString(),
@@ -115,29 +119,29 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
     >
       {!isShowEdit ? (
         <OykDataset>
-          <OykDatasetField term={t("Content")} value={formData.content} preline />
+          <OykDatasetField term={t("Content")} value={taskForm.content} preline />
           <OykDatasetField term={t("Priority")} value={
-            formData.priority === "1"
+            taskForm.priority === "1"
               ? <OykChip color="success" outline>{t("PriorityLow")}</OykChip>
-              : formData.priority === "2"
+              : taskForm.priority === "2"
               ? <OykChip color="primary" outline>{t("PriorityMedium")}</OykChip>
               : <OykChip color="danger" outline>{t("PriorityHigh")}</OykChip>
           } />
-          <OykDatasetField term={t("Due Date")} value={formData.dueAt} />
+          <OykDatasetField term={t("Due Date")} value={taskForm.dueAt} />
         </OykDataset>
       ) : (
         <OykForm onSubmit={handleSubmit} isLoading={isLoading}>
           <OykFormField
             label={t("Title")}
             name="title"
-            defaultValue={formData.title}
+            defaultValue={taskForm.title}
             onChange={handleChange}
           />
           <OykFormField
             label={t("Content")}
             name="content"
             type="textarea"
-            defaultValue={formData.content}
+            defaultValue={taskForm.content}
             onChange={handleChange}
           />
           <OykFormField
@@ -149,14 +153,14 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
               { label: t("PriorityMedium"), value: "2" },
               { label: t("PriorityHigh"), value: "3" },
             ]}
-            defaultValue={formData.priority}
+            defaultValue={taskForm.priority}
             onChange={handleChange}
           />
           <OykFormField
             label={t("Due Date")}
             name="dueAt"
             type="date"
-            defaultValue={formData.dueAt}
+            defaultValue={taskForm.dueAt}
             onChange={handleChange}
           />
           <OykFormMessage hasError={hasError} />

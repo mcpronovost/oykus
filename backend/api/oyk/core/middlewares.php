@@ -2,61 +2,94 @@
 
 require_once __DIR__ . "/utils/jwt.php";
 
-function require_auth($is_continue=false) {
-    $headers = getallheaders();
-    $authHeader = $headers["Authorization"] ?? $headers["authorization"] ?? "";
+function handle_exceptions(Throwable $e) {
+  if ($e instanceof ValidationException) {
+    Response::badRequest($e->getMessage());
+  }
 
-    if (!str_starts_with($authHeader, "Oyk ")) {
-        if ($is_continue) return null;
-        http_response_code(401);
-        echo json_encode(["error" => 401]);
-        exit;
-    }
+  if ($e instanceof AuthenticationException) {
+    Response::unauthorized($e->getMessage());
+  }
 
-    $token = substr($authHeader, 4);
-    $payload = decode_jwt($token);
+  if ($e instanceof AuthorizationException) {
+    Response::forbidden($e->getMessage());
+  }
 
-    if (!$payload) {
-        if ($is_continue) return null;
-        http_response_code(401);
-        echo json_encode(["error" => "Unauthorized (p)"]);
-        exit;
-    }
+  if ($e instanceof NotFoundException) {
+    Response::notFound($e->getMessage());
+  }
 
-    return $payload;
+  if ($e instanceof ConflictException) {
+    Response::conflict($e->getMessage());
+  }
+
+  if ($e instanceof QueryException) {
+    Response::serverError($e->getMessage());
+  }
+
+  // Everything else
+  Response::serverError("Unexpected error");
+}
+
+function require_auth($is_continue = FALSE) {
+  $headers = getallheaders();
+  $authHeader = $headers["Authorization"] ?? $headers["authorization"] ?? "";
+
+  if (!str_starts_with($authHeader, "Oyk ")) {
+    if ($is_continue)
+      return NULL;
+    http_response_code(401);
+    echo json_encode(["error" => 401]);
+    exit;
+  }
+
+  $token = substr($authHeader, 4);
+  $payload = decode_jwt($token);
+
+  if (!$payload) {
+    if ($is_continue)
+      return NULL;
+    http_response_code(401);
+    echo json_encode(["error" => "Unauthorized (p)"]);
+    exit;
+  }
+
+  return $payload;
 }
 
 function update_wio() {
-    global $pdo;
-    $user = require_auth(true);
+  global $pdo;
+  $user = require_auth(TRUE);
 
-    $ignore_paths = ["/api/v1/theme.php"];
+  $ignore_paths = ["/api/v1/theme.php"];
 
-    if (in_array($_SERVER["REQUEST_URI"], $ignore_paths)) {
-        return;
-    }
+  if (in_array($_SERVER["REQUEST_URI"], $ignore_paths)) {
+    return;
+  }
 
-    try {
-        if ($user) {
-            $stmt = $pdo->prepare("
+  try {
+    if ($user) {
+      $stmt = $pdo->prepare("
                 INSERT INTO auth_wio (user_id, lastlive_at)
                 VALUES (:uid, NOW())
                 ON DUPLICATE KEY UPDATE lastlive_at = NOW()
             ");
-            $stmt->execute(["uid" => $user["id"]]);
-        } else {
-            $guest = get_guest_id();
-            $agent = substr($_SERVER["HTTP_USER_AGENT"] ?? "", 0, 255);
+      $stmt->execute(["uid" => $user["id"]]);
+    }
+    else {
+      $guest = get_guest_id();
+      $agent = substr($_SERVER["HTTP_USER_AGENT"] ?? "", 0, 255);
 
-            $stmt = $pdo->prepare("
+      $stmt = $pdo->prepare("
                 INSERT INTO auth_wio (guest_id, agent, lastlive_at)
                 VALUES (:gid, :agent, NOW())
                 ON DUPLICATE KEY UPDATE lastlive_at = NOW()
             ");
-            $stmt->execute(["gid" => $guest, "agent" => $agent]);
-        }
-    } catch (Exception) {
-        return;
+      $stmt->execute(["gid" => $guest, "agent" => $agent]);
     }
+  }
+  catch (Exception) {
+    return;
+  }
 }
 

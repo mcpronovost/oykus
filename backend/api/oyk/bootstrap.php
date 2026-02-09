@@ -10,15 +10,16 @@ define("OYK", __DIR__);
 require_once __DIR__ . "/core/db.php";
 require_once __DIR__ . "/core/middlewares.php";
 require_once __DIR__ . "/core/bus.php";
+require_once __DIR__ . "/core/exception.php";
+require_once __DIR__ . "/core/response.php";
+
+// Register global exception handler
+set_exception_handler("handle_exceptions");
+
 
 // SERVICES
 require_once __DIR__ . "/contrib/world/services/UniverseService.php";
 require_once __DIR__ . "/contrib/world/services/ThemeService.php";
-// require_once __DIR__ . "/contrib/achievements/services/AchievementService.php";
+require_once __DIR__ . "/contrib/planner/services/StatusService.php";
+require_once __DIR__ . "/contrib/planner/services/TaskService.php";
 
-// INIT EventBus / listeners
-/*$achievementService = new AchievementService($pdo);
-
-EventBus::listen("user.login", function ($payload) use ($achievementService) {
-    $achievementService->handleEvent("user.login", $payload["user_id"]);
-});*/

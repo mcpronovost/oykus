@@ -23,14 +23,22 @@ export default function ModalTaskCreate({
 
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
-  const [formData, setFormData] = useState({});
+  const [taskForm, setTaskForm] = useState({});
 
   const handleSubmit = async () => {
     if (isLoading) return;
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.post("/planner/tasks/create/", formData);
+      const url =
+        !currentUniverse || currentUniverse.is_default
+          ? "/planner/tasks/create/"
+          : `/planner/u/${currentUniverse.slug}/tasks/create/`;
+      const formData = new FormData();
+      for (const [key, value] of Object.entries(taskForm)) {
+        formData.append(key, value);
+      };
+      const r = await api.post(url, formData);
       if (!r.ok) throw new Error(r.error || t("An error occurred"));
       onClose(true);
     } catch (e) {
@@ -41,24 +49,24 @@ export default function ModalTaskCreate({
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setTaskForm({ ...taskForm, [e.target.name]: e.target.value });
   };
 
   useEffect(() => {
-    if (statuses.length > 0 && !formData.statusId) {
-      setFormData((prev) => ({
+    if (statuses.length > 0 && !taskForm.status) {
+      setTaskForm((prev) => ({
         ...prev,
-        statusId: status?.id || statuses[0]?.id || "",
+        status: status?.id || statuses[0]?.id || "",
       }));
     }
-  }, [statuses, status?.id, formData.statusId]);
+  }, [statuses, status?.id, taskForm.status]);
 
   useEffect(() => {
-    setFormData({
+    setTaskForm({
       title: "",
       content: "",
       priority: "2",
-      statusId: status?.id || statuses[0]?.value || "",
+      status: status?.id || statuses[0]?.value || "",
       assignees: [],
       tags: [],
       universe: currentUniverse?.slug || null,
@@ -72,7 +80,7 @@ export default function ModalTaskCreate({
           <OykFormField
             label={t("Title")}
             name="title"
-            defaultValue={formData.title}
+            defaultValue={taskForm.title}
             onChange={handleChange}
             required
           />
@@ -80,7 +88,7 @@ export default function ModalTaskCreate({
             label={t("Content")}
             name="content"
             type="textarea"
-            defaultValue={formData.content}
+            defaultValue={taskForm.content}
             onChange={handleChange}
           />
           <OykFormField
@@ -92,17 +100,17 @@ export default function ModalTaskCreate({
               { label: t("PriorityMedium"), value: "2" },
               { label: t("PriorityHigh"), value: "3" },
             ]}
-            defaultValue={formData.priority}
+            defaultValue={taskForm.priority}
             onChange={handleChange}
           />
           <OykFormField
             label={t("Status")}
-            name="statusId"
+            name="status"
             type="select"
             options={statuses}
             optionLabel="title"
             optionValue="id"
-            defaultValue={formData.statusId}
+            defaultValue={taskForm.status}
             onChange={handleChange}
             required
           />
