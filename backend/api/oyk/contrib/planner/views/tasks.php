@@ -12,18 +12,16 @@ $universeSlug = $universeSlug ?? null;
 // Universe context
 $context = $universeService->getContext($universeSlug, $authUser["id"]);
 $universeId = $context["id"];
-$isDefault = $context["isDefault"];
 
 // Statuses
-$statuses = $statusService->getStatuses($universeId, $isDefault);
+$statuses = $statusService->getStatuses($universeId);
 
 // Tasks per status
 foreach ($statuses as &$s) {
   $s["tasks"] = $taskService->getTasksForStatus(
     $s["id"],
     $authUser["id"],
-    $universeId,
-    $isDefault
+    $universeId
   );
 }
 

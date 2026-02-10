@@ -71,8 +71,7 @@ class TaskService {
   public function getTasksForStatus(
     int $statusId,
     int $userId,
-    ?int $universeId,
-    bool $isDefault
+    int $universeId,
   ): array {
 
     $qry = $this->pdo->prepare("
@@ -123,8 +122,7 @@ class TaskService {
               )
           )
           AND (
-              (:isDefault AND universe IS NULL)
-              OR (:universeId1 IS NOT NULL AND universe = :universeId2)
+              universe = :universeId
           )
 
       ORDER BY
@@ -137,9 +135,7 @@ class TaskService {
       "status_id" => $statusId,
       "user_id" => $userId,
       "assignee_id" => $userId,
-      "isDefault" => $isDefault,
-      "universeId1" => $universeId,
-      "universeId2" => $universeId,
+      "universeId" => $universeId,
     ]);
 
     return array_map(function ($task) {

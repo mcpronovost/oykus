@@ -36,18 +36,15 @@ class StatusService {
     return (bool) $qry->fetchColumn();
   }
 
-  public function getStatuses(?int $universeId, bool $isDefault): array {
+  public function getStatuses(int $universeId): array {
     $qry = $this->pdo->prepare("
       SELECT id, title, color, position, is_completed
       FROM planner_statuses
-      WHERE (? AND universe IS NULL)
-         OR (? AND universe = ?)
+      WHERE universe = ?
       ORDER BY position ASC
     ");
 
     $qry->execute([
-      $isDefault,
-      !$isDefault,
       $universeId
     ]);
 
@@ -113,7 +110,7 @@ class StatusService {
       ");
 
       $shift->execute([
-        "universe" => $universeId ?: NULL,
+        "universe" => $universeId,
         "position" => $position
       ]);
 
@@ -127,7 +124,7 @@ class StatusService {
         "title" => $fields["title"],
         "color" => $fields["color"],
         "position" => $position,
-        "universe" => $universeId ?: NULL
+        "universe" => $universeId
       ]);
 
       $this->pdo->commit();

@@ -6,19 +6,22 @@ class UniverseService {
   public function getContext(?string $slug, int $userId): array {
       // Default universe if no context
       if (!$slug) {
-        return [
-          "id" => null,
-          "isDefault" => true
-        ];
+        $qry = $this->pdo->prepare("
+          SELECT id, is_default
+          FROM world_universes
+          WHERE is_default = 1
+          LIMIT 1
+        ");
+        $qry->execute();
+      } else {
+        $qry = $this->pdo->prepare("
+          SELECT id, is_default
+          FROM world_universes
+          WHERE slug = ?
+          LIMIT 1
+        ");
+        $qry->execute([$slug]);
       }
-
-      $qry = $this->pdo->prepare("
-        SELECT id, is_default
-        FROM world_universes
-        WHERE slug = ?
-        LIMIT 1
-      ");
-      $qry->execute([$slug]);
       $universe = $qry->fetch();
 
       if (!$universe) {
