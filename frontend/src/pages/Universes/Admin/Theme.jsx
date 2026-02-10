@@ -207,7 +207,7 @@ export default function UniverseAdminTheme() {
     <section className="oyk-universes-admin-profile">
       <article className="oyk-universes-admin-profile-visual">
         <div className="oyk-universes-admin-profile-visual-preview">
-          <OykCard nop fh alignTop>
+          <OykCard nop fullCenter alignTop>
             <OykBanner
               avatarAbbr={currentUniverse.abbr}
               avatarSize={80}
@@ -224,7 +224,7 @@ export default function UniverseAdminTheme() {
           </OykCard>
         </div>
         <div className="oyk-universes-admin-profile-visual-avatar">
-          <OykCard fh clickable onClick={() => handleImageClick("logo")}>
+          <OykCard fullCenter clickable onClick={() => handleImageClick("logo")}>
             <SquircleDashed size={24} color={"var(--oyk-c-primary)"} />
             <p className="oyk-universes-admin-profile-visual-avatar-title">{t("Change Logo")}</p>
             <small className="oyk-universes-admin-profile-visual-avatar-max">{t("200x200px (max 2MB)")}</small>
@@ -239,7 +239,7 @@ export default function UniverseAdminTheme() {
           </OykCard>
         </div>
         <div className="oyk-universes-admin-profile-visual-cover">
-          <OykCard fh clickable onClick={() => handleImageClick("cover")}>
+          <OykCard fullCenter clickable onClick={() => handleImageClick("cover")}>
             <Image size={24} color={"var(--oyk-c-primary)"} />
             <p className="oyk-universes-admin-profile-visual-cover-title">{t("Change Cover")}</p>
             <small className="oyk-universes-admin-profile-visual-cover-max">{t("1136x256px (max 2MB)")}</small>

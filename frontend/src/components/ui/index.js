@@ -13,7 +13,7 @@ export { default as OykForm } from "./Form.jsx";
 export { default as OykFormField } from "./FormField.jsx";
 export { default as OykFormHelp } from "./FormHelp.jsx";
 export { default as OykFormMessage } from "./FormMessage.jsx";
-export { default as OykGrid, OykGridRow, OykGridNav, OykGridMain } from "./Grid.jsx";
+export { default as OykGrid, OykGridRow, OykGridCol, OykGridNav, OykGridMain } from "./Grid.jsx";
 export { default as OykHeading } from "./Heading.jsx";
 export { default as OykLink } from "./Link.jsx";
 export { default as OykLoading } from "./Loading.jsx";

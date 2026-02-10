@@ -1,9 +1,21 @@
+import "@/assets/styles/page/home.scss";
 import { useEffect, useState } from "react";
-import { Construction } from "lucide-react";
+import { Component, MessagesSquare, Share2 } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useTranslation } from "@/services/translation";
-import { OykAlert, OykAvatar, OykFeedback, OykGrid, OykHeading, OykLink, OykLoading } from "@/components/ui";
+import {
+  OykAlert,
+  OykAvatar,
+  OykCard,
+  OykFeedback,
+  OykGrid,
+  OykGridRow,
+  OykGridCol,
+  OykHeading,
+  OykLink,
+  OykLoading,
+} from "@/components/ui";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -45,16 +57,57 @@ export default function Home() {
 
   return (
     <section className="oyk-page oyk-home">
-      <OykHeading title={t("Home")} />
+      <OykHeading title={t("Oykus")} />
+      <OykGrid className="oyk-home-intro">
+        <p>
+          {t(
+            "At the heart of Oykus is the idea that each universe, as unique as it may be, can resonate with others. Worlds are not isolated: they intersect, collide, and influence each other",
+          )}
+        </p>
+      </OykGrid>
       <OykGrid>
         <OykFeedback
+          title={t("Under Active Development")}
+          message={t(
+            "Oykus is a collaborative multiverse project designed to reinvent the way role-playing game universes are created, shared, and experienced",
+          )}
           ghost
-          title={t("Under Construction")}
-          message={t("This page is currently under construction. Please check back later.")}
-          icon={Construction}
+          showIcon={false}
+          variant="primary"
         />
       </OykGrid>
-      <OykHeading title={t("Who is online?")} />
+      <OykGrid className="oyk-home-features">
+        <OykGridRow wrap>
+          <OykGridCol col="33" md="50" sm="100">
+            <OykCard fh alignSpace>
+              <header>
+                <Share2 size={24} color="var(--oyk-c-primary)" />
+                <h2>{t("A Living and Interconnected Multiverse")}</h2>
+              </header>
+              <p>{t("A collaborative multiverse project designed to reinvent the way role-playing game universes are created, shared, and experienced")}</p>
+            </OykCard>
+          </OykGridCol>
+          <OykGridCol col="12" md="50" sm="100">
+            <OykCard fh alignSpace>
+              <header>
+                <MessagesSquare size={24} color="var(--oyk-c-primary)" />
+                <h2>{t("Modernising Forum Role-Playing")}</h2>
+              </header>
+              <p>{t("A modern, elegant, and flexible space where each creator can shape their own world, define its rules, lore, and history")}</p>
+            </OykCard>
+          </OykGridCol>
+          <OykGridCol col="22" md="50" sm="100">
+            <OykCard fh alignSpace>
+              <header>
+                <Component size={24} color="var(--oyk-c-primary)" />
+                <h2>{t("Tools to Shape Your Universe")}</h2>
+              </header>
+              <p>{t("Tools designed to streamline writing and roleplay management; a series of modules designed to enrich and structure each world")}</p>
+            </OykCard>
+          </OykGridCol>
+        </OykGridRow>
+      </OykGrid>
+      <OykHeading title={t("Who is online?")} tag="h2" subtitle />
       <OykGrid>
         {hasErrorWio ? (
           <OykAlert
@@ -73,12 +126,7 @@ export default function Home() {
                   ))
                 : null}
               {wioGuests ? (
-                <OykAvatar
-                  abbr={`+${wioGuests}`}
-                  bgColor="var(--oyk-card-bg)"
-                  fgColor="var(--oyk-card-fg)"
-                  size={32}
-                />
+                <OykAvatar abbr={`+${wioGuests}`} bgColor="var(--oyk-card-bg)" fgColor="var(--oyk-card-fg)" size={32} />
               ) : null}
             </section>
           </>

@@ -14,6 +14,10 @@
     flex-wrap: nowrap;
     gap: 16px;
 
+    &-wrap {
+      flex-wrap: wrap;
+    }
+
     &-nav {
       flex: 0 0 256px;
     }
@@ -31,6 +35,92 @@
 
       &-main {
         flex: 1 1 100%;
+      }
+    }
+  }
+
+  &-col {
+    flex: 1 1 0;
+
+    &.oyk-col {
+      &-100 {
+        width: 100%;
+        min-width: 100%;
+      }
+
+      &-50 {
+        width: 50%;
+        min-width: 45%;
+      }
+
+      &-33 {
+        width: 33%;
+        min-width: 28%;
+      }
+
+      &-25 {
+        width: 25%;
+        min-width: 20%;
+      }
+
+      &-md {
+        &-100 {
+          @media (max-width: 1023px) {
+            width: 100%;
+            min-width: 100%;
+          }
+        }
+
+        &-50 {
+          @media (max-width: 1023px) {
+            width: 50%;
+            min-width: 45%;
+          }
+        }
+
+        &-33 {
+          @media (max-width: 1023px) {
+            width: 33%;
+            min-width: 28%;
+          }
+        }
+
+        &-25 {
+          @media (max-width: 1023px) {
+            width: 25%;
+            min-width: 20%;
+          }
+        }
+      }
+
+      &-sm {
+        &-100 {
+          @media (max-width: 767px) {
+            width: 100%;
+            min-width: 100%;
+          }
+        }
+
+        &-50 {
+          @media (max-width: 767px) {
+            width: 50%;
+            min-width: 45%;
+          }
+        }
+
+        &-33 {
+          @media (max-width: 767px) {
+            width: 33%;
+            min-width: 28%;
+          }
+        }
+
+        &-25 {
+          @media (max-width: 767px) {
+            width: 25%;
+            min-width: 20%;
+          }
+        }
       }
     }
   }

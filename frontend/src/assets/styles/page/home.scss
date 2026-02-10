@@ -1,0 +1,22 @@
+.oyk-home {
+  &-intro {
+    font-family: "Quicksand", sans-serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: 2px;
+  }
+
+  &-features {
+    header {
+      font-size: 1rem;
+      line-height: 1.2;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin: 0 0 16px;
+    }
+  }
+}

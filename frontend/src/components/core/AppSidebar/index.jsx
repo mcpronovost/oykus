@@ -2,6 +2,7 @@ import {
   Compass,
   Component,
   GalleryHorizontalEnd,
+  House,
   LayoutDashboard,
   ListTodo,
   LoaderPinwheel,
@@ -30,7 +31,7 @@ export default function AppSidebar() {
         <section className="oyk-app-sidebar-menu">
           <nav className="oyk-app-sidebar-nav">
             <ul className="oyk-app-sidebar-nav-list">
-              <OykAppSidebarNavItem icon={LayoutDashboard} text={t("Dashboard")} href="home" />
+              <OykAppSidebarNavItem icon={isAuth ? LayoutDashboard : House} text={isAuth ? t("Dashboard") : t("Home")} href="home" />
               <OykAppSidebarNavItem icon={Compass} text={t("Discover")} href="discover" />
               {isAuth && currentUniverse?.is_mod_planner_active ? (<OykAppSidebarNavItem icon={ListTodo} text={t("Planner")} href="planner" />) : null}
               {isAuth && currentUniverse?.is_mod_forum_active ? (<OykAppSidebarNavItem icon={MessagesSquare} text={t("Forum")} href="forum" disabled />) : null}
@@ -43,7 +44,7 @@ export default function AppSidebar() {
           <nav className="oyk-app-sidebar-nav">
             <ul className="oyk-app-sidebar-nav-list">
               {isAuth ? (<OykAppSidebarNavItem icon={Settings} text={t("Settings")} href="settings" />) : null}
-              {/* isAuth && isDev ? (<OykAppSidebarNavItem icon={Component} text={t("Components")} href="dev-components" />) : null */}
+              {isDev ? (<OykAppSidebarNavItem icon={Component} text={t("Components")} href="dev-components" />) : null}
               {isAuth && currentUniverse ? (<OykAppSidebarNavItem icon={LoaderPinwheel} text={t("Admin")} href="universe-admin" params={ { universeSlug: currentUniverse.slug }} />) : null}
             </ul>
           </nav>

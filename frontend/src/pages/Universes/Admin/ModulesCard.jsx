@@ -8,7 +8,7 @@ export default function UniverseAdminModulesCard({ module, onActivate = () => {}
 
   return (
     <li className="oyk-universes-admin-modules-list-item">
-      <OykCard nop fh alignSpace>
+      <OykCard nop fullCenter alignSpace>
         <header className="oyk-universes-admin-modules-list-item-header">
           <OykBanner avatarIcon={module.icon} avatarTop={16} avatarBorderSize={8} coverHeight={64} height={96} />
           <div className="oyk-universes-admin-modules-list-item-header-name">

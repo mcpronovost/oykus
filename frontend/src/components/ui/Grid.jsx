@@ -8,9 +8,17 @@ export default function OykGrid({ children, className, ...props }) {
   );
 }
 
-export function OykGridRow({ children, className, ...props }) {
+export function OykGridRow({ wrap, children, className, ...props }) {
   return (
-    <div className={`oyk-grid-row ${className ? className : ""}`} {...props}>
+    <div className={`oyk-grid-row ${wrap ? "oyk-grid-row-wrap" : ""}${className ? className : ""}`} {...props}>
+      {children}
+    </div>
+  );
+}
+
+export function OykGridCol({ col = "100", md = "100", sm = "100", children, className, ...props }) {
+  return (
+    <div className={`oyk-grid-col oyk-col-${col} oyk-col-md-${md} oyk-col-sm-${sm} ${className ? className : ""}`} {...props}>
       {children}
     </div>
   );

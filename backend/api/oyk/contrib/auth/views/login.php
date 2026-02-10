@@ -1,7 +1,5 @@
 <?php
 
-require OYK . "/contrib/achievements/utils/earn_achievement.php";
-
 global $pdo;
 
 $isProd = getenv("HTTP_ISPROD");
@@ -59,7 +57,7 @@ setcookie(
   ]
 );
 
-EventBus::dispatch("user.login", ["user_id" => $user["id"]]);
+// EventBus::dispatch("user.login", ["user_id" => $user["id"]]);
 
 unset($user["username"], $user["password"]);
 

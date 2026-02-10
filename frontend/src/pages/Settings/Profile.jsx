@@ -172,7 +172,7 @@ export default function SettingsProfile() {
     <section className="oyk-settings-profile">
       <article className="oyk-settings-profile-visual">
         <div className="oyk-settings-profile-visual-preview">
-          <OykCard nop fh alignTop>
+          <OykCard nop fullCenter alignTop>
             <OykBanner
               avatarSize={80}
               avatarBorderSize={8}
@@ -187,7 +187,7 @@ export default function SettingsProfile() {
           </OykCard>
         </div>
         <div className="oyk-settings-profile-visual-avatar">
-          <OykCard fh clickable onClick={() => handleImageClick("avatar")}>
+          <OykCard fullCenter clickable onClick={() => handleImageClick("avatar")}>
             <User size={24} color={"var(--oyk-c-primary)"} />
             <p className="oyk-settings-profile-visual-avatar-title">{t("Change Avatar")}</p>
             <small className="oyk-settings-profile-visual-avatar-max">{t("200x200px (max 2MB)")}</small>
@@ -202,7 +202,7 @@ export default function SettingsProfile() {
           </OykCard>
         </div>
         <div className="oyk-settings-profile-visual-cover">
-          <OykCard fh clickable onClick={() => handleImageClick("cover")}>
+          <OykCard fullCenter clickable onClick={() => handleImageClick("cover")}>
             <Image size={24} color={"var(--oyk-c-primary)"} />
             <p className="oyk-settings-profile-visual-cover-title">{t("Change Cover")}</p>
             <small className="oyk-settings-profile-visual-cover-max">{t("1136x256px (max 2MB)")}</small>

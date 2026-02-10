@@ -24,7 +24,7 @@ export default function SettingsFriendsCard({ friend, fetchData = () => {} }) {
         onClose={handleModalFriendsDeleteClose}
         friend={friend}
       />
-      <OykCard nop fh alignSpace>
+      <OykCard nop fullCenter alignSpace>
         <header className="oyk-settings-friends-list-item-header">
           <OykBanner avatarSrc={friend.avatar} avatarAbbr={friend.abbr} coverSrc={friend.cover} />
           <div className="oyk-settings-friends-list-item-header-name">
