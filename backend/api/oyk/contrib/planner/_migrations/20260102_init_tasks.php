@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS planner_tasks (
         FOREIGN KEY (universe) REFERENCES world_universes(id)
         ON DELETE SET NULL,
     CONSTRAINT fk_planner_tasks_status
-        FOREIGN KEY (status) REFERENCES planner_status(id)
+        FOREIGN KEY (status) REFERENCES planner_statuses(id)
         ON DELETE RESTRICT,
     CONSTRAINT fk_planner_tasks_author
         FOREIGN KEY (author) REFERENCES auth_users(id)

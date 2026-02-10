@@ -28,6 +28,7 @@ function handle_exceptions(Throwable $e) {
   }
 
   // Everything else
+  error_log(print_r($e, TRUE));
   Response::serverError("Unexpected error");
 }
 

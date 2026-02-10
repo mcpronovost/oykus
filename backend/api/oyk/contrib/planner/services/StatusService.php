@@ -5,10 +5,41 @@ class StatusService {
   public function __construct(private PDO $pdo) {
   }
 
+  public function userCanEditStatus(int $statusId, int $userId): bool {
+    $qry = $this->pdo->prepare("
+      SELECT EXISTS (
+        SELECT 1
+        FROM planner_statuses s
+        LEFT JOIN world_universes u ON u.id = s.universe
+        WHERE s.id = ? AND u.owner = ?
+      )
+    ");
+
+    $qry->execute([
+      $statusId,
+      $userId
+    ]);
+
+    return (bool) $qry->fetchColumn();
+  }
+
+  public function userCanDeleteStatus(int $statusId, int $userId): bool {
+    $qry = $this->pdo->prepare("
+      SELECT EXISTS (
+        SELECT 1
+        FROM planner_statuses s
+        LEFT JOIN world_universes u ON u.id = s.universe
+        WHERE s.id = ? AND u.owner = ?
+      )
+    ");
+    $qry->execute([$statusId, $userId]);
+    return (bool) $qry->fetchColumn();
+  }
+
   public function getStatuses(?int $universeId, bool $isDefault): array {
     $qry = $this->pdo->prepare("
       SELECT id, title, color, position, is_completed
-      FROM planner_status
+      FROM planner_statuses
       WHERE (? AND universe IS NULL)
          OR (? AND universe = ?)
       ORDER BY position ASC
@@ -74,7 +105,7 @@ class StatusService {
 
       // 1. Shift all statuses after position
       $shift = $this->pdo->prepare("
-        UPDATE planner_status
+        UPDATE planner_statuses
         SET position = position + 1
         WHERE universe = :universe
           AND position >= :position
@@ -88,7 +119,7 @@ class StatusService {
 
       // 2. Insert new status
       $insert = $this->pdo->prepare("
-        INSERT INTO planner_status (title, color, position, universe)
+        INSERT INTO planner_statuses (title, color, position, universe)
         VALUES (:title, :color, :position, :universe)
       ");
 
@@ -103,8 +134,50 @@ class StatusService {
     }
     catch (Exception $e) {
       $this->pdo->rollBack();
-      error_log(print_r($e, true));
       throw new QueryException("Status creation failed");
+    }
+  }
+
+  public function updateStatus(int $statusId, array $fields): void {
+    if (empty($fields)) {
+      throw new ValidationException("No fields to update");
+    }
+
+    $sqlParts = [];
+    $params = [];
+
+    foreach ($fields as $key => $value) {
+      $sqlParts[] = "{$key} = :{$key}";
+      $params[":{$key}"] = $value;
+    }
+
+    $params[":id"] = $statusId;
+
+    try {
+      $sql = "
+        UPDATE planner_statuses
+        SET " . implode(", ", $sqlParts) . "
+        WHERE id = :id
+      ";
+
+      $qry = $this->pdo->prepare($sql);
+      $qry->execute($params);
+    }
+    catch (Exception $e) {
+      throw new QueryException("Status update failed");
+    }
+  }
+
+  public function deleteStatus(int $statusId): void {
+    try {
+      $qry = $this->pdo->prepare("
+        DELETE FROM planner_statuses
+        WHERE id = ?
+      ");
+      $qry->execute([$statusId]);
+    }
+    catch (Exception $e) {
+      throw new QueryException("Status deletion failed");
     }
   }
 }

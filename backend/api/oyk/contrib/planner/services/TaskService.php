@@ -58,7 +58,7 @@ class TaskService {
         SELECT 1
         FROM planner_tasks t
         LEFT JOIN world_universes u ON u.id = t.universe
-        WHERE id = ?
+        WHERE t.id = ?
           AND (
             t.author = ? OR u.owner = ?
           )

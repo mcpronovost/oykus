@@ -1,14 +1,17 @@
 import { useState } from "react";
 
 import { api } from "@/services/api";
+import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
 import { OykButton, OykForm, OykFormField, OykFormMessage, OykModal } from "@/components/ui";
 
 export default function ModalStatusEdit({ isOpen, onClose, status }) {
+  const { currentUniverse } = useAuth();
   const { t } = useTranslation();
+
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
-  const [formData, setFormData] = useState({
+  const [statusForm, setStatusForm] = useState({
     title: status.title,
     color: status.color,
     position: status.position,
@@ -19,7 +22,15 @@ export default function ModalStatusEdit({ isOpen, onClose, status }) {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.post(`/planner/status/${status.id}/edit/`, formData);
+      const url =
+        !currentUniverse || currentUniverse.is_default
+          ? `/planner/statuses/${status.id}/edit/`
+          : `/planner/u/${currentUniverse.slug}/statuses/${status.id}/edit/`;
+      const formData = new FormData();
+      for (const [key, value] of Object.entries(statusForm)) {
+        formData.append(key, value);
+      };
+      const r = await api.post(url, formData);
       if (!r.ok) throw new Error(r.error || t("An error occurred"));
       onClose(true);
     } catch (e) {
@@ -30,7 +41,7 @@ export default function ModalStatusEdit({ isOpen, onClose, status }) {
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setStatusForm({ ...statusForm, [e.target.name]: e.target.value });
   };
 
   return (
@@ -39,21 +50,21 @@ export default function ModalStatusEdit({ isOpen, onClose, status }) {
         <OykFormField
           label={t("Title")}
           name="title"
-          defaultValue={formData.title}
+          defaultValue={statusForm.title}
           onChange={handleChange}
         />
         <OykFormField
           label={t("Colour")}
           name="color"
           type="color"
-          defaultValue={formData.color}
+          defaultValue={statusForm.color}
           onChange={handleChange}
         />
         <OykFormField
           label={t("Position")}
           name="position"
           type="number"
-          defaultValue={formData.position}
+          defaultValue={statusForm.position}
           onChange={handleChange}
         />
         <OykFormMessage hasError={hasError} />

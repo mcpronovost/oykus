@@ -12,7 +12,7 @@ import {
   OykModal,
 } from "@/components/ui";
 
-export default function ModalTaskDelete({ isOpen, onClose, task }) {
+export default function ModalStatusDelete({ isOpen, onClose, status }) {
   const { currentUniverse } = useAuth();
   const { t } = useTranslation();
 
@@ -26,13 +26,13 @@ export default function ModalTaskDelete({ isOpen, onClose, task }) {
     try {
       const url =
         !currentUniverse || currentUniverse.is_default
-          ? `/planner/tasks/${task.id}/delete/`
-          : `/planner/u/${currentUniverse.slug}/tasks/${task.id}/delete/`;
+          ? `/planner/statuses/${status.id}/delete/`
+          : `/planner/u/${currentUniverse.slug}/statuses/${status.id}/delete/`;
       const r = await api.post(url);
       if (!r.ok) throw new Error(r.error || t("An error occurred"));
       onClose(true);
     } catch (e) {
-      setHasError(e.message || t("An error occurred while deleting the task"));
+      setHasError(e.message || t("An error occurred while deleting the status"));
     } finally {
       setIsLoading(false);
     }
@@ -44,12 +44,12 @@ export default function ModalTaskDelete({ isOpen, onClose, task }) {
   }, [isOpen]);
 
   return (
-    <OykModal title={t("Delete Task")} isOpen={isOpen} onClose={onClose}>
+    <OykModal title={t("Delete Status")} isOpen={isOpen} onClose={onClose}>
       <OykForm onSubmit={handleSubmit} isLoading={isLoading}>
         <OykFeedback
           variant="danger"
           icon={Trash2}
-          title={t("Are you sure you want to delete this task?")}
+          title={t("Are you sure you want to delete this status?")}
           message={t("This action cannot be undone.")}
         />
         <OykFormMessage hasError={hasError} />

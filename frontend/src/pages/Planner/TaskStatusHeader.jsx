@@ -7,6 +7,7 @@ import { OykDropdown, OykModal } from "@/components/ui";
 
 import ModalTaskCreate from "./modals/TaskCreate";
 import ModalStatusEdit from "./modals/StatusEdit";
+import ModalStatusDelete from "./modals/StatusDelete";
 
 export default function TaskStatusHeader({
   status,
@@ -66,13 +67,11 @@ export default function TaskStatusHeader({
         onClose={handleCloseModalEdit}
         status={status}
       />
-      <OykModal
+      <ModalStatusDelete
         isOpen={isModalDeleteOpen}
         onClose={handleCloseModalDelete}
         status={status}
-      >
-        <p>Delete</p>
-      </OykModal>
+      />
       <header className="oyk-planner-status-item-header">
         <div className="oyk-planner-status-item-header-icon">
           <span

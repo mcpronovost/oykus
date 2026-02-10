@@ -1,49 +1,22 @@
 <?php
 
 global $pdo;
+
 $authUser = require_auth();
 
-$data = json_decode(file_get_contents("php://input"), TRUE);
+// Services
+$statusService = new StatusService($pdo);
 
-$title = trim($data["title"] ?? "");
-$color = $data["color"] ?? NULL;
-$position = $data["position"] ?? 1;
+// Validations
+$fields = $statusService->validateData($_POST);
 
-if ($title === "" || $position === "" || $position < 1) {
-  Response::badRequest("Invalid data");
+// Check permissions
+if (!$statusService->userCanEditStatus($statusId, $authUser["id"])) {
+  throw new AuthorizationException("You cannot edit this status");
 }
 
-try {
-  $qry = $pdo->prepare("
-    SELECT title, color, position
-    FROM planner_status
-    WHERE id = ?
-    LIMIT 1
-  ");
-  $qry->execute([$statusId]);
-  $status = $qry->fetch();
-}
-catch (Exception $e) {
-  Response::serverError();
-}
-
-if (!$status) {
-  Response::notFound("Status not found");
-}
-
-// Update tasks status
-$qry = $pdo->prepare("
-  UPDATE planner_status
-  SET title=:title, color=:color, position=:position
-  WHERE id=:id
-");
-
-$qry->execute([
-  "id" => $statusId,
-  "title" => $title,
-  "color" => $color,
-  "position" => $position
-]);
+// Update
+$statusService->updateStatus($statusId, $fields);
 
 Response::json([
   "ok" => TRUE

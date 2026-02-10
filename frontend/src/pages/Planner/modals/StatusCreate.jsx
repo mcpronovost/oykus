@@ -20,8 +20,8 @@ export default function ModalStatusCreate({ isOpen, onClose }) {
     try {
       const url =
         !currentUniverse || currentUniverse.is_default
-          ? "/planner/status/create/"
-          : `/planner/u/${currentUniverse.slug}/status/create/`;
+          ? "/planner/statuses/create/"
+          : `/planner/u/${currentUniverse.slug}/statuses/create/`;
       const formData = new FormData();
       for (const [key, value] of Object.entries(statusForm)) {
         formData.append(key, value);

@@ -47,7 +47,6 @@ class ThemeService {
     }
     catch (Exception $e) {
       http_response_code(500);
-      error_log(print_r($e, TRUE));
       echo json_encode(["error" => "Theme not found"]);
       exit;
     }
