@@ -53,7 +53,7 @@ if (isset($_POST["name"]) && $_POST["name"] !== $universe["name"]) {
 /* ---------- Visibility ---------- */
 if (isset($_POST["visibility"]) && $_POST["visibility"] !== $universe["visibility"]) {
   if ($universe["is_default"] === 1 && $_POST["visibility"] != 4) {
-    Response::forbidden("Default universe need to be public")
+    Response::forbidden("Default universe need to be public");
   }
 
   $patch["visibility"] = $_POST["visibility"];
