@@ -3,6 +3,11 @@
     "Start by creating a new status before adding tasks": "Commencez par créer un nouveau statut avant d'ajouter des tâches",
     "Create a new status": "Créer un statut",
     "Create a new task": "Créer une tâche",
+    "Delete Task": "Supprimer la tâche",
+    "Are you sure you want to delete this task?": "Êtes-vous sûr de vouloir supprimer cette tâche ?",
     "New Status": "Nouveau statut",
-    "Edit Status": "Modifier le statut"
+    "Edit Status": "Modifier le statut",
+    "Delete Status": "Supprimer le statut",
+    "Are you sure you want to delete this status?": "Êtes-vous sûr de vouloir supprimer ce statut ?",
+    "This action cannot be undone.": "Cette action est irréversible."
 }

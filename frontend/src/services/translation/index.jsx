@@ -53,5 +53,10 @@ export function TranslationProvider({ children, lang = DEFAULT_LANG }) {
 }
 
 export function useTranslation() {
-  return useContext(TranslationContext);
+  const context = useContext(TranslationContext);
+  if (!context) {
+    window.location.reload();
+    return { lang: "fr", t: () => {}};
+  }
+  return context;
 }

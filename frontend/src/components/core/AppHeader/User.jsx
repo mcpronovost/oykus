@@ -87,6 +87,10 @@ export default function AppHeaderUser() {
             onClick: handleLogout,
           },
         ]}
+        bgColor="var(--oyk-app-header-bg)"
+        fgColor="var(--oyk-app-header-fg)"
+        bgSubtleColor="var(--oyk-app-header-subtle-bg)"
+        fgSubtleColor="var(--oyk-app-header-subtle-fg)"
       />
     </section>
   );
