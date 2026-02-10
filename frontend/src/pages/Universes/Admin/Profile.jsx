@@ -13,6 +13,7 @@ export default function UniverseAdminProfile() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
+  const [hasSuccessSubmit, setHasSuccessSubmit] = useState(null);
   const [initialProfileForm, setInitialProfileForm] = useState({
     name: currentUniverse.name || "",
     slug: currentUniverse.slug || "",
@@ -24,11 +25,12 @@ export default function UniverseAdminProfile() {
   const handleSubmit = async () => {
     setIsLoading(true);
     setHasError(null);
+    setHasSuccessSubmit(null);
     try {
       const formData = new FormData();
       for (const [key, value] of Object.entries(profileForm)) {
         formData.append(key, value);
-      };
+      }
       const r = await api.post(`/world/universes/${currentUniverse.slug}/edit/`, formData);
       if (!r?.ok) throw new Error(r || t("An error occurred"));
       setUniverse(r.universe);
@@ -40,6 +42,10 @@ export default function UniverseAdminProfile() {
         abbr: r.universe.abbr,
         visibility: `${r.universe.visibility}`,
       }));
+      setHasSuccessSubmit({
+        title: t("Universe updated"),
+        message: t("The profile universe has been updated successfully"),
+      });
     } catch (e) {
       if (e?.message && e.message.includes("uniq_name")) {
         setHasError(() => ({
@@ -74,8 +80,10 @@ export default function UniverseAdminProfile() {
     }
   };
 
-  const handleReset = async (e) => {
+  const handleReset = async () => {
     setProfileForm(initialProfileForm);
+    setHasError(null);
+    setHasSuccessSubmit(null);
   };
 
   useEffect(() => {
@@ -126,11 +134,14 @@ export default function UniverseAdminProfile() {
               { label: t("Private (OWNER)"), value: "1" },
               { label: t("Restricted (ADMINS)"), value: "2" },
               { label: t("Restricted (MODOS)"), value: "3" },
-              { label: t("Public"), value: "4" },
+              { label: t("Limited (MEMBERS)"), value: "4" },
+              { label: t("Limited (VISITORS)"), value: "5" },
+              { label: t("Public"), value: "6" },
             ]}
             defaultValue={profileForm.visibility}
             onChange={handleChange}
             hasError={hasError?.visibility}
+            disabled={currentUniverse.is_default}
           />
           {profileForm.visibility === "1" ? (
             <OykFormHelp helptext={t("Only the owner can see the universe")} />
@@ -138,10 +149,17 @@ export default function UniverseAdminProfile() {
             <OykFormHelp helptext={t("The owner and administrators can see the universe")} />
           ) : profileForm.visibility === "3" ? (
             <OykFormHelp helptext={t("The owner, administrators, and moderators can see the universe")} />
-          ) : profileForm.visibility === "4" && (
-            <OykFormHelp helptext={t("Anyone can see the universe")} />
-          )}
+          ) : profileForm.visibility === "4" ? (
+            <OykFormHelp helptext={t("Staff and registered members can see the universe")} />
+          ) : profileForm.visibility === "5" ? (
+            <OykFormHelp helptext={t("Staff, registered members and users can see the universe")} />
+          ) : profileForm.visibility === "6" ? (
+            <OykFormHelp helptext={t("Anyone on the web can see the universe")} />
+          ) : null}
           {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
+          {hasSuccessSubmit?.message && (
+            <OykFormMessage hasSuccessTitle={hasSuccessSubmit?.title} hasSuccess={hasSuccessSubmit?.message} />
+          )}
           <div className="oyk-form-actions">
             <OykButton type="submit" color="primary" disabled={isLoading} isLoading={isLoading}>
               {t("Save")}

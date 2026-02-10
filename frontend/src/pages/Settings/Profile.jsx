@@ -20,6 +20,7 @@ export default function SettingsProfile() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
+  const [hasSuccessSubmit, setHasSuccessSubmit] = useState(null);
   const [profileForm, setProfileForm] = useState({
     avatar: currentUser.avatar || null,
     cover: currentUser.cover || null,
@@ -27,6 +28,50 @@ export default function SettingsProfile() {
     slug: currentUser.slug || "",
     abbr: currentUser.abbr || "",
   });
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    setHasError(null);
+    setHasSuccessSubmit(null);
+    try {
+      const formData = new FormData();
+      formData.append("name", profileForm.name);
+      if (profileForm.avatarFile) {
+        formData.append("avatar", profileForm.avatarFile);
+      }
+      if (profileForm.coverFile) {
+        formData.append("cover", profileForm.coverFile);
+      }
+      const r = await api.post("/auth/me/edit/", formData);
+      if (!r?.ok) throw new Error(r || t("An error occurred"));
+      setUser(r.user);
+      setProfileForm((prev) => ({
+        ...prev,
+        name: r.user.name,
+        slug: r.user.slug,
+        abbr: r.user.abbr,
+      }));
+      nameRef.current.value = r.user.name;
+      slugRef.current.value = r.user.slug;
+      abbrRef.current.value = r.user.abbr;
+      setHasSuccessSubmit({
+        title: t("Profile updated"),
+        message: t("Your profile has been updated successfully"),
+      });
+    } catch (e) {
+      if (e?.message && e.message.includes("uniq_name")) {
+        setHasError(() => ({
+          name: t("This name is already in use"),
+        }));
+      } else {
+        setHasError(() => ({
+          message: e.message || t("An error occurred"),
+        }));
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -105,45 +150,8 @@ export default function SettingsProfile() {
     nameRef.current.value = currentUser.name || "";
     slugRef.current.value = currentUser.slug || "";
     abbrRef.current.value = currentUser.abbr || "";
-  };
-
-  const handleSubmit = async () => {
-    setIsLoading(true);
     setHasError(null);
-    try {
-      const formData = new FormData();
-      formData.append("name", profileForm.name);
-      if (profileForm.avatarFile) {
-        formData.append("avatar", profileForm.avatarFile);
-      }
-      if (profileForm.coverFile) {
-        formData.append("cover", profileForm.coverFile);
-      }
-      const r = await api.post("/auth/me/edit/", formData);
-      if (!r?.ok) throw new Error(r || t("An error occurred"));
-      setUser(r.user);
-      setProfileForm((prev) => ({
-        ...prev,
-        name: r.user.name,
-        slug: r.user.slug,
-        abbr: r.user.abbr,
-      }));
-      nameRef.current.value = r.user.name;
-      slugRef.current.value = r.user.slug;
-      abbrRef.current.value = r.user.abbr;
-    } catch (e) {
-      if (e?.message && e.message.includes("uniq_name")) {
-        setHasError(() => ({
-          name: t("This name is already in use"),
-        }));
-      } else {
-        setHasError(() => ({
-          message: e.message || t("An error occurred"),
-        }));
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    setHasSuccessSubmit(null);
   };
 
   useEffect(() => {
@@ -250,6 +258,7 @@ export default function SettingsProfile() {
             disabled
           />
           {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
+          {hasSuccessSubmit?.message && <OykFormMessage hasSuccessTitle={hasSuccessSubmit?.title} hasSuccess={hasSuccessSubmit?.message} />}
           <div className="oyk-form-actions">
             <OykButton type="submit" color="primary" disabled={isLoading} isLoading={isLoading}>
               {t("Save")}

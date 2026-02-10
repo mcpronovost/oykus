@@ -73,7 +73,7 @@ class UniverseService {
                wt.c_primary_fg
         FROM world_universes wu
         LEFT JOIN world_themes wt ON wt.universe = wu.id AND wt.is_active = 1
-        WHERE (wu.visibility = 4 OR
+        WHERE ((wu.visibility = 6 OR wu.visibility = 5) OR
                wu.owner = ?) AND
                wu.is_active = 1
         ORDER BY wu.is_default DESC,
@@ -89,5 +89,31 @@ class UniverseService {
     }
 
     return $universes ?: [];
+  }
+
+  public function getUserRole(int $universeId, int $userId): string {
+    try {
+      $qry = $this->pdo->prepare("
+        SELECT wu.owner
+        FROM world_universes wu
+        WHERE wu.id = ?
+        LIMIT 1
+      ");
+      $qry->execute([$universeId]);
+      $universe = $qry->fetch();
+    }
+    catch (Exception $e) {
+      throw new QueryException("Task deletion failed");
+    }
+
+    if (!$universe) {
+      Response::notFound("Universe not found");
+    }
+
+    if ((int) $universe["owner"] === (int) $userId) {
+      return "OWNER";
+    }
+
+    return "VISITOR";
   }
 }

@@ -96,6 +96,12 @@
             font-weight: 500;
             cursor: pointer;
             padding: 6px 12px;
+
+            &.oyk-disabled {
+              cursor: default !important;
+              pointer-events: none !important;
+              opacity: 0.6;
+            }
           }
         }
       }

@@ -1,10 +1,10 @@
 import "@/assets/styles/page/_universes-admin.scss";
-import { Orbit, Construction, Paintbrush } from "lucide-react";
+import { Eye, Orbit, Construction, Paintbrush } from "lucide-react";
 
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import { OykCard, OykFeedback, OykGrid, OykGridRow, OykGridNav, OykGridMain, OykHeading } from "@/components/ui";
+import { OykButton, OykCard, OykFeedback, OykGrid, OykGridRow, OykGridNav, OykGridMain, OykHeading } from "@/components/ui";
 import { OykSidenav } from "@/components/common";
 import OykError404 from "@/pages/Error404";
 import OykUniverseAdminProfile from "./Profile";
@@ -54,14 +54,21 @@ export default function UniverseAdmin() {
     },
   ];
 
-  if (!isAuth || !currentUniverse || currentUniverse.slug !== params?.universeSlug) {
+  if (
+    !isAuth ||
+    !currentUniverse ||
+    currentUniverse.slug !== params?.universeSlug ||
+    currentUniverse.role !== "OWNER"
+  ) {
     () => n("404");
     return <OykError404 />;
   }
 
   return (
     <section className="oyk-page oyk-universes-admin">
-      <OykHeading title={t("Administration")} />
+      <OykHeading title={t("Administration")} actions={(
+        <OykButton icon={Eye} outline small onClick={() => n("universe", { universeSlug: params?.universeSlug })}>{t("View Universe")}</OykButton>
+      )} />
       <OykGrid>
         <OykGridRow>
           <OykGridNav className="oyk-universes-admin-grid-nav">

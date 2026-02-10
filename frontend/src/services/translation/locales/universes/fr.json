@@ -45,11 +45,15 @@
     "Private (OWNER)": "Privé (Propriétaire)",
     "Restricted (ADMINS)": "Restreint (Administrateurs)",
     "Restricted (MODOS)": "Restreint (Modérateurs)",
+    "Limited (MEMBERS)": "Limité (Membres)",
+    "Limited (VISITORS)": "Limité (Visiteurs)",
     "Public": "Public",
     "Private": "Privé",
     "Restricted": "Restreint",
     "Only the owner can see the universe": "Seul le propriétaire peut voir l'univers.",
     "The owner and administrators can see the universe": "Le propriétaire et les administrateurs peuvent voir l'univers.",
     "The owner, administrators, and moderators can see the universe": "Le propriétaire, les administrateurs et les modérateurs peuvent voir l'univers.",
-    "Anyone can see the universe": "Tout le monde peut voir l'univers."
+    "Staff and registered members can see the universe": "Le staff et les membres enregistrés peuvent voir l'univers.",
+    "Staff, registered members and users can see the universe": "Le staff, les membres enregistrés et les utilisateurs peuvent voir l'univers.",
+    "Anyone on the web can see the universe": "Tout le monde sur le web peut voir l'univers."
 }

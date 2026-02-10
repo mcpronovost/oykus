@@ -61,9 +61,10 @@ export default function OykFormField({
                   value={option.value}
                   onChange={onChange}
                   required={required}
+                  disabled={disabled}
                   checked={defaultValue === option.value}
                 />
-                <span className="oyk-form-field-input-radio-label-btn">{option.label}</span>
+                <span className={`oyk-form-field-input-radio-label-btn ${disabled ? "oyk-disabled" : ""}`}>{option.label}</span>
               </label>
             ))}
           </div>

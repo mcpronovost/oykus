@@ -3,6 +3,7 @@
 global $pdo;
 $authUser = require_auth();
 
+$universeService = new UniverseService($pdo);
 $themeService = new ThemeService($pdo);
 
 try {
@@ -27,7 +28,7 @@ try {
             gu.updated_at
     FROM world_universes gu
     WHERE gu.slug = ? AND 
-         (gu.visibility = 4 OR gu.owner = ?) AND
+         ((gu.visibility = 5 OR gu.visibility = 6) OR gu.owner = ?) AND
           gu.is_active = 1
     LIMIT 1;
   ");
@@ -44,6 +45,8 @@ catch (Exception $e) {
 }
 
 $theme = $themeService->getActiveTheme($universe["id"]);
+
+$universe["role"] = $universeService->getUserRole($universe["id"], $authUser["id"]);
 
 Response::json([
   "ok" => TRUE,
