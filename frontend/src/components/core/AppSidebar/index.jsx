@@ -35,7 +35,7 @@ export default function AppSidebar() {
               {isAuth && currentUniverse?.is_mod_planner_active ? (<OykAppSidebarNavItem icon={ListTodo} text={t("Planner")} href="planner" />) : null}
               {isAuth && currentUniverse?.is_mod_forum_active ? (<OykAppSidebarNavItem icon={MessagesSquare} text={t("Forum")} href="forum" disabled />) : null}
               {isAuth && currentUniverse?.is_mod_collectibles_active ? (<OykAppSidebarNavItem icon={GalleryHorizontalEnd} text={t("Collectibles")} href="collectibles" disabled />) : null}
-              {isAuth && currentUniverse?.is_mod_achievements_active ? (<OykAppSidebarNavItem icon={Star} text={t("Achievements")} href="achievements" />) : null}
+              {isAuth && currentUniverse?.is_mod_rewards_active ? (<OykAppSidebarNavItem icon={Star} text={t("Achievements")} href="achievements" />) : null}
             </ul>
           </nav>
         </section>

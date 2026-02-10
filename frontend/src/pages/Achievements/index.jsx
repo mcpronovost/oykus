@@ -47,7 +47,7 @@ export default function Achievements() {
   };
 
   useEffect(() => {
-    if (!isAuth || (currentUniverse && !currentUniverse.is_mod_achievements_active)) return;
+    if (!isAuth || (currentUniverse && !currentUniverse.is_mod_rewards_active)) return;
     const controller = new AbortController();
 
     fetchAchievements(controller.signal);
@@ -57,7 +57,7 @@ export default function Achievements() {
     };
   }, []);
 
-  if (!isAuth || (currentUniverse && !currentUniverse.is_mod_achievements_active)) {
+  if (!isAuth || (currentUniverse && !currentUniverse.is_mod_rewards_active)) {
     return <AppNotAuthorized />;
   }
 

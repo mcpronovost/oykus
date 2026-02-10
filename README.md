@@ -33,7 +33,7 @@ Oykus is an **experimental RPG project** blending story-creation with gameplay �
 - 🔨 **Blog**: Blogging functionality
 - 🔨 **Forum**: Discussion board functionality
 - 🔨 **Collectibles**: Collectibles management functionality
-- ✅ **Achievements**: Achievements management functionality
+- ✅ **Rewards**: Unlock achievements, earn titles, badges, and more
 - 🔨 **Game**: (soon...)
 - 🔨 **Leveling**: (soon...)
 

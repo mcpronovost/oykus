@@ -39,7 +39,7 @@ $allowedModules = [
   "is_mod_forum_active",
   "is_mod_courrier_active",
   "is_mod_collectibles_active",
-  "is_mod_achievements_active",
+  "is_mod_rewards_active",
   "is_mod_game_active",
   "is_mod_leveling_active"
 ];

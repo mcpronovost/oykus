@@ -61,17 +61,17 @@ export default function UniverseAdminModules() {
         {
           field: "is_mod_collectibles_active",
           name: t("Collectibles"),
-          description: t("Collect and manage items and rewards"),
+          description: t("Collect and manage items"),
           icon: GalleryHorizontalEnd,
           active: r.universe.is_mod_collectibles_active || 0,
           disabled: true,
         },
         {
-          field: "is_mod_achievements_active",
-          name: t("Achievements"),
-          description: t("Unlock achievements based on activity and interactions"),
+          field: "is_mod_rewards_active",
+          name: t("Rewards"),
+          description: t("Unlock achievements, earn titles, badges, and more"),
           icon: Star,
-          active: r.universe.is_mod_achievements_active || 0,
+          active: r.universe.is_mod_rewards_active || 0,
         },
         {
           field: "is_mod_game_active",

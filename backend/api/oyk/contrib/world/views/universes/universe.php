@@ -20,7 +20,7 @@ try {
             gu.is_mod_forum_active,
             gu.is_mod_courrier_active,
             gu.is_mod_collectibles_active,
-            gu.is_mod_achievements_active,
+            gu.is_mod_rewards_active,
             gu.is_mod_game_active,
             gu.is_mod_leveling_active,
             gu.created_at,
