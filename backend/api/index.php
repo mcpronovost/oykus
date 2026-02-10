@@ -12,6 +12,6 @@ require OYK . "/contrib/auth/routes.php";
 require OYK . "/contrib/world/routes.php";
 
 require OYK . "/contrib/planner/routes.php";
-require OYK . "/contrib/achievements/routes.php";
+require OYK . "/contrib/rewards/routes.php";
 
 Router::dispatch();

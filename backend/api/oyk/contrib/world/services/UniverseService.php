@@ -9,7 +9,7 @@ class UniverseService {
         $qry = $this->pdo->prepare("
           SELECT id, is_default
           FROM world_universes
-          WHERE is_default = 1
+          WHERE is_active = 1 AND is_default = 1
           LIMIT 1
         ");
         $qry->execute();
@@ -17,7 +17,7 @@ class UniverseService {
         $qry = $this->pdo->prepare("
           SELECT id, is_default
           FROM world_universes
-          WHERE slug = ?
+          WHERE is_active = 1 AND slug = ?
           LIMIT 1
         ");
         $qry->execute([$slug]);
