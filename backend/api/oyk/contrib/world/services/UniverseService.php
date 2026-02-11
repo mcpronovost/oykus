@@ -99,10 +99,6 @@ class UniverseService {
       throw new QueryException("Universe retrieval failed".$e->getMessage());
     }
 
-    if (!$universes) {
-      return [];
-    }
-
     return $universes ?: [];
   }
 
