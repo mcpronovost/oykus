@@ -11,12 +11,12 @@ import OykAppNotAuthorized from "@/components/core/AppNotAuthorized";
 import OykAppNotFound from "@/components/core/AppNotFound";
 
 function MainLayout() {
-  const { isAuth, isDev } = useAuth();
+  const { isLoadingAuth, isAuth, isDev } = useAuth();
   const { route } = useRouter();
 
   return (
     <main id="oyk-app-main">
-      {route && route.component ? (
+      {route && route.component && !isLoadingAuth ? (
         <Suspense fallback={<OykAppLoading />}>
           <OykScrollbar height={"100%"}>
             <>
@@ -27,6 +27,8 @@ function MainLayout() {
             </>
           </OykScrollbar>
         </Suspense>
+      ) : isLoadingAuth ? (
+        <OykAppLoading />
       ) : (
         <OykAppNotFound />
       )}

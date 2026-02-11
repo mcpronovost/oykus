@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$authUser = require_auth();
+$authUser = require_auth(FALSE);
 
 $universeService = new UniverseService($pdo);
 $themeService = new ThemeService($pdo);

@@ -7,6 +7,8 @@ export default function OykBanner({
   avatarAbbr,
   avatarIcon,
   avatarSize,
+  avatarBgColor,
+  avatarFgColor,
   avatarBorderSize,
   avatarBorderColor,
   avatarBorderRadius,
@@ -54,6 +56,8 @@ export default function OykBanner({
             abbr={avatarAbbr}
             icon={avatarIcon}
             size={avatarSize}
+            bgColor={avatarBgColor}
+            fgColor={avatarFgColor}
             borderColor={avatarBorderColor}
             borderSize={avatarBorderSize}
             borderRadius={avatarBorderRadius}

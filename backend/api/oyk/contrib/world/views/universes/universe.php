@@ -1,39 +1,45 @@
 <?php
 
 global $pdo;
-$authUser = require_auth();
+$authUser = require_auth(FALSE);
 
 $universeService = new UniverseService($pdo);
 $themeService = new ThemeService($pdo);
 
 try {
   $qry = $pdo->prepare("
-    SELECT gu.id,
-            gu.name,
-            gu.slug,
-            gu.abbr,
-            gu.logo,
-            gu.cover,
-            gu.is_default,
-            gu.visibility,
-            gu.is_mod_planner_active,
-            gu.is_mod_blog_active,
-            gu.is_mod_forum_active,
-            gu.is_mod_courrier_active,
-            gu.is_mod_collectibles_active,
-            gu.is_mod_rewards_active,
-            gu.is_mod_game_active,
-            gu.is_mod_leveling_active,
-            gu.created_at,
-            gu.updated_at
-    FROM world_universes gu
-    WHERE gu.slug = ? AND 
-         ((gu.visibility = 5 OR gu.visibility = 6) OR gu.owner = ?) AND
-          gu.is_active = 1
+    SELECT wu.id,
+            wu.name,
+            wu.slug,
+            wu.abbr,
+            wu.logo,
+            wu.cover,
+            wu.is_default,
+            wu.visibility,
+            CASE
+              WHEN ? IS NULL THEN 6
+              ELSE COALESCE(wr.role, 5)
+            END AS role,
+            wu.is_mod_planner_active,
+            wu.is_mod_blog_active,
+            wu.is_mod_forum_active,
+            wu.is_mod_courrier_active,
+            wu.is_mod_collectibles_active,
+            wu.is_mod_rewards_active,
+            wu.is_mod_game_active,
+            wu.is_mod_leveling_active,
+            wu.created_at,
+            wu.updated_at
+    FROM world_universes wu
+    LEFT JOIN world_roles wr ON wr.universe = wu.id AND wr.user = COALESCE(?, -1)
+    WHERE wu.slug = ? AND wu.is_active = 1 AND wu.visibility >= CASE
+      WHEN ? IS NULL THEN 6
+      ELSE COALESCE(wr.role, 5)
+    END
     LIMIT 1;
   ");
 
-  $qry->execute([$universeSlug, $authUser["id"]]);
+  $qry->execute([$authUser["id"], $authUser["id"], $universeSlug, $authUser["id"]]);
   $universe = $qry->fetch();
 
   if (!$universe) {
@@ -41,12 +47,10 @@ try {
   }
 }
 catch (Exception $e) {
-  Response::serverError();
+  Response::serverError($e->getMessage());
 }
 
 $theme = $themeService->getActiveTheme($universe["id"]);
-
-$universe["role"] = $universeService->getUserRole($universe["id"], $authUser["id"]);
 
 Response::json([
   "ok" => TRUE,

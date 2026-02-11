@@ -26,6 +26,8 @@ class Response {
       "error" => $message
     ], $extra);
 
+    error_log(print_r($message, TRUE));
+
     self::json($payload, $status);
   }
 

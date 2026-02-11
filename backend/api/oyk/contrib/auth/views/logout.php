@@ -3,7 +3,7 @@
 global $pdo;
 
 $isProd = getenv("HTTP_ISPROD");
-$authUser = require_auth(TRUE);
+$authUser = require_auth(FALSE);
 
 setcookie(
   "oyk-rat",
@@ -17,16 +17,18 @@ setcookie(
   ]
 );
 
-try {
-  $qry = $pdo->prepare("
-    DELETE FROM auth_wio
-    WHERE user_id = ?
-  ");
+if ($authUser) {
+  try {
+    $qry = $pdo->prepare("
+      DELETE FROM auth_wio
+      WHERE user_id = ?
+    ");
 
-  $qry->execute([$authUser["id"]]);
-}
-catch (Exception $e) {
-  Response::serverError();
+    $qry->execute([$authUser["id"]]);
+  }
+  catch (Exception $e) {
+    Response::serverError();
+  }
 }
 
 Response::json([

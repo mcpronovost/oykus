@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { KEY_RAT, KEY_USER, KEY_WORLD_UNIVERSES, KEY_WORLD_CURRENT_UNIVERSE } from "@/services/store/constants";
 import { storeGet, storeSet, storeRemove, oykCookieSet, oykCookieDelete } from "@/services/store/utils";
@@ -8,6 +8,7 @@ const REFRESH_INTERVAL = 10 * 60 * 5; // 5 minutes = 1000 * 60 * 5
 const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUserState] = useState(() => {
     const r = storeGet(KEY_USER);
     return r ? r : null;
@@ -132,6 +133,7 @@ const AuthProvider = ({ children }) => {
   const fetchCurrentUniverse = async (slug = universe?.slug, signal) => {
     if (!slug) return;
 
+    setIsLoading(true);
     try {
       const r = await api.get(`/world/universes/${slug}/`, signal ? { signal } : {});
       if (!r.ok || !r.universe) throw Error();
@@ -146,6 +148,9 @@ const AuthProvider = ({ children }) => {
       storeRemove(KEY_WORLD_CURRENT_UNIVERSE);
       oykCookieDelete("oyk-theme");
       setTheme(null);
+      // window.location.reload();
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -220,6 +225,7 @@ const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
+        isLoadingAuth: isLoading,
         currentUser: user,
         setUser,
         setRat,

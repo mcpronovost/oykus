@@ -32,13 +32,13 @@ function handle_exceptions(Throwable $e) {
   Response::serverError("Unexpected error");
 }
 
-function require_auth($is_continue = FALSE) {
+function require_auth($is_required = TRUE) {
   $headers = getallheaders();
   $authHeader = $headers["Authorization"] ?? $headers["authorization"] ?? "";
 
   if (!str_starts_with($authHeader, "Oyk ")) {
-    if ($is_continue)
-      return NULL;
+    if (!$is_required)
+      return ["id" => -1];
     http_response_code(401);
     echo json_encode(["error" => 401]);
     exit;
@@ -48,8 +48,8 @@ function require_auth($is_continue = FALSE) {
   $payload = decode_jwt($token);
 
   if (!$payload) {
-    if ($is_continue)
-      return NULL;
+    if (!$is_required)
+      return ["id" => -1];
     http_response_code(401);
     echo json_encode(["error" => "Unauthorized (p)"]);
     exit;
@@ -60,7 +60,7 @@ function require_auth($is_continue = FALSE) {
 
 function update_wio() {
   global $pdo;
-  $user = require_auth(TRUE);
+  $user = require_auth(FALSE);
 
   $ignore_paths = ["/api/v1/theme.php"];
 
@@ -71,10 +71,10 @@ function update_wio() {
   try {
     if ($user) {
       $stmt = $pdo->prepare("
-                INSERT INTO auth_wio (user_id, lastlive_at)
-                VALUES (:uid, NOW())
-                ON DUPLICATE KEY UPDATE lastlive_at = NOW()
-            ");
+        INSERT INTO auth_wio (user_id, lastlive_at)
+        VALUES (:uid, NOW())
+        ON DUPLICATE KEY UPDATE lastlive_at = NOW()
+      ");
       $stmt->execute(["uid" => $user["id"]]);
     }
     else {

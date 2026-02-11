@@ -21,7 +21,7 @@ export default function OykScrollbar({ children, height = "100%", className = ""
     let rafId = null;
 
     const updateThumb = () => {
-      const containerHeight = container.parentElement.clientHeight;
+      const containerHeight = container.parentElement?.clientHeight;
       const contentHeight = content.scrollHeight;
 
       if (!containerHeight || !contentHeight) return;

@@ -15,12 +15,16 @@ class UniverseService {
         $qry->execute();
       } else {
         $qry = $this->pdo->prepare("
-          SELECT id, is_default
-          FROM world_universes
-          WHERE is_active = 1 AND slug = ?
+          SELECT wu.id, wu.is_default
+          FROM world_universes wu
+          LEFT JOIN world_roles wr ON wr.universe = wu.id AND wr.user = COALESCE(?, -1)
+          WHERE wu.is_active = 1 AND wu.slug = ? AND wu.visibility >= CASE
+              WHEN ? IS NULL THEN 6
+              ELSE COALESCE(wr.role, 5)
+          END
           LIMIT 1
         ");
-        $qry->execute([$slug]);
+        $qry->execute([$userId, $slug, $userId]);
       }
       $universe = $qry->fetch();
 
@@ -69,22 +73,33 @@ class UniverseService {
                wu.abbr,
                wu.logo,
                wu.cover,
+               wu.visibility,
                wt.c_primary,
-               wt.c_primary_fg
+               wt.c_primary_fg,
+               CASE
+                WHEN ? IS NULL THEN 6
+                ELSE COALESCE(wr.role, 5)
+              END AS role
         FROM world_universes wu
         LEFT JOIN world_themes wt ON wt.universe = wu.id AND wt.is_active = 1
-        WHERE ((wu.visibility = 6 OR wu.visibility = 5) OR
-               wu.owner = ?) AND
-               wu.is_active = 1
+        LEFT JOIN world_roles wr ON wr.universe = wu.id AND wr.user = COALESCE(?, -1)
+        WHERE wu.is_active = 1 AND wu.visibility >= CASE
+            WHEN ? IS NULL THEN 6
+            ELSE COALESCE(wr.role, 5)
+        END
         ORDER BY wu.is_default DESC,
                 (wu.owner = ?) DESC,
                  wu.name ASC;
       ");
 
-      $qry->execute([$userId, $userId]);
+      $qry->execute([$userId, $userId, $userId, $userId]);
       $universes = $qry->fetchAll();
     }
     catch (Exception $e) {
+      throw new QueryException("Universe retrieval failed".$e->getMessage());
+    }
+
+    if (!$universes) {
       return [];
     }
 
@@ -94,26 +109,26 @@ class UniverseService {
   public function getUserRole(int $universeId, int $userId): int {
     try {
       $qry = $this->pdo->prepare("
-        SELECT wu.owner
+        SELECT CASE
+          WHEN ? IS NULL THEN 6
+          ELSE COALESCE(wr.role, 5)
+        END AS role
         FROM world_universes wu
+        LEFT JOIN world_roles wr ON wr.universe = wu.id AND wr.user = ?
         WHERE wu.id = ?
         LIMIT 1
       ");
-      $qry->execute([$universeId]);
+      $qry->execute([$userId, $userId, $universeId]);
       $universe = $qry->fetch();
     }
     catch (Exception $e) {
-      throw new QueryException("Task deletion failed");
+      throw new QueryException("Role retrieval failed");
     }
 
     if (!$universe) {
       Response::notFound("Universe not found");
     }
 
-    if ((int) $universe["owner"] === (int) $userId) {
-      return 1;
-    }
-
-    return 6;
+    return (int) $universe["role"] ?: 6;
   }
 }
