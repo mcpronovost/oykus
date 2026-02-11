@@ -91,7 +91,7 @@ class UniverseService {
     return $universes ?: [];
   }
 
-  public function getUserRole(int $universeId, int $userId): string {
+  public function getUserRole(int $universeId, int $userId): int {
     try {
       $qry = $this->pdo->prepare("
         SELECT wu.owner
@@ -111,9 +111,9 @@ class UniverseService {
     }
 
     if ((int) $universe["owner"] === (int) $userId) {
-      return "OWNER";
+      return 1;
     }
 
-    return "VISITOR";
+    return 6;
   }
 }

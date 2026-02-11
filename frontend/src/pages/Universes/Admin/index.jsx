@@ -58,7 +58,7 @@ export default function UniverseAdmin() {
     !isAuth ||
     !currentUniverse ||
     currentUniverse.slug !== params?.universeSlug ||
-    currentUniverse.role !== "OWNER"
+    currentUniverse.role !== 1
   ) {
     () => n("404");
     return <OykError404 />;
