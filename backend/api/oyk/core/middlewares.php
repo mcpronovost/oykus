@@ -69,7 +69,7 @@ function update_wio() {
   }
 
   try {
-    if ($user) {
+    if ($user && $user["id"] > 0) {
       $stmt = $pdo->prepare("
         INSERT INTO auth_wio (user_id, lastlive_at)
         VALUES (:uid, NOW())
@@ -82,10 +82,10 @@ function update_wio() {
       $agent = substr($_SERVER["HTTP_USER_AGENT"] ?? "", 0, 255);
 
       $stmt = $pdo->prepare("
-                INSERT INTO auth_wio (guest_id, agent, lastlive_at)
-                VALUES (:gid, :agent, NOW())
-                ON DUPLICATE KEY UPDATE lastlive_at = NOW()
-            ");
+        INSERT INTO auth_wio (guest_id, agent, lastlive_at)
+        VALUES (:gid, :agent, NOW())
+        ON DUPLICATE KEY UPDATE lastlive_at = NOW()
+      ");
       $stmt->execute(["gid" => $guest, "agent" => $agent]);
     }
   }

@@ -77,14 +77,14 @@ class UniverseService {
                wt.c_primary,
                wt.c_primary_fg,
                CASE
-                WHEN ? IS NULL THEN 6
+                WHEN ? <= 0 THEN 6
                 ELSE COALESCE(wr.role, 5)
               END AS role
         FROM world_universes wu
         LEFT JOIN world_themes wt ON wt.universe = wu.id AND wt.is_active = 1
         LEFT JOIN world_roles wr ON wr.universe = wu.id AND wr.user = COALESCE(?, -1)
         WHERE wu.is_active = 1 AND wu.visibility >= CASE
-            WHEN ? IS NULL THEN 6
+            WHEN ? <= 0 THEN 6
             ELSE COALESCE(wr.role, 5)
         END
         ORDER BY wu.is_default DESC,
