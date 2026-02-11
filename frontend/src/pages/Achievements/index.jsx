@@ -30,7 +30,7 @@ export default function Achievements() {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get("/achievements/", signal ? { signal } : {});
+      const r = await api.get("/rewards/achievements/", signal ? { signal } : {});
       if (!r?.ok) throw new Error(r.error || t("An error occurred"));
       setAchievements(r.achievements);
       setCategories(r.categories);

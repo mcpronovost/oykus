@@ -72,6 +72,7 @@ export default function UniverseAdminModules() {
           description: t("Unlock achievements, earn titles, badges, and more"),
           icon: Star,
           active: r.universe.is_mod_rewards_active || 0,
+          disabled: true,
         },
         {
           field: "is_mod_game_active",
