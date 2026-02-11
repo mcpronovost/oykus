@@ -24,6 +24,7 @@ foreach ($statuses as &$s) {
     $universeId
   );
 }
+unset($s);
 
 Response::json([
   "ok" => TRUE,
