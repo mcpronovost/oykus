@@ -8,7 +8,7 @@ import {
   LoaderPinwheel,
   MessagesSquare,
   Settings,
-  Star
+  Star,
 } from "lucide-react";
 import { useAuth } from "@/services/auth";
 import { useStore } from "@/services/store";
@@ -31,21 +31,55 @@ export default function AppSidebar() {
         <section className="oyk-app-sidebar-menu">
           <nav className="oyk-app-sidebar-nav">
             <ul className="oyk-app-sidebar-nav-list">
-              <OykAppSidebarNavItem icon={isAuth ? LayoutDashboard : House} text={isAuth ? t("Dashboard") : t("Home")} href="home" />
+              <OykAppSidebarNavItem
+                icon={isAuth ? LayoutDashboard : House}
+                text={isAuth ? t("Dashboard") : t("Home")}
+                href="home"
+              />
               <OykAppSidebarNavItem icon={Compass} text={t("Discover")} href="discover" />
-              {isAuth && currentUniverse?.is_mod_planner_active ? (<OykAppSidebarNavItem icon={ListTodo} text={t("Planner")} href="planner" />) : null}
-              {isAuth && currentUniverse?.is_mod_forum_active ? (<OykAppSidebarNavItem icon={MessagesSquare} text={t("Forum")} href="forum" disabled />) : null}
-              {isAuth && currentUniverse?.is_mod_collectibles_active ? (<OykAppSidebarNavItem icon={GalleryHorizontalEnd} text={t("Collectibles")} href="collectibles" disabled />) : null}
-              {isAuth && currentUniverse?.is_mod_rewards_active ? (<OykAppSidebarNavItem icon={Star} text={t("Achievements")} href="achievements" />) : null}
             </ul>
+            {isAuth &&
+            currentUniverse &&
+            (currentUniverse.is_mod_planner_active ||
+              currentUniverse.is_mod_blog_active ||
+              currentUniverse.is_mod_forum_active ||
+              currentUniverse.is_mod_collectibles_active ||
+              currentUniverse.is_mod_rewards_active) ? (
+              <ul className="oyk-app-sidebar-nav-list">
+                {currentUniverse.is_mod_planner_active ? (
+                  <OykAppSidebarNavItem icon={ListTodo} text={t("Planner")} href="planner" />
+                ) : null}
+                {currentUniverse.is_mod_forum_active ? (
+                  <OykAppSidebarNavItem icon={MessagesSquare} text={t("Forum")} href="forum" disabled />
+                ) : null}
+                {currentUniverse.is_mod_collectibles_active ? (
+                  <OykAppSidebarNavItem
+                    icon={GalleryHorizontalEnd}
+                    text={t("Collectibles")}
+                    href="collectibles"
+                    disabled
+                  />
+                ) : null}
+                {currentUniverse.is_mod_rewards_active ? (
+                  <OykAppSidebarNavItem icon={Star} text={t("Achievements")} href="achievements" />
+                ) : null}
+              </ul>
+            ) : null}
           </nav>
         </section>
         <footer className="oyk-app-sidebar-footer">
           <nav className="oyk-app-sidebar-nav">
             <ul className="oyk-app-sidebar-nav-list">
-              {isAuth ? (<OykAppSidebarNavItem icon={Settings} text={t("Settings")} href="settings" />) : null}
-              {isDev ? (<OykAppSidebarNavItem icon={Component} text={t("Components")} href="dev-components" />) : null}
-              {isAuth && currentUniverse && currentUniverse.role === 1 ? (<OykAppSidebarNavItem icon={LoaderPinwheel} text={t("Admin")} href="universe-admin" params={ { universeSlug: currentUniverse.slug }} />) : null}
+              {isAuth ? <OykAppSidebarNavItem icon={Settings} text={t("Settings")} href="settings" /> : null}
+              {isDev ? <OykAppSidebarNavItem icon={Component} text={t("Components")} href="dev-components" /> : null}
+              {isAuth && currentUniverse && currentUniverse.role === 1 ? (
+                <OykAppSidebarNavItem
+                  icon={LoaderPinwheel}
+                  text={t("Admin")}
+                  href="universe-admin"
+                  params={{ universeSlug: currentUniverse.slug }}
+                />
+              ) : null}
             </ul>
           </nav>
         </footer>
