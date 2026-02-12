@@ -94,7 +94,7 @@ export default function Planner() {
     if (!isAuth || (currentUniverse && !currentUniverse.modules?.planner?.active)) return;
     const controller = new AbortController();
 
-    routeTitle(t("Planner"));
+    routeTitle(currentUniverse.modules.planner.settings.display_name || t("Planner"));
 
     getTasks(controller.signal);
 
@@ -113,7 +113,7 @@ export default function Planner() {
       <ModalStatusCreate isOpen={isModalStatusCreateOpen} onClose={handleCloseModalStatusCreate} />
       <ModalTaskCreate isOpen={isModalTaskCreateOpen} onClose={handleCloseModalTaskCreate} statuses={tasks} />
       <OykHeading
-        title={t("Planner")}
+        title={currentUniverse.modules.planner.settings.display_name || t("Planner")}
         // description={t("Tasks description")}
         actions={
           <>

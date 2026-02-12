@@ -42,10 +42,19 @@ export default function AppSidebar() {
             {isAuth && currentUniverse && currentUniverse.modules ? (
               <ul className="oyk-app-sidebar-nav-list">
                 {currentUniverse.modules?.planner?.active ? (
-                  <OykAppSidebarNavItem icon={ListTodo} text={t("Planner")} href="planner" />
+                  <OykAppSidebarNavItem
+                    icon={ListTodo}
+                    text={currentUniverse.modules.planner.settings.display_name || t("Planner")}
+                    href="planner"
+                  />
                 ) : null}
                 {currentUniverse.modules?.blog?.active ? (
-                  <OykAppSidebarNavItem icon={ScrollText} text={currentUniverse.modules.blog.settings.display_name || t("Blog")} href="blog" disabled />
+                  <OykAppSidebarNavItem
+                    icon={ScrollText}
+                    text={currentUniverse.modules.blog.settings.display_name || t("Blog")}
+                    href="blog"
+                    disabled
+                  />
                 ) : null}
                 {currentUniverse.modules?.forum?.active ? (
                   <OykAppSidebarNavItem icon={MessagesSquare} text={t("Forum")} href="forum" disabled />

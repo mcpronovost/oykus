@@ -1,5 +1,5 @@
 import "@/assets/styles/page/_universes-admin.scss";
-import { Eye, Orbit, Construction, Paintbrush, ScrollText } from "lucide-react";
+import { Eye, Orbit, Construction, ListTodo, Paintbrush, ScrollText } from "lucide-react";
 
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
@@ -10,6 +10,7 @@ import OykError404 from "@/pages/Error404";
 import OykUniverseAdminProfile from "./Profile";
 import OykUniverseAdminModules from "./Modules";
 import OykUniverseAdminModuleBlog from "./ModuleBlog";
+import OykUniverseAdminModulePlanner from "./ModulePlanner";
 import OykUniverseAdminTheme from "./Theme";
 // import OykUniverseAdminThemeStylesheet from "./ThemeStylesheet";
 
@@ -64,6 +65,18 @@ export default function UniverseAdmin() {
           params: { universeSlug: params?.universeSlug },
         }
       ]
+    }] : []),
+    ...(currentUniverse?.modules?.planner?.active ? [{
+      title: t("Planner"),
+      description: t("mod.planner.description"),
+      Icon: ListTodo,
+      links: [
+        {
+          name: t("Settings"),
+          routeName: "universe-admin-modules-planner",
+          params: { universeSlug: params?.universeSlug },
+        }
+      ]
     }] : [])
   ];
 
@@ -94,6 +107,8 @@ export default function UniverseAdmin() {
               <OykUniverseAdminModules />
             ) : params?.section === "module-blog" ? (
               <OykUniverseAdminModuleBlog />
+            ) : params?.section === "module-planner" ? (
+              <OykUniverseAdminModulePlanner />
             ) : params?.section === "theme" ? (
               <OykUniverseAdminTheme />
             ) : (

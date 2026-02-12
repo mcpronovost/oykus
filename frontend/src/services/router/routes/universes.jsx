@@ -60,6 +60,17 @@ export const UNIVERSES_ROUTES = [
                     params: {
                       section: "module-blog",
                     },
+                  },
+                  {
+                    name: "universe-admin-modules-planner",
+                    component: React.lazy(() => import("../../../pages/Universes/Admin")),
+                    paths: {
+                      fr: "planificateur",
+                      en: "planner",
+                    },
+                    params: {
+                      section: "module-planner",
+                    },
                   }
                 ]
               },
