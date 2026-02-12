@@ -16,20 +16,20 @@ export default function TaskCardHeader({ task, isCompleted }) {
       >
         {task.title}
       </h3>
-      {!isCompleted && (task.priority || task.due_at) && (
+      {!isCompleted && ((task.priority && task.priority !== 2) || task.due_at) && (
         <div className="oyk-planner-card-header-infos">
-          {task.priority && (
+          {(task.priority && task.priority !== 2) && (
             <div className="oyk-planner-card-header-infos-priority">
               {task.priority === 3 && (
                 <OykChip color="danger" outline>
                   {t("PriorityHigh")}
                 </OykChip>
               )}
-              {task.priority === 2 && (
+              {/* task.priority === 2 && (
                 <OykChip color="primary" outline>
                   {t("PriorityMedium")}
                 </OykChip>
-              )}
+              )*/}
               {task.priority === 1 && (
                 <OykChip color="success" outline>
                   {t("PriorityLow")}

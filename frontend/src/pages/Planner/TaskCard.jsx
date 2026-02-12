@@ -68,7 +68,7 @@ export default function TaskCard({ task, isCompleted, statusId, statusName, onCl
             )}
           </section>
         )}
-        <OykTaskCardFooter task={task} />
+        {!isCompleted && (<OykTaskCardFooter task={task} />)}
       </article>
     </>
   );
