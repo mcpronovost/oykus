@@ -7,7 +7,7 @@ $universeService = new UniverseService($pdo);
 $statusService = new StatusService($pdo);
 $taskService = new TaskService($pdo);
 
-$universeSlug = $universeSlug ?? null;
+$universeSlug ??= null;
 
 // Universe context
 $context = $universeService->getContext($universeSlug, $authUser["id"]);
