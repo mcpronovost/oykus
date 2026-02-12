@@ -68,6 +68,23 @@ export default function OykFormField({
               </label>
             ))}
           </div>
+        ) : type === "checkbox" ? (
+          <div className="oyk-form-field-input-checkbox">
+            <label className="oyk-form-field-input-checkbox-label">
+              <input
+                ref={ref}
+                type={type}
+                id={`field-${name}`}
+                name={name}
+                defaultValue={defaultValue}
+                onChange={onChange}
+                required={required}
+                disabled={disabled}
+                checked={defaultValue === true}
+              />
+              <span className={`oyk-form-field-input-checkbox-switch oyk-switch ${disabled ? "oyk-disabled" : ""}`}></span>
+            </label>
+          </div>
         ) : type === "color" ? (
           <div className="oyk-form-field-input-color">
             <input

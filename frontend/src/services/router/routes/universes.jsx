@@ -49,6 +49,19 @@ export const UNIVERSES_ROUTES = [
                 params: {
                   section: "modules",
                 },
+                children: [
+                  {
+                    name: "universe-admin-modules-blog",
+                    component: React.lazy(() => import("../../../pages/Universes/Admin")),
+                    paths: {
+                      fr: "blog",
+                      en: "blog",
+                    },
+                    params: {
+                      section: "module-blog",
+                    },
+                  }
+                ]
               },
               {
                 name: "universe-admin-theme",

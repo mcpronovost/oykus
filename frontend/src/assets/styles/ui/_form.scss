@@ -106,6 +106,61 @@
         }
       }
 
+      &-checkbox {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px;
+        height: 100%;
+
+        input[type="checkbox"] {
+          display: none;
+
+          &:checked + .oyk-switch {
+            &::after {
+              background-color: var(--oyk-c-primary);
+              left: 24px;
+              opacity: 1;
+            }
+          }
+        }
+
+        &-label {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 8px;
+          height: 100%;
+        }
+
+        &-switch {
+          background-color: var(--oyk-card-item-bg);
+          border: 1px solid var(--oyk-card-item-bg);
+          border-radius: 32px;
+          width: 48px;
+          height: 24px;
+          position: relative;
+          cursor: pointer;
+
+          &::after {
+            content: "";
+            background-color: var(--oyk-card-item-fg);
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 3px;
+            width: 18px;
+            height: 18px;
+            opacity: 0.6;
+            transition: background-color 0.2s, left 0.2s, opacity 0.2s;
+          }
+        }
+      }
+
       &-color {
         display: flex;
         flex-direction: row;

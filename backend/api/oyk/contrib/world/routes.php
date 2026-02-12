@@ -9,7 +9,11 @@ Router::get("{$api}/universes/{universeSlug}", "{$view}universes/universe.php");
 
 Router::post("{$api}/universes/{universeSlug}/edit", "{$view}universes/edit.php");
 
-Router::post("{$api}/universes/{universeSlug}/modules/edit", "{$view}universes/modules_edit.php");
+Router::post("{$api}/universes/{universeSlug}/modules/edit", "{$view}modules/edit.php");
+
+Router::get("{$api}/universes/{universeSlug}/modules/{moduleName}", "{$view}modules/module.php");
+
+Router::post("{$api}/universes/{universeSlug}/modules/{moduleName}/edit", "{$view}modules/edit.php");
 
 Router::get("{$api}/universes/{universeSlug}/theme", "{$view}universes/theme.php");
 
