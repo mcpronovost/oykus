@@ -1,88 +1,30 @@
 <?php
 
-require OYK . "/core/utils/uploaders.php";
-require OYK . "/core/utils/formatters.php";
-
 global $pdo;
 $authUser = require_auth();
 
 $universeService = new UniverseService($pdo);
+$moduleService = new ModuleService($pdo);
 
-/*
-|--------------------------------------------------------------------------
-| Get universe
-|--------------------------------------------------------------------------
-*/
-$universeId = $universeService->getEditableUniverseId($universeSlug, $authUser["id"]);
+$universeSlug = $universeSlug ?? NULL;
 
-if (!$universeId) {
-  Response::notFound("Universe not found");
+// Universe context
+$context = $universeService->getContext($universeSlug, $authUser["id"]);
+$universeId = $context["id"];
+
+// Validate
+$fields = $moduleService->validateData($_POST);
+
+// Check permissions
+if (!$moduleService->userCanEditModule($fields["name"], $authUser["id"])) {
+  throw new AuthorizationException("You cannot edit module");
 }
 
-/*
-|--------------------------------------------------------------------------
-| Get POST data
-|--------------------------------------------------------------------------
-*/
+// Update
+$moduleService->updateModule($fields["name"], $fields);
 
-$module = $_POST["module"];
-$action = $_POST["action"] === "activate" ? 1 : 0;
+$module = $moduleService->getModules($universeId);
 
-/*
-|--------------------------------------------------------------------------
-| Check allowed module update
-|--------------------------------------------------------------------------
-*/
-$allowedModules = [
-  "is_mod_planner_active",
-  "is_mod_blog_active",
-  "is_mod_forum_active",
-  "is_mod_courrier_active",
-  "is_mod_collectibles_active",
-  "is_mod_rewards_active",
-  "is_mod_game_active",
-  "is_mod_leveling_active"
-];
-
-if (!in_array($module, $allowedModules, TRUE)) {
-  Response::badRequest("Invalid module");
-}
-
-/*
-|--------------------------------------------------------------------------
-| Update
-|--------------------------------------------------------------------------
-*/
-if ($module) {
-  $pdo->beginTransaction();
-  try {
-    $update = $pdo->prepare("
-      UPDATE world_universes
-      SET $module = $action
-      WHERE id = ? AND is_active = 1
-    ");
-    $update->execute([$universeId]);
-
-    $qry = $pdo->prepare("
-      SELECT $module
-      FROM world_universes
-      WHERE id = ? AND is_active = 1
-    ");
-    $qry->execute([$universeId]);
-    $module = $qry->fetch();
-
-    $pdo->commit();
-  }
-  catch (Exception $e) {
-    Response::serverError();
-  }
-}
-
-/*
-|--------------------------------------------------------------------------
-| Return updated resource
-|--------------------------------------------------------------------------
-*/
 Response::json([
   "ok" => TRUE,
   "module" => $module

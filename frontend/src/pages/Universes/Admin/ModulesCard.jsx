@@ -1,10 +1,49 @@
-// import { Info } from "lucide-react";
+import { useMemo } from "react";
+import {
+  CircleFadingArrowUp,
+  GalleryHorizontalEnd,
+  ListTodo,
+  Mail,
+  MessagesSquare,
+  ScrollText,
+  Star,
+  Swords,
+} from "lucide-react";
 
 import { useTranslation } from "@/services/translation";
 import { OykAlert, OykBanner, OykButton, OykCard } from "@/components/ui";
 
-export default function UniverseAdminModulesCard({ module, onActivate = () => {}, onDeactivate = () => {}, isLoading = false, hasError = null}) {
+export default function UniverseAdminModulesCard({
+  module,
+  onActivate = () => {},
+  onDeactivate = () => {},
+  isLoading = false,
+  hasError = null,
+}) {
   const { t } = useTranslation();
+
+  module.icon = useMemo(() => {
+    switch (module.name) {
+      case "planner":
+        return ListTodo;
+      case "blog":
+        return ScrollText;
+      case "forum":
+        return MessagesSquare;
+      case "courrier":
+        return Mail;
+      case "collectibles":
+        return GalleryHorizontalEnd;
+      case "rewards":
+        return Star;
+      case "game":
+        return Swords;
+      case "leveling":
+        return CircleFadingArrowUp;
+      default:
+        return null;
+    }
+  }, [module.name]);
 
   return (
     <li className="oyk-universes-admin-modules-list-item">
@@ -12,11 +51,11 @@ export default function UniverseAdminModulesCard({ module, onActivate = () => {}
         <header className="oyk-universes-admin-modules-list-item-header">
           <OykBanner avatarIcon={module.icon} avatarTop={16} avatarBorderSize={8} coverHeight={64} height={96} />
           <div className="oyk-universes-admin-modules-list-item-header-name">
-            <span>{module.name}</span>
+            <span>{t(`mod.${module.name}.name`)}</span>
           </div>
           {!hasError ? (
             <div className="oyk-universes-admin-modules-list-item-header-description">
-              <span>{module.description}</span>
+              <span>{t(`mod.${module.name}.description`)}</span>
             </div>
           ) : (
             <div className="oyk-universes-admin-modules-list-item-header-alert">
@@ -26,7 +65,15 @@ export default function UniverseAdminModulesCard({ module, onActivate = () => {}
         </header>
         <div className="oyk-universes-admin-modules-list-item-actions">
           {module.active ? (
-            <OykButton small outline color="danger" isLoading={isLoading} onClick={() => {onDeactivate(module)}}>
+            <OykButton
+              small
+              outline
+              color="danger"
+              isLoading={isLoading}
+              onClick={() => {
+                onDeactivate(module);
+              }}
+            >
               <span>{t("Deactivate")}</span>
             </OykButton>
           ) : module.disabled ? (
@@ -34,7 +81,15 @@ export default function UniverseAdminModulesCard({ module, onActivate = () => {}
               <span>{t("Unavailable")}</span>
             </OykButton>
           ) : (
-            <OykButton small outline color="success" isLoading={isLoading} onClick={() => {onActivate(module)}}>
+            <OykButton
+              small
+              outline
+              color="success"
+              isLoading={isLoading}
+              onClick={() => {
+                onActivate(module);
+              }}
+            >
               <span>{t("Activate")}</span>
             </OykButton>
           )}

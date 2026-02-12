@@ -91,7 +91,7 @@ export default function Planner() {
   };
 
   useEffect(() => {
-    if (!isAuth || (currentUniverse && !currentUniverse.is_mod_planner_active)) return;
+    if (!isAuth || (currentUniverse && !currentUniverse.modules?.planner?.active)) return;
     const controller = new AbortController();
 
     routeTitle(t("Planner"));
@@ -104,7 +104,7 @@ export default function Planner() {
     };
   }, []);
 
-  if (!isAuth || (currentUniverse && !currentUniverse.is_mod_planner_active)) {
+  if (!isAuth || (currentUniverse && !currentUniverse.modules?.planner?.active)) {
     return <AppNotAuthorized />;
   }
 

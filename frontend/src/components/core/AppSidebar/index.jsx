@@ -7,6 +7,7 @@ import {
   ListTodo,
   LoaderPinwheel,
   MessagesSquare,
+  ScrollText,
   Settings,
   Star,
 } from "lucide-react";
@@ -38,21 +39,18 @@ export default function AppSidebar() {
               />
               <OykAppSidebarNavItem icon={Compass} text={t("Discover")} href="discover" />
             </ul>
-            {isAuth &&
-            currentUniverse &&
-            (currentUniverse.is_mod_planner_active ||
-              currentUniverse.is_mod_blog_active ||
-              currentUniverse.is_mod_forum_active ||
-              currentUniverse.is_mod_collectibles_active ||
-              currentUniverse.is_mod_rewards_active) ? (
+            {isAuth && currentUniverse && currentUniverse.modules ? (
               <ul className="oyk-app-sidebar-nav-list">
-                {currentUniverse.is_mod_planner_active ? (
+                {currentUniverse.modules?.planner?.active ? (
                   <OykAppSidebarNavItem icon={ListTodo} text={t("Planner")} href="planner" />
                 ) : null}
-                {currentUniverse.is_mod_forum_active ? (
+                {currentUniverse.modules?.blog?.active ? (
+                  <OykAppSidebarNavItem icon={ScrollText} text={currentUniverse.modules.blog.settings.display_name || t("Blog")} href="blog" disabled />
+                ) : null}
+                {currentUniverse.modules?.forum?.active ? (
                   <OykAppSidebarNavItem icon={MessagesSquare} text={t("Forum")} href="forum" disabled />
                 ) : null}
-                {currentUniverse.is_mod_collectibles_active ? (
+                {currentUniverse.modules?.collectibles?.active ? (
                   <OykAppSidebarNavItem
                     icon={GalleryHorizontalEnd}
                     text={t("Collectibles")}
@@ -60,7 +58,7 @@ export default function AppSidebar() {
                     disabled
                   />
                 ) : null}
-                {currentUniverse.is_mod_rewards_active ? (
+                {currentUniverse.modules?.rewards?.active ? (
                   <OykAppSidebarNavItem icon={Star} text={t("Achievements")} href="achievements" />
                 ) : null}
               </ul>

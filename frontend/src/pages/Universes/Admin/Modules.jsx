@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CircleFadingArrowUp, Frown, GalleryHorizontalEnd, ListTodo, Mail, MessagesSquare, ScrollText, Star, Swords } from "lucide-react";
+import { Frown } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
@@ -26,70 +26,7 @@ export default function UniverseAdminModules() {
     try {
       const r = await api.get(`/world/universes/${params?.universeSlug}/`, signal ? { signal } : {});
       if (!r.ok || !r.universe) throw Error();
-      setModules([
-        {
-          field: "is_mod_planner_active",
-          name: t("Planner"),
-          description: t("Plan and track tasks, assign people, and more"),
-          icon: ListTodo,
-          active: r.universe.is_mod_planner_active || 0,
-        },
-        {
-          field: "is_mod_blog_active",
-          name: t("Blog"),
-          description: t("Sharing content, insights, and updates"),
-          icon: ScrollText,
-          active: r.universe.is_mod_blog_active || 0,
-          disabled: true,
-        },
-        {
-          field: "is_mod_forum_active",
-          name: t("Forum"),
-          description: t("Discuss and interact with other members"),
-          icon: MessagesSquare,
-          active: r.universe.is_mod_forum_active || 0,
-          disabled: true,
-        },
-        {
-          field: "is_mod_courrier_active",
-          name: t("Courrier"),
-          description: t("Send and receive private messages"),
-          icon: Mail,
-          active: r.universe.is_mod_courrier_active || 0,
-          disabled: true,
-        },
-        {
-          field: "is_mod_collectibles_active",
-          name: t("Collectibles"),
-          description: t("Collect and manage items"),
-          icon: GalleryHorizontalEnd,
-          active: r.universe.is_mod_collectibles_active || 0,
-          disabled: true,
-        },
-        {
-          field: "is_mod_rewards_active",
-          name: t("Rewards"),
-          description: t("Unlock achievements, earn titles, badges, and more"),
-          icon: Star,
-          active: r.universe.is_mod_rewards_active || 0,
-          disabled: true,
-        },
-        {
-          field: "is_mod_game_active",
-          name: t("Game"),
-          description: t("Game mechanics specific to this universe"),
-          icon: Swords,
-          active: r.universe.is_mod_game_active || 0,
-          disabled: true,
-        },
-        {
-          field: "is_mod_leveling_active",
-          name: t("Leveling"),
-          description: t("Gain levels through interactions and activity"),
-          icon: CircleFadingArrowUp,
-          active: r.universe.is_mod_leveling_active || 0,
-        },
-      ]);
+      setModules(r.universe.modules);
     } catch (e) {
       if (e?.name === "AbortError") return;
       setHasError({
@@ -112,13 +49,6 @@ export default function UniverseAdminModules() {
       const r = await api.post(`/world/universes/${params?.universeSlug}/modules/edit/`, formData);
       if (!r.ok || !r.module) throw Error();
       setCurrentUniverse();
-      setModules((prev) => {
-        const index = prev.findIndex((m) => m.field === module);
-        if (index !== -1) {
-          prev[index].active = r.module[module];
-        }
-        return [...prev];
-      });
     } catch (e) {
       setHasErrorUsage(() => ({
         [module]: e.message || t("An error occurred"),
@@ -156,10 +86,17 @@ export default function UniverseAdminModules() {
         <OykLoading />
       ) : (
         <>
-          {modules?.length > 0 ? (
+          {Object.values(modules)?.length > 0 ? (
             <ul className="oyk-universes-admin-modules-list">
-              {modules.map((m) => (
-                <OykModulesCard key={m.field} module={m} onActivate={() => handleModuleUsage(m.field, "activate")} onDeactivate={() => handleModuleUsage(m.field, "deactivate")} isLoading={isLoadingUsage === m.field} hasError={hasErrorUsage?.[m.field] || null} />
+              {Object.entries(modules).map(([key, value], index) => (
+                <OykModulesCard
+                  key={index}
+                  module={value}
+                  onActivate={() => handleModuleUsage(key, "activate")}
+                  onDeactivate={() => handleModuleUsage(key, "deactivate")}
+                  isLoading={isLoadingUsage === key}
+                  hasError={hasErrorUsage?.[key] || null}
+                />
               ))}
             </ul>
           ) : (

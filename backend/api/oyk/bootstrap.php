@@ -20,6 +20,8 @@ set_exception_handler("handle_exceptions");
 // SERVICES
 require_once __DIR__ . "/contrib/world/services/UniverseService.php";
 require_once __DIR__ . "/contrib/world/services/ThemeService.php";
+require_once __DIR__ . "/contrib/world/services/ModuleService.php";
+
 require_once __DIR__ . "/contrib/planner/services/StatusService.php";
 require_once __DIR__ . "/contrib/planner/services/TaskService.php";
 

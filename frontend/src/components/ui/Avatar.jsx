@@ -68,7 +68,7 @@ export default function OykAvatar({
           </span>
         )}
       </div>
-      {level && currentUniverse?.is_mod_leveling_active ? (
+      {level && currentUniverse?.modules?.leveling?.active ? (
         <span
           className="oyk-avatar-level"
           style={{

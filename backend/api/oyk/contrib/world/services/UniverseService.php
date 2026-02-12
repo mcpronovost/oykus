@@ -1,7 +1,19 @@
 <?php
 
 class UniverseService {
+  private array $allowedModules;
+
   public function __construct(private PDO $pdo) {
+    $this->allowedModules = [
+      "planner",
+      "blog",
+      "forum",
+      "courrier",
+      "collectibles",
+      "rewards",
+      "game",
+      "leveling"
+    ];
   }
 
   public function getContext(?string $slug, int $userId): array {
@@ -125,14 +137,6 @@ class UniverseService {
                   WHEN ? IS NULL THEN 6
                   ELSE COALESCE(wr.role, 5)
                 END AS role,
-                wu.is_mod_planner_active,
-                wu.is_mod_blog_active,
-                wu.is_mod_forum_active,
-                wu.is_mod_courrier_active,
-                wu.is_mod_collectibles_active,
-                wu.is_mod_rewards_active,
-                wu.is_mod_game_active,
-                wu.is_mod_leveling_active,
                 wu.created_at,
                 wu.updated_at
         FROM world_universes wu
