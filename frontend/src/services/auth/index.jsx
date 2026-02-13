@@ -1,9 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
+
 import { api } from "@/services/api";
+import { getUniverseSlugFromPath } from "@/services/router/utils";
 import { KEY_RAT, KEY_USER, KEY_WORLD_UNIVERSES, KEY_WORLD_CURRENT_UNIVERSE } from "@/services/store/constants";
 import { storeGet, storeSet, storeRemove, oykCookieSet, oykCookieDelete } from "@/services/store/utils";
 
-const REFRESH_INTERVAL = 10 * 60 * 5; // 5 minutes = 1000 * 60 * 5
+const REFRESH_INTERVAL = 1000 * 60 * 5; // 5 minutes = 1000 * 60 * 5
 
 const AuthContext = createContext(null);
 
@@ -133,6 +135,9 @@ const AuthProvider = ({ children }) => {
   const fetchCurrentUniverse = async (slug = universe?.slug, signal) => {
     if (!slug) return;
 
+    const pathSlug = getUniverseSlugFromPath(window.location.pathname);
+    if (pathSlug && pathSlug !== slug) slug = pathSlug;
+
     setIsLoading(true);
     try {
       const r = await api.get(`/world/universes/${slug}/`, signal ? { signal } : {});
@@ -247,6 +252,7 @@ const AuthProvider = ({ children }) => {
 const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
+    window.location.reload();
     throw new Error("useAuth must be used within a AuthProvider");
   }
   return context;

@@ -1,5 +1,5 @@
 .oyk-heading {
-  display: flex;
+  display: block;
   width: 100%;
   max-width: 1200px;
   padding: 0 32px;
@@ -84,5 +84,9 @@
     flex-direction: row;
     align-items: center;
     gap: 16px;
+  }
+
+  &-append {
+    padding: 16px 0 0;
   }
 }

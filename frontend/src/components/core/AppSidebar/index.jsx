@@ -46,6 +46,7 @@ export default function AppSidebar() {
                     icon={ListTodo}
                     text={currentUniverse.modules.planner.settings.display_name || t("Planner")}
                     href="planner"
+                    params={{ universeSlug: currentUniverse.slug }}
                   />
                 ) : null}
                 {currentUniverse.modules?.blog?.active ? (
@@ -53,7 +54,7 @@ export default function AppSidebar() {
                     icon={ScrollText}
                     text={currentUniverse.modules.blog.settings.display_name || t("Blog")}
                     href="blog"
-                    disabled
+                    params={{ universeSlug: currentUniverse.slug }}
                   />
                 ) : null}
                 {currentUniverse.modules?.forum?.active ? (
@@ -64,11 +65,17 @@ export default function AppSidebar() {
                     icon={GalleryHorizontalEnd}
                     text={t("Collectibles")}
                     href="collectibles"
+                    params={{ universeSlug: currentUniverse.slug }}
                     disabled
                   />
                 ) : null}
                 {currentUniverse.modules?.rewards?.active ? (
-                  <OykAppSidebarNavItem icon={Star} text={t("Achievements")} href="achievements" />
+                  <OykAppSidebarNavItem
+                    icon={Star}
+                    text={t("Achievements")}
+                    href="achievements"
+                    params={{ universeSlug: currentUniverse.slug }}
+                  />
                 ) : null}
               </ul>
             ) : null}

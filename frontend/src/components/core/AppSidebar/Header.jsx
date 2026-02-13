@@ -13,9 +13,9 @@ export default function Header() {
   const dropdownRef = useRef(null);
 
   const handleUniverseClick = (uSlug) => {
-    setCurrentUniverse(uSlug);
     dropdownRef.current?.close();
-    n("home");
+    n("universe", { universeSlug: uSlug });
+    setCurrentUniverse(uSlug);
   };
 
   const universesMenu = useMemo(

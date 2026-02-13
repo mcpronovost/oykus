@@ -1,4 +1,4 @@
-export default function OykHeading({ title, description, subtitle, actions, nop, tag: Heading = "h1", className }) {
+export default function OykHeading({ title, description, subtitle, actions, nop, tag: Heading = "h1", className, children }) {
   return (
     <header
       className={["oyk-heading", nop ? "oyk-heading-nop" : "", subtitle ? "oyk-subtitle" : "", className]
@@ -12,6 +12,7 @@ export default function OykHeading({ title, description, subtitle, actions, nop,
         </div>
         {actions && <div className="oyk-heading-actions">{actions}</div>}
       </div>
+      {children && <div className="oyk-heading-append">{children}</div>}
     </header>
   );
 }

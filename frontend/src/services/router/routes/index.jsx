@@ -39,22 +39,6 @@ export const ROUTES = [
     },
   },
   {
-    name: "planner",
-    component: React.lazy(() => import("../../../pages/Planner")),
-    paths: {
-      fr: "planificateur",
-      en: "planner",
-    },
-  },
-  {
-    name: "achievements",
-    component: React.lazy(() => import("../../../pages/Achievements")),
-    paths: {
-      fr: "succes",
-      en: "achievements",
-    },
-  },
-  {
     name: "privacy-policy",
     component: React.lazy(() => import("../../../pages/PrivacyPolicy")),
     paths: {

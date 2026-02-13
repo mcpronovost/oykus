@@ -193,6 +193,12 @@ export default function Components() {
                 Success Button
               </OykButton>
             </div>
+            <OykCard>
+              <div>
+                <OykButton>Default Button</OykButton> <OykButton color="primary">Primary Button</OykButton>{" "}
+                <OykButton color="danger">Danger Button</OykButton> <OykButton color="success">Success Button</OykButton>
+              </div>
+            </OykCard>
           </div>
           <code className="full">{`<OykButton>Default Button</OykButton>`}</code>
           <ComponentApiTable

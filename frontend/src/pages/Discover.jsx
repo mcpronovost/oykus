@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Construction } from "lucide-react";
+import { Frown } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import { OykBanner, OykCard, OykFeedback, OykGrid, OykGridRow, OykGridCol, OykHeading, OykLink } from "@/components/ui";
+import { OykBanner, OykCard, OykFeedback, OykGrid, OykGridRow, OykGridCol, OykHeading, OykLink, OykLoading } from "@/components/ui";
 
 export default function Discover() {
   const { routeTitle } = useRouter();
@@ -49,7 +49,16 @@ export default function Discover() {
     <section className="oyk-page oyk-discover">
       <OykHeading title={t("Discover")} />
       <OykGrid>
-        {universes?.length > 0 ? (
+        {hasError ? (
+          <OykFeedback
+            ghost
+            title={t("An error occurred")}
+            message={t(hasError.message)}
+            variant="danger"
+         />
+        ) : isLoading ? (
+          <OykLoading />
+        ) : universes?.length > 0 ? (
           <OykGridRow wrap>
             {universes.map((u, index) => (
               <OykGridCol key={index} col="25" md="50" sm="100">
@@ -75,7 +84,9 @@ export default function Discover() {
               </OykGridCol>
             ))}
           </OykGridRow>
-        ) : null}
+        ) : (
+          <OykFeedback title={t("The multiverse is empty")} message={t("Where is everyone?")} icon={Frown} ghost />
+        )}
       </OykGrid>
     </section>
   );

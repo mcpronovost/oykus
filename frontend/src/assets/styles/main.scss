@@ -33,5 +33,8 @@
 // Common
 @use "./common/sidenav" as common-sidenav;
 
+// Modules
+@use "./modules/blog" as modules-blog;
+
 // Pages
 @use "./page/_auth" as page-auth;

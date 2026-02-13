@@ -8,6 +8,11 @@ export const getLangFromPath = (pathname) => {
     : DEFAULT_LANG;
 };
 
+export const getUniverseSlugFromPath = (pathname) => {
+  const match = pathname.match(/\/u\/([a-z0-9-]+)/);
+  return match ? decodeURIComponent(match[1]) : null;
+};
+
 // Helper function to match dynamic path segments
 const matchPathSegment = (routePath, actualPath) => {
   if (routePath === actualPath) return true;

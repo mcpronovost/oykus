@@ -1,7 +1,13 @@
 .oyk-link {
-    &.oyk-disabled {
-        pointer-events: none;
-        cursor: default;
-        opacity: 0.6;
-    }
+  transition: color 0.3s, opacity 0.3s;
+
+  &.oyk-disabled {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.6;
+  }
+
+  &.oyk-block {
+    display: block;
+  }
 }

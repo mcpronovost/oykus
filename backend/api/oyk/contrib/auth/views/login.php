@@ -14,7 +14,7 @@ if ($username === "" || $password === "") {
 
 try {
   $stmt = $pdo->prepare("
-    SELECT id, username, password, name, slug, abbr, avatar, cover, is_dev
+    SELECT id, username, password, name, slug, abbr, avatar, cover, is_dev, timezone
     FROM auth_users
     WHERE username = ?
     LIMIT 1

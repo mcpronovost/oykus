@@ -11,6 +11,7 @@ Router::get("/api/v1/theme.php", __DIR__ . "/theme.php");
 require OYK . "/contrib/auth/routes.php";
 require OYK . "/contrib/world/routes.php";
 
+require OYK . "/contrib/blog/routes.php";
 require OYK . "/contrib/planner/routes.php";
 require OYK . "/contrib/rewards/routes.php";
 

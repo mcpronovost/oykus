@@ -6,6 +6,7 @@ export default function OykLink({
   routeName,
   params = {},
   disabled = false,
+  block = false,
   className = {},
   ...props
 }) {
@@ -22,7 +23,7 @@ export default function OykLink({
   };
 
   return (
-    <a href={href} onClick={handleClick} className={`oyk-link ${disabled ? "oyk-disabled" : ""} ${className}`} {...props}>
+    <a href={href} onClick={handleClick} className={`oyk-link ${disabled ? "oyk-disabled" : ""} ${block ? "oyk-block" : ""} ${className}`} {...props}>
       {children}
     </a>
   );

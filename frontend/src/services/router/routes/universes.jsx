@@ -18,6 +18,40 @@ export const UNIVERSES_ROUTES = [
         },
         children: [
           {
+            name: "blog",
+            component: React.lazy(() => import("../../../pages/Blog")),
+            paths: {
+              fr: "blog",
+              en: "blog",
+            },
+            children: [
+              {
+                name: "blog-post",
+                component: React.lazy(() => import("../../../pages/Blog/Post")),
+                paths: {
+                  fr: "{postId}",
+                  en: "{postId}",
+                },
+              }
+            ]
+          },
+          {
+            name: "planner",
+            component: React.lazy(() => import("../../../pages/Planner")),
+            paths: {
+              fr: "planificateur",
+              en: "planner",
+            },
+          },
+          {
+            name: "achievements",
+            component: React.lazy(() => import("../../../pages/Achievements")),
+            paths: {
+              fr: "succes",
+              en: "achievements",
+            },
+          },
+          {
             name: "universe-admin",
             component: React.lazy(() => import("../../../pages/Universes/Admin")),
             paths: {

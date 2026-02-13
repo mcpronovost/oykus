@@ -10,7 +10,7 @@ class ThemeService {
   public function getActiveTheme($universeId) {
     try {
       $qry = $this->pdo->prepare("
-        SELECT c_primary, c_primary_fg, variables
+        SELECT id, c_primary, c_primary_fg, variables
         FROM world_themes
         WHERE universe = ?
           AND is_active = 1

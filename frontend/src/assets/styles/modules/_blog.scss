@@ -1,0 +1,61 @@
+.oyk-blog {
+  &-post {
+    &-info {
+      font-size: 0.8rem;
+      line-height: 1;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+    }
+
+    &-header {
+      padding: 0 12px 8px;
+
+      &-title {
+        color: var(--oyk-card-fg);
+        font-family: "Quicksand", sans-serif;
+        font-weight: 600;
+
+        &:hover {
+          color: var(--oyk-c-primary);
+        }
+
+        &:active {
+          opacity: 0.6;
+        }
+      }
+
+      &-description {
+        font-size: 0.9rem;
+        line-height: 1.2;
+        opacity: 0.6;
+        margin: 2px 0 0;
+      }
+
+      &-content {
+        font-size: 1.1rem;
+        line-height: 1.5;
+        text-align: justify;
+        white-space: pre-line;
+        max-width: 800px;
+        padding: 64px 0;
+        margin: 0 auto;
+      }
+    }
+  }
+
+  &-reactions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    margin: 16px 0 32px;
+  }
+
+  &-comments {
+    margin: 32px 0 0;
+  }
+}
