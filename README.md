@@ -15,9 +15,9 @@
 
 </div>
 
-Oykus is an **experimental RPG project** blending story-creation with gameplay — letting players shape narratives while they play.  
+Oykus is an **experimental RPG project** blending story-creation with gameplay — letting players shape narratives while they play.
 
-- **Backend:** PHP  
+- **Backend:** PHP
 - **Frontend:** Vite/React
 
 > _This project is a work in progress — but the foundation is set and contributions are welcome!_
@@ -26,16 +26,35 @@ Oykus is an **experimental RPG project** blending story-creation with gameplay �
 
 ## 🌟 Features
 
-- 🔨 **Core**: Core functionality and shared utilities
+- ✅ **Core**: Core functionality and shared utilities
 - ✅ **Auth**: User authentication, data, online users and guests, friends management
-- 🔨 **Courrier**: Private messaging and alerts functionality
-- ✅ **Planner**: Tasks management functionality
-- 🔨 **Blog**: Blogging functionality
-- 🔨 **Forum**: Discussion board functionality
-- 🔨 **Collectibles**: Collectibles management functionality
-- ✅ **Rewards**: Unlock achievements, earn titles, badges, and more
-- 🔨 **Game**: (soon...)
-- 🔨 **Leveling**: (soon...)
+
+- 🧱 **Courrier**: Private messaging and alerts functionality
+- 🔨 **Blog**: Share content, information and updates
+  - ✅ Posts
+  - ✅ Reactions
+  - 🔨 Comments
+- 🧱 **Collectibles**: Collect and manage objects
+  - 🧱 Collections
+  - 🧱 Items
+- 🧱 **Forum**: Chat and interact with other members
+  - 🧱 Categories
+  - 🧱 Sections
+  - 🧱 Topics
+  - 🧱 Posts
+  - 🧱 Reads
+  - 🧱 Reactions
+  - 🧱 Threads
+- 🧱 **Game**: Game mechanics specific to each universe
+- 🧱 **Leveling**: Gain levels based on interactions and activities
+- ✅ **Planner**: Plan and track tasks, assign people, and more
+  - ✅ Statuses
+  - ✅ Tasks
+  - 🔨 Assignees
+- 🔨 **Rewards**: Unlock achievements, earn titles, badges, and more
+  - 🔨 Achievements
+  - 🧱 Titles
+  - 🧱 Badges
 
 ## 🌐 Internationalization
 
@@ -49,25 +68,29 @@ The platform supports multiple languages:
 Get the project up and running locally with minimal friction (be sure to have Docker Desktop installed):
 
 1. **Clone the repo**
+
    ```bash
    git clone https://github.com/mcpronovost/oykus.git
    cd oykus
-    ```
+   ```
 
 2. **Build the containers**
+
    ```bash
    docker compose build
-    ```
+   ```
 
 3. **Start the containers**
+
    ```bash
    docker compose up
-    ```
+   ```
 
 4. **Run migrations inside backend container**
+
    ```bash
    php api/oyk/core/scripts/migrate.php
-    ```
+   ```
 
 5. **Run sql statements inside database container**
    ```bash
