@@ -18,6 +18,7 @@ import {
 } from "@/components/ui";
 import { oykDate } from "@/utils";
 import OykBlogComments from "./Comments";
+import OykBlogPostReactions from "./Reactions";
 
 export default function OykBlogPost() {
   const { isAuth, currentUser, currentUniverse } = useAuth();
@@ -27,6 +28,11 @@ export default function OykBlogPost() {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(null);
   const [post, setPost] = useState(null);
+  const [reactions, setReactions] = useState({
+    likes: 0,
+    dislikes: 0,
+    user: null
+  });
 
   const getBlogPost = async (signal) => {
     if (!params?.postId) return;
@@ -37,6 +43,7 @@ export default function OykBlogPost() {
       const r = await api.get(`/blog/u/${currentUniverse.slug}/posts/${params.postId}`, signal ? { signal } : {});
       if (!r.ok || !r.post) throw Error();
       setPost(r.post);
+      setReactions(r.reactions);
     } catch (e) {
       if (e?.name === "AbortError") return;
       setHasError(e.message || t("An error occurred"));
@@ -120,17 +127,8 @@ export default function OykBlogPost() {
                 </div>
               </div>
             </OykCard>
-            <section className="oyk-blog-reactions">
-              <OykButton color="card">
-                <ThumbsUp size={16} color="var(--oyk-card-fg)" />
-                {post.likes !== "0" ? post.likes : null}
-              </OykButton>
-              <OykButton color="card">
-                <ThumbsDown size={16} color="var(--oyk-card-fg)" />
-                {post.dislikes !== "0" ? post.dislikes : null}
-              </OykButton>
-            </section>
-            <OykBlogComments />
+            <OykBlogPostReactions postId={post.id} likes={reactions.likes} dislikes={reactions.dislikes} reaction={reactions.user} handleReactions={setReactions} />
+            <OykBlogComments postId={post.id} />
           </section>
         ) : (
           <OykFeedback title={t("No post found")} icon={Frown} ghost />

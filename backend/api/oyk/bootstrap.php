@@ -23,6 +23,7 @@ require_once __DIR__ . "/contrib/world/services/ThemeService.php";
 require_once __DIR__ . "/contrib/world/services/ModuleService.php";
 
 require_once __DIR__ . "/contrib/blog/services/BlogService.php";
+require_once __DIR__ . "/contrib/blog/services/ReactionService.php";
 
 require_once __DIR__ . "/contrib/planner/services/StatusService.php";
 require_once __DIR__ . "/contrib/planner/services/TaskService.php";

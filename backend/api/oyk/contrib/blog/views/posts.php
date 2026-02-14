@@ -13,7 +13,7 @@ $context = $universeService->getContext($universeSlug, $authUser["id"]);
 $universeId = $context["id"];
 
 // Get post
-$posts = $blogService->getPosts($universeId);
+$posts = $blogService->getPostsList($universeId);
 
 Response::json([
   "ok" => TRUE,

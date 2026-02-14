@@ -12,6 +12,8 @@ try {
         created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
+        UNIQUE KEY uniq_user_post (user, post),
+
         CONSTRAINT fk_blog_reactions_post
             FOREIGN KEY (post) REFERENCES blog_posts(id)
             ON DELETE CASCADE,

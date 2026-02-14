@@ -7,24 +7,25 @@ $universeService = new UniverseService($pdo);
 $blogService = new BlogService($pdo);
 $reactionService = new ReactionService($pdo);
 
-$universeSlug ??= null;
-$postId ??= null;
-
-// Validations
-if (!$postId) {
-  throw new NotFoundException("Post not found");
-}
+$universeSlug ??= NULL;
+$postId ??= 0;
 
 // Universe context
 $context = $universeService->getContext($universeSlug, $authUser["id"]);
 $universeId = $context["id"];
 
-// Get post
-$post = $blogService->getPost($universeId, $postId);
-$reactions = $reactionService->getReactionsForPost($postId, $authUser["id"]);
+// Check permissions
+if (!$reactionService->userCanAddReaction($universeId, $postId, $authUser["id"])) {
+  Response::notFound("Post not found");
+}
+
+// Validation
+$fields = $reactionService->validateData($_POST);
+
+// Set reaction
+$reactions = $reactionService->setReaction($postId, $authUser["id"], $fields["action"]);
 
 Response::json([
   "ok" => TRUE,
-  "post" => $post,
   "reactions" => $reactions
 ]);
