@@ -31,7 +31,7 @@ export default function OykBlogPost() {
   const [reactions, setReactions] = useState({
     likes: 0,
     dislikes: 0,
-    user: null
+    user: null,
   });
 
   const getBlogPost = async (signal) => {
@@ -127,7 +127,13 @@ export default function OykBlogPost() {
                 </div>
               </div>
             </OykCard>
-            <OykBlogPostReactions postId={post.id} likes={reactions.likes} dislikes={reactions.dislikes} reaction={reactions.user} handleReactions={setReactions} />
+            <OykBlogPostReactions
+              postId={post.id}
+              likes={reactions.likes}
+              dislikes={reactions.dislikes}
+              reaction={reactions.user}
+              handleReactions={setReactions}
+            />
             <OykBlogComments postId={post.id} />
           </section>
         ) : (

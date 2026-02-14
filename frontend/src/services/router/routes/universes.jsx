@@ -19,7 +19,7 @@ export const UNIVERSES_ROUTES = [
         children: [
           {
             name: "blog",
-            component: React.lazy(() => import("../../../pages/Blog")),
+            component: React.lazy(() => import("../../../pages/Universes/Blog")),
             paths: {
               fr: "blog",
               en: "blog",
@@ -27,7 +27,7 @@ export const UNIVERSES_ROUTES = [
             children: [
               {
                 name: "blog-post",
-                component: React.lazy(() => import("../../../pages/Blog/Post")),
+                component: React.lazy(() => import("../../../pages/Universes/Blog/Post")),
                 paths: {
                   fr: "{postId}",
                   en: "{postId}",

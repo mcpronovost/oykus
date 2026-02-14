@@ -20,7 +20,7 @@
         margin-left: 4px;
       }
 
-      @media (max-width: 768px) {
+      @media (max-width: 767px) {
         flex: 0 0 auto;
         width: 100%;
         padding: 0;
@@ -74,6 +74,7 @@
         justify-content: flex-start;
         gap: 8px;
         height: 100%;
+        padding: 0 0 12px;
 
         input[type="radio"] {
           display: none;
@@ -114,6 +115,7 @@
         justify-content: flex-start;
         gap: 8px;
         height: 100%;
+        padding: 12px 0;
 
         input[type="checkbox"] {
           display: none;
@@ -194,7 +196,7 @@
       }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       flex-direction: column;
     }
   }

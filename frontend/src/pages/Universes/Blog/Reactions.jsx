@@ -6,7 +6,13 @@ import { useAuth } from "@/services/auth";
 import AppNotAuthorized from "@/components/core/AppNotAuthorized";
 import { OykAlert, OykButton } from "@/components/ui";
 
-export default function OykBlogPostReactions({ postId, likes = 0, dislikes = 0, reaction = null, handleReactions = () => {} }) {
+export default function OykBlogPostReactions({
+  postId,
+  likes = 0,
+  dislikes = 0,
+  reaction = null,
+  handleReactions = () => {},
+}) {
   const { isAuth, currentUniverse } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -30,8 +36,13 @@ export default function OykBlogPostReactions({ postId, likes = 0, dislikes = 0, 
     }
   };
 
-  if (!isAuth || !currentUniverse || (currentUniverse && !currentUniverse.modules?.blog?.active)) {
-    return <AppNotAuthorized />;
+  if (
+    !isAuth ||
+    !currentUniverse ||
+    !currentUniverse.modules?.blog?.active ||
+    !currentUniverse.modules.blog.settings?.is_reactions_enabled
+  ) {
+    return null;
   }
 
   return (

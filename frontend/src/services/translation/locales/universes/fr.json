@@ -64,5 +64,8 @@
     "Staff, registered members and users can see the universe": "Le staff, les membres enregistrés et les utilisateurs peuvent voir l'univers.",
     "Anyone on the web can see the universe": "Tout le monde sur le web peut voir l'univers.",
     "Blog Module": "Module Blog",
-    "Allow Comments": "Commentaires autorisés"
+    "Allow Reactions": "Réactions autorisées",
+    "Allow Comments": "Commentaires autorisés",
+    "Users can like and dislike posts": "Les utilisateurs peuvent aimer et ne pas aimer un article",
+    "Users can leave comments": "Les utilisateurs peuvent laisser des commentaires"
 }

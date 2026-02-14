@@ -6,12 +6,12 @@ import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import {
-  OykBanner,
   OykButton,
   OykCard,
   OykForm,
   OykFormField,
   OykFormMessage,
+  OykFormHelp,
   OykHeading,
   OykLoading,
 } from "@/components/ui";
@@ -59,11 +59,9 @@ export default function UniverseAdminModuleBlog() {
     try {
       const formData = new FormData();
       let settings = {};
-      console.log(blogForm);
       for (const [key, value] of Object.entries(blogForm)) {
         settings[key] = value;
       };
-      console.log("settings", JSON.stringify(settings));
       formData.append("settings", JSON.stringify(settings));
       const r = await api.post(`/world/universes/${currentUniverse.slug}/modules/blog/edit/`, formData);
       if (!r?.ok) throw new Error(r || t("An error occurred"));
@@ -130,12 +128,22 @@ export default function UniverseAdminModuleBlog() {
                 hasError={hasError?.display_name}
               />
               <OykFormField
+                label={t("Allow Reactions")}
+                name="is_reactions_enabled"
+                type="checkbox"
+                defaultValue={blogForm.is_reactions_enabled}
+                onChange={handleChange}
+                hasError={hasError?.is_reactions_enabled}
+                helptext={blogForm.is_reactions_enabled ? t("Users can like and dislike posts") : null}
+              />
+              <OykFormField
                 label={t("Allow Comments")}
                 name="is_comments_enabled"
                 type="checkbox"
                 defaultValue={blogForm.is_comments_enabled}
                 onChange={handleChange}
                 hasError={hasError?.is_comments_enabled}
+                helptext={blogForm.is_comments_enabled ? t("Users can leave comments") : null}
               />
             </section>
             {hasError?.message && <OykFormMessage hasError={hasError?.message} />}

@@ -141,21 +141,9 @@ export default function UniverseAdminProfile() {
             defaultValue={profileForm.visibility}
             onChange={handleChange}
             hasError={hasError?.visibility}
+            helptext={profileForm.visibility === "1" ? t("Only the owner can see the universe") : profileForm.visibility === "2" ? t("The owner and administrators can see the universe") : profileForm.visibility === "3" ? t("The owner, administrators, and moderators can see the universe") : profileForm.visibility === "4" ? t("Staff and registered members can see the universe") : profileForm.visibility === "5" ? t("Staff, registered members and users can see the universe") : profileForm.visibility === "6" ? t("Anyone on the web can see the universe") : null}
             disabled={currentUniverse.is_default}
           />
-          {profileForm.visibility === "1" ? (
-            <OykFormHelp helptext={t("Only the owner can see the universe")} />
-          ) : profileForm.visibility === "2" ? (
-            <OykFormHelp helptext={t("The owner and administrators can see the universe")} />
-          ) : profileForm.visibility === "3" ? (
-            <OykFormHelp helptext={t("The owner, administrators, and moderators can see the universe")} />
-          ) : profileForm.visibility === "4" ? (
-            <OykFormHelp helptext={t("Staff and registered members can see the universe")} />
-          ) : profileForm.visibility === "5" ? (
-            <OykFormHelp helptext={t("Staff, registered members and users can see the universe")} />
-          ) : profileForm.visibility === "6" ? (
-            <OykFormHelp helptext={t("Anyone on the web can see the universe")} />
-          ) : null}
           {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
           {hasSuccessSubmit?.message && (
             <OykFormMessage hasSuccessTitle={hasSuccessSubmit?.title} hasSuccess={hasSuccessSubmit?.message} />

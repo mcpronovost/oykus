@@ -9,10 +9,19 @@
   gap: 16px;
   padding: 16px;
 
+  &-ghost {
+    border-style: dashed;
+    border-width: 1px;
+  }
+
   &-variant-default {
     background-color: color-mix(in srgb, var(--oyk-core-fg) 10%, transparent);
     border-color: color-mix(in srgb, var(--oyk-core-fg) 20%, transparent);
     color: var(--oyk-core-fg);
+
+    &.oyk-alert-ghost {
+      background-color: color-mix(in srgb, var(--oyk-card-bg) 50%, transparent);
+    }
   }
 
   &-variant-primary {
@@ -64,7 +73,7 @@
   }
 
   &.oyk-small {
-    padding: 8px;
+    padding: 4px 8px;
 
     .oyk-alert-content {
       &-title {
