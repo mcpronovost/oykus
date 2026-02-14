@@ -9,6 +9,7 @@ import { OykSidenav } from "@/components/common";
 import OykError404 from "@/pages/Error404";
 import OykSettingsProfile from "./Profile";
 import OykSettingsAccount from "./Account";
+import OykSettingsAccountPreferences from "./AccountPreferences";
 import OykSettingsFriends from "./Friends";
 import OykSettingsFriendsRequests from "./FriendsRequests";
 
@@ -42,6 +43,10 @@ export default function Settings() {
           name: t("Change Password"),
           routeName: "settings-account-password",
           disabled: true,
+        },
+        {
+          name: t("Preferences"),
+          routeName: "settings-account-preferences",
         },
         {
           name: t("Privacy"),
@@ -84,6 +89,8 @@ export default function Settings() {
               <OykSettingsProfile />
             ) : params?.section === "account" ? (
               <OykSettingsAccount />
+            ) : params?.section === "account-preferences"? (
+              <OykSettingsAccountPreferences />
             ) : params?.section === "friends" ? (
               <OykSettingsFriends />
             ) : params?.section === "friends-requests" ? (

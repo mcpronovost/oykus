@@ -35,6 +35,17 @@ export const SETTINGS_ROUTES = [
         },
       },
       {
+        name: "settings-account-preferences",
+        component: React.lazy(() => import("../../../pages/Settings")),
+        paths: {
+          fr: "compte-preferences",
+          en: "account-preferences",
+        },
+        params: {
+          section: "account-preferences"
+        },
+      },
+      {
         name: "settings-account-password",
         component: React.lazy(() => import("../../../pages/Settings")),
         paths: {

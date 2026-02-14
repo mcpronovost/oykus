@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { api } from "@/services/api";
+import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import {
@@ -14,7 +15,8 @@ import {
   OykLoading,
 } from "@/components/ui";
 
-export default function SettingsAccount() {
+export default function SettingsAccountPreferences() {
+  const { currentUser, setUser } = useAuth();
   const { routeTitle } = useRouter();
   const { t } = useTranslation();
 
@@ -25,8 +27,7 @@ export default function SettingsAccount() {
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
   const [initialAccountForm, setInitialAccountForm] = useState({
-    username: "",
-    email: "",
+    timezone: "",
   });
   const [accountForm, setAccountForm] = useState(initialAccountForm);
 
@@ -36,15 +37,16 @@ export default function SettingsAccount() {
     try {
       const r = await api.get("/auth/me/account/", signal ? { signal } : {});
       if (!r.ok || !r.account) throw Error();
+      const payload = {
+        timezone: r.account.timezone,
+      };
       setInitialAccountForm((prev) => ({
         ...prev,
-        username: r.account.username,
-        email: r.account.email,
+        ...payload,
       }));
       setAccountForm((prev) => ({
         ...prev,
-        username: r.account.username,
-        email: r.account.email,
+        ...payload,
       }));
     } catch (e) {
       if (e?.name === "AbortError") return;
@@ -55,6 +57,27 @@ export default function SettingsAccount() {
       if (!signal || !signal.aborted) {
         setIsLoading(false);
       }
+    }
+  };
+
+  const postSubmit = async () => {
+    setIsSubmitLoading(true);
+    setHasError(null);
+    try {
+      const formData = new FormData();
+      formData.append("timezone", accountForm.timezone);
+      const r = await api.post("/auth/me/account/edit/", formData);
+      if (!r?.ok) throw new Error(r.error || t("An error occurred"));
+      setUser({
+        ...currentUser,
+        timezone: accountForm.timezone,
+      });
+    } catch (e) {
+      setHasError(() => ({
+        message: e.message || t("An error occurred"),
+      }));
+    } finally {
+      setIsSubmitLoading(false);
     }
   };
 
@@ -86,28 +109,10 @@ export default function SettingsAccount() {
     emailRef.current.value = initialAccountForm.email || "";
   };
 
-  const handleSubmit = async () => {
-    setIsSubmitLoading(true);
-    setHasError(null);
-    try {
-      const formData = new FormData();
-      formData.append("username", accountForm.username);
-      formData.append("email", accountForm.email);
-      const r = await api.post("/auth/me/account/edit/", formData);
-      if (!r?.ok) throw new Error(r.error || t("An error occurred"));
-    } catch (e) {
-      setHasError(() => ({
-        message: e.message || t("An error occurred"),
-      }));
-    } finally {
-      setIsSubmitLoading(false);
-    }
-  };
-
   useEffect(() => {
     const controller = new AbortController();
 
-    routeTitle(`${t("Settings")} - ${t("Account")}`);
+    routeTitle(`${t("Settings")} - ${t("Preferences")}`);
 
     fetchAccountData(controller.signal);
 
@@ -119,13 +124,13 @@ export default function SettingsAccount() {
 
   return (
     <section className="oyk-settings-profile">
-      <OykHeading subtitle tag="h2" title={t("Account")} nop />
+      <OykHeading subtitle tag="h2" title={t("Preferences")} nop />
       {hasError?.form ? (
         <OykCard>
           <OykAlert
             title={t("An error occurred")}
             message={t(
-              "Unable to access account data, check your internet connection or try again later"
+              "Unable to access preferences data, check your internet connection or try again later"
             )}
             variant="danger"
           />
@@ -135,29 +140,24 @@ export default function SettingsAccount() {
           {isLoading ? (
             <OykLoading />
           ) : (
-            <OykForm className="oyk-settings-form" isLoading={isSubmitLoading} onSubmit={handleSubmit}>
+            <OykForm className="oyk-settings-form" isLoading={isSubmitLoading} onSubmit={postSubmit}>
               <OykFormField
-                ref={usernameRef}
-                label={t("Username")}
-                name="username"
-                defaultValue={accountForm.username}
+                label={t("Timezone")}
+                name="timezone"
+                type="select"
+                defaultValue={accountForm.timezone}
+                options={[
+                  { label: "UTC", value: "UTC" },
+                  { label: "America/Toronto", value: "America/Toronto" },
+                  { label: "America/New_York", value: "America/New_York" },
+                  { label: "Europe/London", value: "Europe/London" },
+                  { label: "Europe/Paris", value: "Europe/Paris" },
+                  { label: "Europe/Berlin", value: "Europe/Berlin" },
+                ]}
                 onChange={handleChange}
-                hasError={hasError?.fields?.username}
+                hasError={hasError?.timezone}
                 required
               />
-              {hasError?.username && (
-                <OykFormMessage hasError={hasError?.username} />
-              )}
-              <OykFormField
-                ref={emailRef}
-                label={t("Email")}
-                name="email"
-                defaultValue={accountForm.email}
-                onChange={handleChange}
-                hasError={hasError?.fields?.email}
-                required
-              />
-              {hasError?.email && <OykFormMessage hasError={hasError?.email} />}
               {hasError?.message && (
                 <OykFormMessage hasError={hasError?.message} />
               )}

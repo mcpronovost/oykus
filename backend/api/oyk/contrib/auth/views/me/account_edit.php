@@ -9,7 +9,7 @@ $authUser = require_auth();
 |--------------------------------------------------------------------------
 */
 $qry = $pdo->prepare("
-  SELECT id, username, email
+  SELECT id, username, email, timezone
   FROM auth_users
   WHERE id = ?
   LIMIT 1
@@ -39,6 +39,12 @@ if (isset($_POST["username"]) && $_POST["username"] !== $user["username"]) {
 if (isset($_POST["email"]) && $_POST["email"] !== $user["email"]) {
   $patch["email"] = $_POST["email"];
   $params["email"] = $_POST["email"];
+}
+
+/* ---------- Timezone ---------- */
+if (isset($_POST["timezone"]) && $_POST["timezone"] !== $user["timezone"]) {
+  $patch["timezone"] = $_POST["timezone"];
+  $params["timezone"] = $_POST["timezone"];
 }
 
 /*
