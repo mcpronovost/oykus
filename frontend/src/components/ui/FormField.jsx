@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import OykFormHelp from "./FormHelp";
 
 export default function OykFormField({
@@ -9,15 +11,27 @@ export default function OykFormField({
   optionLabel = "label",
   optionValue = "value",
   defaultValue,
+  placeholder = "",
   required = false,
   disabled = false,
   onChange,
   hasError,
   block = false,
+  autosize = false,
   hideLabel = false,
   helptext = null,
   ...props
 }) {
+  const handleOnChange = (e) => {
+    if (autosize) {
+      e.target.style.height = "auto";
+      e.target.style.height = `${e.target.scrollHeight}px`;
+    }
+    if (onChange) {
+      onChange(e);
+    }
+  };
+
   return (
     <div className={`oyk-form-field ${block ? "oyk-form-field--block" : ""}`} {...props}>
       {!hideLabel ? (
@@ -33,11 +47,13 @@ export default function OykFormField({
               ref={ref}
               id={`field-${name}`}
               name={name}
+              placeholder={placeholder}
               defaultValue={defaultValue}
-              onChange={onChange}
-              rows={6}
+              onChange={handleOnChange}
+              rows={autosize ? 1 : 6}
               required={required}
               className={`${hasError ? "oyk-error" : ""}`}
+              style={autosize ? { overflow: "hidden", resize: "none" } : {}}
             />
           ) : type === "select" ? (
             <select
@@ -123,6 +139,7 @@ export default function OykFormField({
               id={`field-${name}`}
               name={name}
               defaultValue={defaultValue}
+              placeholder={placeholder}
               onChange={onChange}
               required={required}
               disabled={disabled}

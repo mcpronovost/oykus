@@ -1,4 +1,4 @@
-export default function OykForm({ children, onSubmit, isLoading, ...props }) {
+export default function OykForm({ children, ref, onSubmit, isLoading, ...props }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -8,7 +8,7 @@ export default function OykForm({ children, onSubmit, isLoading, ...props }) {
   };
 
   return (
-    <form className="oyk-form" onSubmit={handleSubmit} disabled={isLoading} {...props}>
+    <form ref={ref} className="oyk-form" onSubmit={handleSubmit} disabled={isLoading} {...props}>
       {children}
     </form>
   );

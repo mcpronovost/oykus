@@ -57,5 +57,104 @@
 
   &-comments {
     margin: 32px 0 0;
+
+    &-list {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      gap: 16px;
+
+      &-footer {
+        border-top: 1px solid var(--oyk-card-divider);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        padding: 16px 16px 0;
+      }
+    }
+
+    &-card {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 8px;
+      margin: 0;
+
+      &-header {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 8px;
+        padding: 8px 0 0;
+
+        &-info {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 8px;
+
+          &-name {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.2;
+            padding: 0;
+            margin: 0;
+          }
+
+          &-date {
+            font-size: 0.9rem;
+            line-height: 1.2;
+            position: relative;
+            opacity: 0.6;
+            padding: 0 0 0 16px; 
+
+            &::before {
+              content: "";
+              background-color: var(--oyk-card-fg);
+              border-radius: 50%;
+              width: 4px;
+              height: 4px;
+              position: absolute;
+              left: 2px;
+              top: 50%;
+              transform: translateY(-50%);
+            }
+          }
+        }
+      }
+
+      &-content {
+        font-size: 0.94rem;
+        line-height: 1.2;
+        white-space: pre-line;
+        opacity: 0.9;
+        padding: 12px 0;
+      }
+
+      &-footer {
+        &-actions {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 32px;
+
+          .oyk-button {
+            opacity: 0.6;
+            padding: 4px 0;
+
+            &:hover {
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
   }
 }

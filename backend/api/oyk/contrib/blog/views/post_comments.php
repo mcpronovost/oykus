@@ -4,11 +4,10 @@ global $pdo;
 $authUser = require_auth();
 
 $universeService = new UniverseService($pdo);
-$blogService = new BlogService($pdo);
-$reactionService = new ReactionService($pdo);
+$commentService = new CommentService($pdo);
 
-$universeSlug ??= NULL;
-$postId ??= NULL;
+$universeSlug ??= null;
+$postId ??= null;
 
 // Validations
 if (!$postId) {
@@ -20,11 +19,9 @@ $context = $universeService->getContext($universeSlug, $authUser["id"]);
 $universeId = $context["id"];
 
 // Get post
-$post = $blogService->getPost($universeId, $postId);
-$reactions = $reactionService->getReactionsForPost($postId, $authUser["id"]);
+$comments = $commentService->getCommentsForPost($postId, $authUser["id"]);
 
 Response::json([
   "ok" => TRUE,
-  "post" => $post,
-  "reactions" => $reactions
+  "comments" => $comments
 ]);

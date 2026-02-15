@@ -71,7 +71,7 @@ export const oykTimeAgo = (
   lang = "fr",
   tz = "Europe/Paris"
 ) => {
-  const rtf = new Intl.RelativeTimeFormat(lang, { numeric: "auto" });
+  const rtf = new Intl.RelativeTimeFormat(lang, { timeZone: tz, numeric: "auto" });
   const date = oykDateUTC(new Date(value));
   const now = new Date();
 

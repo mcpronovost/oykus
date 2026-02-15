@@ -33,6 +33,7 @@ export default function OykBlogPost() {
     dislikes: 0,
     user: null,
   });
+  const [comments, setComments] = useState([]);
 
   const getBlogPost = async (signal) => {
     if (!params?.postId) return;
@@ -44,6 +45,7 @@ export default function OykBlogPost() {
       if (!r.ok || !r.post) throw Error();
       setPost(r.post);
       setReactions(r.reactions);
+      setComments(r.comments);
     } catch (e) {
       if (e?.name === "AbortError") return;
       setHasError(e.message || t("An error occurred"));
@@ -112,7 +114,7 @@ export default function OykBlogPost() {
                 </>
               }
             >
-              <p>{oykDate(post.created_at, "full", lang, currentUser?.timezone)}</p>
+              <time dateTime={post.created_at}>{oykDate(post.created_at, "full", lang, currentUser?.timezone)}</time>
             </OykHeading>
             <OykCard nop className="oyk-blog-post">
               <OykBanner
@@ -134,7 +136,7 @@ export default function OykBlogPost() {
               reaction={reactions.user}
               handleReactions={setReactions}
             />
-            <OykBlogComments postId={post.id} />
+            <OykBlogComments postId={post.id} postAuthorId={post.author} />
           </section>
         ) : (
           <OykFeedback title={t("No post found")} icon={Frown} ghost />

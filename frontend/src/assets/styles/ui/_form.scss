@@ -28,6 +28,7 @@
     }
 
     &-input {
+      line-height: 0;
       width: 100%;
 
       input, textarea, select {
@@ -37,6 +38,7 @@
         color: var(--oyk-card-item-fg);
         font-family: "Work Sans", sans-serif;
         font-size: 0.875rem;
+        line-height: 1.2;
         width: 100%;
         padding: 12px;
         transition: border-color 0.2s ease;
@@ -61,12 +63,14 @@
       }
   
       input[type="color"] {
+        line-height: 1;
         max-width: 45px;
         height: 45px;
         padding: 1px 4px;
       }
 
       &-radio {
+        line-height: 1;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
@@ -108,6 +112,7 @@
       }
 
       &-checkbox {
+        line-height: 1;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
@@ -164,6 +169,7 @@
       }
 
       &-color {
+        line-height: 1;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
@@ -182,6 +188,7 @@
       color: var(--oyk-c-danger);
       font-size: 0.875rem;
       font-weight: 500;
+      line-height: 1.2;
       display: block;
       margin-top: 4px;
     }
@@ -201,7 +208,12 @@
     }
   }
 
+  &-help {
+    line-height: 1.2;
+  }
+
   &-message {
+    line-height: 1.2;
     text-align: left;
     margin-top: 32px;
     margin-bottom: 16px;
@@ -223,6 +235,23 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
+    }
+  }
+
+  &-oneline {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    
+    .oyk-form-field {
+      flex: 1 1 auto;
+      margin-bottom: 0;
+    }
+    
+    .oyk-form-actions {
+      margin-top: 0;
     }
   }
 }

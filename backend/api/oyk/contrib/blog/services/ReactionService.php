@@ -12,10 +12,10 @@ class ReactionService {
   }
 
   public function userCanAddReaction(int $universeId, int $postId, int $userId): bool {
-    if (!$universeId || $userId <= 0) {
+    if (!$universeId || $universeId <= 0) {
       throw new NotFoundException("Universe not found");
     }
-    if (!$postId || $userId <= 0) {
+    if (!$postId || $postId <= 0) {
       throw new NotFoundException("Post not found");
     }
     if (!$userId || $userId <= 0) {
@@ -47,8 +47,8 @@ class ReactionService {
           SUM(CASE WHEN br.reaction = 'like' THEN 1 ELSE 0 END) AS likes,
           SUM(CASE WHEN br.reaction = 'dislike' THEN 1 ELSE 0 END) AS dislikes,
           MAX(ur.reaction) AS user
-        FROM blog_reactions br
-        LEFT JOIN blog_reactions ur ON ur.post = br.post AND ur.user = ?
+        FROM blog_post_reactions br
+        LEFT JOIN blog_post_reactions ur ON ur.post = br.post AND ur.user = ?
         WHERE br.post = ?
         GROUP BY br.post
       ");
@@ -78,7 +78,7 @@ class ReactionService {
       // 1. 
       $qry = $this->pdo->prepare("
         SELECT reaction 
-        FROM blog_reactions 
+        FROM blog_post_reactions 
         WHERE post = ? AND user = ?
       ");
       $qry->execute([$postId, $userId]);
@@ -87,7 +87,7 @@ class ReactionService {
       // 2. Aucune réaction → INSERT
       if ($existing === FALSE) {
         $insert = $this->pdo->prepare("
-          INSERT INTO blog_reactions (post, user, reaction)
+          INSERT INTO blog_post_reactions (post, user, reaction)
           VALUES (?, ?, ?)
         ");
         $insert->execute([$postId, $userId, $reaction]);
@@ -96,7 +96,7 @@ class ReactionService {
       // 3. Même réaction → DELETE (toggle off)
       else if ($existing === $reaction) {
         $delete = $this->pdo->prepare("
-          DELETE FROM blog_reactions
+          DELETE FROM blog_post_reactions
           WHERE post = ? AND user = ?
         ");
         $delete->execute([$postId, $userId]);
@@ -105,7 +105,7 @@ class ReactionService {
       // 4. Réaction différente → UPDATE
       else {
         $update = $this->pdo->prepare("
-          UPDATE blog_reactions
+          UPDATE blog_post_reactions
           SET reaction = ?
           WHERE post = ? AND user = ?
         ");
