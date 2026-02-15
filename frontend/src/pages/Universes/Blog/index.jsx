@@ -5,6 +5,7 @@ import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
+import { oykDate } from "@/utils";
 import AppNotAuthorized from "@/components/core/AppNotAuthorized";
 import {
   OykBanner,
@@ -20,7 +21,7 @@ import {
   OykLink,
   OykLoading,
 } from "@/components/ui";
-import { oykDate } from "@/utils";
+import OykModalPostCreate from "./modals/PostCreate";
 
 export default function OykBlog() {
   const { isAuth, currentUser, currentUniverse } = useAuth();
@@ -30,6 +31,7 @@ export default function OykBlog() {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [isModalPostCreateOpen, setIsModalPostCreateOpen] = useState(false);
 
   const getBlogPosts = async (signal) => {
     setIsLoading(true);
@@ -52,6 +54,13 @@ export default function OykBlog() {
     n("blog-post", { universeSlug: currentUniverse.slug, postId: id });
   };
 
+  const handleCloseModalPostCreate = (updated) => {
+    setIsModalPostCreateOpen(false);
+    if (updated) {
+      getBlogPosts();
+    }
+  };
+
   useEffect(() => {
     if (!isAuth || (currentUniverse && !currentUniverse.modules?.blog?.active)) return;
     const controller = new AbortController();
@@ -72,12 +81,13 @@ export default function OykBlog() {
 
   return (
     <section className="oyk-page oyk-blog">
+      <OykModalPostCreate isOpen={isModalPostCreateOpen} onClose={handleCloseModalPostCreate} />
       <OykHeading
         title={currentUniverse.modules.blog.settings.display_name || t("Blog")}
         actions={
           <>
             {currentUniverse.role === 1 ? (
-              <OykButton color="primary" icon={Plus} onClick={() => {}}>
+              <OykButton color="primary" icon={Plus} onClick={() => setIsModalPostCreateOpen(true)}>
                 {t("Create a new post")}
               </OykButton>
             ) : null}

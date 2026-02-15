@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Frown, Pen, ThumbsDown, ThumbsUp, Trash2, Settings } from "lucide-react";
+import { Frown, Pen, Trash2, Settings } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
@@ -19,10 +19,12 @@ import {
 import { oykDate } from "@/utils";
 import OykBlogComments from "./Comments";
 import OykBlogPostReactions from "./Reactions";
+import OykModalPostEdit from "./modals/PostEdit";
+import OykModalPostDelete from "./modals/PostDelete";
 
 export default function OykBlogPost() {
   const { isAuth, currentUser, currentUniverse } = useAuth();
-  const { routeTitle, params } = useRouter();
+  const { n, routeTitle, params } = useRouter();
   const { t, lang } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +35,8 @@ export default function OykBlogPost() {
     dislikes: 0,
     user: null,
   });
-  const [comments, setComments] = useState([]);
+  const [isModalPostEditOpen, setIsModalPostEditOpen] = useState(false);
+  const [isModalPostDeleteOpen, setIsModalPostDeleteOpen] = useState(false);
 
   const getBlogPost = async (signal) => {
     if (!params?.postId) return;
@@ -45,7 +48,6 @@ export default function OykBlogPost() {
       if (!r.ok || !r.post) throw Error();
       setPost(r.post);
       setReactions(r.reactions);
-      setComments(r.comments);
     } catch (e) {
       if (e?.name === "AbortError") return;
       setHasError(e.message || t("An error occurred"));
@@ -53,6 +55,20 @@ export default function OykBlogPost() {
       if (!signal || !signal.aborted) {
         setIsLoading(false);
       }
+    }
+  };
+
+  const handleCloseModalPostEdit = (updated, updatedPost) => {
+    setIsModalPostEditOpen(false);
+    if (updated) {
+      setPost(updatedPost);
+    }
+  };
+
+  const handleCloseModalPostDelete = (updated) => {
+    setIsModalPostDeleteOpen(false);
+    if (updated) {
+      n("blog", { universeSlug: currentUniverse.slug });
     }
   };
 
@@ -76,6 +92,8 @@ export default function OykBlogPost() {
 
   return (
     <section className="oyk-page oyk-blog">
+      <OykModalPostEdit post={post} isOpen={isModalPostEditOpen} onClose={handleCloseModalPostEdit} />
+      <OykModalPostDelete postId={post?.id} isOpen={isModalPostDeleteOpen} onClose={handleCloseModalPostDelete} />
       <OykGrid>
         {hasError ? (
           <OykFeedback ghost title={t("An error occurred")} message={t(hasError.message)} variant="danger" />
@@ -99,12 +117,12 @@ export default function OykBlogPost() {
                       menu={[
                         {
                           label: t("Edit post"),
-                          onClick: () => {},
+                          onClick: () => setIsModalPostEditOpen(true),
                           icon: <Pen size={16} />,
                         },
                         {
                           label: t("Delete post"),
-                          onClick: () => {},
+                          onClick: () => setIsModalPostDeleteOpen(true),
                           color: "danger",
                           icon: <Trash2 size={16} />,
                         },
