@@ -167,7 +167,7 @@ export default function OykBlogPostComments({ postId, postAuthorId }) {
                 {moreComments ? (
                   <footer className="oyk-blog-comments-list-footer">
                     <OykButton small outline onClick={() => {}}>
-                      {t("Load more")}
+                      {t("View more")}
                     </OykButton>
                   </footer>
                 ) : null}

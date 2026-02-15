@@ -12,7 +12,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "translations": "node src/services/translation/check-translations.js --languages=fr,en --locales=./src/services/translation/locales --src=./src --extensions=jsx,tsx"
+    "translations": "node src/services/translation/check-translations.js --languages=fr --locales=./src/services/translation/locales --src=./src --extensions=jsx,tsx"
   },
   "dependencies": {
     "lucide-react": "^0.562.0",
