@@ -66,6 +66,8 @@
     "Blog Module": "Module Blog",
     "Allow Reactions": "Réactions autorisées",
     "Allow Comments": "Commentaires autorisés",
+    "Allow Comment's Reactions": "Réactions aux commentaires autorisés",
+    "Allow Comment's Replies": "Réponses aux commentaires autorisés",
     "Users can like and dislike posts": "Les utilisateurs peuvent aimer et ne pas aimer un article",
     "Users can leave comments": "Les utilisateurs peuvent laisser des commentaires"
 }

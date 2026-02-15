@@ -219,7 +219,7 @@ $universe = array_merge($universe, $patch);
 $theme = array_merge($theme, $patchTheme);
 
 if ($theme) {
-  $theme["variables"] = json_decode($theme["variables"]);
+  $theme["variables"] = json_decode($theme["variables"], TRUE);
 }
 
 Response::json([

@@ -74,7 +74,7 @@ class CommentService {
           'content'    => $row['content'],
           'created_at' => $row['created_at'],
           'updated_at' => $row['updated_at'],
-          'author'     => json_decode($row['author'], true),
+          'author'     => json_decode($row['author'], TRUE),
           'reactions'  => [
             'likes' => (int) $row['likes'],
             'dislikes' => (int) $row['dislikes'],

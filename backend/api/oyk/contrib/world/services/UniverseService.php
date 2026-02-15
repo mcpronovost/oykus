@@ -1,19 +1,7 @@
 <?php
 
 class UniverseService {
-  private array $allowedModules;
-
   public function __construct(private PDO $pdo) {
-    $this->allowedModules = [
-      "planner",
-      "blog",
-      "forum",
-      "courrier",
-      "collectibles",
-      "rewards",
-      "game",
-      "leveling"
-    ];
   }
 
   public function getContext(?string $slug, int $userId): array {

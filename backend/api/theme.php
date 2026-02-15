@@ -33,7 +33,7 @@ try {
 }
 
 if ($theme) {
-    $theme["variables"] = json_decode($theme["variables"]);
+    $theme["variables"] = json_decode($theme["variables"], TRUE);
 
     echo ":root {\n";
     echo "--oyk-c-primary: ".$theme['c_primary'].";\n";

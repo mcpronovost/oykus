@@ -102,7 +102,7 @@ export default function OykBlogPostComments({ postId, postAuthorId }) {
       !currentUniverse.modules?.blog?.active ||
       !currentUniverse.modules.blog.settings?.is_comments_enabled
     ) {
-      return null;
+      return;
     }
     const controller = new AbortController();
 
