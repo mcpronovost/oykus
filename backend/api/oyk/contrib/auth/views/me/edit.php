@@ -12,7 +12,7 @@ $authUser = require_auth();
 |--------------------------------------------------------------------------
 */
 $qry = $pdo->prepare("
-  SELECT id, name, slug, is_slug_auto, abbr, is_abbr_auto, avatar, cover
+  SELECT id, name, slug, is_slug_auto, abbr, is_abbr_auto, avatar, cover, is_dev, timezone
   FROM auth_users
   WHERE id = ?
   LIMIT 1
@@ -22,6 +22,10 @@ $user = $qry->fetch();
 
 if (!$user) {
   Response::notFound("User not found");
+}
+
+if (!$user["is_dev"]) {
+  unset($user["is_dev"]);
 }
 
 /*

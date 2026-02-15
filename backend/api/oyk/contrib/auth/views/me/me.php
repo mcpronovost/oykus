@@ -5,7 +5,7 @@ $authUser = require_auth();
 
 try {
   $qry = $pdo->prepare("
-    SELECT name, slug, abbr, avatar, cover, is_dev, timezone
+    SELECT id, name, slug, abbr, avatar, cover, is_dev, timezone
     FROM auth_users
     WHERE id = ?
     LIMIT 1
@@ -20,6 +20,10 @@ catch (Exception $e) {
 
 if (!$user) {
   Response::notFound("User not found");
+}
+
+if (!$user["is_dev"]) {
+  unset($user["is_dev"]);
 }
 
 Response::json([

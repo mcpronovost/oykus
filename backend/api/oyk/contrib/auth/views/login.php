@@ -60,6 +60,9 @@ setcookie(
 // EventBus::dispatch("user.login", ["user_id" => $user["id"]]);
 
 unset($user["username"], $user["password"]);
+if (!$user["is_dev"]) {
+  unset($user["is_dev"]);
+}
 
 Response::json([
   "ok" => TRUE,
