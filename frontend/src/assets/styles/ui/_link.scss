@@ -10,4 +10,12 @@
   &.oyk-block {
     display: block;
   }
+
+  &-hover {
+    &-primary {
+      &:hover {
+        color: var(--oyk-c-primary);
+      }
+    }
+  }
 }

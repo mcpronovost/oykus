@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useCallback, useEffect } from "rea
 import { useAuth } from "@/services/auth";
 import { DEFAULT_LANG, SUPPORTED_LANGS } from "@/services/translation/utils";
 import { ROUTES } from "./routes";
-import { getLangFromPath, findRoute, buildRoutePath } from "./utils";
+import { getLangFromPath, findRoute, buildRoutePath, getBreadcrumbs } from "./utils";
 
 const RouterContext = createContext();
 
@@ -97,6 +97,7 @@ export function RouterProvider({ children }) {
     params,
     lang,
     history,
+    breads: (name, language = lang) => getBreadcrumbs(name, language),
     n: (name, params = {}, language = lang) => navigate(name, params, language),
     routeTitle: (title) => changePageTitle(title),
     refresh,

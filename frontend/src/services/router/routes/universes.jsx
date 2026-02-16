@@ -24,6 +24,10 @@ export const UNIVERSES_ROUTES = [
               fr: "blog",
               en: "blog",
             },
+            labels: {
+              fr: "Blog",
+              en: "Blog",
+            },
             children: [
               {
                 name: "blog-post",

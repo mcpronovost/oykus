@@ -7,6 +7,7 @@ export default function OykLink({
   params = {},
   disabled = false,
   block = false,
+  colorHover,
   className = {},
   ...props
 }) {
@@ -23,7 +24,7 @@ export default function OykLink({
   };
 
   return (
-    <a href={href} onClick={handleClick} className={`oyk-link ${disabled ? "oyk-disabled" : ""} ${block ? "oyk-block" : ""} ${className}`} {...props}>
+    <a href={href} onClick={handleClick} className={`oyk-link ${disabled ? "oyk-disabled" : ""} ${block ? "oyk-block" : ""} ${colorHover ? `oyk-link-hover-${colorHover}` : ""} ${className}`} {...props}>
       {children}
     </a>
   );

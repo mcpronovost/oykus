@@ -151,3 +151,34 @@ export const buildRoutePath = (routeName, params = {}, pathlang) => {
   
   return findRoutePath(ROUTES, routeName);
 };
+
+// Function to generate breadcrumbs from a route name
+export const getBreadcrumbs = (routeName, pathlang) => {
+  const breadcrumbs = [];
+
+  const findBreadcrumbs = (routes, name, currentPath = "") => {
+    for (const route of routes) {
+      const routePath = route.paths[pathlang];
+      const routeLabel = route.labels?.[pathlang] || route.name;
+      if (routePath === undefined) continue;
+
+      const fullPath = currentPath ? `${currentPath}/${routePath}` : routePath;
+
+      if (route.name === name) {
+        breadcrumbs.push({ name: route.name, path: fullPath, label: routeLabel });
+        return true;
+      }
+
+      if (route.children) {
+        breadcrumbs.push({ name: route.name, path: fullPath, label: routeLabel });
+        const found = findBreadcrumbs(route.children, name, fullPath);
+        if (found) return true;
+        breadcrumbs.pop(); // Remove if not part of the trail
+      }
+    }
+    return false;
+  };
+
+  findBreadcrumbs(ROUTES, routeName);
+  return breadcrumbs;
+};

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Frown, Pen, Trash2, Settings } from "lucide-react";
+import { Clock, Frown, Pen, Trash2, Settings } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
@@ -105,6 +105,14 @@ export default function OykBlogPost() {
               nop
               title={post.title}
               description={post.description}
+              prepend={
+                <div className="oyk-blog-header-date">
+                  <time dateTime={post.created_at}>
+                    {oykDate(post.created_at, "full", lang, currentUser?.timezone)}
+                  </time>
+                </div>
+              }
+              showBreadcrumbs
               actions={
                 <>
                   {/*<OykButton color="primary" outline onClick={() => {}}>
@@ -131,9 +139,7 @@ export default function OykBlogPost() {
                   ) : null}
                 </>
               }
-            >
-              <time dateTime={post.created_at}>{oykDate(post.created_at, "full", lang, currentUser?.timezone)}</time>
-            </OykHeading>
+            />
             <OykCard nop className="oyk-blog-post">
               <OykBanner
                 height={256}
@@ -141,10 +147,8 @@ export default function OykBlogPost() {
                 coverSrc={post.image || currentUniverse.cover}
                 coverHeight={256}
               />
-              <div className="oyk-blog-post-header">
-                <div className="oyk-blog-post-header-content">
-                  <p>{post.content}</p>
-                </div>
+              <div className="oyk-blog-post-content">
+                <p>{post.content}</p>
               </div>
             </OykCard>
             <OykBlogPostReactions
