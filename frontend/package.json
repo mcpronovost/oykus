@@ -1,7 +1,7 @@
 {
   "name": "oykus",
   "description": "A project.",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "author": "mcpronovost",
   "license": "BSD-3-Clause",
   "main": "main.jsx",

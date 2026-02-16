@@ -8,7 +8,7 @@
 
 <div align="center">
 
-[![Version](https://img.shields.io/badge/Version-0.3.8-blue.svg)](./CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-0.3.9-blue.svg)](./CHANGELOG.md)
 [![License](https://img.shields.io/badge/License-BSD--3--Clause-red.svg)](./LICENSE)
 [![made in Canada](https://img.shields.io/badge/Made%20in-Canada-FF0000)](#)
 [![made in Québec](https://img.shields.io/badge/Fait%20au-Québec-003399)](#)
@@ -32,8 +32,10 @@ Oykus is an **experimental RPG project** blending story-creation with gameplay �
 - 🧱 **Courrier**: Private messaging and alerts functionality
 - 🔨 **Blog**: Share content, information and updates
   - ✅ Posts
-  - ✅ Reactions
-  - 🔨 Comments
+  - ✅ Posts Reactions
+  - ✅ Comments
+  - 🧱 Comments Reactions
+  - 🧱 Comments Replies
 - 🧱 **Collectibles**: Collect and manage objects
   - 🧱 Collections
   - 🧱 Items
