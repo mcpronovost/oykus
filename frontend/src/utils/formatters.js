@@ -25,14 +25,24 @@ export const oykCode = (text) => {
       /\[c=#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})\]/g,
       '<span style="color:#$1;">'
     )
-    .replace(/\[c=([a-zA-Z0-9_]+)\]/g, '<span style="color:var(--c-$1);">')
+    .replace(/\[c=([a-zA-Z0-9_]+)\]/g, '<span style="color:var(--oyk-c-$1);">')
     .replace(/\[\/c\]/g, "</span>")
     .replace(/\[url=([^<>[\]]+)\]/g, '<a href="$1">')
     .replace(/\[\/url\]/g, "</a>")
     .replace(/\[urlo=([^<>[\]]+)\]/g, '<a href="$1" target="_blank">')
     .replace(/\[\/urlo\]/g, "</a>")
     .replace(/\[img=([^<>[\]]+)\]/g, '<img src="$1" alt="" />')
-    .replace(/\[ico=([a-z- ]+)\]/g, '<i class="mdi $1"></i>');
+    .replace(/\[ico=([a-z- ]+)\]/g, '<i class="mdi $1"></i>')
+    .replace(/\[table\]/g, "<table>")
+    .replace(/\[\/table\]/g, "</table>")
+    .replace(/\[th col=([0-9]+)\]/g, '<th colspan="$1">')
+    .replace(/\[th\]/g, "<th>")
+    .replace(/\[\/th\]/g, "</th>")
+    .replace(/\[tr\]/g, "<tr>")
+    .replace(/\[\/tr\]/g, "</tr>")
+    .replace(/\[td col=([0-9]+)\]/g, '<td colspan="$1">')
+    .replace(/\[td\]/g, "<td>")
+    .replace(/\[\/td\]/g, "</td>");
   return r;
 };
 /* eslint-enable quotes */

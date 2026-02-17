@@ -5,7 +5,7 @@ html {
 body {
   background-color: var(--oyk-core-bg);
   color: var(--oyk-core-fg);
-  font-family: "Work Sans", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 1rem;
   font-synthesis: none;
   font-weight: 400;
@@ -60,4 +60,33 @@ body {
 
 .oyk-page {
   padding-bottom: 32px;
+}
+
+.oyk-code {
+  font-size: 1.2rem;
+  line-height: 1.5;
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+
+    th {
+      background-color: var(--oyk-card-divider);
+      border: 1px solid var(--oyk-card-divider);
+      font-size: 1.1rem;
+      font-weight: 600;
+      line-height: 1.5;
+      padding: 6px 8px;
+      text-align: left;
+    }
+
+    td {
+      border: 1px solid var(--oyk-card-divider);
+      font-size: 1.1rem;
+      font-weight: 400;
+      line-height: 1.5;
+      padding: 4px 8px;
+      text-align: left;
+    }
+  }
 }

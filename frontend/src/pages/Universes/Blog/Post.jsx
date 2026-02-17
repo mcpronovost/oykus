@@ -16,7 +16,7 @@ import {
   OykHeading,
   OykLoading,
 } from "@/components/ui";
-import { oykDate } from "@/utils";
+import { oykCode, oykDate } from "@/utils";
 import OykBlogComments from "./Comments";
 import OykBlogPostReactions from "./Reactions";
 import OykModalPostEdit from "./modals/PostEdit";
@@ -147,8 +147,8 @@ export default function OykBlogPost() {
                 coverSrc={post.image || currentUniverse.cover}
                 coverHeight={256}
               />
-              <div className="oyk-blog-post-content">
-                <p>{post.content}</p>
+              <div className="oyk-blog-post-content oyk-code">
+                <div dangerouslySetInnerHTML={{__html: oykCode(post.content)}}></div>
               </div>
             </OykCard>
             <OykBlogPostReactions
