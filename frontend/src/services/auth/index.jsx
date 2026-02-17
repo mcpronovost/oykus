@@ -5,7 +5,7 @@ import { getUniverseSlugFromPath } from "@/services/router/utils";
 import { KEY_RAT, KEY_USER, KEY_WORLD_UNIVERSES, KEY_WORLD_CURRENT_UNIVERSE } from "@/services/store/constants";
 import { storeGet, storeSet, storeRemove, oykCookieSet, oykCookieDelete } from "@/services/store/utils";
 
-const REFRESH_INTERVAL = 1000 * 60 * 5; // 5 minutes = 1000 * 60 * 5
+const REFRESH_INTERVAL = 1 * 60 * 5; // 5 minutes = 1000 * 60 * 5
 
 const AuthContext = createContext(null);
 

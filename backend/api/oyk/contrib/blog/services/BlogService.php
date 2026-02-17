@@ -158,6 +158,32 @@ class BlogService {
     }
   }
 
+  public function getPostAuthor(int $universeId, int $postId): int {
+    try {
+      $qry = $this->pdo->prepare("
+        SELECT bp.author
+        FROM blog_posts bp
+        WHERE bp.universe = ? AND bp.id = ?
+        LIMIT 1
+      ");
+
+      $qry->execute([
+        $universeId,
+        $postId
+      ]);
+
+      $row = $qry->fetch();
+      if (!$row) {
+        throw new NotFoundException("Post not found");
+      }
+
+      return $row["author"];
+    }
+    catch (Exception $e) {
+      throw new QueryException("Failed to get post");
+    }
+  }
+
   public function createPost(int $universeId, int $authorId, array $fields): int {
     try {
       $qry = $this->pdo->prepare("

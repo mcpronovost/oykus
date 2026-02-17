@@ -8,7 +8,7 @@ export default function OykLink({
   disabled = false,
   block = false,
   colorHover,
-  className = {},
+  className = "",
   ...props
 }) {
   const { n, lang } = useRouter();

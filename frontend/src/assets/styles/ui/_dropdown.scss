@@ -27,13 +27,14 @@
     right: 0;
     z-index: 1000;
     padding: 0.5rem 0;
-    margin-top: 0.25rem;
+    margin-top: 0;
     animation: dropdown-fade-in 0.15s ease-out;
 
     &.oyk-float {
       border-top-left-radius: var(--oyk-radius);
       border-top-right-radius: var(--oyk-radius);
       box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.4);
+      margin-top: 0.25rem;
     }
 
     &.direction-right {

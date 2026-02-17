@@ -17,5 +17,11 @@
         color: var(--oyk-c-primary);
       }
     }
+
+    &-opacity-6 {
+      &:hover {
+        opacity: 0.6;
+      }
+    }
   }
 }

@@ -26,6 +26,8 @@ require_once __DIR__ . "/contrib/blog/services/BlogService.php";
 require_once __DIR__ . "/contrib/blog/services/ReactionService.php";
 require_once __DIR__ . "/contrib/blog/services/CommentService.php";
 
+require_once __DIR__ . "/contrib/courrier/services/AlertService.php";
+
 require_once __DIR__ . "/contrib/planner/services/StatusService.php";
 require_once __DIR__ . "/contrib/planner/services/TaskService.php";
 
