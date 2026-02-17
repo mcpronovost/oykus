@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 
-export default function OykScrollbar({ children, height = "100%", className = "" }) {
+import { useRouter } from "@/services/router";
+
+export default function OykScrollbar({ isMainScroll = false, height = "100%", className = "", children }) {
+  const { route } = useRouter();
+
   const containerRef = useRef(null);
   const contentRef = useRef(null);
   const thumbRef = useRef(null);
@@ -82,6 +86,7 @@ export default function OykScrollbar({ children, height = "100%", className = ""
     setDragging(true);
     dragStartY.current = e.clientY;
     scrollStartTop.current = contentRef.current.scrollTop;
+    console.log(">> ", scrollStartTop.current);
     document.body.classList.add("oyk-no-select");
   };
 
@@ -115,6 +120,16 @@ export default function OykScrollbar({ children, height = "100%", className = ""
       document.removeEventListener("mouseup", onMouseUp);
     };
   }, [dragging, thumbHeight]);
+
+  useEffect(() => {
+    if (isMainScroll) {
+      const content = contentRef.current;
+      if (!content) return;
+
+      content.scrollTop = 0;
+      setThumbTop(0);
+    }
+  }, [route]);
 
   return (
     <div className="oyk-scrollbar" ref={containerRef} style={{ flex: "1 1 100%" }}>

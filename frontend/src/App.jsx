@@ -19,7 +19,7 @@ function MainLayout() {
     <main id="oyk-app-main">
       {route && route.component && !isLoadingAuth ? (
         <Suspense fallback={<OykAppLoading />}>
-          <OykScrollbar height={"100%"}>
+          <OykScrollbar isMainScroll height={"100%"}>
             <>
               {route.require_dev && !isDev ? (
                 <OykAppNotAuthorized />
