@@ -1,11 +1,10 @@
-import { ArrowLeftFromLine, ArrowRightFromLine } from "lucide-react";
-import { useAuth } from "@/services/auth"
+import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import { OykButton, OykDropdown, OykLink } from "@/components/ui";;
+import { OykLink } from "@/components/ui";
 
 export default function AppFooter() {
-  const { isAuth } = useAuth();
+  const { currentUniverse, universes } = useAuth();
   const { n } = useRouter();
   const { t } = useTranslation();
 
@@ -13,12 +12,12 @@ export default function AppFooter() {
     {
       label: t("About"),
       routeName: "about",
-      onClick:() => n("about"),
+      onClick: () => n("about"),
     },
     {
       label: t("Devlog"),
       routeName: "devlog",
-      onClick: () => n("devlog")
+      onClick: () => n("devlog"),
     },
     {
       label: t("Privacy Policy"),
@@ -40,6 +39,22 @@ export default function AppFooter() {
           ))}
         </ul>
       </nav>
+      {currentUniverse ? (
+        <small className="oyk-app-footer-small">
+          <p className="oyk-app-footer-small-copyright">
+            <span>{currentUniverse.name}</span> &copy;{" "}
+            <time dateTime={currentUniverse.created_at.slice(0, 10)}>{currentUniverse.created_at.slice(0, 4)}</time>{" "}
+            <span>{currentUniverse.staff.owner.name}</span>
+          </p>
+          {!currentUniverse.is_default && universes?.length > 0 ? (
+            <p className="oyk-app-footer-small-copyright">
+              <span>{universes[0].name}</span> &copy;{" "}
+              <time dateTime={new Date().getFullYear()}>{new Date().getFullYear()}</time>{" "}
+              <span>{universes[0].staff.owner.name}</span>
+            </p>
+          ) : null}
+        </small>
+      ) : null}
     </footer>
   );
 }
