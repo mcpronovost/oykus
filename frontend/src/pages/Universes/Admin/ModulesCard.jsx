@@ -45,6 +45,8 @@ export default function UniverseAdminModulesCard({
     }
   }, [module.name]);
 
+  if (["collectibles", "courrier", "forum", "game", "leveling", "rewards"].includes(module.name)) module.disabled = true;
+
   return (
     <li className="oyk-universes-admin-modules-list-item">
       <OykCard nop fullCenter alignSpace>
