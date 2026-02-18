@@ -7,6 +7,7 @@ update_wio();
 
 Router::get("/api/health", __DIR__ . "/oyk/core/scripts/migrate.php");
 Router::get("/api/v1/theme.php", __DIR__ . "/theme.php");
+Router::get("/api/v1/heartbeat", __DIR__ . "/oyk/heartbeat.php");
 
 require OYK . "/contrib/auth/routes.php";
 require OYK . "/contrib/world/routes.php";
