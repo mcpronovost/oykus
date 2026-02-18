@@ -5,6 +5,8 @@ import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
+import { useWorld } from "@/services/world";
+
 import AppNotAuthorized from "@/components/core/AppNotAuthorized";
 import {
   OykBanner,
@@ -23,9 +25,10 @@ import OykModalPostEdit from "./modals/PostEdit";
 import OykModalPostDelete from "./modals/PostDelete";
 
 export default function OykBlogPost() {
-  const { isAuth, currentUser, currentUniverse } = useAuth();
+  const { isAuth } = useAuth();
   const { n, routeTitle, params } = useRouter();
   const { t, lang } = useTranslation();
+  const { currentUser, currentUniverse } = useWorld();
 
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(null);

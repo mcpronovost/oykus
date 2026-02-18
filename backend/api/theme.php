@@ -8,7 +8,7 @@ header("Expires: 0");
 
 global $pdo;
 
-$universeSlug = $_COOKIE["oyk-theme"] ?? null;
+$universeSlug = $_COOKIE["oyk-world"] ?? null;
 
 if (!$universeSlug) {
     Response::notFound();

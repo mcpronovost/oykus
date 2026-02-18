@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Plus, EllipsisVertical, Edit, Trash2 } from "lucide-react";
 
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
-import { OykDropdown, OykModal } from "@/components/ui";
+import { OykDropdown } from "@/components/ui";
 
 import ModalTaskCreate from "./modals/TaskCreate";
 import ModalStatusEdit from "./modals/StatusEdit";

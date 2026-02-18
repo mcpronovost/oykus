@@ -2,12 +2,14 @@ import { useRef } from "react";
 import { Bell, Mail, Smile, ScrollText } from "lucide-react";
 
 import { useAuth } from "@/services/auth";
+import { useNotifications } from "@/services/notifications";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import { OykAvatar, OykButton, OykDropdown, OykLink } from "@/components/ui";
 
 export default function AppHeaderNotifications() {
-  const { isAuth, currentUser } = useAuth();
+  const { isAuth } = useAuth();
+  const { notifications } = useNotifications();
   const { n } = useRouter();
   const { t, lang } = useTranslation();
 
@@ -25,13 +27,13 @@ export default function AppHeaderNotifications() {
               plain
               icon={Bell}
               iconSize={18}
-              badgeCount={currentUser?.notifications?.alerts?.length}
+              badgeCount={notifications?.alerts?.length}
               badgeBorderColor="var(--oyk-app-header-bg)"
             />
           }
           menu={[
-            ...(currentUser?.notifications?.alerts
-              ? currentUser?.notifications?.alerts?.map((alert) => ({
+            ...(notifications?.alerts
+              ? notifications?.alerts?.map((alert) => ({
                   element: (
                     <article className="oyk-app-header-notifications-alert">
                       <div className="oyk-app-header-notifications-alert-icon">
@@ -82,9 +84,9 @@ export default function AppHeaderNotifications() {
           plain
           icon={Smile}
           iconSize={18}
-          badgeDot={currentUser?.notifications?.friends}
+          badgeDot={notifications?.friends}
           badgeBorderColor="var(--oyk-app-header-bg)"
-          onClick={() => (currentUser?.notifications?.friends ? n("settings-friends-requests") : n("settings-friends"))}
+          onClick={() => (notifications?.friends ? n("settings-friends-requests") : n("settings-friends"))}
         />
       </div>
       <div className="oyk-app-header-notifications-group">
@@ -92,7 +94,7 @@ export default function AppHeaderNotifications() {
           plain
           icon={Mail}
           iconSize={18}
-          badgeDot={currentUser?.notifications?.messages}
+          badgeDot={notifications?.messages}
           badgeBorderColor="var(--oyk-app-header-bg)"
           disabled
         />

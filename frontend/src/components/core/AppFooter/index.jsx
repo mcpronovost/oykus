@@ -1,12 +1,12 @@
-import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
+import { useWorld } from "@/services/world";
 import { OykLink } from "@/components/ui";
 
 export default function AppFooter() {
-  const { currentUniverse, universes } = useAuth();
   const { n } = useRouter();
   const { t } = useTranslation();
+  const { currentUniverse, universes } = useWorld();
 
   const menuList = [
     {

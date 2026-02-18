@@ -1,6 +1,9 @@
 import { ArrowLeftFromLine, ArrowRightFromLine } from "lucide-react";
+
 import { useAuth } from "@/services/auth";
 import { useStore } from "@/services/store";
+import { useWorld } from "@/services/world";
+
 import OykAppHeaderMenu from "./Menu";
 import OykAppHeaderLeveling from "./Leveling";
 import OykAppHeaderNotifications from "./Notifications";
@@ -8,8 +11,9 @@ import OykAppHeaderAuth from "./Auth";
 import OykAppHeaderUser from "./User";
 
 export default function AppHeader() {
-  const { isAuth, currentUniverse } = useAuth();
+  const { isAuth } = useAuth();
   const { storeAppSidebarOpen, setStoreAppSidebarOpen } = useStore();
+  const { currentUniverse } = useWorld();
 
   const handleToggleSidebar = () => {
     setStoreAppSidebarOpen(!storeAppSidebarOpen);

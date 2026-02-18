@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import { Frown } from "lucide-react";
 
 import { api } from "@/services/api";
-import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
+import { useWorld } from "@/services/world";
 import { OykAlert, OykCard, OykFeedback, OykHeading, OykLoading } from "@/components/ui";
 import OykModulesCard from "./ModulesCard";
 
 export default function UniverseAdminModules() {
-  const { setCurrentUniverse } = useAuth();
   const { routeTitle, params } = useRouter();
   const { t } = useTranslation();
+  const { changeUniverse } = useWorld();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingUsage, setIsLoadingUsage] = useState(null);
@@ -48,7 +48,11 @@ export default function UniverseAdminModules() {
       formData.append("action", action);
       const r = await api.post(`/world/universes/${params?.universeSlug}/modules/edit/`, formData);
       if (!r.ok || !r.module) throw Error();
-      setCurrentUniverse();
+      setModules((prev) => ({
+        ...prev,
+        [module]: r.module,
+      }));
+      changeUniverse(params?.universeSlug);
     } catch (e) {
       setHasErrorUsage(() => ({
         [module]: e.message || t("An error occurred"),

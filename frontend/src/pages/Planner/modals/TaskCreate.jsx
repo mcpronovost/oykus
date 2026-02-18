@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 
 import { api } from "@/services/api";
-import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
+import { useWorld } from "@/services/world";
+
 import {
   OykButton,
   OykFeedback,
@@ -18,8 +19,8 @@ export default function ModalTaskCreate({
   status,
   statuses,
 }) {
-  const { currentUniverse } = useAuth();
   const { t } = useTranslation();
+  const { currentUniverse } = useWorld();
 
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);

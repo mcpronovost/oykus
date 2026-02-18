@@ -14,15 +14,19 @@ import {
 import { useAuth } from "@/services/auth";
 import { useStore } from "@/services/store";
 import { useTranslation } from "@/services/translation";
+import { useWorld } from "@/services/world";
+
 import { OykScrollbar } from "@/components/ui";
+
 import OykAppSidebarHeader from "./Header";
 import OykAppSidebarUser from "./User";
 import OykAppSidebarNavItem from "./NavItem";
 
 export default function AppSidebar() {
-  const { isAuth, isDev, currentUniverse } = useAuth();
+  const { isAuth, isDev } = useAuth();
   const { storeAppSidebarOpen } = useStore();
   const { t } = useTranslation();
+  const { currentUniverse } = useWorld();
 
   return (
     <aside className={`oyk-app-sidebar ${storeAppSidebarOpen ? "open" : ""}`}>

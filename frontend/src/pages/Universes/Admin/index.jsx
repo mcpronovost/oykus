@@ -4,6 +4,8 @@ import { Eye, Orbit, Construction, ListTodo, Paintbrush, ScrollText } from "luci
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
+import { useWorld } from "@/services/world";
+
 import { OykButton, OykCard, OykFeedback, OykGrid, OykGridRow, OykGridNav, OykGridMain, OykHeading } from "@/components/ui";
 import { OykSidenav } from "@/components/common";
 import OykError404 from "@/pages/Error404";
@@ -15,9 +17,10 @@ import OykUniverseAdminTheme from "./Theme";
 // import OykUniverseAdminThemeStylesheet from "./ThemeStylesheet";
 
 export default function UniverseAdmin() {
-  const { isAuth, currentUniverse } = useAuth();
+  const { isAuth } = useAuth();
   const { n, params } = useRouter();
   const { t } = useTranslation();
+  const { currentUniverse } = useWorld();
 
   const menu = [
     {

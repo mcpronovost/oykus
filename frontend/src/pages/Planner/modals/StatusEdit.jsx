@@ -1,13 +1,14 @@
 import { useState } from "react";
 
 import { api } from "@/services/api";
-import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
+import { useWorld } from "@/services/world";
+
 import { OykButton, OykForm, OykFormField, OykFormMessage, OykModal } from "@/components/ui";
 
 export default function ModalStatusEdit({ isOpen, onClose, status }) {
-  const { currentUniverse } = useAuth();
   const { t } = useTranslation();
+  const { currentUniverse } = useWorld();
 
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);

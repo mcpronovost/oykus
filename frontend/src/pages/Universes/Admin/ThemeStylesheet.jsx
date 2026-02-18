@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { SquircleDashed, Image } from "lucide-react";
 
 import { api } from "@/services/api";
-import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
+import { useWorld } from "@/services/world";
+
 import {
-  OykBanner,
   OykButton,
   OykCard,
   OykForm,
@@ -17,9 +16,9 @@ import {
 } from "@/components/ui";
 
 export default function UniverseAdminThemeStylesheet() {
-  const { currentUniverse, setCurrentUniverse } = useAuth();
   const { routeTitle } = useRouter();
   const { t } = useTranslation();
+  const { currentUniverse, setCurrentUniverse } = useWorld();
 
   const stylesheetRef = useRef(null);
 

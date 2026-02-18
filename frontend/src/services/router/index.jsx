@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useCallback, useEffect } from "react";
 
-import { useAuth } from "@/services/auth";
 import { DEFAULT_LANG, SUPPORTED_LANGS } from "@/services/translation/utils";
 import { ROUTES } from "./routes";
 import { getLangFromPath, findRoute, buildRoutePath, getBreadcrumbs } from "./utils";
@@ -21,8 +20,6 @@ const INITIAL_STATE = {
 };
 
 export function RouterProvider({ children }) {
-  const { currentUniverse } = useAuth();
-
   const [history, setHistory] = useState(INITIAL_STATE.history);
   const [lang, setLang] = useState(INITIAL_STATE.lang);
   const [route, setRoute] = useState(INITIAL_STATE.route);
@@ -68,10 +65,10 @@ export function RouterProvider({ children }) {
   }, [lang, route]);
 
   const changePageTitle = useCallback((title) => {
-    const universeName = currentUniverse?.name || "Oykus";
+    const universeName = "Oykus";
     if (title) return window.document.title = `${title} | ${universeName}`;
     return window.document.title = universeName;
-  }, [currentUniverse]);
+  }, []);
 
   useEffect(() => {
     if (window.document.documentElement.lang !== lang) {

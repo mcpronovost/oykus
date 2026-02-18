@@ -3,7 +3,8 @@ import { ThumbsDown, ThumbsUp } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
-import AppNotAuthorized from "@/components/core/AppNotAuthorized";
+import { useWorld } from "@/services/world";
+
 import { OykAlert, OykButton } from "@/components/ui";
 
 export default function OykBlogPostReactions({
@@ -13,7 +14,8 @@ export default function OykBlogPostReactions({
   reaction = null,
   handleReactions = () => {},
 }) {
-  const { isAuth, currentUniverse } = useAuth();
+  const { isAuth } = useAuth();
+  const { currentUniverse } = useWorld();
 
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);

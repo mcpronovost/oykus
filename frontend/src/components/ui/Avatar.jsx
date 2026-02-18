@@ -3,6 +3,7 @@ import { User } from "lucide-react";
 
 import { DOMAIN } from "@/services/api/utils";
 import { useAuth } from "@/services/auth";
+import { useWorld } from "@/services/world";
 
 export default function OykAvatar({
   name = "",
@@ -21,7 +22,8 @@ export default function OykAvatar({
   levelBorderColor = "var(--oyk-card-bg)",
   isPrivate = true,
 }) {
-  const { isAuth, currentUniverse } = useAuth();
+  const { isAuth } = useAuth();
+  const { currentUniverse } = useWorld();
 
   const showImg = useMemo(() => !isPrivate || (isPrivate && isAuth), [isPrivate, isAuth]);
 

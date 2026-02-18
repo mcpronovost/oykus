@@ -3,19 +3,22 @@ import { SquircleDashed } from "lucide-react";
 
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
+import { useWorld } from "@/services/world";
+
 import { OykAvatar, OykDropdown } from "@/components/ui";
 import imgOykus from "@/assets/img/oykus-32.webp";
 
 export default function Header() {
-  const { isAuth, universes, currentUniverse, setCurrentUniverse } = useAuth();
+  const { isAuth } = useAuth();
   const { n } = useRouter();
+  const { universes, currentUniverse, changeUniverse } = useWorld();
 
   const dropdownRef = useRef(null);
 
   const handleUniverseClick = (uSlug) => {
     dropdownRef.current?.close();
     n("universe", { universeSlug: uSlug });
-    setCurrentUniverse(uSlug);
+    changeUniverse(uSlug);
   };
 
   const universesMenu = useMemo(

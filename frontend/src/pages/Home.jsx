@@ -3,16 +3,17 @@ import { useEffect, useState } from "react";
 import { Component, MessagesSquare, Share2 } from "lucide-react";
 
 import { api } from "@/services/api";
-import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
+import { useWorld } from "@/services/world";
+
 import { OykCard, OykFeedback, OykGrid, OykGridRow, OykGridCol, OykHeading } from "@/components/ui";
 import { OykWIO } from "@/components/common";
 
 export default function Home() {
-  const { currentUniverse, setCurrentUniverse } = useAuth();
   const { params } = useRouter();
   const { t } = useTranslation();
+  const { currentUniverse, changeUniverse } = useWorld();
 
   const [isLoadingWio, setIsLoadingWio] = useState(false);
   const [hasErrorWio, setHasErrorWio] = useState(null);
@@ -43,7 +44,7 @@ export default function Home() {
     const controller = new AbortController();
 
     if (params?.universeSlug && params?.universeSlug !== currentUniverse?.slug) {
-      setCurrentUniverse(params.universeSlug);
+      changeUniverse(params.universeSlug);
     }
     fetchWio(controller.signal);
 

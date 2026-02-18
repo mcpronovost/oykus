@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 
 import { api } from "@/services/api";
-import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
+import { useWorld } from "@/services/world";
+
 import { OykButton, OykForm, OykFormField, OykFormMessage, OykModal } from "@/components/ui";
 
 export default function ModalPostCreate({ post, isOpen, onClose }) {
-  const { currentUniverse } = useAuth();
+  const { currentUniverse } = useWorld();
   const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);

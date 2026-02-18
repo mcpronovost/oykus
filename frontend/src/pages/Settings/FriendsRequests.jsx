@@ -10,7 +10,6 @@ import OykModalFriendsAdd from "./modals/FriendsAdd";
 import OykFriendsRequestsCard from "./FriendsRequestsCard";
 
 export default function SettingsFriendsRequests() {
-  const { getUserNotifications } = useAuth();
   const { routeTitle } = useRouter();
   const { t } = useTranslation();
 
@@ -36,7 +35,6 @@ export default function SettingsFriendsRequests() {
       const r = await api.post(`/auth/friends/${action}/`, formData);
       if (!r.ok) throw Error();
       fetchFriendsRequestsData();
-      getUserNotifications();
     } catch (e) {
       setHasError(() => ({
         [`friend-${friendSlug}`]: e.message || t("An error occurred"),

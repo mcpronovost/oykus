@@ -5,6 +5,8 @@ import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
+import { useWorld } from "@/services/world";
+
 import {
   OykAvatar,
   OykButton,
@@ -19,9 +21,10 @@ import {
 import OykBlogPostCommentsCard from "./CommentsCard";
 
 export default function OykBlogPostComments({ postId, postAuthorId }) {
-  const { isAuth, currentUser, currentUniverse } = useAuth();
+  const { isAuth, currentUser } = useAuth();
   const { n } = useRouter();
   const { t } = useTranslation();
+  const { currentUniverse } = useWorld();
 
   const formRef = useRef(null);
 

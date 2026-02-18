@@ -8,6 +8,8 @@ import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
+import { useWorld } from "@/services/world";
+
 import AppNotAuthorized from "@/components/core/AppNotAuthorized";
 import { OykButton, OykCard, OykDropdown, OykFeedback, OykGrid, OykHeading, OykLoading } from "@/components/ui";
 
@@ -17,9 +19,10 @@ import TaskStatus from "./TaskStatus";
 import TaskCard from "./TaskCard";
 
 export default function Planner() {
-  const { isAuth, isDev, currentUniverse } = useAuth();
+  const { isAuth, isDev } = useAuth();
   const { routeTitle } = useRouter();
   const { t } = useTranslation();
+  const { currentUniverse } = useWorld();
 
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(null);

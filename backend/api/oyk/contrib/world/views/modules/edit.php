@@ -27,5 +27,5 @@ $module = $moduleService->getModules($universeId);
 
 Response::json([
   "ok" => TRUE,
-  "module" => $module
+  "module" => $module[$moduleName]
 ]);

@@ -1,25 +1,24 @@
-import { useEffect, useRef, useState } from "react";
-import { SquircleDashed, Image } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { api } from "@/services/api";
-import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
+import { useWorld } from "@/services/world";
+
 import {
   OykButton,
   OykCard,
   OykForm,
   OykFormField,
   OykFormMessage,
-  OykFormHelp,
   OykHeading,
   OykLoading,
 } from "@/components/ui";
 
 export default function UniverseAdminModuleBlog() {
-  const { currentUniverse, getUniverses } = useAuth();
   const { routeTitle } = useRouter();
   const { t } = useTranslation();
+  const { currentUniverse, getUniverses } = useWorld();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);

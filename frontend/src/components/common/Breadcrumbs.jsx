@@ -1,16 +1,16 @@
 import { useMemo } from "react";
 import { ChevronRight, Orbit } from "lucide-react";
 
-import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
+import { useWorld } from "@/services/world";
 
 import { OykLink } from "@/components/ui";
 
 export default function OykBlogPost() {
-  const { currentUniverse } = useAuth();
   const { route, params, breads } = useRouter();
   const { lang } = useTranslation();
+  const { currentUniverse } = useWorld();
 
   const crumbs = useMemo(() => breads(route.name, lang), [route, lang]);
 

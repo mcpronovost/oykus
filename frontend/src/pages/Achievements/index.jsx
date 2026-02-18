@@ -5,6 +5,8 @@ import { Blocks, Flame, Star } from "lucide-react";
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
+import { useWorld } from "@/services/world";
+
 import {
   OykAlert,
   OykGrid,
@@ -18,8 +20,9 @@ import AppNotAuthorized from "@/components/core/AppNotAuthorized";
 import AchievementCard from "./AchievementCard";
 
 export default function Achievements() {
-  const { isAuth, currentUniverse } = useAuth();
+  const { isAuth } = useAuth();
   const { t } = useTranslation();
+  const { currentUniverse } = useWorld();
 
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);

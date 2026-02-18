@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { Trash2 } from "lucide-react";
 
 import { api } from "@/services/api";
-import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
+import { useWorld } from "@/services/world";
+
 import {
   OykButton,
   OykFeedback,
@@ -13,8 +14,8 @@ import {
 } from "@/components/ui";
 
 export default function ModalTaskDelete({ isOpen, onClose, task }) {
-  const { currentUniverse } = useAuth();
   const { t } = useTranslation();
+  const { currentUniverse } = useWorld();
 
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);

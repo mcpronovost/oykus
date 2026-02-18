@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 
 import { api } from "@/services/api";
-import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
+import { useWorld } from "@/services/world";
+
 import { OykButton, OykCard, OykForm, OykFormField, OykFormHelp, OykFormMessage, OykHeading } from "@/components/ui";
 
 export default function UniverseAdminProfile() {
-  const { currentUniverse, setUniverse, getUniverses } = useAuth();
   const { routeTitle } = useRouter();
   const { t } = useTranslation();
+  const { currentUniverse, changeUniverse, getUniverses } = useWorld();
 
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
@@ -33,7 +34,7 @@ export default function UniverseAdminProfile() {
       }
       const r = await api.post(`/world/universes/${currentUniverse.slug}/edit/`, formData);
       if (!r?.ok) throw new Error(r || t("An error occurred"));
-      setUniverse(r.universe);
+      changeUniverse(r.universe.slug);
       getUniverses();
       setProfileForm((prev) => ({
         ...prev,
