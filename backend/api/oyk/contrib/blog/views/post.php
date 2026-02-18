@@ -25,7 +25,7 @@ $moduleSettings = $module["blog"]["settings"];
 
 // Get post
 $post = $blogService->getPost($universeId, $postId);
-if ((int) $moduleSettings["is_reactions_enabled"] === 1) {
+if ((int) ($moduleSettings['is_reactions_enabled'] ?? 0) === 1) {
   $reactions = $reactionService->getReactionsForPost($postId, $authUser["id"]);
 }
 

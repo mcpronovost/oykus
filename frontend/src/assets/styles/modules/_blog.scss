@@ -1,56 +1,64 @@
 .oyk-blog {
-  &-header {
-    &-date {
-      font-size: 0.9rem;
-      font-weight: 400;
-      line-height: 1.2;
-      letter-spacing: 0.05em;
+  &-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+
+    &-content {
       display: flex;
-      flex-direction: row;
+      flex: 1 1 auto;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+
+      &-header {
+       &-date {
+        font-size: 0.8rem;
+        line-height: 1.2;
+        opacity: 0.7;
+        padding: 0 0 4px;
+       }
+
+       &-title {
+        font-family: "Quicksand", sans-serif;
+        font-size: 1.5rem;
+        line-height: 1.2;
+       }
+      }
+
+      &-preview {
+        font-size: 0.9rem;
+        line-height: 1.2;
+        opacity: 0.9;
+        padding: 16px 0 0;
+      }
+    }
+
+    &-wrapper {
+      background-color: color-mix(in srgb, var(--oyk-card-fg) 5%, var(--oyk-card-bg));
+      border-radius: var(--oyk-radius);
+      flex: 1 1 auto;
+      width: calc(100% - 32px);
+      position: relative;
+      padding: 8px;
+      margin: 0 16px 8px;
+    }
+
+    &-footer {
+      font-size: 0.8rem;
+      line-height: 1;
+      display: flex;
+      flex: 0 0 auto;
+      justify-content: space-between;
       align-items: center;
-      justify-content: flex-start;
-      gap: 6px;
-      opacity: 0.8;
+      width: 100%;
+      opacity: 0.7;
+      padding: 4px 24px 12px;
     }
   }
 
   &-post {
-    &-info {
-      font-size: 0.8rem;
-      line-height: 1;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      opacity: 0.8;
-      padding: 12px 12px 8px;
-    }
-
-    &-header {
-      padding: 0 12px 8px;
-
-      &-title {
-        color: var(--oyk-card-fg);
-        font-family: "Quicksand", sans-serif;
-        font-weight: 600;
-
-        &:hover {
-          color: var(--oyk-c-primary);
-        }
-
-        &:active {
-          opacity: 0.6;
-        }
-      }
-
-      &-description {
-        font-size: 0.9rem;
-        line-height: 1.2;
-        opacity: 0.6;
-        margin: 2px 0 0;
-      }
-    }
-
     &-content {
       font-size: 1.1rem;
       line-height: 1.5;

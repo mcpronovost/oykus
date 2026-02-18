@@ -13,7 +13,6 @@ import {
   OykBanner,
   OykButton,
   OykCard,
-  OykChip,
   OykDropdown,
   OykFeedback,
   OykGrid,
@@ -121,33 +120,38 @@ export default function OykBlog() {
             <OykGridRow wrap>
               {posts.map((post, index) => (
                 <OykGridCol key={index} col={index <= 0 ? "100" : "25"} md={index <= 0 ? "100" : "50"} sm="100">
-                  <OykCard clickable nop fh className="oyk-blog-post" onClick={() => handlePostClick(post.id)}>
+                  <OykCard clickable nop fh className="oyk-blog-item" onClick={() => handlePostClick(post.id)}>
                     <OykBanner
-                      height={index <= 0 ? 256 : 100}
+                      height={index <= 0 ? 212 : 66}
                       showAvatar={false}
                       coverSrc={post.image || currentUniverse.cover}
                       coverHeight={index <= 0 ? 256 : 100}
                     />
-                    <div className="oyk-blog-post-info">
-                      <span className="oyk-blog-post-info-date">
-                        {oykDate(post.created_at, "full", lang, currentUser?.timezone)}
-                      </span>
-                      {/*<OykChip outline className="oyk-blog-post-info-category">
-                        <OykLink>General</OykLink>
-                      </OykChip>*/}
-                    </div>
-                    <div className="oyk-blog-post-header">
-                      <h2 className="oyk-blog-post-header-title">
-                        <OykLink
-                          block
-                          routeName="blog-post"
-                          params={{ universeSlug: currentUniverse.slug, postId: post.id }}
-                        >
-                          {post.title}
-                        </OykLink>
-                      </h2>
-                      <div className="oyk-blog-post-header-description">{post.description}</div>
-                    </div>
+                    <section className="oyk-blog-item-content">
+                      <div className="oyk-blog-item-wrapper">
+                        <header className="oyk-blog-item-content-header">
+                          <div className="oyk-blog-item-content-header-date">
+                            {oykDate(post.created_at, "full", lang, currentUser?.timezone)}
+                          </div>
+                          <h2 className="oyk-blog-item-content-header-title">
+                            <OykLink
+                              block
+                              routeName="blog-post"
+                              params={{ universeSlug: currentUniverse.slug, postId: post.id }}
+                            >
+                              {post.title}
+                            </OykLink>
+                          </h2>
+                        </header>
+                        {post.description ? <div className="oyk-blog-item-content-preview">{post.description}</div> : null}
+                      </div>
+                      <footer className="oyk-blog-item-footer">
+                        <div></div>
+                        {(currentUniverse.modules.blog.settings?.is_comments_enabled) ? (
+                          <div className="oyk-blog-item-footer-comments">{t("{count} comments", post.comments )}</div>
+                        ) : null}
+                      </footer>
+                    </section>
                   </OykCard>
                 </OykGridCol>
               ))}

@@ -21,11 +21,19 @@ export function TranslationProvider({ children, lang = DEFAULT_LANG }) {
     if (typeof translation === "object" && count !== undefined) {
       const rules = new Intl.PluralRules(lang);
       const pluralForm = rules.select(count);
-      return translation[pluralForm] || translation["other"];
+      const result = translation[pluralForm] || translation["other"];
+      return result.replace(
+        /\{(\w+)\}/g,
+        (_, varName) => varName === "count" ? count : vars[varName] ?? `{${varName}}`
+      );
     }
 
     if (typeof translation === "object") {
-      return translation["other"];
+      const result =  translation["other"];
+      return result.replace(
+        /\{(\w+)\}/g,
+        (_, varName) => varName === "count" ? count : vars[varName] ?? `{${varName}}`
+      );
     }
 
     if (typeof translation === "string") {

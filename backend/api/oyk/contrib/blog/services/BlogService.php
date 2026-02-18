@@ -119,10 +119,15 @@ class BlogService {
   public function getPostsList(int $universeId): array {
     try {
       $qry = $this->pdo->prepare("
-        SELECT id, author, title, description, content, created_at, updated_at
-        FROM blog_posts
-        WHERE universe = ?
-        ORDER BY created_at DESC
+        SELECT bp.id, bp.author, bp.title, bp.description, bp.content, bp.created_at, bp.updated_at,
+        (
+          SELECT COUNT(*)
+          FROM blog_comments bc
+          WHERE bc.post = bp.id
+        ) AS comments
+        FROM blog_posts bp
+        WHERE bp.universe = ?
+        ORDER BY bp.created_at DESC
       ");
 
       $qry->execute([
@@ -132,7 +137,7 @@ class BlogService {
       return $qry->fetchAll();
     }
     catch (Exception $e) {
-      throw new QueryException("Failed to get posts");
+      throw new QueryException("Failed to get posts".$e->getMessage());
     }
   }
 

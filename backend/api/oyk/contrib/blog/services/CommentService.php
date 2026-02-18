@@ -90,6 +90,25 @@ class CommentService {
     }
   }
 
+  public function getCommentsCountForPost(int $postId): int {
+    try {
+      $qry = $this->pdo->prepare("
+        SELECT COUNT(*)
+        FROM blog_comments
+        WHERE post = ?
+      ");
+
+      $qry->execute([
+        $postId
+      ]);
+
+      return (int) $qry->fetchColumn();
+    }
+    catch (Exception $e) {
+      throw new QueryException("Failed to get comments");
+    }
+  }
+
   public function createComment(int $postId, int $userId, array $fields): array {
     try {
       $insert = $this->pdo->prepare("
