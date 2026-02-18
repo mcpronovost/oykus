@@ -2,6 +2,7 @@ import React from "react";
 import { AUTH_ROUTES } from "./auth";
 import { COMMUNITY_ROUTES } from "./community";
 import { UNIVERSES_ROUTES } from "./universes";
+import { FRIENDS_ROUTES } from "./friends";
 import { SETTINGS_ROUTES } from "./settings";
 import { DEV_ROUTES } from "./dev";
 
@@ -49,6 +50,7 @@ export const ROUTES = [
   ...AUTH_ROUTES,
   ...COMMUNITY_ROUTES,
   ...UNIVERSES_ROUTES,
+  ...FRIENDS_ROUTES,
   ...SETTINGS_ROUTES,
   ...DEV_ROUTES,
   {

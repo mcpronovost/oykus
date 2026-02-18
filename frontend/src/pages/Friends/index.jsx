@@ -1,5 +1,5 @@
 import "@/assets/styles/page/_settings.scss";
-import { CircleUser, Cog, Construction } from "lucide-react";
+import { Smile, Construction } from "lucide-react";
 
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
@@ -7,48 +7,31 @@ import { useTranslation } from "@/services/translation";
 import { OykCard, OykFeedback, OykGrid, OykGridRow, OykGridNav, OykGridMain, OykHeading } from "@/components/ui";
 import { OykSidenav } from "@/components/common";
 import OykError404 from "@/pages/Error404";
-import OykSettingsProfile from "./Profile";
-import OykSettingsAccount from "./Account";
-import OykSettingsAccountPreferences from "./AccountPreferences";
+import OykManageFriends from "./Friends";
+import OykFriendsRequests from "./FriendsRequests";
 
-export default function Settings() {
+export default function OykFriends() {
   const { isAuth } = useAuth();
   const { params } = useRouter();
   const { t } = useTranslation();
 
   const menu = [
     {
-      title: t("Profile"),
-      description: t("Change your avatar and cover images, your name, and more"),
-      Icon: CircleUser,
+      title: t("Friends"),
+      description: t("Manage friends, accept and block requests"),
+      Icon: Smile,
       links: [
         {
-          name: t("General"),
-          routeName: "settings-profile",
-        },
-      ],
-    },
-    {
-      title: t("Account"),
-      description: t("Change settings, configure notifications, and more"),
-      Icon: Cog,
-      links: [
-        {
-          name: t("General"),
-          routeName: "settings-account",
+          name: t("Manage Friends"),
+          routeName: "friends",
         },
         {
-          name: t("Change Password"),
-          routeName: "settings-account-password",
-          disabled: true,
+          name: t("Invites"),
+          routeName: "friends-requests",
         },
         {
-          name: t("Preferences"),
-          routeName: "settings-account-preferences",
-        },
-        {
-          name: t("Limitations"),
-          routeName: "settings-account-limitations",
+          name: t("Blocked Users"),
+          routeName: "friends-blocked",
           disabled: true,
         },
       ],
@@ -61,19 +44,17 @@ export default function Settings() {
 
   return (
     <section className="oyk-page oyk-settings">
-      <OykHeading title={t("Settings")} />
+      <OykHeading title={t("Friends")} />
       <OykGrid>
         <OykGridRow>
           <OykGridNav className="oyk-settings-grid-nav">
             <OykSidenav menu={menu} />
           </OykGridNav>
           <OykGridMain>
-            {params?.section === "profile" ? (
-              <OykSettingsProfile />
-            ) : params?.section === "account" ? (
-              <OykSettingsAccount />
-            ) : params?.section === "account-preferences"? (
-              <OykSettingsAccountPreferences />
+            {params?.section === "friends" ? (
+              <OykManageFriends />
+            ) : params?.section === "friends-requests" ? (
+              <OykFriendsRequests />
             ) : (
               <OykCard>
                 <OykFeedback

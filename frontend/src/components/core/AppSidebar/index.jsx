@@ -96,6 +96,7 @@ export default function AppSidebar() {
                   text={t("Admin")}
                   href="universe-admin"
                   params={{ universeSlug: currentUniverse.slug }}
+                  prefix="universe-admin"
                 />
               ) : null}
             </ul>

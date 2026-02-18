@@ -24,7 +24,7 @@ export default function AppHeaderNotifications() {
           plain
           icon={Bell}
           iconSize={18}
-          badgeCount={notifications?.alerts}
+          badgeDot={notifications?.alerts}
           badgeBorderColor="var(--oyk-app-header-bg)"
         />
       </div>
@@ -35,7 +35,7 @@ export default function AppHeaderNotifications() {
           iconSize={18}
           badgeDot={notifications?.friends}
           badgeBorderColor="var(--oyk-app-header-bg)"
-          onClick={() => (notifications?.friends ? n("settings-friends-requests") : n("settings-friends"))}
+          onClick={() => (notifications?.friends ? n("friends-requests") : n("friends"))}
         />
       </div>
       <div className="oyk-app-header-notifications-group">

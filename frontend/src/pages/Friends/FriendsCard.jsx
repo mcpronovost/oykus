@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Eye, UserX } from "lucide-react";
+import { Eye, UserMinus, UserX } from "lucide-react";
 
 import { useRouter } from "@/services/router";
 import { OykBanner, OykButton, OykCard } from "@/components/ui";
@@ -36,7 +36,7 @@ export default function SettingsFriendsCard({ friend, fetchData = () => {} }) {
         </header>
         <div className="oyk-settings-friends-list-item-actions">
           <OykButton outline icon={Eye} onClick={() => n("community-user-profile", { userSlug: friend.slug })} />
-          <OykButton outline color="danger" icon={UserX} onClick={() => setIsModalFriendsDeleteOpen(true)} />
+          <OykButton outline color="danger" icon={UserMinus} onClick={() => setIsModalFriendsDeleteOpen(true)} />
         </div>
       </OykCard>
     </li>

@@ -6,6 +6,7 @@ export default function NavItem({
   text,
   href,
   params,
+  prefix = href,
   sideIcon: SideIconComponent,
   sideIconColor = "currentColor",
   sideChip,
@@ -19,12 +20,12 @@ export default function NavItem({
   }
 
   return (
-    <li className={`oyk-app-sidebar-nav-item ${route?.name == href ? "oyk-active" : ""}`}>
+    <li className={`oyk-app-sidebar-nav-item ${route?.name.startsWith(prefix) ? "oyk-active" : ""}`}>
       <OykLink
         routeName={href}
         params={params}
         className={`oyk-app-sidebar-nav-item-link ${disabled ? "disabled" : ""}`}
-        disabled={disabled || route?.name == href}
+        disabled={disabled || route?.name.startsWith(prefix)}
       >
         <span className="oyk-app-sidebar-nav-item-link-icon">
           <IconComponent size={18} />
