@@ -31,7 +31,7 @@ if ($currentUniverse) {
 }
 
 // NOTIFICATIONS
-$notifications = $notificationService->getNotifications($authUser["id"]);
+$notifications = $notificationService->getNotificationsCounts($authUser["id"]);
 
 // Réponse
 Response::json([
