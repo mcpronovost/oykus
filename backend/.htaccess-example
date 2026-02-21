@@ -4,7 +4,7 @@
 
     # API
     RewriteCond %{REQUEST_URI} ^/api [NC]
-    RewriteRule ^api/?(.*)$ api/index.php [L,QSA]
+    RewriteRule ^api/?(.*)$ oyk/index.php [L,QSA]
 
     # Not rewrite real files
     RewriteCond %{REQUEST_FILENAME} -f [OR]
