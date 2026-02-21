@@ -20,7 +20,7 @@ export default function ModalFriendsAdd({ isOpen, onClose }) {
     try {
       const formData = new FormData();
       formData.append("name", formFriendsAdd.name);
-      const r = await api.post("/auth/friends/add/", formData);
+      const r = await api.post("/social/friends/add/", formData);
       if (!r.ok) throw new Error(r.error || t("An error occurred"));
       onClose(true);
     } catch (e) {

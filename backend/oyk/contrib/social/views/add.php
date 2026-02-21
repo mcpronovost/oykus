@@ -29,7 +29,7 @@ if (!$user) {
 try {
   $qry = $pdo->prepare("
     SELECT status, responded_at
-    FROM auth_friends
+    FROM social_friends
     WHERE 
       (user_id = :userId AND friend_id = :targetFriendId)
       OR
@@ -70,7 +70,7 @@ catch (Exception $e) {
 */
 try {
   $qry = $pdo->prepare("
-    INSERT INTO auth_friends (user_id, friend_id, requested_at, responded_at)
+    INSERT INTO social_friends (user_id, friend_id, requested_at, responded_at)
     VALUES (:userId, :friendId, NOW(), NULL)
     ON DUPLICATE KEY UPDATE
       status = 'pending',

@@ -9,10 +9,10 @@ $authUser = require_auth();
 |--------------------------------------------------------------------------
 */
 $qry = $pdo->prepare("
-    SELECT id
-    FROM auth_users
-    WHERE slug = ?
-    LIMIT 1
+  SELECT id
+  FROM auth_users
+  WHERE slug = ?
+  LIMIT 1
 ");
 $qry->execute([$_POST["slug"]]);
 $user = $qry->fetch();
@@ -28,20 +28,14 @@ if (!$user) {
 */
 try {
   $qry = $pdo->prepare("
-    DELETE FROM auth_friends
-    WHERE 
-      (
-        (user_id = :userId AND friend_id = :targetFriendId)
-        OR
-        (user_id = :targetUserId AND friend_id = :friendId)
-      )
-      AND status = 'accepted';
+    DELETE FROM social_friends
+    WHERE friend_id = :userId
+      AND user_id = :friendId
+      AND status = 'pending';
   ");
 
   $qry->execute([
-    "userId" => $authUser["id"],
-    "targetFriendId" => $user["id"],
-    "targetUserId" => $user["id"],
+    "userId" => $user["id"],
     "friendId" => $authUser["id"]
   ]);
 }

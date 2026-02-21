@@ -32,7 +32,7 @@ export default function SettingsFriendsRequests() {
     try {
       const formData = new FormData();
       formData.append("slug", friendSlug);
-      const r = await api.post(`/auth/friends/${action}/`, formData);
+      const r = await api.post(`/social/friends/${action}/`, formData);
       if (!r.ok) throw Error();
       fetchFriendsRequestsData();
     } catch (e) {
@@ -46,7 +46,7 @@ export default function SettingsFriendsRequests() {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get("/auth/friends/requests/", signal ? { signal } : {});
+      const r = await api.get("/social/friends/requests/", signal ? { signal } : {});
       if (!r.ok || !r.requests) throw Error();
       setFriendRequests(r.requests);
       setFriendPendings(r.pendings);

@@ -17,7 +17,7 @@ export default function ModalFriendsDelete({ friend, isOpen, onClose }) {
     try {
       const formData = new FormData();
       formData.append("slug", friend.slug);
-      const r = await api.post("/auth/friends/delete/", formData);
+      const r = await api.post("/social/friends/delete/", formData);
       if (!r.ok) throw new Error(r.error || t("An error occurred"));
       onClose(true);
     } catch (e) {

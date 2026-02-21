@@ -32,24 +32,6 @@ Router::get("{$api}/me/notifications", "{$view}me/notifications.php");
 Router::get("{$api}/users/{userSlug}/profile", "{$view}users_profile.php");
 
 /* ================================================ */
-// FRIENDS ROUTES
-/* ================================================ */
-
-Router::get("{$api}/friends", "{$view}friends/friends.php");
-
-Router::get("{$api}/friends/requests", "{$view}friends/requests.php");
-
-Router::post("{$api}/friends/add", "{$view}friends/add.php");
-
-Router::post("{$api}/friends/accept", "{$view}friends/accept.php");
-
-Router::post("{$api}/friends/reject", "{$view}friends/reject.php");
-
-Router::post("{$api}/friends/cancel", "{$view}friends/cancel.php");
-
-Router::post("{$api}/friends/delete", "{$view}friends/delete.php");
-
-/* ================================================ */
 // WIO ROUTES
 /* ================================================ */
 

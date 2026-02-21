@@ -22,7 +22,7 @@ class NotificationService {
     try {
       $qry = $this->pdo->prepare("
         SELECT COUNT(*)
-        FROM auth_friends
+        FROM social_friends
         WHERE friend_id = :id AND status = 'pending'
       ");
 

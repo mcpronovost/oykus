@@ -19,7 +19,7 @@ export default function SettingsFriends() {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get("/auth/friends/", signal ? { signal } : {});
+      const r = await api.get("/social/friends/", signal ? { signal } : {});
       if (!r.ok || !r.friends) throw Error();
       setFriend(r.friends);
     } catch (e) {

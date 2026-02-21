@@ -28,16 +28,14 @@ if (!$user) {
 */
 try {
   $qry = $pdo->prepare("
-    DELETE FROM auth_friends
-    WHERE friend_id = :userId
-      AND user_id = :friendId
+    UPDATE social_friends
+    SET status = 'rejected', responded_at = NOW()
+    WHERE user_id = ?
+      AND friend_id = ?
       AND status = 'pending';
   ");
 
-  $qry->execute([
-    "userId" => $user["id"],
-    "friendId" => $authUser["id"]
-  ]);
+  $qry->execute([$user["id"], $authUser["id"]]);
 }
 catch (Exception $e) {
   Response::serverError();
