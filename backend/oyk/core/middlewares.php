@@ -2,7 +2,7 @@
 
 require_once __DIR__ . "/utils/jwt.php";
 
-function handle_exceptions(Throwable $e) {
+function oyk_handle_exceptions(Throwable $e) {
   if ($e instanceof ValidationException) {
     Response::badRequest($e->getMessage());
   }
@@ -32,16 +32,13 @@ function handle_exceptions(Throwable $e) {
   Response::serverError("Unexpected error");
 }
 
-function require_auth($is_required = TRUE) {
+function require_rat($is_required = True): int {
   $headers = getallheaders();
   $authHeader = $headers["Authorization"] ?? $headers["authorization"] ?? "";
 
   if (!str_starts_with($authHeader, "Oyk ")) {
     if (!$is_required)
-      return ["id" => -1];
-    http_response_code(401);
-    echo json_encode(["error" => 401]);
-    exit;
+      return 0;
   }
 
   $token = substr($authHeader, 4);
@@ -49,18 +46,15 @@ function require_auth($is_required = TRUE) {
 
   if (!$payload) {
     if (!$is_required)
-      return ["id" => -1];
-    http_response_code(401);
-    echo json_encode(["error" => "Unauthorized (p)"]);
-    exit;
+      return 0;
   }
 
-  return $payload;
+  return (int) $payload["id"];
 }
 
-function update_wio() {
+function oyk_update_wio() {
   global $pdo;
-  $user = require_auth(FALSE);
+  $userId = require_rat(FALSE);
 
   $ignore_paths = ["/api/v1/theme.php"];
 
@@ -69,13 +63,13 @@ function update_wio() {
   }
 
   try {
-    if ($user && $user["id"] > 0) {
+    if ($userId > 0) {
       $stmt = $pdo->prepare("
         INSERT INTO auth_wio (user_id, lastlive_at)
         VALUES (:uid, NOW())
         ON DUPLICATE KEY UPDATE lastlive_at = NOW()
       ");
-      $stmt->execute(["uid" => $user["id"]]);
+      $stmt->execute(["uid" => $userId]);
     }
     else {
       $guest = get_guest_id();
@@ -90,7 +84,6 @@ function update_wio() {
     }
   }
   catch (Exception) {
-    return;
+    // fail silently
   }
 }
-

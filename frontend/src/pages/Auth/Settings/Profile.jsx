@@ -258,7 +258,7 @@ export default function SettingsProfile() {
             disabled
           />
           {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
-          {hasSuccessSubmit?.message && <OykFormMessage hasSuccessTitle={hasSuccessSubmit?.title} hasSuccess={hasSuccessSubmit?.message} />}
+          {hasSuccessSubmit?.message && <OykFormMessage successTitle={hasSuccessSubmit?.title} hasSuccess={hasSuccessSubmit?.message} />}
           <div className="oyk-form-actions">
             <OykButton type="submit" color="primary" disabled={isLoading} isLoading={isLoading}>
               {t("Save")}

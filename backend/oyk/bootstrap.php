@@ -14,24 +14,11 @@ require_once __DIR__ . "/core/exception.php";
 require_once __DIR__ . "/core/response.php";
 
 // Register global exception handler
-set_exception_handler("handle_exceptions");
+set_exception_handler("oyk_handle_exceptions");
 
 
 // SERVICES
-// require_once __DIR__ . "/contrib/auth/services/AuthService.php";
-require_once __DIR__ . "/contrib/auth/services/UserService.php";
-require_once __DIR__ . "/contrib/auth/services/NotificationService.php";
-
-require_once __DIR__ . "/contrib/world/services/UniverseService.php";
-require_once __DIR__ . "/contrib/world/services/ThemeService.php";
-require_once __DIR__ . "/contrib/world/services/ModuleService.php";
-
-require_once __DIR__ . "/contrib/blog/services/BlogService.php";
-require_once __DIR__ . "/contrib/blog/services/ReactionService.php";
-require_once __DIR__ . "/contrib/blog/services/CommentService.php";
-
-require_once __DIR__ . "/contrib/courrier/services/AlertService.php";
-
-require_once __DIR__ . "/contrib/planner/services/StatusService.php";
-require_once __DIR__ . "/contrib/planner/services/TaskService.php";
+foreach (glob(__DIR__ . "/contrib/*/services/*.php") as $serviceFile) {
+  require_once $serviceFile;
+}
 

@@ -1,19 +1,18 @@
 <?php
 
-require_once __DIR__ . "/oyk/bootstrap.php";
-require_once __DIR__ . "/oyk/core/router.php";
+require_once __DIR__ . "/bootstrap.php";
+require_once __DIR__ . "/core/router.php";
 
-update_wio();
+oyk_update_wio();
 
-Router::get("/api/health", __DIR__ . "/oyk/core/scripts/migrate.php");
+// SPECIAL ROUTES
+Router::get("/api/health", __DIR__ . "/core/scripts/migrate.php");
 Router::get("/api/v1/theme.php", __DIR__ . "/theme.php");
-Router::get("/api/v1/heartbeat", __DIR__ . "/oyk/heartbeat.php");
+Router::get("/api/v1/heartbeat", __DIR__ . "/heartbeat.php");
 
-require OYK . "/contrib/auth/routes.php";
-require OYK . "/contrib/world/routes.php";
-
-require OYK . "/contrib/blog/routes.php";
-require OYK . "/contrib/planner/routes.php";
-require OYK . "/contrib/rewards/routes.php";
+// CORE AND MODS ROUTES
+foreach (glob(OYK . "/contrib/*/routes.php") as $routeFile) {
+  require_once $routeFile;
+}
 
 Router::dispatch();

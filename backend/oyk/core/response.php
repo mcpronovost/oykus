@@ -26,7 +26,7 @@ class Response {
       "error" => $message
     ], $extra);
 
-    error_log(print_r($message, TRUE));
+    error_log(">> ".print_r($message, TRUE));
 
     self::json($payload, $status);
   }
@@ -49,6 +49,10 @@ class Response {
 
   public static function conflict(string $message = "Conflict") {
     self::error($message, 409);
+  }
+
+  public static function locked(string $message = "Locked") {
+    self::error($message, 423);
   }
 
   public static function serverError(string $message = "Server error") {

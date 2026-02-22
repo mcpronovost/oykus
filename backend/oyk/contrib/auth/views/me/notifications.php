@@ -1,10 +1,10 @@
 <?php
 
 global $pdo;
-$authUser = require_auth();
+$userId = require_rat();
 
 $notificationService = new NotificationService($pdo);
 
-$notifications = $notificationService->getNotificationsCounts($authUser["id"]);
+$notifications = $notificationService->getNotificationsCounts($userId);
 
 Response::json($notifications);

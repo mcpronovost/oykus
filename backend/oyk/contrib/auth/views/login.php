@@ -2,6 +2,9 @@
 
 global $pdo;
 
+$authService = new AuthService($pdo);
+$userService = new UserService($pdo);
+
 $isProd = getenv("HTTP_ISPROD");
 $data = json_decode(file_get_contents("php://input"), TRUE);
 
@@ -14,7 +17,7 @@ if ($username === "" || $password === "") {
 
 try {
   $stmt = $pdo->prepare("
-    SELECT id, username, password, name, slug, abbr, avatar, cover, is_dev, timezone
+    SELECT id, username, password
     FROM auth_users
     WHERE username = ?
     LIMIT 1
@@ -23,7 +26,7 @@ try {
   $user = $stmt->fetch();
 }
 catch (Exception $e) {
-  Response::serverError();
+  Response::serverError($e->getMessage());
 }
 
 if (!$user || !password_verify($password, $user["password"])) {
@@ -31,38 +34,11 @@ if (!$user || !password_verify($password, $user["password"])) {
 }
 
 // Access token (15 min)
-$accessToken = generate_jwt([
-  "id" => $user["id"],
-  "username" => $user["username"],
-  "exp" => time() + 900
-]);
-
-// Refresh token (30 days)
-$refreshToken = generate_jwt([
-  "id" => $user["id"],
-  "username" => $user["username"],
-  "jti" => bin2hex(random_bytes(16)),
-  "exp" => time() + 60 * 60 * 24 * 30
-]);
-
-setcookie(
-  "oyk-rat",
-  $refreshToken,
-  [
-    "expires" => time() + 60 * 60 * 24 * 30,
-    "path" => "/",
-    "secure" => $isProd,
-    "httponly" => TRUE,
-    "samesite" => $isProd ? "Lax" : "None",
-  ]
-);
+$accessToken = $authService->getRat($user["id"], $user["username"], $isProd);
 
 // EventBus::dispatch("user.login", ["user_id" => $user["id"]]);
 
-unset($user["username"], $user["password"]);
-if (!$user["is_dev"]) {
-  unset($user["is_dev"]);
-}
+$user = $userService->getCurrentUser($user["id"]);
 
 Response::json([
   "ok" => TRUE,

@@ -5,25 +5,25 @@ global $pdo;
 $universeSlug = $_COOKIE["oyk-world"] ?? null;
 
 // Auth obligatoire mais silencieux (si token invalide → pas de crash)
-$authUser = require_auth(FALSE);
-if ($authUser["id"] <= -1) {
-  Response::unauthorized();
-  exit;
-}
+$userId = require_rat(FALSE);
 
 // Services
-$userService = new UserService($pdo);
-$universeService = new UniverseService($pdo);
-$themeService = new ThemeService($pdo);
-$moduleService = new ModuleService($pdo);
-$notificationService = new NotificationService($pdo);
+try {
+  $userService = new UserService($pdo);
+  $universeService = new UniverseService($pdo);
+  $themeService = new ThemeService($pdo);
+  $moduleService = new ModuleService($pdo);
+  $notificationService = new NotificationService($pdo);
+} catch (Exception $e) {
+  Response::serverError("heartbeat");
+}
 
 // USER
-$user = $userService->getCurrentUser($authUser["id"]);
+$user = $userService->getCurrentUser($userId);
 
 // WORLD
-$currentUniverse = $universeService->getUniverse($universeSlug, $authUser["id"]);
-$universes = $universeService->getUniverses($authUser["id"] ?? NULL);
+$currentUniverse = $universeService->getUniverse($universeSlug, $userId);
+$universes = $universeService->getUniverses($userId ?? NULL);
 $theme = $currentUniverse ? $themeService->getActiveTheme($currentUniverse["id"]) : null;
 if ($currentUniverse) {
     $modules = $moduleService->getModules($currentUniverse["id"]);
@@ -31,7 +31,7 @@ if ($currentUniverse) {
 }
 
 // NOTIFICATIONS
-$notifications = $notificationService->getNotificationsCounts($authUser["id"]);
+$notifications = $notificationService->getNotificationsCounts($userId);
 
 // Réponse
 Response::json([

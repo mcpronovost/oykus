@@ -73,9 +73,15 @@ export default function Login() {
       setUser(r.user);
       n("home");
     } catch (e) {
-      setHasError(() => ({
-        message: e.message || t("An error occurred")
-      }));
+      if (e?.message === "Banned") {
+        setHasError(() => ({
+          message: t("This account appear to be banned")
+        }));
+      } else {
+        setHasError(() => ({
+          message: e.message || t("An error occurred")
+        }));
+      }
     } finally {
       setIsLoading(false);
     }

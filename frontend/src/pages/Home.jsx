@@ -56,7 +56,7 @@ export default function Home() {
   return (
     <section className="oyk-page oyk-home">
       <OykHeading title={currentUniverse?.name || "Oykus"} />
-      {currentUniverse?.is_default ? (
+      {!currentUniverse || currentUniverse?.is_default ? (
         <OykGrid className="oyk-home-intro">
           <p>
             {t(
@@ -76,7 +76,7 @@ export default function Home() {
           variant="primary"
         />
       </OykGrid>
-      {currentUniverse?.is_default ? (
+      {!currentUniverse || currentUniverse?.is_default ? (
         <OykGrid className="oyk-home-features">
           <OykGridRow wrap>
             <OykGridCol col="33" md="50" sm="100">
