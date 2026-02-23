@@ -63,29 +63,6 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // ---------------------------------------------------------
-  // Auto-refresh user every X minutes
-  // ---------------------------------------------------------
-  useEffect(() => {
-    let controller = new AbortController();
-
-    const tick = () => {
-      if (user?.lastUpdate && Date.now() - user.lastUpdate > REFRESH_INTERVAL) {
-        controller.abort();
-        controller = new AbortController();
-        fetchUser(controller.signal);
-      }
-    };
-
-    const id = setInterval(tick, REFRESH_INTERVAL);
-    tick();
-
-    return () => {
-      controller.abort();
-      clearInterval(id);
-    };
-  }, [user]);
-
   return (
     <AuthContext.Provider
       value={{

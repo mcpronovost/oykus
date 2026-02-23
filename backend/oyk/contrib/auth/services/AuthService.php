@@ -48,6 +48,30 @@ class AuthService {
     return TRUE;
   }
 
+  public function validateData(array $data): array {
+    $fields = [];
+
+    // Username
+    if (array_key_exists("username", $data)) {
+      $username = trim($data["username"]);
+      if ($username === "") {
+        Response::badRequest("Username cannot be empty");
+      }
+      $fields["username"] = $username;
+    }
+
+    // Password
+    if (array_key_exists("password", $data)) {
+      $password = trim($data["password"]);
+      if ($password === "") {
+        Response::badRequest("Password cannot be empty");
+      }
+      $fields["password"] = $password;
+    }
+
+    return $fields;
+  }
+
   private function updateFailedLogin(int $userId, int $userFailedLoginCount): void {
     try {
       $qry = $this->pdo->prepare("
@@ -71,7 +95,7 @@ class AuthService {
 
     $userFailedLoginCount += 1;
 
-    if ([5,10,15,20].include($userFailedLoginCount) || $userFailedLoginCount > 20) {
+    if ($userFailedLoginCount >= 5) {
       oykSecurityLogService()->logLockedUser($userId, $userFailedLoginCount);
     }
     
@@ -79,8 +103,6 @@ class AuthService {
   }
 
   private function updateSuccessLogin(int $userId, string $ip): void {
-    $ip = $_SERVER["REMOTE_ADDR"] ?? null;
-
     try {
       $qry = $this->pdo->prepare("
         UPDATE auth_users
@@ -98,7 +120,9 @@ class AuthService {
   }
 
   public function handleFailedLogin(array $user, string $password): void {
-    if (!$user || !password_verify($password, $user["password"])) {
+    $this->userCanAuth($user["id"]);
+
+    if (!password_verify($password, $user["password"])) {
       $this->updateFailedLogin($user["id"], $user["failedlogin_count"]);
 
       Response::badRequest("Invalid credentials");
@@ -143,34 +167,58 @@ class AuthService {
     }
   }
 
-  public function getRat(int $userId, string $userUsername, bool $isProd): string {
+  public function getLoginUser(string $username): array {
+    try {
+      $stmt = $this->pdo->prepare("
+        SELECT id, username, password, failedlogin_count, lastlogin_ip
+        FROM auth_users
+        WHERE username = ? AND is_active = 1
+        LIMIT 1
+      ");
+      $stmt->execute([$username]);
+      $authUser = $stmt->fetch();
+    }
+    catch (Exception) {
+      Response::serverError();
+    }
+
+    if (!$authUser) {
+      Response::notFound("User not found");
+    }
+
+    return $authUser;
+  }
+
+  public function getRat(int $userId, bool $isGenereteRefresh): ?string {
+    $isProd = getenv("HTTP_ISPROD");
+
     try {
       // Access token (15 mins)
       $accessToken = generate_jwt([
         "id" => $userId,
-        "username" => $userUsername,
         "exp" => time() + 900
       ]);
 
-      // Refresh token (30 days)
-      $refreshToken = generate_jwt([
-        "id" => $userId,
-        "username" => $userUsername,
-        "jti" => bin2hex(random_bytes(16)),
-        "exp" => time() + 60 * 60 * 24 * 30
-      ]);
+      if ($isGenereteRefresh) {
+         // Refresh token (30 days)
+        $refreshToken = generate_jwt([
+          "id" => $userId,
+          "jti" => bin2hex(random_bytes(16)),
+          "exp" => time() + 60 * 60 * 24 * 30
+        ]);
 
-      setcookie(
-        "oyk-rat",
-        $refreshToken,
-        [
-          "expires" => time() + 60 * 60 * 24 * 30,
-          "path" => "/",
-          "secure" => $isProd,
-          "httponly" => TRUE,
-          "samesite" => $isProd ? "Lax" : "None",
-        ]
-      );
+        setcookie(
+          "oyk-rat",
+          $refreshToken,
+          [
+            "expires" => time() + 60 * 60 * 24 * 30,
+            "path" => "/",
+            "secure" => $isProd,
+            "httponly" => TRUE,
+            "samesite" => $isProd ? "Lax" : "None",
+          ]
+        );
+      }
     }
     catch (Exception $e) {
       Response::serverError($e->getMessage());

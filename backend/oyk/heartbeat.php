@@ -2,10 +2,13 @@
 
 global $pdo;
 
-$universeSlug = $_COOKIE["oyk-world"] ?? null;
+$universeSlug = $_COOKIE["oyk-world"] ?? NULL;
 
-// Auth obligatoire mais silencieux (si token invalide → pas de crash)
+// Auth needed but silent (if invalid token → no crash)
 $userId = require_rat(FALSE);
+if (!$userId) {
+  return;
+}
 
 // Services
 try {
@@ -14,33 +17,44 @@ try {
   $themeService = new ThemeService($pdo);
   $moduleService = new ModuleService($pdo);
   $notificationService = new NotificationService($pdo);
-} catch (Exception $e) {
-  Response::serverError("heartbeat");
+}
+catch (Exception) {
+  // fail silently
 }
 
 // USER
 $user = $userService->getCurrentUser($userId);
 
 // WORLD
-$currentUniverse = $universeService->getUniverse($universeSlug, $userId);
-$universes = $universeService->getUniverses($userId ?? NULL);
-$theme = $currentUniverse ? $themeService->getActiveTheme($currentUniverse["id"]) : null;
-if ($currentUniverse) {
+try {
+  $currentUniverse = $universeService->getUniverse($universeSlug, $userId);
+  $universes = $universeService->getUniverses($userId ?? NULL);
+  $theme = $currentUniverse ? $themeService->getActiveTheme($currentUniverse["id"]) : NULL;
+  if ($currentUniverse) {
     $modules = $moduleService->getModules($currentUniverse["id"]);
     $currentUniverse["modules"] = $modules;
+  }
+}
+catch (Exception) {
+  // fail silently
 }
 
 // NOTIFICATIONS
-$notifications = $notificationService->getNotificationsCounts($userId);
+try {
+  $notifications = $notificationService->getNotificationsCounts($userId);
+}
+catch (Exception) {
+  // fail silently
+}
 
-// Réponse
+// Response
 Response::json([
   "ok" => TRUE,
   "user" => $user,
   "world" => [
-    "current" => $currentUniverse,
-    "universes" => $universes,
-    "theme" => $theme,
+    "current" => $currentUniverse ?? NULL,
+    "universes" => $universes ?? NULL,
+    "theme" => $theme ?? NULL,
   ],
-  "notifications" => $notifications,
+  "notifications" => $notifications ?? NULL,
 ]);

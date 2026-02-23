@@ -1,5 +1,9 @@
 <?php
 
+global $pdo;
+
+$authService = new AuthService($pdo);
+
 $refreshToken = $_COOKIE["oyk-rat"] ?? NULL;
 
 if (!$refreshToken) {
@@ -10,10 +14,7 @@ $payload = decode_jwt($refreshToken);
 
 // Optional: check jti in DB (revocation / rotation)
 
-$newAccessToken = generate_jwt([
-  "id" => $payload["id"],
-  "exp" => time() + 900
-]);
+$newAccessToken = $authService->getRat($payload["id"], TRUE);
 
 Response::json([
   "ok" => TRUE,

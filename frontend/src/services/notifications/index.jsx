@@ -43,22 +43,6 @@ export function NotificationsProvider({ children }) {
     setNotifications(value);
   };
 
-  // ---------------------------------------------------------
-  // Reset or fetch when auth changes
-  // ---------------------------------------------------------
-  useEffect(() => {
-    let controller = new AbortController();
-
-    if (!isAuth) {
-      setNotifications({ alerts: 0, friends: 0, messages: 0 });
-      return;
-    }
-
-    fetchNotifications(controller.signal);
-
-    return () => controller.abort();
-  }, [isAuth]);
-
   return (
     <NotificationsContext.Provider
       value={{

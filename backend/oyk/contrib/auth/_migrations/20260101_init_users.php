@@ -3,7 +3,7 @@ require_once __DIR__ . "/../../../core/db.php";
 
 $sql = "
 CREATE TABLE IF NOT EXISTS auth_users (
-    `id` int UNSIGNED NOT NULL,
+    `id` int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_as_cs NOT NULL,
     `email` varchar(120) NOT NULL,
     `password` varchar(255) NOT NULL,

@@ -16,7 +16,7 @@ class NotificationService {
       $alerts = $qry->fetchColumn();
     }
     catch (Exception $e) {
-      Response::serverError();
+      throw new QueryException("Alerts retrieval failed");
     }
 
     try {
@@ -29,8 +29,8 @@ class NotificationService {
       $qry->execute([$userId]);
       $friends = $qry->fetchColumn();
     }
-    catch (Exception $e) {
-      Response::serverError();
+    catch (Exception) {
+      throw new QueryException("Friends retrieval failed");
     }
 
     return [

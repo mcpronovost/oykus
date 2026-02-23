@@ -98,8 +98,8 @@ class UniverseService {
       $qry->execute([$userId, $userId, $userId, $userId]);
       $universes = $qry->fetchAll();
     }
-    catch (Exception $e) {
-      throw new QueryException("Universe retrieval failed" . $e->getMessage());
+    catch (Exception) {
+      throw new QueryException("Universes retrieval failed");
     }
 
     foreach ($universes as &$u) {
@@ -110,7 +110,9 @@ class UniverseService {
     return $universes ?: [];
   }
 
-  public function getUniverse(string $universeSlug, int $userId): array {
+  public function getUniverse(?string $universeSlug, int $userId): array {
+    $universeSlug ?? "oykus";
+
     try {
       $qry = $this->pdo->prepare("
         SELECT wu.id,
@@ -143,8 +145,8 @@ class UniverseService {
         Response::notFound("Universe not found");
       }
     }
-    catch (Exception $e) {
-      Response::serverError($e->getMessage());
+    catch (Exception) {
+      throw new QueryException("Universe retrieval failed");
     }
 
     $universe["staff"] = $this->getUniverseStaff((int) $universe["id"]);

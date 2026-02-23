@@ -13,7 +13,7 @@ export default function Login() {
   const { n, routeTitle } = useRouter();
   const { t, lang } = useTranslation();
 
-  const [formData, setFormData] = useState({
+  const [loginForm, setLoginForm] = useState({
     username: "",
     password: "",
   });
@@ -24,8 +24,8 @@ export default function Login() {
     const newErrors = {};
 
     // Fields validation
-    const usernameError = validateUsername(formData.username);
-    const passwordError = validatePassword(formData.password);
+    const usernameError = validateUsername(loginForm.username);
+    const passwordError = validatePassword(loginForm.password);
 
     usernameError && (newErrors.username = usernameError);
     passwordError && (newErrors.password = passwordError);
@@ -36,7 +36,7 @@ export default function Login() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setLoginForm((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -61,6 +61,9 @@ export default function Login() {
       return;
     }
     try {
+      const formData = new FormData();
+      formData.append("username", loginForm.username);
+      formData.append("password", loginForm.password);
       const r = await api.login(formData);
       if (!r.ok) throw r;
       setRat(r.rat);
@@ -131,7 +134,7 @@ export default function Login() {
             <OykFormField
               label={t("Username")}
               name="username"
-              defaultValue={formData.username}
+              defaultValue={loginForm.username}
               onChange={handleChange}
               hasError={hasError?.fields?.username}
               required
@@ -141,7 +144,7 @@ export default function Login() {
               label={t("Password")}
               name="password"
               type="password"
-              defaultValue={formData.password}
+              defaultValue={loginForm.password}
               onChange={handleChange}
               hasError={hasError?.fields?.password}
               required

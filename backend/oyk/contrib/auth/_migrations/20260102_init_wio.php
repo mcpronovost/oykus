@@ -3,18 +3,18 @@ require_once __DIR__ . "/../../../core/db.php";
 
 $sql = "
 CREATE TABLE IF NOT EXISTS auth_wio (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `id` int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 
-    user_id INT UNSIGNED NULL,
-    guest_id CHAR(36) NULL,
-    agent VARCHAR(255) NULL,
+    `user_id` int UNSIGNED NULL,
+    `guest_id` char(36) NULL,
+    `agent` varchar(255) NULL,
 
-    lastlive_at DATETIME NOT NULL,
+    `lastlive_at` datetime NOT NULL,
 
-    UNIQUE INDEX uniq_user (user_id),
-    UNIQUE INDEX uniq_guest (guest_id),
+    UNIQUE INDEX `uniq_user` (user_id),
+    UNIQUE INDEX `uniq_guest` (guest_id),
 
-    INDEX idx_lastlive (lastlive_at)
+    INDEX `idx_lastlive` (lastlive_at)
 ) ENGINE=InnoDB;
 ";
 
