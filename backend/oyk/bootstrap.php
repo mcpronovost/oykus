@@ -16,6 +16,9 @@ require_once __DIR__ . "/core/response.php";
 // Register global exception handler
 set_exception_handler("oyk_handle_exceptions");
 
+// Services locators
+require_once __DIR__ . "/core/locators.php";
+
 
 // SERVICES
 foreach (glob(__DIR__ . "/contrib/*/services/*.php") as $serviceFile) {

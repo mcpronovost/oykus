@@ -55,7 +55,7 @@ export const oykDate = (
   value,
   show = "full",
   lang = "fr",
-  tz = "Europe/Paris"
+  tz = Intl.DateTimeFormat().resolvedOptions().timeZone
 ) => {
   if (lang === "en") lang = "en-CA";
   if (lang === "fr") lang = "fr-FR";
@@ -79,7 +79,7 @@ export const oykDateLessThan = (date, days) => {
 export const oykTimeAgo = (
   value,
   lang = "fr",
-  tz = "Europe/Paris"
+  tz = Intl.DateTimeFormat().resolvedOptions().timeZone
 ) => {
   const rtf = new Intl.RelativeTimeFormat(lang, { timeZone: tz, numeric: "auto" });
   const date = oykDateUTC(new Date(value));

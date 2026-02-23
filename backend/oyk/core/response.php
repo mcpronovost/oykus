@@ -35,27 +35,27 @@ class Response {
     self::error($message, 400, $extra);
   }
 
-  public static function unauthorized(string $message = "Unauthorized") {
-    self::error($message, 401);
+  public static function unauthorized(string $message = "Unauthorized", array $extra = []) {
+    self::error($message, 401, $extra);
   }
 
-  public static function forbidden(string $message = "Forbidden") {
-    self::error($message, 403);
+  public static function forbidden(string $message = "Forbidden", array $extra = []) {
+    self::error($message, 403, $extra);
   }
 
-  public static function notFound(string $message = "Not found") {
-    self::error($message, 404);
+  public static function notFound(string $message = "Not found", array $extra = []) {
+    self::error($message, 404, $extra);
   }
 
-  public static function conflict(string $message = "Conflict") {
-    self::error($message, 409);
+  public static function conflict(string $message = "Conflict", array $extra = []) {
+    self::error($message, 409, $extra);
   }
 
-  public static function locked(string $message = "Locked") {
-    self::error($message, 423);
+  public static function locked(string $message = "Locked", array $extra = []) {
+    self::error($message, 423, $extra);
   }
 
-  public static function serverError(string $message = "Server error") {
-    self::error($message, 500);
+  public static function serverError(string $message = "Server error", array $extra = []) {
+    self::error($message, 500, $extra);
   }
 }

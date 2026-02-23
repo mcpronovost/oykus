@@ -1,23 +1,17 @@
 import { useEffect, useState } from "react";
 
+import { oykDate } from "@/utils";
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import { validateUsername, validatePassword } from "@/utils";
-import {
-  OykButton,
-  OykCard,
-  OykForm,
-  OykFormField,
-  OykFormMessage,
-  OykLink,
-} from "@/components/ui";
+import { OykButton, OykCard, OykForm, OykFormField, OykFormMessage, OykLink } from "@/components/ui";
 
 export default function Login() {
   const { setUser, setRat } = useAuth();
   const { n, routeTitle } = useRouter();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -68,25 +62,46 @@ export default function Login() {
     }
     try {
       const r = await api.login(formData);
-      if (!r.ok) throw new Error(r.error || t("An error occurred"));
+      if (!r.ok) throw r;
       setRat(r.rat);
       setUser(r.user);
       n("home");
     } catch (e) {
-      if (e?.message === "Banned") {
+      if (e?.error === "Banned") {
+        if (e.until && e.reason) {
+          setHasError(() => ({
+            message: t("This account appear to be banned until {date}, reason: {reason}", null, {
+              date: oykDate(e.until, "full", lang),
+              reason: e.reason,
+            }),
+          }));
+        } else if (e.reason) {
+          setHasError(() => ({
+            message: t("This account appear to be banned, reason: {reason}", null, { reason: e.reason }),
+          }));
+        } else if (e.until) {
+          setHasError(() => ({
+            message: t("This account appear to be banned until {date}", null, { date: oykDate(e.until, "full", lang) }),
+          }));
+        } else {
+          setHasError(() => ({
+            message: t("This account appear to be banned"),
+          }));
+        }
+      } else if (e?.error === "Locked") {
         setHasError(() => ({
-          message: t("This account appear to be banned")
+          message: t("This account appear to be locked until {date}", null, { date: oykDate(e.until, "full", lang) }),
         }));
       } else {
         setHasError(() => ({
-          message: e.message || t("An error occurred")
+          message: e.message || t("An error occurred"),
         }));
       }
     } finally {
       setIsLoading(false);
     }
   };
-  
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -102,9 +117,7 @@ export default function Login() {
     <section className="oyk-page oyk-auth">
       <div className="oyk-auth-container">
         <div className="oyk-auth-header">
-          <h1 className="oyk-auth-header-title">
-            {t("Sign in to your account")}
-          </h1>
+          <h1 className="oyk-auth-header-title">{t("Sign in to your account")}</h1>
           <p className="oyk-auth-header-subtitle">
             {t("Or")}{" "}
             <OykLink routeName="register" className="oyk-auth-header-subtitle">
@@ -114,11 +127,7 @@ export default function Login() {
         </div>
 
         <OykCard>
-          <OykForm
-            className="oyk-auth-form"
-            onSubmit={handleSubmit}
-            isLoading={isLoading}
-          >
+          <OykForm className="oyk-auth-form" onSubmit={handleSubmit} isLoading={isLoading}>
             <OykFormField
               label={t("Username")}
               name="username"
@@ -138,17 +147,10 @@ export default function Login() {
               required
               block
             />
-            {hasError?.message && (
-              <OykFormMessage hasError={hasError?.message} />
-            )}
+            {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
             <div className="oyk-form-actions">
-              <OykButton
-                type="submit"
-                color="primary"
-                disabled={isLoading}
-                block
-              >
-                {isLoading ? t("Signing in...") : t("Sign in")}
+              <OykButton type="submit" color="primary" disabled={isLoading} isLoading={isLoading} block>
+                {t("Sign in")}
               </OykButton>
             </div>
           </OykForm>

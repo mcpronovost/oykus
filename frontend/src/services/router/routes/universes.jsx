@@ -41,7 +41,7 @@ export const UNIVERSES_ROUTES = [
           },
           {
             name: "planner",
-            component: React.lazy(() => import("../../../pages/Planner")),
+            component: React.lazy(() => import("../../../pages/Universes/Planner")),
             paths: {
               fr: "planificateur",
               en: "planner",
@@ -49,7 +49,7 @@ export const UNIVERSES_ROUTES = [
           },
           {
             name: "achievements",
-            component: React.lazy(() => import("../../../pages/Achievements")),
+            component: React.lazy(() => import("../../../pages/Universes/Achievements")),
             paths: {
               fr: "succes",
               en: "achievements",

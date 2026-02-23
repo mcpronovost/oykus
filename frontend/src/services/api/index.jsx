@@ -54,17 +54,14 @@ class OykApi {
       if (!response.ok) {
         if (url.endsWith("logout/") || url.endsWith("logoutall/")) {
           return {
-            success: true,
+            ok: true,
           };
         }
         let errorMsg = `HTTP error! status: ${response.status}`;
         try {
+
           const errorData = await response.json();
-          if (errorData.error && errorData.error === "42S02") {
-            errorMsg = "An internal error occurred, please contact an administrator";
-          } else {
-            errorMsg = errorData.error || JSON.stringify(errorData);
-          }
+          return errorData;
         } catch (err) {
           errorMsg = `HTTP error! status: ${response.status}`;
         }
@@ -73,13 +70,13 @@ class OykApi {
 
       if (response.status === 204) {
         return {
-          success: true,
+          ok: true,
         };
       }
 
       const data = await response.json();
       return {
-        success: true,
+        ok: true,
         ...data,
       };
     } catch (err) {

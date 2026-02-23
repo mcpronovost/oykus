@@ -14,8 +14,7 @@ CREATE TABLE IF NOT EXISTS auth_wio (
     UNIQUE INDEX uniq_user (user_id),
     UNIQUE INDEX uniq_guest (guest_id),
 
-    INDEX idx_lastlive (lastlive_at),
-    INDEX idx_agent (agent)
+    INDEX idx_lastlive (lastlive_at)
 ) ENGINE=InnoDB;
 ";
 
