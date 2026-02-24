@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import {
   CircleFadingArrowUp,
+  Component,
   GalleryHorizontalEnd,
   ListTodo,
   Mail,
@@ -23,7 +24,7 @@ export default function UniverseAdminModulesCard({
   const { t } = useTranslation();
 
   module.icon = useMemo(() => {
-    switch (module.name) {
+    switch (module.label) {
       case "planner":
         return ListTodo;
       case "blog":
@@ -32,7 +33,7 @@ export default function UniverseAdminModulesCard({
         return MessagesSquare;
       case "courrier":
         return Mail;
-      case "collectibles":
+      case "collections":
         return GalleryHorizontalEnd;
       case "rewards":
         return Star;
@@ -41,11 +42,9 @@ export default function UniverseAdminModulesCard({
       case "leveling":
         return CircleFadingArrowUp;
       default:
-        return null;
+        return Component;
     }
-  }, [module.name]);
-
-  if (["collectibles", "courrier", "forum", "game", "leveling", "rewards"].includes(module.name)) module.disabled = true;
+  }, [module.label]);
 
   return (
     <li className="oyk-universes-admin-modules-list-item">
@@ -53,11 +52,11 @@ export default function UniverseAdminModulesCard({
         <header className="oyk-universes-admin-modules-list-item-header">
           <OykBanner avatarIcon={module.icon} avatarTop={16} avatarBorderSize={8} coverHeight={64} height={96} />
           <div className="oyk-universes-admin-modules-list-item-header-name">
-            <span>{t(`mod.${module.name}.name`)}</span>
+            <span>{t(`mod.${module.label}.name`)}</span>
           </div>
           {!hasError ? (
             <div className="oyk-universes-admin-modules-list-item-header-description">
-              <span>{t(`mod.${module.name}.description`)}</span>
+              <span>{t(`mod.${module.label}.description`)}</span>
             </div>
           ) : (
             <div className="oyk-universes-admin-modules-list-item-header-alert">

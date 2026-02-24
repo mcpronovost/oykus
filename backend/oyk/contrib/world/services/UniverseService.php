@@ -19,7 +19,7 @@ class UniverseService {
       $qry = $this->pdo->prepare("
           SELECT wu.id, wu.is_default
           FROM world_universes wu
-          LEFT JOIN world_roles wr ON wr.universe = wu.id AND wr.user = COALESCE(?, -1)
+          LEFT JOIN world_roles wr ON wr.universe_id = wu.id AND wr.user_id = COALESCE(?, -1)
           WHERE wu.is_active = 1 AND wu.slug = ? AND wu.visibility >= CASE
               WHEN ? IS NULL THEN 6
               ELSE COALESCE(wr.role, 5)
@@ -67,7 +67,7 @@ class UniverseService {
     return $universe["id"] ?: NULL;
   }
 
-  public function getUniverses($userId) {
+  public function getUniverses(?int $userId): array {
     try {
       $qry = $this->pdo->prepare("
         SELECT wu.id,
@@ -84,14 +84,14 @@ class UniverseService {
                 ELSE COALESCE(wr.role, 5)
               END AS role
         FROM world_universes wu
-        LEFT JOIN world_themes wt ON wt.universe = wu.id AND wt.is_active = 1
-        LEFT JOIN world_roles wr ON wr.universe = wu.id AND wr.user = COALESCE(?, -1)
+        LEFT JOIN world_themes wt ON wt.universe_id = wu.id AND wt.is_active = 1
+        LEFT JOIN world_roles wr ON wr.universe_id = wu.id AND wr.user_id = COALESCE(?, -1)
         WHERE wu.is_active = 1 AND wu.visibility >= CASE
             WHEN ? <= 0 THEN 6
             ELSE COALESCE(wr.role, 5)
         END
         ORDER BY wu.is_default DESC,
-                (wu.owner = ?) DESC,
+                (wu.owner_id = ?) DESC,
                  wu.name ASC;
       ");
 
@@ -107,7 +107,7 @@ class UniverseService {
     }
     unset($u);
 
-    return $universes ?: [];
+    return $universes;
   }
 
   public function getUniverse(?string $universeSlug, int $userId): array {
@@ -130,7 +130,7 @@ class UniverseService {
                 wu.created_at,
                 wu.updated_at
         FROM world_universes wu
-        LEFT JOIN world_roles wr ON wr.universe = wu.id AND wr.user = COALESCE(?, -1)
+        LEFT JOIN world_roles wr ON wr.universe_id = wu.id AND wr.user_id = COALESCE(?, -1)
         WHERE wu.slug = ? AND wu.is_active = 1 AND wu.visibility >= CASE
           WHEN ? IS NULL THEN 6
           ELSE COALESCE(wr.role, 5)
@@ -142,7 +142,7 @@ class UniverseService {
       $universe = $qry->fetch();
 
       if (!$universe) {
-        Response::notFound("Universe not found");
+        throw new NotFoundException("Universe not found");
       }
     }
     catch (Exception) {
@@ -159,15 +159,15 @@ class UniverseService {
       $qry = $this->pdo->prepare("
         SELECT wr.role, au.name, au.abbr, au.slug, au.avatar
         FROM world_roles wr
-        JOIN auth_users au ON au.id = wr.user
-        WHERE wr.universe = ?
+        JOIN auth_users au ON au.id = wr.user_id
+        WHERE wr.universe_id = ?
         ORDER BY wr.role DESC
       ");
       $qry->execute([$universeId]);
       $rows = $qry->fetchAll();
     }
     catch (Exception $e) {
-      Response::serverError($e->getMessage());
+      throw new QueryException("Staff retrieval failed");
     }
 
     $staff = [
@@ -193,9 +193,9 @@ class UniverseService {
     if (empty($staff["owner"])) {
       try {
         $qry = $this->pdo->prepare("
-          SELECT wu.owner, au.name, au.abbr, au.slug, au.avatar
+          SELECT wu.owner_id, au.name, au.abbr, au.slug, au.avatar
           FROM world_universes wu
-          JOIN auth_users au ON au.id = wu.owner
+          JOIN auth_users au ON au.id = wu.owner_id
           WHERE wu.id = ? 
           LIMIT 1
         ");
@@ -203,16 +203,16 @@ class UniverseService {
         $row = $qry->fetch();
 
         $qry = $this->pdo->prepare("
-          INSERT INTO world_roles (universe, user, role)
+          INSERT INTO world_roles (universe_id, user_id, role)
           VALUES (?, ?, 1)
           ON DUPLICATE KEY UPDATE role = 1
         ");
-        $qry->execute([$universeId, $row["owner"]]);
+        $qry->execute([$universeId, $row["owner_id"]]);
 
         $staff["owner"] = $row;
       }
       catch (Exception $e) {
-        Response::serverError($e->getMessage());
+        throw new QueryException("Staff retrieval failed");
       }
     }
 

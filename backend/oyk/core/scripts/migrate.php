@@ -2,7 +2,7 @@
 require_once __DIR__ . "/../db.php";
 require_once __DIR__ . "/../_migrations/20251111_init_migrations.php";
 
-$modules = ["auth", "security", "world"];
+$modules = ["auth", "security", "world", "blog"];
 
 foreach ($modules as $module) {
     $migrationsDir = __DIR__ . "/../../contrib/$module/_migrations";

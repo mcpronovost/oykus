@@ -44,7 +44,7 @@ $pdo->exec($sql);
 
 $qry = $pdo->prepare("
     INSERT INTO world_universes (id, name, slug, abbr, owner_id, visibility, is_default)
-    VALUES (1, 'Oykus', 'oykus', 'O', 1, 4, 1)
+    VALUES (1, 'Oykus', 'oykus', 'O', 1, 6, 1)
     ON DUPLICATE KEY UPDATE id = 1;
 ")->execute();
 

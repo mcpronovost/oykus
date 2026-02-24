@@ -21,8 +21,8 @@ class ModuleService {
       SELECT EXISTS (
         SELECT 1
         FROM world_modules wm
-        LEFT JOIN world_universes wu ON wu.id = wm.universe
-        WHERE wm.name = ? AND wu.owner = ?
+        LEFT JOIN world_universes wu ON wu.id = wm.universe_id
+        WHERE wm.label = ? AND wu.owner_id = ?
       )
     ");
     $qry->execute([$moduleName, $userId]);
@@ -37,7 +37,7 @@ class ModuleService {
       if (!in_array($module, $this->allowedModules)) {
         throw new ValidationException("Invalid module");
       }
-      $fields["name"] = $module;
+      $fields["label"] = $module;
     }
 
     if (array_key_exists("action", $data)) {
@@ -68,61 +68,72 @@ class ModuleService {
     return $fields;
   }
 
-  public function getModules($universeId): array {
+  public function getModules(int $universeId): array {
     try {
       $qry = $this->pdo->prepare("
-        SELECT id, name, is_active, is_disabled, settings
-        FROM world_modules
-        WHERE universe = ?
-        ORDER BY name ASC
+        SELECT wmc.id, wmc.label, wmc.is_available, wmc.settings
+        FROM world_modules_core wmc
+        LEFT JOIN world_modules wm
+            ON wm.core_id = wmc.id AND wm.universe_id = ?
+        WHERE wm.id IS NULL
+          AND wmc.is_visible = 1
+        ORDER BY wmc.label ASC
+      ");
+      $qry->execute([$universeId]);
+      $core_modules = $qry->fetchAll();
+    }
+    catch (Exception $e) {
+      throw new QueryException("Core modules retrieval failed" . $e->getMessage());
+    }
+
+    try {
+      $qry = $this->pdo->prepare("
+        SELECT wm.id, wm.label, wm.is_active, wm.is_disabled, wm.settings, wmc.is_available
+        FROM world_modules wm
+        LEFT JOIN world_modules_core wmc ON wmc.id = wm.core_id
+        WHERE wm.universe_id = ? AND wmc.is_visible = 1
+        ORDER BY wm.label ASC
       ");
       $qry->execute([$universeId]);
       $modules = $qry->fetchAll();
     }
-    catch (Exception $e) {
-      throw new QueryException("Module retrieval failed".$e->getMessage());
+    catch (Exception) {
+      throw new QueryException("Module retrieval failed");
     }
 
-    $missing_modules = $this->allowedModules;
-
-    foreach ($modules as $m) {
-      if (in_array($m["name"], $missing_modules)) {
-        unset($missing_modules[$m["name"]]);
-      }
-    }
-
-    if (count($missing_modules) > 0) {
-      foreach ($missing_modules as $m) {
+    if (count($core_modules) > 0) {
+      foreach ($core_modules as $m) {
         $qry = $this->pdo->prepare("
-          INSERT INTO world_modules (universe, name, settings)
-          VALUES (?, ?, '{}')
-          ON DUPLICATE KEY UPDATE name = name
+          INSERT INTO world_modules (universe_id, core_id, label, is_disabled, settings)
+          VALUES (?, ?, ?, NOT ?, ?)
+          ON DUPLICATE KEY UPDATE label = label
         ");
-        $qry->execute([$universeId, $m]);
+        $qry->execute([$universeId, $m["id"], $m["label"], $m["is_available"], $m["settings"]]);
       }
 
       try {
         $qry = $this->pdo->prepare("
-          SELECT id, name, is_active, is_disabled, settings
-          FROM world_modules
-          WHERE universe = ?
-          ORDER BY name ASC
+          SELECT wm.id, wm.label, wm.is_active, wm.is_disabled, wm.settings, wmc.is_available
+          FROM world_modules wm
+          LEFT JOIN world_modules_core wmc ON wmc.id = wm.core_id
+          WHERE wm.universe_id = ? AND wmc.is_visible = 1
+          ORDER BY wm.label ASC
         ");
         $qry->execute([$universeId]);
         $modules = $qry->fetchAll();
       }
       catch (Exception $e) {
-        throw new QueryException("Module retrieval failed");
+        throw new QueryException("Module retrieval failed" . $e->getMessage());
       }
     }
 
     $result = [];
 
     foreach ($modules as $m) {
-      $result[$m["name"]] = [
-        "name" => $m["name"],
+      $result[$m["label"]] = [
+        "label" => $m["label"],
         "active" => (bool) $m["is_active"],
-        "disabled" => (bool) $m["is_disabled"],
+        "disabled" => $m["is_disabled"] || !$m["is_available"],
         "settings" => json_decode($m["settings"], TRUE)
       ];
     }
@@ -130,48 +141,36 @@ class ModuleService {
     return $result ?: [];
   }
 
-  public function getModule($universeId, $moduleName): array {
+  public function getModule(int $universeId, string $moduleName): array {
     try {
       $qry = $this->pdo->prepare("
-        SELECT id, name, is_active, is_disabled, settings
-        FROM world_modules
-        WHERE universe = ? AND name = ?
+        SELECT wm.id, wm.label, wm.is_active, wm.is_disabled, wm.settings, wmc.is_available
+        FROM world_modules wm
+        LEFT JOIN world_modules_core wmc ON wmc.id = wm.core_id
+        WHERE wm.universe_id = ? AND wm.label = ? AND wmc.is_visible = 1
+        ORDER BY wm.label ASC
         LIMIT 1
       ");
       $qry->execute([$universeId, $moduleName]);
       $module = $qry->fetch();
     }
     catch (Exception $e) {
-      throw new QueryException("Module retrieval failed".$e->getMessage());
-    }
-
-    if (!$module) {
-      try {
-        $qry = $this->pdo->prepare("
-          INSERT INTO world_modules (universe, name, settings)
-          VALUES (?, ?, '{}')
-          ON DUPLICATE KEY UPDATE name = name
-        ");
-        $qry->execute([$universeId, $moduleName]);
-        $module = $qry->fetch();
-      } catch (Exception $e) {
-        throw new QueryException("Module retrieval failed".$e->getMessage());
-      }
+      throw new QueryException("Module retrieval failed" . $e->getMessage());
     }
 
     $result = [];
 
-    $result[$module["name"]] = [
-      "name" => $module["name"],
+    $result[$module["label"]] = [
+      "label" => $module["label"],
       "active" => (bool) $module["is_active"],
-      "disabled" => (bool) $module["is_disabled"],
+      "disabled" => (bool) $module["is_disabled"] || !$module["is_available"],
       "settings" => json_decode($module["settings"], TRUE)
     ];
 
     return $result ?: [];
   }
 
-  public function updateModule(string $moduleName, int $universeId, array $fields): void {
+  public function updateModule(string $moduleLabel, int $universeId, array $fields): void {
     if (empty($fields)) {
       throw new ValidationException("No fields to update");
     }
@@ -184,21 +183,21 @@ class ModuleService {
       $params[":{$key}"] = $value;
     }
 
-    $params[":nameId"] = $moduleName;
+    $params[":labelName"] = $moduleLabel;
     $params[":universeId"] = $universeId;
 
     try {
       $sql = "
         UPDATE world_modules
         SET " . implode(", ", $sqlParts) . "
-        WHERE name = :nameId AND universe = :universeId
+        WHERE label = :labelName AND universe_id = :universeId
       ";
 
       $qry = $this->pdo->prepare($sql);
       $qry->execute($params);
     }
     catch (Exception $e) {
-      throw new QueryException("Module update failed".$e->getMessage());
+      throw new QueryException("Module update failed" . $e->getMessage());
     }
   }
 }

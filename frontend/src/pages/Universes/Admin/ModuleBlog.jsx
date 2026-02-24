@@ -16,9 +16,9 @@ import {
 } from "@/components/ui";
 
 export default function UniverseAdminModuleBlog() {
-  const { routeTitle } = useRouter();
+  const { routeTitle, params } = useRouter();
   const { t } = useTranslation();
-  const { currentUniverse, getUniverses } = useWorld();
+  const { currentUniverse, changeUniverse } = useWorld();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
@@ -64,7 +64,7 @@ export default function UniverseAdminModuleBlog() {
       formData.append("settings", JSON.stringify(settings));
       const r = await api.post(`/world/universes/${currentUniverse.slug}/modules/blog/edit/`, formData);
       if (!r?.ok) throw new Error(r || t("An error occurred"));
-      getUniverses();
+      changeUniverse(params?.universeSlug);
     } catch (e) {
       setHasError(() => ({
         message: e.message || t("An error occurred"),

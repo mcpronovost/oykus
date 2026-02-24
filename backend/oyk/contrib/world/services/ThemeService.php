@@ -12,7 +12,7 @@ class ThemeService {
       $qry = $this->pdo->prepare("
         SELECT id, c_primary, c_primary_fg, variables
         FROM world_themes
-        WHERE universe = ?
+        WHERE universe_id = ?
           AND is_active = 1
         LIMIT 1
       ");
@@ -23,7 +23,7 @@ class ThemeService {
 
       if (!$theme) {
         $qry = $this->pdo->prepare("
-          INSERT INTO world_themes (universe, name, c_primary, c_primary_fg, variables, is_active)
+          INSERT INTO world_themes (universe_id, name, c_primary, c_primary_fg, variables, is_active)
           VALUES (?, ?, '#3DA5CB', '#FFFFFF', '{}', 1);
         ");
 
@@ -46,9 +46,7 @@ class ThemeService {
       }
     }
     catch (Exception $e) {
-      http_response_code(500);
-      echo json_encode(["error" => "Theme not found"]);
-      exit;
+      throw new NotFoundException("Theme not found");
     }
 
     return $theme ?: NULL;
