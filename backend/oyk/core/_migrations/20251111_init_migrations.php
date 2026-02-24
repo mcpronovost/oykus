@@ -3,10 +3,10 @@ global $pdo;
 
 $sql = "
 CREATE TABLE IF NOT EXISTS migrations (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    module VARCHAR(32),
-    filename VARCHAR(120),
-    executed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    `id` int AUTO_INCREMENT PRIMARY KEY,
+    `module` varchar(32),
+    `filename` varchar(120),
+    `executed_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 ";
 

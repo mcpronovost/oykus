@@ -49,9 +49,6 @@ function require_rat($is_required = True): int {
   $payload = decode_jwt($token);
 
   if (!$payload) {
-    if (!$is_required) {
-      return 0;
-    }
     http_response_code(401);
     echo json_encode(["error" => 401]);
     exit;
@@ -62,13 +59,14 @@ function require_rat($is_required = True): int {
 
 function oyk_update_wio() {
   global $pdo;
-  $userId = require_rat(FALSE);
 
-  $ignore_paths = ["/api/v1/theme.php"];
+  $ignore_paths = ["/api/v1/theme.php", "/api/v1/auth/refresh/"];
 
   if (in_array($_SERVER["REQUEST_URI"], $ignore_paths)) {
     return;
   }
+
+  $userId = require_rat(FALSE);
 
   try {
     if ($userId > 0) {
@@ -91,7 +89,8 @@ function oyk_update_wio() {
       $stmt->execute(["gid" => $guest, "agent" => $agent]);
     }
   }
-  catch (Exception) {
+  catch (Exception $e) {
+    error_log(print_r($e->getMessage(), TRUE));
     // fail silently
   }
 }

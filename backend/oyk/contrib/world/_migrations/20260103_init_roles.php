@@ -3,23 +3,23 @@ global $pdo;
 
 $sql = "
 CREATE TABLE IF NOT EXISTS world_roles (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `id` int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
-    user INT UNSIGNED NOT NULL,
-    universe INT UNSIGNED NOT NULL,
+    `user_id` int UNSIGNED NOT NULL,
+    `universe_id` int UNSIGNED NOT NULL,
 
-    role TINYINT UNSIGNED NOT NULL DEFAULT 6,
+    `role` tinyint UNSIGNED NOT NULL DEFAULT 6,
 
-    INDEX idx_user (user),
-    INDEX idx_universe (universe),
+    INDEX (user_id),
+    INDEX (universe_id),
 
-    CONSTRAINT uq_user_universe UNIQUE (user, universe),
+    UNIQUE (user_id, universe_id),
 
-    CONSTRAINT fk_world_roles_user
-        FOREIGN KEY (user) REFERENCES auth_users(id)
+    CONSTRAINT fk_wr_user
+        FOREIGN KEY (user_id) REFERENCES auth_users(id)
         ON DELETE CASCADE,
-    CONSTRAINT fk_world_roles_universe
-        FOREIGN KEY (universe) REFERENCES world_universes(id)
+    CONSTRAINT fk_wr_universe
+        FOREIGN KEY (universe_id) REFERENCES world_universes(id)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 ";

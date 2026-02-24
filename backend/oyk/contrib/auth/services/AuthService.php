@@ -189,7 +189,7 @@ class AuthService {
     return $authUser;
   }
 
-  public function getRat(int $userId, bool $isGenereteRefresh): ?string {
+  public function getRat(int $userId, bool $isGenereteRefresh = FALSE): ?string {
     $isProd = getenv("HTTP_ISPROD");
 
     try {

@@ -3,21 +3,23 @@ global $pdo;
 
 $sql = "
 CREATE TABLE IF NOT EXISTS world_themes (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    universe INT UNSIGNED NOT NULL,
+    `id` int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `universe_id` int UNSIGNED NOT NULL,
 
-    name VARCHAR(120) NOT NULL,
+    `name` varchar(120) NOT NULL,
 
-    c_primary VARCHAR(7) NOT NULL,
-    c_primary_fg VARCHAR(7) NOT NULL,
+    `c_primary` varchar(7) NOT NULL,
+    `c_primary_fg` varchar(7) NOT NULL,
     
-    variables JSON NOT NULL,
+    `variables` json NOT NULL,
 
-    is_active BOOL NOT NULL DEFAULT 0,
+    `is_active` tinyint(1) NOT NULL DEFAULT 0,
 
-    INDEX idx_universe (universe),
+    INDEX (universe_id),
 
-    FOREIGN KEY (universe) REFERENCES world_universes(id) ON DELETE CASCADE
+    CONSTRAINT fk_wt_universe
+        FOREIGN KEY (universe_id) REFERENCES world_universes(id)
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 ";
 
