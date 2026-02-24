@@ -3,22 +3,22 @@ require_once __DIR__ . "/../../../core/db.php";
 
 try {
     $sql = "
-    CREATE TABLE IF NOT EXISTS blog_post_reactions (
-        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        post INT UNSIGNED NOT NULL,
-        user INT UNSIGNED NOT NULL,
-        reaction ENUM('like', 'dislike') NOT NULL,
+    CREATE TABLE IF NOT EXISTS blog_reactions (
+        `id` int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
-        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        `target_tag` enum('blog', 'post', 'comment') NOT NULL,
+        `target_id` int UNSIGNED NOT NULL,
 
-        UNIQUE KEY uniq_user_post (user, post),
+        `user_id` int UNSIGNED NOT NULL,
+        `reaction` enum('like', 'dislike') NOT NULL,
 
-        CONSTRAINT fk_blog_post_reactions_post
-            FOREIGN KEY (post) REFERENCES blog_posts(id)
-            ON DELETE CASCADE,
-        CONSTRAINT fk_blog_post_reactions_user
-            FOREIGN KEY (user) REFERENCES auth_users(id)
+        `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+        UNIQUE (user_id, target_tag, target_id),
+
+        CONSTRAINT fk_br_user
+            FOREIGN KEY (user_id) REFERENCES auth_users(id)
             ON DELETE CASCADE
     ) ENGINE=InnoDB;
     ";

@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$authUser = require_auth();
+$userId = require_rat();
 
 $universeService = new UniverseService($pdo);
 $moduleService = new ModuleService($pdo);
@@ -17,7 +17,7 @@ if (!$postId) {
 }
 
 // Universe context
-$context = $universeService->getContext($universeSlug, $authUser["id"]);
+$context = $universeService->getContext($universeSlug, $userId);
 $universeId = $context["id"];
 
 $module = $moduleService->getModule($universeId, "blog");
@@ -26,7 +26,7 @@ $moduleSettings = $module["blog"]["settings"];
 // Get post
 $post = $blogService->getPost($universeId, $postId);
 if ((int) ($moduleSettings['is_reactions_enabled'] ?? 0) === 1) {
-  $reactions = $reactionService->getReactionsForPost($postId, $authUser["id"]);
+  $reactions = $reactionService->getReactionsForPost($postId, $userId);
 }
 
 Response::json([

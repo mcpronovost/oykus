@@ -17,7 +17,7 @@ class BlogService {
       SELECT EXISTS (
         SELECT 1
         FROM world_universes u
-        WHERE u.id = ? AND u.owner = ?
+        WHERE u.id = ? AND u.owner_id = ?
       )
     ");
     $qry->execute([$universeId, $userId]);
@@ -39,7 +39,7 @@ class BlogService {
       SELECT EXISTS (
         SELECT 1
         FROM world_universes u
-        WHERE u.id = ? AND u.owner = ?
+        WHERE u.id = ? AND u.owner_id = ?
       )
     ");
     $qry->execute([$universeId, $userId]);
@@ -61,7 +61,7 @@ class BlogService {
       SELECT EXISTS (
         SELECT 1
         FROM world_universes u
-        WHERE u.id = ? AND u.owner = ?
+        WHERE u.id = ? AND u.owner_id = ?
       )
     ");
     $qry->execute([$universeId, $userId]);
@@ -119,14 +119,14 @@ class BlogService {
   public function getPostsList(int $universeId): array {
     try {
       $qry = $this->pdo->prepare("
-        SELECT bp.id, bp.author, bp.title, bp.description, bp.content, bp.created_at, bp.updated_at,
+        SELECT bp.id, bp.author_id, bp.title, bp.description, bp.content, bp.created_at, bp.updated_at,
         (
           SELECT COUNT(*)
           FROM blog_comments bc
           WHERE bc.post = bp.id
         ) AS comments
         FROM blog_posts bp
-        WHERE bp.universe = ?
+        WHERE bp.universe_id = ?
         ORDER BY bp.created_at DESC
       ");
 
@@ -144,9 +144,9 @@ class BlogService {
   public function getPost(int $universeId, int $postId): array {
     try {
       $qry = $this->pdo->prepare("
-        SELECT bp.id, bp.author, bp.title, bp.description, bp.content, bp.created_at, bp.updated_at
+        SELECT bp.id, bp.author_id, bp.title, bp.description, bp.content, bp.created_at, bp.updated_at
         FROM blog_posts bp
-        WHERE bp.universe = ? AND bp.id = ?
+        WHERE bp.universe_id = ? AND bp.id = ?
         GROUP BY bp.id
         LIMIT 1
       ");
@@ -166,9 +166,9 @@ class BlogService {
   public function getPostAuthor(int $universeId, int $postId): int {
     try {
       $qry = $this->pdo->prepare("
-        SELECT bp.author
+        SELECT bp.author_id
         FROM blog_posts bp
-        WHERE bp.universe = ? AND bp.id = ?
+        WHERE bp.universe_id = ? AND bp.id = ?
         LIMIT 1
       ");
 
@@ -182,7 +182,7 @@ class BlogService {
         throw new NotFoundException("Post not found");
       }
 
-      return $row["author"];
+      return $row["author_id"];
     }
     catch (Exception $e) {
       throw new QueryException("Failed to get post");
@@ -192,7 +192,7 @@ class BlogService {
   public function createPost(int $universeId, int $authorId, array $fields): int {
     try {
       $qry = $this->pdo->prepare("
-        INSERT INTO blog_posts (universe, author, title, description, content, created_at, updated_at)
+        INSERT INTO blog_posts (universe_id, author_id, title, description, content, created_at, updated_at)
         VALUES (?, ?, ?, ?, ?, NOW(), NOW())
       ");
 
@@ -207,7 +207,7 @@ class BlogService {
       return (int) $this->pdo->lastInsertId();
     }
     catch (Exception $e) {
-      throw new QueryException("Failed to create post");
+      throw new QueryException("Failed to create post".$e->getMessage());
     }
   }
 
@@ -216,7 +216,7 @@ class BlogService {
       $qry = $this->pdo->prepare("
         UPDATE blog_posts
         SET title = ?, description = ?, content = ?, updated_at = NOW()
-        WHERE id = ? AND universe = ?
+        WHERE id = ? AND universe_id = ?
       ");
 
       return $qry->execute([

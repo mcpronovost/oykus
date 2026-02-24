@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$authUser = require_auth();
+$userId = require_rat();
 
 $universeService = new UniverseService($pdo);
 $moduleService = new ModuleService($pdo);
@@ -16,7 +16,7 @@ if (!$postId) {
 }
 
 // Universe context
-$context = $universeService->getContext($universeSlug, $authUser["id"]);
+$context = $universeService->getContext($universeSlug, $userId);
 $universeId = $context["id"];
 
 $module = $moduleService->getModule($universeId, "blog");
@@ -24,7 +24,7 @@ $moduleSettings = $module["blog"]["settings"];
 
 // Get comments
 if ((int) $moduleSettings["is_comments_enabled"] === 1) {
-  $comments = $commentService->getCommentsForPost($postId, $authUser["id"]);
+  $comments = $commentService->getCommentsForPost($postId, $userId);
 }
 
 Response::json([

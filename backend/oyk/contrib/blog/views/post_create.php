@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$authUser = require_auth();
+$userId = require_rat();
 
 $universeService = new UniverseService($pdo);
 $moduleService = new ModuleService($pdo);
@@ -10,11 +10,11 @@ $blogService = new BlogService($pdo);
 $universeSlug ??= NULL;
 
 // Universe context
-$context = $universeService->getContext($universeSlug, $authUser["id"]);
+$context = $universeService->getContext($universeSlug, $userId);
 $universeId = $context["id"];
 
 // Check permissions
-if (!$blogService->userCanCreatePost($universeId, $authUser["id"])) {
+if (!$blogService->userCanCreatePost($universeId, $userId)) {
   Response::notFound("Permission denied");
 }
 
@@ -22,7 +22,7 @@ if (!$blogService->userCanCreatePost($universeId, $authUser["id"])) {
 $fields = $blogService->validateCreateData($_POST);
 
 // Create post
-$post = $blogService->createPost($universeId, $authUser["id"], $fields);
+$post = $blogService->createPost($universeId, $userId, $fields);
 
 Response::json([
   "ok" => TRUE,

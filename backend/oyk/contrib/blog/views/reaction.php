@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$authUser = require_auth();
+$userId = require_rat();
 
 $universeService = new UniverseService($pdo);
 $blogService = new BlogService($pdo);
@@ -11,11 +11,11 @@ $universeSlug ??= NULL;
 $postId ??= 0;
 
 // Universe context
-$context = $universeService->getContext($universeSlug, $authUser["id"]);
+$context = $universeService->getContext($universeSlug, $userId);
 $universeId = $context["id"];
 
 // Check permissions
-if (!$reactionService->userCanAddReaction($universeId, $postId, $authUser["id"])) {
+if (!$reactionService->userCanAddReaction($universeId, $postId, $userId)) {
   Response::notFound("Post not found");
 }
 
@@ -23,7 +23,7 @@ if (!$reactionService->userCanAddReaction($universeId, $postId, $authUser["id"])
 $fields = $reactionService->validateData($_POST);
 
 // Set reaction
-$reactions = $reactionService->setReaction($postId, $authUser["id"], $fields["action"]);
+$reactions = $reactionService->setReaction($postId, $userId, $fields["action"]);
 
 Response::json([
   "ok" => TRUE,
