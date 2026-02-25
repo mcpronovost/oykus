@@ -34,16 +34,13 @@ export default function Planner() {
     setIsLoading(true);
     setHasError(null);
     try {
-      const url =
-        !currentUniverse || currentUniverse.is_default
-          ? "/planner/tasks/"
-          : `/planner/u/${currentUniverse.slug}/tasks/`;
+      const url = `/planner/u/${currentUniverse.slug}/tasks/`;
       const r = await api.get(url, signal ? { signal } : {});
-      if (!r.ok) throw new Error(r.error || t("An error occurred"));
+      if (!r.ok) throw r;
       setTasks(r.tasks);
     } catch (e) {
       if (e?.name === "AbortError") return;
-      setHasError(e.message || t("An error occurred"));
+      setHasError(t(e.error));
     } finally {
       if (!signal || !signal.aborted) {
         setIsLoading(false);
@@ -53,10 +50,7 @@ export default function Planner() {
 
   const updateTaskStatus = async (taskId, newStatusId) => {
     try {
-      const url =
-        !currentUniverse || currentUniverse.is_default
-          ? `/planner/tasks/${taskId}/edit/`
-          : `/planner/u/${currentUniverse.slug}/tasks/${taskId}/edit/`;
+      const url = `/planner/u/${currentUniverse.slug}/tasks/${taskId}/edit/`;
       const formData = new FormData();
       formData.append("status", newStatusId);
       const r = await api.post(url, formData);

@@ -59,7 +59,6 @@ class OykApi {
         }
         let errorMsg = `HTTP error! status: ${response.status}`;
         try {
-
           const errorData = await response.json();
           return errorData;
         } catch (err) {
