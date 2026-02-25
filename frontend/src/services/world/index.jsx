@@ -139,6 +139,7 @@ export function WorldProvider({ children }) {
         currentUniverse,
         isLoadingWorld,
         changeUniverse: fetchCurrentUniverse,
+        getUniverses: fetchUniverses,
         setUniverses,
         setCurrentUniverse
       }}

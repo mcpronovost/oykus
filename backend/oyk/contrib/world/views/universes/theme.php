@@ -1,12 +1,13 @@
 <?php
 
 global $pdo;
-$authUser = require_auth(FALSE);
+$userId = require_rat(FALSE);
 
 $universeService = new UniverseService($pdo);
 $themeService = new ThemeService($pdo);
 
-$universeId = $universeService->getEditableUniverseId($universeSlug, $authUser["id"]);
+$context = $universeService->getContext($universeSlug, $userId);
+$universeId = $context["id"];
 
 if (!$universeId) {
   Response::notFound("Universe not found");

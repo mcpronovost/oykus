@@ -103,7 +103,7 @@ export default function UniverseAdminTheme() {
       getUniverses();
     } catch (e) {
       setHasError(() => ({
-        message: e.message || t("An error occurred"),
+        message: e.error || t("An error occurred"),
       }));
     } finally {
       setIsLoadingSubmit(false);

@@ -5,7 +5,7 @@ require OYK . "/core/utils/uploaders.php";
 require OYK . "/core/utils/validaters.php";
 
 global $pdo;
-$authUser = require_auth();
+$userId = require_rat();
 
 $themeService = new ThemeService($pdo);
 
@@ -15,7 +15,7 @@ $themeService = new ThemeService($pdo);
 |--------------------------------------------------------------------------
 */
 $qry = $pdo->prepare("
-  SELECT id, slug, logo, cover, owner
+  SELECT id, slug, logo, cover, owner_id
   FROM world_universes
   WHERE slug = ? AND is_active = 1
   LIMIT 1
@@ -32,7 +32,7 @@ if (!$universe) {
 | Check edit permission
 |--------------------------------------------------------------------------
 */
-if ($universe["owner"] !== $authUser["id"]) {
+if ($universe["owner_id"] !== $userId) {
   Response::forbidden();
 }
 
@@ -196,14 +196,14 @@ catch (Exception $e) {
 |--------------------------------------------------------------------------
 */
 if (isset($patch["logo"]) && $universe["logo"]) {
-  $path = OYK . "/../.." . $universe["logo"];
+  $path = OYK . "/.." . $universe["logo"];
   if (is_file($path)) {
     unlink($path);
   }
 }
 
 if (isset($patch["cover"]) && $universe["cover"]) {
-  $path = OYK . "/../.." . $universe["cover"];
+  $path = OYK . "/.." . $universe["cover"];
   if (is_file($path)) {
     unlink($path);
   }
@@ -214,7 +214,7 @@ if (isset($patch["cover"]) && $universe["cover"]) {
 | Return updated resource
 |--------------------------------------------------------------------------
 */
-unset($universe["owner"]);
+unset($universe["owner_id"]);
 $universe = array_merge($universe, $patch);
 $theme = array_merge($theme, $patchTheme);
 
