@@ -59,13 +59,13 @@ export default function SettingsProfile() {
         message: t("Your profile has been updated successfully"),
       });
     } catch (e) {
-      if (e?.message && e.message.includes("uniq_name")) {
+      if (e?.error && e.error.includes("uniq_name")) {
         setHasError(() => ({
           name: t("This name is already in use"),
         }));
       } else {
         setHasError(() => ({
-          message: e.message || t("An error occurred"),
+          message: e.error || t("An error occurred"),
         }));
       }
     } finally {

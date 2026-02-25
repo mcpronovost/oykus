@@ -86,7 +86,6 @@ export default function OykScrollbar({ isMainScroll = false, height = "100%", cl
     setDragging(true);
     dragStartY.current = e.clientY;
     scrollStartTop.current = contentRef.current.scrollTop;
-    console.log(">> ", scrollStartTop.current);
     document.body.classList.add("oyk-no-select");
   };
 

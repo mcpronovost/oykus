@@ -4,7 +4,7 @@ require OYK . "/core/utils/uploaders.php";
 require OYK . "/core/utils/formatters.php";
 
 global $pdo;
-$authUser = require_auth();
+$userId = require_rat();
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +17,7 @@ $qry = $pdo->prepare("
   WHERE id = ?
   LIMIT 1
 ");
-$qry->execute([$authUser["id"]]);
+$qry->execute([$userId]);
 $user = $qry->fetch();
 
 if (!$user) {

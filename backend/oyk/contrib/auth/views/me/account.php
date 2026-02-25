@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$authUser = require_auth();
+$userId = require_rat();
 
 try {
   $qry = $pdo->prepare("
@@ -11,15 +11,15 @@ try {
     LIMIT 1
   ");
 
-  $qry->execute([$authUser["id"]]);
+  $qry->execute([$userId]);
   $user = $qry->fetch();
 }
 catch (Exception $e) {
-  Response::serverError();
+  throw new QueryException();
 }
 
 if (!$user) {
-  Response::notFound("User not found");
+  throw new NotFoundException("User not found");
 }
 
 Response::json([

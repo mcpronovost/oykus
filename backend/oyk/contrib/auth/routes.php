@@ -23,8 +23,6 @@ Router::get("{$api}/me/account", "{$view}me/account.php");
 
 Router::post("{$api}/me/account/edit", "{$view}me/account_edit.php");
 
-Router::get("{$api}/me/notifications", "{$view}me/notifications.php");
-
 /* ================================================ */
 // USERS ROUTES
 /* ================================================ */
