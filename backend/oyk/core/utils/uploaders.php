@@ -47,7 +47,7 @@ function oyk_save_image($file, $dstSizeW = 200, $dstSizeH = 200, $field = "avata
     );
 
     $filename = uniqid($prefix ? $prefix."_" : "").".webp";
-    $path = __DIR__ . "/../../../../uploads/".$field."/".$filename;
+    $path = __DIR__ . "/../../../uploads/".$field."/".$filename;
 
     imagewebp($dst, $path, 85);
 
