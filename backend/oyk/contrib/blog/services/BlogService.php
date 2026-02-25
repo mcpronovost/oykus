@@ -119,13 +119,27 @@ class BlogService {
   public function getPostsList(int $universeId): array {
     try {
       $qry = $this->pdo->prepare("
-        SELECT bp.id, bp.author_id, bp.title, bp.description, bp.created_at, bp.updated_at,
+        SELECT
+          bp.id,
+          bp.author_id,
+          JSON_OBJECT(
+            'id', au.id,
+            'name', au.name,
+            'slug', au.slug,
+            'abbr', au.abbr,
+            'avatar', au.avatar
+          ) AS author,
+          bp.title,
+          bp.description,
+          bp.created_at,
+          bp.updated_at,
         (
           SELECT COUNT(*)
           FROM blog_comments bc
           WHERE bc.post_id = bp.id
         ) AS comments
         FROM blog_posts bp
+        LEFT JOIN auth_users au ON au.id = bp.author_id
         WHERE bp.universe_id = ?
         ORDER BY bp.created_at DESC
       ");
@@ -134,7 +148,14 @@ class BlogService {
         $universeId
       ]);
 
-      return $qry->fetchAll();
+      $rows = $qry->fetchAll();
+
+      $result = array_map(function ($row) {
+        $row["author"] = json_decode($row["author"], TRUE);
+        return $row;
+      }, $rows);
+
+      return $result;
     }
     catch (Exception $e) {
       throw new QueryException("Failed to get posts".$e->getMessage());
@@ -157,32 +178,6 @@ class BlogService {
       ]);
 
       return $qry->fetch();
-    }
-    catch (Exception $e) {
-      throw new QueryException("Failed to get post");
-    }
-  }
-
-  public function getPostAuthor(int $universeId, int $postId): int {
-    try {
-      $qry = $this->pdo->prepare("
-        SELECT bp.author_id
-        FROM blog_posts bp
-        WHERE bp.universe_id = ? AND bp.id = ?
-        LIMIT 1
-      ");
-
-      $qry->execute([
-        $universeId,
-        $postId
-      ]);
-
-      $row = $qry->fetch();
-      if (!$row) {
-        throw new NotFoundException("Post not found");
-      }
-
-      return $row["author_id"];
     }
     catch (Exception $e) {
       throw new QueryException("Failed to get post");

@@ -146,7 +146,9 @@ export default function OykBlog() {
                         {post.description ? <div className="oyk-blog-item-content-preview">{post.description}</div> : null}
                       </div>
                       <footer className="oyk-blog-item-footer">
-                        <div></div>
+                        <div>
+                          {post.author?.name ? <span>{t("By {author}", null, { author: post.author.name })}</span> : null}
+                        </div>
                         {(currentUniverse.modules.blog.settings?.is_comments_enabled) ? (
                           <div className="oyk-blog-item-footer-comments">{t("{count} comments", post.comments )}</div>
                         ) : null}
