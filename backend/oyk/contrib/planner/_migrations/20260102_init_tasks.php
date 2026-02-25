@@ -3,33 +3,31 @@ require_once __DIR__ . "/../../../core/db.php";
 
 $sql = "
 CREATE TABLE IF NOT EXISTS planner_tasks (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    universe INT UNSIGNED NULL,
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
-    title VARCHAR(120) NOT NULL,
-    content TEXT NULL,
+    `universe_id` INT UNSIGNED NULL,
+    `status_id` INT UNSIGNED NOT NULL,
+    `author_id` INT UNSIGNED NOT NULL,
 
-    priority TINYINT UNSIGNED NOT NULL DEFAULT 2,
-    status INT UNSIGNED NOT NULL,
-    position INT UNSIGNED NOT NULL DEFAULT 1,
-    author INT UNSIGNED NOT NULL,
+    `title` VARCHAR(120) NOT NULL,
+    `content` TEXT NULL,
 
-    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    due_at DATETIME,
+    `priority` TINYINT UNSIGNED NOT NULL DEFAULT 2,
 
-    INDEX idx_status_priority_due (status, priority, due_at),
-    INDEX idx_status_position (status, position),
-    INDEX idx_author (author),
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `due_at` DATETIME,
 
-    CONSTRAINT fk_planner_tasks_universe
-        FOREIGN KEY (universe) REFERENCES world_universes(id)
+    INDEX (universe_id, status_id, priority, due_at),
+
+    CONSTRAINT fk_pt_universe
+        FOREIGN KEY (universe_id) REFERENCES world_universes(id)
         ON DELETE SET NULL,
-    CONSTRAINT fk_planner_tasks_status
-        FOREIGN KEY (status) REFERENCES planner_statuses(id)
+    CONSTRAINT fk_pt_status
+        FOREIGN KEY (status_id) REFERENCES planner_statuses(id)
         ON DELETE RESTRICT,
-    CONSTRAINT fk_planner_tasks_author
-        FOREIGN KEY (author) REFERENCES auth_users(id)
+    CONSTRAINT fk_pt_author
+        FOREIGN KEY (author_id) REFERENCES auth_users(id)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 ";
