@@ -206,5 +206,7 @@
     "zero": "{count} commentaire",
     "one": "{count} commentaire",
     "other": "{count} commentaires"
-  }
+  },
+  "By {author}": "Par {author}",
+  "Unexpected error": "Erreur inattendue"
 }
