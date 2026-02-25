@@ -2,7 +2,7 @@
   --oyk-default-primary: #3da5cb;
   --oyk-default-primary-fg: #ffffff;
 
-  --oyk-core-bg: #16171C;
+  --oyk-core-bg: #1c1e25;
   --oyk-core-fg: #838489;
   --oyk-core-bg-img: none;
   --oyk-core-divider: #24272e;
@@ -33,7 +33,7 @@
 
   --oyk-card-bg: #121317;
   --oyk-card-fg: #aeafb7;
-  --oyk-card-subtle-bg: #1e1f26;
+  --oyk-card-subtle-bg: #262730;
   --oyk-card-subtle-fg: #aeafb7;
   --oyk-card-item-bg: #16171b;
   --oyk-card-item-fg: #aeafb7;
@@ -42,5 +42,5 @@
 
   --oyk-scrollbar: #24252b;
 
-  --oyk-radius: 6px;
+  --oyk-radius: 8px;
 }
