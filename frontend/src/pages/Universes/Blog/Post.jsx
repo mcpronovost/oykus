@@ -20,7 +20,7 @@ import {
 } from "@/components/ui";
 import { oykCode, oykDate } from "@/utils";
 import OykBlogComments from "./Comments";
-import OykBlogPostReactions from "./Reactions";
+import OykBlogPostReactions from "./PostReactions";
 import OykModalPostEdit from "./modals/PostEdit";
 import OykModalPostDelete from "./modals/PostDelete";
 
@@ -79,7 +79,7 @@ export default function OykBlogPost() {
     if (!isAuth || (currentUniverse && !currentUniverse.modules?.blog?.active)) return;
     const controller = new AbortController();
 
-    routeTitle(currentUniverse.modules.blog.settings.display_name || t("Blog"));
+    routeTitle(currentUniverse?.modules.blog.settings.display_name || t("Blog"));
 
     getBlogPost(controller.signal);
 
@@ -161,7 +161,7 @@ export default function OykBlogPost() {
               reaction={reactions.user}
               handleReactions={setReactions}
             />
-            <OykBlogComments postId={post.id} postAuthorId={post.author} />
+            <OykBlogComments postId={post.id} postAuthorId={post.author_id} />
           </section>
         ) : (
           <OykFeedback title={t("No post found")} icon={Frown} ghost />

@@ -11,12 +11,12 @@ class ReactionService {
   public function __construct(private PDO $pdo) {
   }
 
-  public function userCanAddReaction(int $universeId, int $postId, int $userId): bool {
+  public function userCanAddReaction(int $universeId, ?int $commentId, ?int $postId, int $userId): bool {
     if (!$universeId || $universeId <= 0) {
       throw new NotFoundException("Universe not found");
     }
-    if (!$postId || $postId <= 0) {
-      throw new NotFoundException("Post not found");
+    if ((!$commentId || $commentId <= 0) && (!$postId || $postId <= 0)) {
+      throw new NotFoundException("Target not found");
     }
     if (!$userId || $userId <= 0) {
       throw new NotFoundException("User not found");
@@ -27,6 +27,15 @@ class ReactionService {
 
   public function validateData(array $data): array {
     $fields = [];
+
+    // Target
+    if (array_key_exists("target", $data)) {
+      $target_tag = trim($data["target"]);
+      if ($target_tag !== "blog" && $target_tag !== "post" && $target_tag !== "comment") {
+        throw new ValidationException("Target value is invalid");
+      }
+      $fields["target_tag"] = $target_tag;
+    }
 
     // Action
     if (array_key_exists("action", $data)) {
@@ -40,22 +49,24 @@ class ReactionService {
     return $fields;
   }
 
-  public function getReactionsForPost(int $postId, int $userId): array {
+  public function getReactions(int $userId, string $targetTag, int $targetId): array {
     try {
       $qry = $this->pdo->prepare("
         SELECT
           SUM(CASE WHEN br.reaction = 'like' THEN 1 ELSE 0 END) AS likes,
           SUM(CASE WHEN br.reaction = 'dislike' THEN 1 ELSE 0 END) AS dislikes,
           MAX(ur.reaction) AS user
-        FROM blog_post_reactions br
-        LEFT JOIN blog_post_reactions ur ON ur.post = br.post AND ur.user = ?
-        WHERE br.post = ?
-        GROUP BY br.post
+        FROM blog_reactions br
+        LEFT JOIN blog_reactions ur ON ur.target_id = br.target_id AND ur.target_tag = ? AND ur.user_id = ?
+        WHERE br.target_id = ? AND br.target_tag = ?
+        GROUP BY br.target_id
       ");
 
       $qry->execute([
+        $targetTag,
         $userId,
-        $postId
+        $targetId,
+        $targetTag
       ]);
 
       $row = $qry->fetch();
@@ -69,53 +80,53 @@ class ReactionService {
       return [];
     }
     catch (Exception $e) {
-      throw new QueryException("Failed to get reactions");
+      throw new QueryException("Failed to get reactions".$e->getMessage());
     }
   }
 
-  public function setReaction(int $postId, int $userId, string $reaction): array {
+  public function setReaction(int $universeId, string $targetTag, int $targetId, int $userId, string $reaction): array {
     try {
       // 1. 
       $qry = $this->pdo->prepare("
         SELECT reaction 
-        FROM blog_post_reactions 
-        WHERE post = ? AND user = ?
+        FROM blog_reactions 
+        WHERE universe_id = ? AND target_tag = ? AND target_id = ? AND user_id = ?
       ");
-      $qry->execute([$postId, $userId]);
+      $qry->execute([$universeId, $targetTag, $targetId, $userId]);
       $existing = $qry->fetchColumn();
 
       // 2. Aucune réaction → INSERT
       if ($existing === FALSE) {
         $insert = $this->pdo->prepare("
-          INSERT INTO blog_post_reactions (post, user, reaction)
-          VALUES (?, ?, ?)
+          INSERT INTO blog_reactions (universe_id, target_tag, target_id, user_id, reaction)
+          VALUES (?, ?, ?, ?, ?)
         ");
-        $insert->execute([$postId, $userId, $reaction]);
+        $insert->execute([$universeId, $targetTag, $targetId, $userId, $reaction]);
       }
 
       // 3. Même réaction → DELETE (toggle off)
       else if ($existing === $reaction) {
         $delete = $this->pdo->prepare("
-          DELETE FROM blog_post_reactions
-          WHERE post = ? AND user = ?
+          DELETE FROM blog_reactions
+          WHERE universe_id = ? AND target_tag = ? AND target_id = ? AND user_id = ?
         ");
-        $delete->execute([$postId, $userId]);
+        $delete->execute([$universeId, $targetTag, $targetId, $userId]);
       }
 
       // 4. Réaction différente → UPDATE
       else {
         $update = $this->pdo->prepare("
-          UPDATE blog_post_reactions
+          UPDATE blog_reactions
           SET reaction = ?
-          WHERE post = ? AND user = ?
+          WHERE universe_id = ? AND target_tag = ? AND target_id = ? AND user_id = ?
         ");
-        $update->execute([$reaction, $postId, $userId]);
+        $update->execute([$reaction, $universeId, $targetTag, $targetId, $userId]);
       }
     }
     catch (Exception $e) {
-      throw new QueryException("Failed to set reaction");
+      throw new QueryException("Failed to set reaction".$e->getMessage());
     }
 
-    return $this->getReactionsForPost($postId, $userId);
+    return $this->getReactions($userId, $targetTag, $targetId);
   }
 }

@@ -123,7 +123,7 @@ class BlogService {
         (
           SELECT COUNT(*)
           FROM blog_comments bc
-          WHERE bc.post = bp.id
+          WHERE bc.post_id = bp.id
         ) AS comments
         FROM blog_posts bp
         WHERE bp.universe_id = ?

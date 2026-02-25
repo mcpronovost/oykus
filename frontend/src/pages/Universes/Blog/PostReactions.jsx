@@ -27,6 +27,7 @@ export default function OykBlogPostReactions({
     setHasError(null);
     try {
       const formData = new FormData();
+      formData.append("target", "post");
       formData.append("action", action);
       const r = await api.post(`/blog/u/${currentUniverse.slug}/posts/${postId}/reaction/`, formData);
       if (!r.ok || !r.reactions) throw Error();

@@ -151,8 +151,7 @@ export default function UniverseAdminModuleBlog() {
                 defaultValue={blogForm.is_comments_reactions_enabled}
                 onChange={handleChange}
                 hasError={hasError?.is_comments_reactions_enabled}
-                helptext={t("Coming soon")}
-                disabled
+                helptext={blogForm.is_comments_reactions_enabled ? t("Users can like and dislike comments") : null}
               />
               <OykFormField
                 label={t("Allow Comment's Replies")}
@@ -161,8 +160,7 @@ export default function UniverseAdminModuleBlog() {
                 defaultValue={blogForm.is_comments_replies_enabled}
                 onChange={handleChange}
                 hasError={hasError?.is_comments_replies_enabled}
-                helptext={t("Coming soon")}
-                disabled
+                helptext={blogForm.is_comments_replies_enabled ? t("Users can reply to comments") : null}
               />
             </section>
             {hasError?.message && <OykFormMessage hasError={hasError?.message} />}

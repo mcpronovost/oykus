@@ -21,28 +21,34 @@ if (!$commentService->userCanAddComment($universeId, $postId, $userId)) {
 }
 
 // Validation
-$fields = $commentService->validateData($_POST);
+$fields = $commentService->validateCreateData($_POST);
 
 // Add comment
-$comments = $commentService->createComment($postId, $userId, $fields);
+$comments = $commentService->createComment($universeId, $postId, $userId, $fields);
 
 // Create alert
 $post = $blogService->getPost($universeId, $postId);
-$alertService->createAlert(
-  $post["author"],
-  "New blog comment",
-  "blog_comment",
-  "blog_posts",
-  $postId,
-  [
-    "universe_slug" => $universeSlug,
-    "comment_id" => $comments[0]["id"],
-    "comment_author" => $comments[0]["author"],
-    "comment_content" => substr($comments[0]["content"], 0, 32),
-    "post_id" => $postId,
-    "post_title" => $post["title"]
-  ]
-);
+
+try {
+  $alertService->createAlert(
+    $post["author_id"],
+    "New blog comment",
+    "blog_comment",
+    "blog_posts",
+    $postId,
+    [
+      "universe_slug" => $universeSlug,
+      "comment_id" => $comments[0]["id"],
+      "comment_author" => $comments[0]["author"]["id"],
+      "comment_content" => substr($comments[0]["content"], 0, 32),
+      "post_id" => $postId,
+      "post_title" => $post["title"]
+    ]
+  );
+}
+catch (Exception) {
+  // fail silently
+}
 
 Response::json([
   "ok" => TRUE,

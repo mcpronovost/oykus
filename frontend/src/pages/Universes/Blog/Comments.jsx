@@ -41,10 +41,7 @@ export default function OykBlogPostComments({ postId, postAuthorId }) {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get(
-        `/blog/u/${currentUniverse.slug}/posts/${postId}/comments/`,
-        signal ? { signal } : {},
-      );
+      const r = await api.get(`/blog/u/${currentUniverse.slug}/posts/${postId}/comments/`, signal ? { signal } : {});
       if (!r.ok || !r.comments) throw Error(r.error || t("An error occurred"));
       setComments(r.comments);
     } catch (e) {
@@ -64,7 +61,7 @@ export default function OykBlogPostComments({ postId, postAuthorId }) {
       const formData = new FormData();
       for (const [key, value] of Object.entries(addCommentForm)) {
         formData.append(key, value);
-      };
+      }
       const r = await api.post(`/blog/u/${currentUniverse.slug}/posts/${postId}/comments/create/`, formData);
       if (!r.ok || !r.comments) throw Error();
       setComments(r.comments);
@@ -77,6 +74,10 @@ export default function OykBlogPostComments({ postId, postAuthorId }) {
     } finally {
       setIsSubmitLoading(false);
     }
+  };
+
+  const updateCommentReplies = (comments) => {
+    setComments(comments);
   };
 
   const handleChange = (e) => {
@@ -103,7 +104,7 @@ export default function OykBlogPostComments({ postId, postAuthorId }) {
       !isAuth ||
       !currentUniverse ||
       !currentUniverse.modules?.blog?.active ||
-      !currentUniverse.modules.blog.settings?.is_comments_enabled
+      !currentUniverse.modules?.blog?.settings?.is_comments_enabled
     ) {
       return;
     }
@@ -120,7 +121,7 @@ export default function OykBlogPostComments({ postId, postAuthorId }) {
     !isAuth ||
     !currentUniverse ||
     !currentUniverse.modules?.blog?.active ||
-    !currentUniverse.modules.blog.settings?.is_comments_enabled
+    !currentUniverse.modules?.blog?.settings?.is_comments_enabled
   ) {
     return null;
   }
@@ -165,7 +166,14 @@ export default function OykBlogPostComments({ postId, postAuthorId }) {
             {comments.length > 0 ? (
               <section className="oyk-blog-comments-list">
                 {comments.map((comment) => (
-                  <OykBlogPostCommentsCard key={comment.id} comment={comment} isByAuthor={comment.author.id === postAuthorId}/>
+                  <OykBlogPostCommentsCard
+                    key={comment.id}
+                    postId={postId}
+                    comment={comment}
+                    postAuthorId={postAuthorId}
+                    isLastReply={true}
+                    handleReply={updateCommentReplies}
+                  />
                 ))}
                 {moreComments ? (
                   <footer className="oyk-blog-comments-list-footer">

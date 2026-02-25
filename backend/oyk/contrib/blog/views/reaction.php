@@ -8,22 +8,25 @@ $blogService = new BlogService($pdo);
 $reactionService = new ReactionService($pdo);
 
 $universeSlug ??= NULL;
-$postId ??= 0;
+$commentId ??= NULL;
+$postId ??= NULL;
+
+$targetId = $commentId ?? $postId;
 
 // Universe context
 $context = $universeService->getContext($universeSlug, $userId);
 $universeId = $context["id"];
 
 // Check permissions
-if (!$reactionService->userCanAddReaction($universeId, $postId, $userId)) {
-  Response::notFound("Post not found");
+if (!$reactionService->userCanAddReaction($universeId, $commentId, $postId, $userId)) {
+  Response::notFound("Target not found");
 }
 
 // Validation
 $fields = $reactionService->validateData($_POST);
 
 // Set reaction
-$reactions = $reactionService->setReaction($postId, $userId, $fields["action"]);
+$reactions = $reactionService->setReaction($universeId, $fields["target_tag"], $targetId, $userId, $fields["action"]);
 
 Response::json([
   "ok" => TRUE,

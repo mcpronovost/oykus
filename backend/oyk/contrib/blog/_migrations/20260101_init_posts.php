@@ -5,6 +5,7 @@ try {
     $sql = "
     CREATE TABLE IF NOT EXISTS blog_posts (
         `id` int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
         `universe_id` int UNSIGNED NOT NULL,
 
         `title` varchar(120) NOT NULL,
