@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$authUser = require_auth();
+$userId = require_rat();
 
 /*
 |--------------------------------------------------------------------------
@@ -28,14 +28,16 @@ if (!$user) {
 */
 try {
   $qry = $pdo->prepare("
-    UPDATE social_friends
-    SET status = 'rejected', responded_at = NOW()
-    WHERE user_id = ?
-      AND friend_id = ?
+    DELETE FROM social_friends
+    WHERE friend_id = :userId
+      AND user_id = :friendId
       AND status = 'pending';
   ");
 
-  $qry->execute([$user["id"], $authUser["id"]]);
+  $qry->execute([
+    "userId" => $user["id"],
+    "friendId" => $userId
+  ]);
 }
 catch (Exception $e) {
   Response::serverError();

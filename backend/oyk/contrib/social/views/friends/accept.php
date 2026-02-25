@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$authUser = require_auth();
+$userId = require_rat();
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +37,7 @@ try {
   ");
   $qry->execute([
     "userId" => $user["id"],
-    "friendId" => $authUser["id"]
+    "friendId" => $userId
   ]);
 
   $qry = $pdo->prepare("
@@ -49,7 +49,7 @@ try {
   ");
 
   $qry->execute([
-    "userId" => $authUser["id"],
+    "userId" => $userId,
     "friendId" => $user["id"]
   ]);
 

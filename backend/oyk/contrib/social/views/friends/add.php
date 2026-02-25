@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$authUser = require_auth();
+$userId = require_rat();
 
 /*
 |--------------------------------------------------------------------------
@@ -37,10 +37,10 @@ try {
     LIMIT 1
   ");
   $qry->execute([
-    "userId" => $authUser["id"],
+    "userId" => $userId,
     "targetFriendId" => $user["id"],
     "targetUserId" => $user["id"],
-    "friendId" => $authUser["id"]
+    "friendId" => $userId
   ]);
   $pending = $qry->fetch();
 
@@ -79,7 +79,7 @@ try {
   ");
 
   $qry->execute([
-    "userId" => $authUser["id"],
+    "userId" => $userId,
     "friendId" => $user["id"]
   ]);
 }

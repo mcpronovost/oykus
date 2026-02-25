@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$authUser = require_auth();
+$userId = require_rat();
 
 try {
   $qry = $pdo->prepare("
@@ -13,7 +13,7 @@ try {
     ORDER BY u.name ASC;
   ");
 
-  $qry->execute([$authUser["id"]]);
+  $qry->execute([$userId]);
   $friends = $qry->fetchAll();
 }
 catch (Exception $e) {

@@ -3,7 +3,7 @@
 $api = "/api/v1/social";
 $view = OYK . "/contrib/social/views/";
 
-Router::get("{$api}/friends", "{$view}friends/friends.php");
+Router::get("{$api}/friends", "{$view}friends/list.php");
 
 Router::get("{$api}/friends/requests", "{$view}friends/requests.php");
 

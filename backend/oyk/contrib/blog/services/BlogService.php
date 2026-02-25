@@ -119,7 +119,7 @@ class BlogService {
   public function getPostsList(int $universeId): array {
     try {
       $qry = $this->pdo->prepare("
-        SELECT bp.id, bp.author_id, bp.title, bp.description, bp.content, bp.created_at, bp.updated_at,
+        SELECT bp.id, bp.author_id, bp.title, bp.description, bp.created_at, bp.updated_at,
         (
           SELECT COUNT(*)
           FROM blog_comments bc

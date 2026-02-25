@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$authUser = require_auth();
+$userId = require_rat();
 
 try {
   $qry = $pdo->prepare("
@@ -13,7 +13,7 @@ try {
     ORDER BY f.requested_at DESC;
   ");
 
-  $qry->execute([$authUser["id"]]);
+  $qry->execute([$userId]);
   $requests = $qry->fetchAll();
 
   $qry = $pdo->prepare("
@@ -25,7 +25,7 @@ try {
     ORDER BY f.requested_at DESC;
   ");
 
-  $qry->execute([$authUser["id"]]);
+  $qry->execute([$userId]);
   $pendings = $qry->fetchAll();
 }
 catch (Exception $e) {

@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$authUser = require_auth();
+$userId = require_rat();
 
 /*
 |--------------------------------------------------------------------------
@@ -9,10 +9,10 @@ $authUser = require_auth();
 |--------------------------------------------------------------------------
 */
 $qry = $pdo->prepare("
-    SELECT id
-    FROM auth_users
-    WHERE slug = ?
-    LIMIT 1
+  SELECT id
+  FROM auth_users
+  WHERE slug = ?
+  LIMIT 1
 ");
 $qry->execute([$_POST["slug"]]);
 $user = $qry->fetch();
@@ -28,22 +28,14 @@ if (!$user) {
 */
 try {
   $qry = $pdo->prepare("
-    DELETE FROM social_friends
-    WHERE 
-      (
-        (user_id = :userId AND friend_id = :targetFriendId)
-        OR
-        (user_id = :targetUserId AND friend_id = :friendId)
-      )
-      AND status = 'accepted';
+    UPDATE social_friends
+    SET status = 'rejected', responded_at = NOW()
+    WHERE user_id = ?
+      AND friend_id = ?
+      AND status = 'pending';
   ");
 
-  $qry->execute([
-    "userId" => $authUser["id"],
-    "targetFriendId" => $user["id"],
-    "targetUserId" => $user["id"],
-    "friendId" => $authUser["id"]
-  ]);
+  $qry->execute([$user["id"], $userId]);
 }
 catch (Exception $e) {
   Response::serverError();
