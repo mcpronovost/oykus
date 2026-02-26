@@ -2,7 +2,7 @@
 
 global $pdo;
 
-$authUser = require_auth();
+$authUserId = require_rat();
 
 // Services
 $taskService = new TaskService($pdo);
@@ -13,12 +13,12 @@ $fields = $taskService->validateData($_POST);
 // Check permissions
 $isStatusOnlyUpdate = isset($fields["status"]) && count($fields) === 1;
 if ($isStatusOnlyUpdate) {
-  if (!$taskService->userCanMoveTask($taskId, $authUser["id"])) {
+  if (!$taskService->userCanMoveTask($taskId, $authUserId)) {
     throw new AuthorizationException("You cannot move this task");
   }
 }
 else {
-  if (!$taskService->userCanEditTask($taskId, $authUser["id"])) {
+  if (!$taskService->userCanEditTask($taskId, $authUserId)) {
     throw new AuthorizationException("You cannot edit this task");
   }
 }

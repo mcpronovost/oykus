@@ -10,10 +10,10 @@ class TaskService {
       SELECT EXISTS (
         SELECT 1
         FROM planner_tasks t
-        LEFT JOIN world_universes u ON u.id = t.universe
+        LEFT JOIN world_universes u ON u.id = t.universe_id
         WHERE t.id = ?
           AND (
-            t.author = ? OR u.owner = ?
+            t.author_id = ? OR u.owner_id = ?
           )
       )
     ");
@@ -32,11 +32,11 @@ class TaskService {
       SELECT EXISTS (
         SELECT 1
         FROM planner_tasks t
-        LEFT JOIN world_universes u ON u.id = t.universe
+        LEFT JOIN world_universes u ON u.id = t.universe_id
         WHERE t.id = ?
           AND (
-              t.author = ?
-            OR u.owner = ?
+              t.author_id = ?
+            OR u.owner_id = ?
             OR EXISTS (
                 SELECT 1
                 FROM planner_assignees ta
@@ -57,10 +57,10 @@ class TaskService {
       SELECT EXISTS (
         SELECT 1
         FROM planner_tasks t
-        LEFT JOIN world_universes u ON u.id = t.universe
+        LEFT JOIN world_universes u ON u.id = t.universe_id
         WHERE t.id = ?
           AND (
-            t.author = ? OR u.owner = ?
+            t.author_id = ? OR u.owner_id = ?
           )
       )
     ");
@@ -81,7 +81,7 @@ class TaskService {
           t.content,
           t.priority,
           t.due_at,
-          t.status,
+          t.status_id,
 
           COALESCE((
               SELECT JSON_ARRAYAGG(
@@ -105,15 +105,15 @@ class TaskService {
                   'abbr', au.abbr
               )
               FROM auth_users au
-              WHERE t.author = au.id
+              WHERE t.author_id = au.id
               LIMIT 1
           ), NULL) AS author
 
       FROM planner_tasks t
       WHERE
-          t.status = :status_id
+          t.status_id = :status_id
           AND (
-              t.author = :user_id
+              t.author_id = :user_id
               OR EXISTS (
                   SELECT 1
                   FROM planner_assignees ta2
@@ -122,7 +122,7 @@ class TaskService {
               )
           )
           AND (
-              universe = :universeId
+              universe_id = :universeId
           )
 
       ORDER BY
@@ -193,7 +193,7 @@ class TaskService {
       if ($status <= 0) {
         throw new ValidationException("Invalid status ID");
       }
-      $fields["status"] = $status;
+      $fields["status_id"] = $status;
     }
 
     return $fields;
@@ -206,7 +206,7 @@ class TaskService {
       throw new ValidationException("Missing title");
     }
 
-    if (!isset($data["status"])) {
+    if (!isset($data["status_id"])) {
       throw new ValidationException("Missing status");
     }
 
@@ -214,7 +214,7 @@ class TaskService {
       "title" => $data["title"],
       "content" => $data["content"] ?? NULL,
       "priority" => $data["priority"] ?? 2,
-      "status" => $data["status"],
+      "status_id" => $data["status_id"],
       "due_at" => $data["due_at"] ?? NULL,
     ];
   }
@@ -222,7 +222,7 @@ class TaskService {
   public function createTask(int $universeId, int $userId, array $fields): void {
     try {
       $sql = "
-        INSERT INTO planner_tasks (title, content, priority, status, author, universe)
+        INSERT INTO planner_tasks (title, content, priority, status_id, author_id, universe_id)
         VALUES (:title, :content, :priority, :status, :author, :universe)
       ";
 
@@ -231,7 +231,7 @@ class TaskService {
         "title" => $fields["title"],
         "content" => $fields["content"],
         "priority" => $fields["priority"],
-        "status" => $fields["status"],
+        "status" => $fields["status_id"],
         "author" => $userId,
         "universe" => $universeId ?: NULL
       ]);

@@ -66,14 +66,30 @@ body {
   font-size: 1.2rem;
   line-height: 1.5;
 
+  &.oyk-xs {
+    font-size: 0.9rem;
+    line-height: 1.2;
+  }
+
+  &.oyk-sm {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  br {
+    font-size: 2px;
+    line-height: 2px;
+  }
+
   table {
     border-collapse: collapse;
     width: 100%;
+    margin: 4px 0;
 
     th {
       background-color: var(--oyk-card-divider);
       border: 1px solid var(--oyk-card-divider);
-      font-size: 1.1rem;
+      font-size: 0.9em;
       font-weight: 600;
       line-height: 1.5;
       padding: 6px 8px;
@@ -82,7 +98,7 @@ body {
 
     td {
       border: 1px solid var(--oyk-card-divider);
-      font-size: 1.1rem;
+      font-size: 0.9em;
       font-weight: 400;
       line-height: 1.5;
       padding: 4px 8px;

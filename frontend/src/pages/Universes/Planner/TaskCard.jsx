@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDrag } from "react-dnd";
 
+import { oykCode } from "@/utils/formatters";
 import { OykChip } from "@/components/ui";
 
 import OykTaskCardHeader from "./TaskCardHeader";
@@ -8,13 +9,13 @@ import OykTaskCardFooter from "./TaskCardFooter";
 import ModalTaskEdit from "./modals/TaskEdit";
 import ModalTaskDelete from "./modals/TaskDelete";
 
-export default function TaskCard({ task, isCompleted, statusId, statusName, onCloseRefresh = () => {} }) {
+export default function TaskCard({ task, isCompleted, status, onCloseRefresh = () => {} }) {
   const [isModalTaskEditOpen, setIsModalTaskEditOpen] = useState(false);
   const [isModalTaskDeleteOpen, setIsModalTaskDeleteOpen] = useState(false);
 
   const [{ isDragging }, drag] = useDrag({
     type: "TASK",
-    item: { id: task.id, statusId: statusId, statusName: statusName },
+    item: { id: task.id, statusId: status.id, statusName: status.title },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -38,7 +39,7 @@ export default function TaskCard({ task, isCompleted, statusId, statusName, onCl
 
   return (
     <>
-      <ModalTaskEdit isOpen={isModalTaskEditOpen} onClose={handleEditTaskClose} task={task} statusName={statusName} />
+      <ModalTaskEdit isOpen={isModalTaskEditOpen} onClose={handleEditTaskClose} task={task} status={status} />
       <ModalTaskDelete isOpen={isModalTaskDeleteOpen} onClose={handleDeleteTaskClose} task={task} />
       <article
         ref={drag}
@@ -53,8 +54,8 @@ export default function TaskCard({ task, isCompleted, statusId, statusName, onCl
         {!isCompleted && ((task.content && task.content != task.title) || task.tags?.length > 0) && (
           <section className="oyk-planner-card-content">
             {task.content && task.content != task.title && (
-              <div className="oyk-planner-card-content-description">
-                {task.content}
+              <div className="oyk-planner-card-content-description oyk-code oyk-xs">
+                <div dangerouslySetInnerHTML={{__html: oykCode(task.content)}}></div>
               </div>
             )}
             {task.tags?.length > 0 && (

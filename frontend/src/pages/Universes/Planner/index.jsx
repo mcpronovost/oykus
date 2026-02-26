@@ -1,4 +1,4 @@
-import "@/assets/styles/page/_planner.scss";
+import "@/assets/styles/modules/_planner.scss";
 import { useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -88,7 +88,7 @@ export default function Planner() {
   };
 
   useEffect(() => {
-    if (!isAuth || (currentUniverse && !currentUniverse.modules?.planner?.active)) return;
+    if (!isAuth || !currentUniverse || (currentUniverse && !currentUniverse.modules?.planner?.active)) return;
     const controller = new AbortController();
 
     routeTitle(currentUniverse.modules.planner.settings.display_name || t("Planner"));
@@ -101,7 +101,7 @@ export default function Planner() {
     };
   }, []);
 
-  if (!isAuth || (currentUniverse && !currentUniverse.modules?.planner?.active)) {
+  if (!isAuth || !currentUniverse || (currentUniverse && !currentUniverse.modules?.planner?.active)) {
     return <AppNotAuthorized />;
   }
 
@@ -144,9 +144,8 @@ export default function Planner() {
                       <TaskCard
                         key={task.id}
                         task={task}
+                        status={status}
                         isCompleted={status.is_completed}
-                        statusId={status.id}
-                        statusName={status.name}
                         onCloseRefresh={getTasks}
                       />
                     ))}

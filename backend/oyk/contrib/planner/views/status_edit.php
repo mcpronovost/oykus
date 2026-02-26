@@ -2,7 +2,7 @@
 
 global $pdo;
 
-$authUser = require_auth();
+$authUserId = require_rat();
 
 // Services
 $statusService = new StatusService($pdo);
@@ -11,7 +11,7 @@ $statusService = new StatusService($pdo);
 $fields = $statusService->validateData($_POST);
 
 // Check permissions
-if (!$statusService->userCanEditStatus($statusId, $authUser["id"])) {
+if (!$statusService->userCanEditStatus($statusId, $authUserId)) {
   throw new AuthorizationException("You cannot edit this status");
 }
 

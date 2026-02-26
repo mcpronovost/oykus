@@ -88,7 +88,9 @@
     height: 100%;
     min-height: 25vh;
     padding: 8px;
-    transition: background-color 0.3s, border-color 0.3s;
+    transition:
+      background-color 0.3s,
+      border-color 0.3s;
 
     &-over {
       background-color: color-mix(in srgb, var(--oyk-c-primary) 5%, transparent);
@@ -110,8 +112,7 @@
     cursor: grab;
 
     &:hover {
-      outline: 1px solid
-        color-mix(in srgb, var(--oyk-card-item-fg) 10%, transparent);
+      outline: 1px solid color-mix(in srgb, var(--oyk-card-item-fg) 10%, transparent);
     }
 
     &:active {
@@ -185,8 +186,22 @@
         font-size: 0.9rem;
         font-weight: 400;
         line-height: 1.2;
-        white-space: pre-line;
+        overflow: hidden;
+        max-height: 220px;
+        position: relative;
         opacity: 0.7;
+
+        &::after {
+          content: "";
+          background: linear-gradient(to bottom, transparent, var(--oyk-card-item-bg));
+          width: 100%;
+          height: 2rem;
+          position: absolute;
+          top: calc(220px - 2rem);
+          left: 0;
+          right: 0;
+          bottom: 0;
+        }
       }
 
       &-tags {
@@ -282,6 +297,14 @@
 
       &-content {
         flex: 1;
+      }
+    }
+  }
+
+  &-modal {
+    &-preview {
+      &-content {
+        margin: 0 0 32px;
       }
     }
   }

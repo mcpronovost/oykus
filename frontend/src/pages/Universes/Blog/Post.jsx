@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Clock, Frown, Pen, Trash2, Settings } from "lucide-react";
+import { Frown, Pen, Trash2, Settings } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";

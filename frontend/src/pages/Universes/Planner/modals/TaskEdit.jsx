@@ -4,7 +4,7 @@ import { Ellipsis, History, Pencil, Trash2, X } from "lucide-react";
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
-import { oykDate } from "@/utils/formatters";
+import { oykCode, oykDate } from "@/utils/formatters";
 import {
   OykAvatar,
   OykButton,
@@ -18,7 +18,7 @@ import {
   OykModal,
 } from "@/components/ui";
 
-export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
+export default function ModalTaskEdit({ isOpen, onClose, task, status }) {
   const { currentUser } = useAuth();
   const { t } = useTranslation();
 
@@ -43,7 +43,7 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
       const formData = new FormData();
       for (const [key, value] of Object.entries(taskForm)) {
         formData.append(key, value);
-      };
+      }
       const r = await api.post(`/planner/tasks/${task.id}/edit/`, formData);
       if (!r.ok) throw new Error(r.error || t("An error occurred"));
       onClose(true);
@@ -102,7 +102,8 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
                 icon: <History size={16} />,
                 onClick: () => onClickShowHistory(),
               },*/
-              ...(task.author?.slug === currentUser.slug ? [
+              ...(task.author?.slug === currentUser.slug
+                ? [
                     {
                       label: t("Delete"),
                       icon: <Trash2 size={16} />,
@@ -118,25 +119,40 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
       }
     >
       {!isShowEdit ? (
-        <OykDataset>
-          <OykDatasetField term={t("Content")} value={taskForm.content} preline />
-          <OykDatasetField term={t("Priority")} value={
-            taskForm.priority === "1"
-              ? <OykChip color="success" outline>{t("PriorityLow")}</OykChip>
-              : taskForm.priority === "2"
-              ? <OykChip color="primary" outline>{t("PriorityMedium")}</OykChip>
-              : <OykChip color="danger" outline>{t("PriorityHigh")}</OykChip>
-          } />
-          <OykDatasetField term={t("Due Date")} value={taskForm.dueAt} />
-        </OykDataset>
+        <section className="oyk-planner-modal-preview">
+          <div className="oyk-planner-modal-preview-content oyk-code oyk-sm">
+            <div dangerouslySetInnerHTML={{__html: oykCode(taskForm.content)}}></div>
+          </div>
+          <OykDataset>
+            <OykDatasetField term={t("Status")} value={(
+              <OykChip color={status.color} size="md">
+                {status.title}
+              </OykChip>
+            )} />
+            <OykDatasetField
+              term={t("Priority")}
+              value={
+                taskForm.priority === "1" ? (
+                  <OykChip color="success" outline size="md">
+                    {t("PriorityLow")}
+                  </OykChip>
+                ) : taskForm.priority === "2" ? (
+                  <OykChip color="primary" outline size="md">
+                    {t("PriorityMedium")}
+                  </OykChip>
+                ) : (
+                  <OykChip color="danger" outline size="md">
+                    {t("PriorityHigh")}
+                  </OykChip>
+                )
+              }
+            />
+            <OykDatasetField term={t("Due Date")} value={taskForm.dueAt} />
+          </OykDataset>
+        </section>
       ) : (
         <OykForm onSubmit={handleSubmit} isLoading={isLoading}>
-          <OykFormField
-            label={t("Title")}
-            name="title"
-            defaultValue={taskForm.title}
-            onChange={handleChange}
-          />
+          <OykFormField label={t("Title")} name="title" defaultValue={taskForm.title} onChange={handleChange} />
           <OykFormField
             label={t("Content")}
             name="content"
@@ -168,7 +184,7 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
             <OykButton type="submit" color="primary">
               {t("Save")}
             </OykButton>
-            <OykButton type="button" onClick={onClose} outline>
+            <OykButton type="button" onClick={onClickShowEdit} outline>
               {t("Cancel")}
             </OykButton>
           </div>
@@ -185,24 +201,15 @@ export default function ModalTaskEdit({ isOpen, onClose, task, statusName }) {
               {task.history?.map((history) => (
                 <li key={history.id}>
                   <div className="oyk-planner-history-avatar">
-                    <OykAvatar
-                      name={history.changedBy.name}
-                      abbr={history.changedBy.abbr}
-                      size={32}
-                    />
+                    <OykAvatar name={history.changedBy.name} abbr={history.changedBy.abbr} size={32} />
                   </div>
                   <div className="oyk-planner-history-content">
                     <p>
-                      {history.changedBy.name} {t("taskHistoryAsChanged")}{" "}
-                      "{t(`taskHistory${history.changeType}`)}"{" "}
+                      {history.changedBy.name} {t("taskHistoryAsChanged")} "{t(`taskHistory${history.changeType}`)}"{" "}
                       {t("taskHistoryFrom")} "
-                      {history.changeType === "PRIORITY"
-                        ? t(`Priority${history.oldValue}`)
-                        : history.oldValue}
-                      " {t("taskHistoryTo")} "
-                      {history.changeType === "PRIORITY"
-                        ? t(`Priority${history.newValue}`)
-                        : history.newValue}
+                      {history.changeType === "PRIORITY" ? t(`Priority${history.oldValue}`) : history.oldValue}"{" "}
+                      {t("taskHistoryTo")} "
+                      {history.changeType === "PRIORITY" ? t(`Priority${history.newValue}`) : history.newValue}
                       "<br />
                       {oykDate(history.createdAt)}
                     </p>

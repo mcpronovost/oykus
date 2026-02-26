@@ -1,16 +1,14 @@
 <?php
 
 global $pdo;
-$authUser = require_auth();
+$userId = require_rat();
 
 $universeService = new UniverseService($pdo);
 $statusService = new StatusService($pdo);
 $taskService = new TaskService($pdo);
 
-$universeSlug ??= null;
-
 // Universe context
-$context = $universeService->getContext($universeSlug, $authUser["id"]);
+$context = $universeService->getContext($universeSlug, $userId);
 $universeId = $context["id"];
 
 // Statuses
@@ -20,7 +18,7 @@ $statuses = $statusService->getStatuses($universeId);
 foreach ($statuses as &$s) {
   $s["tasks"] = $taskService->getTasksForStatus(
     $s["id"],
-    $authUser["id"],
+    $userId,
     $universeId
   );
 }

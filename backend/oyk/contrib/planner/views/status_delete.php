@@ -2,13 +2,13 @@
 
 global $pdo;
 
-$authUser = require_auth();
+$authUserId = require_rat();
 
 // Services
 $statusService = new StatusService($pdo);
 
 // Check permissions
-if (!$statusService->userCanDeleteStatus($statusId, $authUser["id"])) {
+if (!$statusService->userCanDeleteStatus($statusId, $authUserId)) {
   Response::notFound("Status not found");
 }
 

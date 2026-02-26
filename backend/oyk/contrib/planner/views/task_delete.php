@@ -2,13 +2,13 @@
 
 global $pdo;
 
-$authUser = require_auth();
+$authUserId = require_rat();
 
 // Services
 $taskService = new TaskService($pdo);
 
 // Check permissions
-if (!$taskService->userCanDeleteTask($taskId, $authUser["id"])) {
+if (!$taskService->userCanDeleteTask($taskId, $authUserId)) {
   Response::notFound("Task not found");
 }
 

@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$authUser = require_auth();
+$authUserId = require_rat();
 
 // Services
 $universeService = new UniverseService($pdo);
@@ -10,14 +10,14 @@ $taskService = new TaskService($pdo);
 $universeSlug = $universeSlug ?? NULL;
 
 // Universe context
-$context = $universeService->getContext($universeSlug, $authUser["id"]);
+$context = $universeService->getContext($universeSlug, $authUserId);
 $universeId = $context["id"];
 
 // Validations
 $fields = $taskService->validateCreateData($_POST);
 
 // Create
-$taskService->createTask($universeId, $authUser["id"], $fields);
+$taskService->createTask($universeId, $authUserId, $fields);
 
 Response::json([
   "ok" => TRUE
