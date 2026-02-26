@@ -36,7 +36,7 @@
     }
 
     &-wrapper {
-      background-color: color-mix(in srgb, var(--oyk-card-subtle-bg) 50%, var(--oyk-card-bg));
+      background-color: color-mix(in srgb, var(--oyk-card-subtle-bg) 25%, var(--oyk-card-bg));
       border-radius: var(--oyk-radius);
       flex: 1 1 auto;
       width: calc(100% - 32px);
