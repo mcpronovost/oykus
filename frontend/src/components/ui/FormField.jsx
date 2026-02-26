@@ -100,7 +100,7 @@ export default function OykFormField({
                   onChange={onChange}
                   required={required}
                   disabled={disabled}
-                  checked={defaultValue === true}
+                  checked={defaultValue === true || defaultValue === 1}
                 />
                 <span className={`oyk-form-field-input-checkbox-switch oyk-switch ${disabled ? "oyk-disabled" : ""}`}></span>
               </label>
