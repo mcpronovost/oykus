@@ -32,7 +32,7 @@ export default function Modal({ children, isOpen, onClose, title, size = "medium
   if (!isOpen) return null;
 
   return (
-    <div ref={modalRef} className="oyk-modal-overlay" onClick={handleOverlayClick}>
+    <div ref={modalRef} className="oyk-modal-overlay" onMouseDown={handleOverlayClick}>
       <div className={`oyk-modal oyk-modal--${size}`}>
         {title && (
           <header className="oyk-modal-header">
