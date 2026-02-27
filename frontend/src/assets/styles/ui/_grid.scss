@@ -16,7 +16,9 @@
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    gap: 16px;
+    gap: 0;
+    width: calc(100% + 16px);
+    margin: -8px;
 
     &-wrap {
       flex-wrap: wrap;
@@ -24,10 +26,12 @@
 
     &-nav {
       flex: 0 0 256px;
+      padding: 8px;
     }
 
     &-main {
       flex: 1 1 100%;
+      padding: 8px;
     }
 
     @media (max-width: 1023px) {
@@ -44,55 +48,52 @@
   }
 
   &-col {
-    flex: 1 1 0;
+    flex: 0 1 0;
+    padding: 8px;
+
+    &.oyk-grow {
+      flex-grow: 1;
+    }
 
     &.oyk-col {
       &-100 {
-        width: 100%;
-        min-width: 100%;
+        flex-basis: 100%;
       }
 
       &-50 {
-        width: 50%;
-        min-width: 45%;
+        flex-basis: 50%;
       }
 
       &-33 {
-        width: 33%;
-        min-width: 28%;
+        flex-basis: 33%;
       }
 
       &-25 {
-        width: 25%;
-        min-width: 20%;
+        flex-basis: 25%;
       }
 
       &-md {
         &-100 {
           @media (max-width: 1023px) {
-            width: 100%;
-            min-width: 100%;
+            flex-basis: 100%;
           }
         }
 
         &-50 {
           @media (max-width: 1023px) {
-            width: 50%;
-            min-width: 45%;
+            flex-basis: 50%;
           }
         }
 
         &-33 {
           @media (max-width: 1023px) {
-            width: 33%;
-            min-width: 28%;
+            flex-basis: 33%;
           }
         }
 
         &-25 {
           @media (max-width: 1023px) {
-            width: 25%;
-            min-width: 20%;
+            flex-basis: 25%;
           }
         }
       }
@@ -100,29 +101,25 @@
       &-sm {
         &-100 {
           @media (max-width: 767px) {
-            width: 100%;
-            min-width: 100%;
+            flex-basis: 100%;
           }
         }
 
         &-50 {
           @media (max-width: 767px) {
-            width: 50%;
-            min-width: 45%;
+            flex-basis: 50%;
           }
         }
 
         &-33 {
           @media (max-width: 767px) {
-            width: 33%;
-            min-width: 28%;
+            flex-basis: 33%;
           }
         }
 
         &-25 {
           @media (max-width: 767px) {
-            width: 25%;
-            min-width: 20%;
+            flex-basis: 25%;
           }
         }
       }

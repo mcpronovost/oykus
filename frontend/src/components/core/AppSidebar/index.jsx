@@ -10,6 +10,7 @@ import {
   ScrollText,
   Settings,
   Star,
+  Users
 } from "lucide-react";
 import { useAuth } from "@/services/auth";
 import { useStore } from "@/services/store";
@@ -43,8 +44,14 @@ export default function AppSidebar() {
               />
               <OykAppSidebarNavItem icon={Compass} text={t("Discover")} href="discover" />
             </ul>
-            {isAuth && currentUniverse && currentUniverse.modules ? (
+            {isAuth && currentUniverse ? (
               <ul className="oyk-app-sidebar-nav-list">
+                <OykAppSidebarNavItem
+                  icon={Users}
+                  text={t("Community")}
+                  href="community"
+                  params={{ universeSlug: currentUniverse.slug }}
+                />
                 {currentUniverse.modules?.planner?.active ? (
                   <OykAppSidebarNavItem
                     icon={ListTodo}

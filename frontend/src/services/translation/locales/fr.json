@@ -208,5 +208,6 @@
     "other": "{count} commentaires"
   },
   "By {author}": "Par {author}",
-  "Unexpected error": "Erreur inattendue"
+  "Unexpected error": "Erreur inattendue",
+  "Community": "Communauté"
 }

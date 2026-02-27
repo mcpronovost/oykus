@@ -3,7 +3,7 @@ import React from "react";
 export const COMMUNITY_ROUTES = [
   {
     name: "community",
-    component: React.lazy(() => import("../../../pages/Community/UserProfile")),
+    component: React.lazy(() => import("../../../pages/Universes/Community")),
     paths: {
       fr: "communaute",
       en: "community",
@@ -11,7 +11,7 @@ export const COMMUNITY_ROUTES = [
     children: [
       {
         name: "community-user-profile",
-        component: React.lazy(() => import("../../../pages/Community/UserProfile")),
+        component: React.lazy(() => import("../../../pages/Universes/Community/UserProfile")),
         paths: {
           fr: "{userSlug}",
           en: "{userSlug}",

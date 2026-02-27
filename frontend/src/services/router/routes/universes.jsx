@@ -18,6 +18,24 @@ export const UNIVERSES_ROUTES = [
         },
         children: [
           {
+            name: "community",
+            component: React.lazy(() => import("../../../pages/Universes/Community")),
+            paths: {
+              fr: "communaute",
+              en: "community",
+            },
+            children: [
+              {
+                name: "community-user-profile",
+                component: React.lazy(() => import("../../../pages/Universes/Community/UserProfile")),
+                paths: {
+                  fr: "{userSlug}",
+                  en: "{userSlug}",
+                },
+              },
+            ],
+          },
+          {
             name: "blog",
             component: React.lazy(() => import("../../../pages/Universes/Blog")),
             paths: {
@@ -36,8 +54,8 @@ export const UNIVERSES_ROUTES = [
                   fr: "{postId}",
                   en: "{postId}",
                 },
-              }
-            ]
+              },
+            ],
           },
           {
             name: "planner",
@@ -109,8 +127,8 @@ export const UNIVERSES_ROUTES = [
                     params: {
                       section: "module-planner",
                     },
-                  }
-                ]
+                  },
+                ],
               },
               {
                 name: "universe-admin-theme",
