@@ -13,10 +13,15 @@
       line-height: 1.2;
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
       gap: 16px;
       margin: 0 0 16px;
+
+      svg {
+        flex: 0 0 24px;
+        width: 24px;
+      }
     }
   }
 }

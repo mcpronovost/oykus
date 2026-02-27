@@ -92,7 +92,7 @@ export default function Home() {
                 </p>
               </OykCard>
             </OykGridCol>
-            <OykGridCol col="12" md="50" sm="100">
+            <OykGridCol col="33" md="50" sm="100">
               <OykCard fh alignSpace>
                 <header>
                   <MessagesSquare size={24} color="var(--oyk-c-primary)" />
@@ -105,7 +105,7 @@ export default function Home() {
                 </p>
               </OykCard>
             </OykGridCol>
-            <OykGridCol col="22" md="50" sm="100">
+            <OykGridCol col="33" md="50" sm="100">
               <OykCard fh alignSpace>
                 <header>
                   <Component size={24} color="var(--oyk-c-primary)" />
