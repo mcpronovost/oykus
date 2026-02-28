@@ -2,7 +2,7 @@
 global $pdo;
 
 $pdo->exec("
-CREATE TABLE IF NOT EXISTS world_universes_attributes (
+CREATE TABLE IF NOT EXISTS game_attributes (
     `id` int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `universe_id` int UNSIGNED NOT NULL,
     
