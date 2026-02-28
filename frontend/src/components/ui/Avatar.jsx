@@ -3,6 +3,7 @@ import { User } from "lucide-react";
 
 import { DOMAIN } from "@/services/api/utils";
 import { useAuth } from "@/services/auth";
+import { useTranslation } from "@/services/translation";
 import { useWorld } from "@/services/world";
 
 export default function OykAvatar({
@@ -16,6 +17,8 @@ export default function OykAvatar({
   borderSize = 2,
   borderColor = "var(--oyk-card-bg)",
   borderRadius = "50%",
+  showOnline = false,
+  isOnline = false,
   level,
   levelSize = 24,
   levelBorderSize = 2,
@@ -23,6 +26,7 @@ export default function OykAvatar({
   isPrivate = true,
 }) {
   const { isAuth } = useAuth();
+  const { t } = useTranslation();
   const { currentUniverse } = useWorld();
 
   const showImg = useMemo(() => !isPrivate || (isPrivate && isAuth), [isPrivate, isAuth]);
@@ -41,7 +45,9 @@ export default function OykAvatar({
           backgroundColor: showImg && src ? borderColor : bgColor,
           borderColor: borderColor,
           borderWidth: `${borderSize}px`,
-          borderRadius: borderRadius.endsWith("px") ? `${Number(borderRadius.replace("px", "")) + (Number(borderRadius.replace("px", "")) / 2)}px` : borderRadius,
+          borderRadius: borderRadius.endsWith("px")
+            ? `${Number(borderRadius.replace("px", "")) + Number(borderRadius.replace("px", "")) / 2}px`
+            : borderRadius,
           color: fgColor,
           width: `${size}px`,
           height: `${size}px`,
@@ -56,8 +62,8 @@ export default function OykAvatar({
             }
             alt={name}
             className="oyk-avatar-img"
-            style= {{
-              borderRadius: borderRadius
+            style={{
+              borderRadius: borderRadius,
             }}
           />
         ) : abbr || name ? (
@@ -70,6 +76,19 @@ export default function OykAvatar({
           </span>
         )}
       </div>
+      {showOnline ? (
+        <span
+          className={`oyk-avatar-log oyk-${isOnline ? "online" : "offline"}`}
+          style={{
+            width: `${size / 6}px`,
+            height: `${size / 6}px`,
+            left: `${borderSize + size / 20}px`,
+            bottom: `${borderSize + size / 20}px`,
+          }}
+        >
+          {t("Online")}
+        </span>
+      ) : null}
       {level && currentUniverse?.modules?.leveling?.active ? (
         <span
           className="oyk-avatar-level"

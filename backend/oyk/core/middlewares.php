@@ -60,7 +60,7 @@ function require_rat($is_required = True): int {
 function oyk_update_wio() {
   global $pdo;
 
-  $ignore_paths = ["/api/v1/theme.php", "/api/v1/auth/refresh/"];
+  $ignore_paths = ["/api/v1/theme.php", "/api/v1/auth/refresh/", "/api/v1/heartbeat/"];
 
   if (in_array($_SERVER["REQUEST_URI"], $ignore_paths)) {
     return;
@@ -70,12 +70,20 @@ function oyk_update_wio() {
 
   try {
     if ($userId > 0) {
-      $stmt = $pdo->prepare("
+      $ip = $_SERVER["REMOTE_ADDR"] ?? null;
+
+      $qry = $pdo->prepare("
         INSERT INTO auth_wio (user_id, lastlive_at)
-        VALUES (:uid, NOW())
+        VALUES (?, NOW())
         ON DUPLICATE KEY UPDATE lastlive_at = NOW()
       ");
-      $stmt->execute(["uid" => $userId]);
+      $qry->execute([$userId]);
+      $qry = $pdo->prepare("
+        UPDATE auth_users
+        SET lastlive_at = NOW(), lastlive_ip = ?
+        WHERE id = ?
+      ");
+      $qry->execute([$ip, $userId]);
     }
     else {
       $guest = get_guest_id();

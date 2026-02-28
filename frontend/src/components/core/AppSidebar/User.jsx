@@ -18,6 +18,7 @@ export default function User() {
         avatarBorderColor="var(--oyk-app-sidebar-bg)"
         avatarSize={storeAppSidebarOpen ? 96 : 32}
         avatarTop={storeAppSidebarOpen ? 24 : 12}
+        avatarShowOnline={false}
         avatarLevel={1}
         avatarLevelSize={storeAppSidebarOpen ? 24 : 16}
         avatarLevelBorderSize={storeAppSidebarOpen ? 4 : 2}

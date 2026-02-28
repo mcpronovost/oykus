@@ -41,6 +41,27 @@
     height: 100%;
   }
 
+  &-log {
+    background-color: var(--oyk-card-subtle-bg);
+    border: 2px solid var(--oyk-card-bg);
+    border-radius: 50%;
+    font-size: 0;
+    line-height: 0;
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    left: 4px;
+    bottom: 4px;
+
+    &.oyk-online {
+      background-color: var(--oyk-c-success);
+    }
+
+    &.oyk-offline {
+      background-color: var(--oyk-card-subtle-bg);
+    }
+  }
+
   &-level {
     background-color: var(--oyk-card-subtle-bg);
     border: 2px solid var(--oyk-card-bg);
