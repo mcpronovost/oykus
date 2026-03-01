@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS world_characters (
 
     CONSTRAINT fk_wc_universe
         FOREIGN KEY (universe_id) REFERENCES world_universes(id)
-        ON DELETE CASCADE
+        ON DELETE CASCADE,
     CONSTRAINT fk_wc_user
         FOREIGN KEY (user_id) REFERENCES auth_users(id)
         ON DELETE CASCADE

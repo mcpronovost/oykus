@@ -19,7 +19,7 @@ import {
 import OykAppNotAuthorized from "@/components/core/AppNotAuthorized";
 
 export default function OykCommunity() {
-  const { params, routeTitle } = useRouter();
+  const { n, params, routeTitle } = useRouter();
   const { t } = useTranslation();
   const { currentUniverse } = useWorld();
 
@@ -32,7 +32,7 @@ export default function OykCommunity() {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get(`/world/universes/${currentUniverse.slug}/community/`, signal ? { signal } : {});
+      const r = await api.get(`/world/universes/${params.universeSlug}/community/`, signal ? { signal } : {});
       if (!r?.ok || (!r?.characters && !r?.users)) throw r;
       setCharacters(r.characters);
       setUsers(r.users);
@@ -46,6 +46,14 @@ export default function OykCommunity() {
         setIsLoading(false);
       }
     }
+  };
+
+  const handleClickCharacter = (slug) => {
+    n("community-character-profile", { universeSlug: "oykus", characterSlug: slug });
+  };
+
+  const handleClickUser = (slug) => {
+    n("community-user-profile", { universeSlug: "oykus", userSlug: slug });
   };
 
   useEffect(() => {
@@ -70,47 +78,75 @@ export default function OykCommunity() {
           <OykFeedback ghost variant="danger" title={t("Error")} message={hasError.message} />
         ) : isLoading ? (
           <OykLoading />
-        ) : characters && characters.length > 0 ? (
+        ) : characters || users ? (
           <OykGridRow wrap className="oyk-community-memberlist">
-            {characters.map((member) => (
-              <OykGridCol key={member.id} col="25" md="50" grow={false}>
-                <OykCard nop fullCenter alignSpace clickable className="oyk-community-memberlist-item">
-                  <header className="oyk-community-memberlist-item-header">
-                    <OykBanner />
-                    <div className="oyk-community-memberlist-item-header-name">
-                      <span>{member.name}</span>
-                    </div>
-                    <div className="oyk-community-memberlist-item-header-title">
-                      <span>Qui ne fait que passer</span>
-                    </div>
-                  </header>
+            {characters.length > 0 ? (
+              characters.map((member) => (
+                <OykGridCol key={member.id} col="25" md="50" grow={false}>
+                  <OykCard
+                    nop
+                    fullCenter
+                    alignSpace
+                    clickable
+                    className="oyk-community-memberlist-item"
+                    onClick={() => handleClickCharacter(member.slug)}
+                  >
+                    <header className="oyk-community-memberlist-item-header">
+                      <OykBanner
+                        avatarSrc={member.avatar}
+                        avatarShowOnline
+                        avatarOnline={member.is_online}
+                        avatarLevel={1}
+                        coverSrc={member.cover}
+                      />
+                      <div className="oyk-community-memberlist-item-header-name">
+                        <span>{member.name}</span>
+                      </div>
+                      <div className="oyk-community-memberlist-item-header-title">
+                        <span>Qui ne fait que passer</span>
+                      </div>
+                    </header>
+                  </OykCard>
+                </OykGridCol>
+              ))
+            ) : users.length > 0 ? (
+              users.map((member) => (
+                <OykGridCol key={member.id} col="25" md="50" grow={false}>
+                  <OykCard
+                    nop
+                    fullCenter
+                    alignSpace
+                    clickable
+                    className="oyk-community-memberlist-item"
+                    onClick={() => handleClickUser(member.slug)}
+                  >
+                    <header className="oyk-community-memberlist-item-header">
+                      <OykBanner
+                        avatarSrc={member.avatar}
+                        avatarShowOnline
+                        avatarOnline={member.is_online}
+                        avatarLevel={1}
+                        coverSrc={member.cover}
+                      />
+                      <div className="oyk-community-memberlist-item-header-name">
+                        <span>{member.name}</span>
+                      </div>
+                      <div className="oyk-community-memberlist-item-header-title">
+                        <span>Qui ne fait que passer</span>
+                      </div>
+                    </header>
+                  </OykCard>
+                </OykGridCol>
+              ))
+            ) : (
+              <OykGridCol>
+                <OykCard>
+                  <OykFeedback ghost title={t("No members")} icon={Frown} />
                 </OykCard>
               </OykGridCol>
-            ))}
+            )}
           </OykGridRow>
-        ) : users && users.length > 0 ? (
-          <OykGridRow wrap className="oyk-community-memberlist">
-            {users.map((member) => (
-              <OykGridCol key={member.id} col="25" md="50" grow={false}>
-                <OykCard nop fullCenter alignSpace clickable className="oyk-community-memberlist-item">
-                  <header className="oyk-community-memberlist-item-header">
-                    <OykBanner avatarSrc={member.avatar} avatarShowOnline avatarOnline={member.is_online} avatarLevel={1} coverSrc={member.cover} />
-                    <div className="oyk-community-memberlist-item-header-name">
-                      <span>{member.name}</span>
-                    </div>
-                    <div className="oyk-community-memberlist-item-header-title">
-                      <span>Qui ne fait que passer</span>
-                    </div>
-                  </header>
-                </OykCard>
-              </OykGridCol>
-            ))}
-          </OykGridRow>
-        ) : (
-          <OykCard>
-            <OykFeedback ghost title={t("No members")} icon={Frown} />
-          </OykCard>
-        )}
+        ) : null}
       </OykGrid>
     </section>
   );

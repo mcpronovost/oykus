@@ -7,19 +7,23 @@ class CharacterService {
   public function getCommunity(int $universeId): array {
     try {
       $qry = $this->pdo->prepare("
-        SELECT wmc.id, wmc.label, wmc.is_available, wmc.settings
-        FROM world_modules_core wmc
-        LEFT JOIN world_modules wm
-            ON wm.core_id = wmc.id AND wm.universe_id = ?
-        WHERE wm.id IS NULL
-          AND wmc.is_visible = 1
-        ORDER BY wmc.label ASC
+        SELECT wc.id,
+               wc.name,
+               wc.slug,
+               wc.abbr,
+               wc.avatar,
+               wc.cover
+        FROM world_characters wc
+        WHERE wc.universe_id = ?
+          AND wc.is_active = 1
       ");
       $qry->execute([$universeId]);
-      $core_modules = $qry->fetchAll();
+      $characters = $qry->fetchAll();
     }
     catch (Exception $e) {
-      throw new QueryException("Core modules retrieval failed" . $e->getMessage());
+      throw new QueryException("Characters retrieval failed" . $e->getMessage());
     }
+
+    return $characters ?: [];
   }
 }

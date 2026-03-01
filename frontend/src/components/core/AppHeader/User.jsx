@@ -4,6 +4,7 @@ import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
+
 import { OykAvatar, OykDropdown } from "@/components/ui";
 
 export default function AppHeaderUser() {
@@ -40,7 +41,7 @@ export default function AppHeaderUser() {
           {
             label: t("Your profile"),
             icon: <CircleUser size={18} />,
-            onClick: () => n("community-user-profile", { userSlug: currentUser.slug }),
+            onClick: () => n("community-user-profile", { universeSlug: "oykus", userSlug: currentUser.slug }),
           },
           {
             divider: true,

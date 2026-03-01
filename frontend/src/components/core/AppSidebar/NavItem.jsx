@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { useRouter } from "@/services/router";
 import { OykChip, OykLink } from "@/components/ui";
 
@@ -15,17 +17,24 @@ export default function NavItem({
 }) {
   const { route } = useRouter();
 
+  const isActive = useMemo(() => {
+    if (["community"].includes(prefix)) {
+      return route?.name === prefix;
+    }
+    return route?.name.startsWith(prefix);
+  }, [route]);
+
   if (sideIconColor !== "currentColor") {
     sideIconColor = `var(--oyk-c-${sideIconColor})`;
   }
 
   return (
-    <li className={`oyk-app-sidebar-nav-item ${route?.name.startsWith(prefix) ? "oyk-active" : ""}`}>
+    <li className={`oyk-app-sidebar-nav-item ${isActive ? "oyk-active" : ""}`}>
       <OykLink
         routeName={href}
         params={params}
         className={`oyk-app-sidebar-nav-item-link ${disabled ? "disabled" : ""}`}
-        disabled={disabled || route?.name.startsWith(prefix)}
+        disabled={disabled || isActive}
       >
         <span className="oyk-app-sidebar-nav-item-link-icon">
           <IconComponent size={18} />

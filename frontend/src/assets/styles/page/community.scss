@@ -2,6 +2,23 @@
   &-memberlist {
     &-item {
       padding: 0 0 16px;
+
+      &-header {
+        &-name {
+          font-size: 1rem;
+          line-height: 1.2;
+          display: block;
+          padding: 0 16px 0;
+        }
+
+        &-title {
+          font-size: 0.8rem;
+          line-height: 1.2;
+          display: block;
+          opacity: 0.6;
+          padding: 4px 16px 0;
+        }
+      }
     }
   }
 }

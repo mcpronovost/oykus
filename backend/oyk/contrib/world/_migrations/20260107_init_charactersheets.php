@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS world_charactersheets (
 
     CONSTRAINT fk_wcs_character
         FOREIGN KEY (character_id) REFERENCES world_characters(id)
-        ON DELETE CASCADE
+        ON DELETE CASCADE,
     CONSTRAINT fk_wcs_validator
         FOREIGN KEY (validated_by) REFERENCES auth_users(id)
         ON DELETE SET NULL

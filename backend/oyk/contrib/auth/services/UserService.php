@@ -26,7 +26,7 @@ class UserService {
       throw new QueryException("Users community retrieval failed");
     }
 
-    return $users ?: NULL;
+    return $users ?: [];
   }
 
   public function getCurrentUser(int $userId): array {
