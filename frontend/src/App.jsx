@@ -22,6 +22,8 @@ function MainLayout() {
   useEffect(() => {
     if (params?.universeSlug && currentUniverse && params?.universeSlug !== currentUniverse.slug) {
       changeUniverse(params.universeSlug);
+    } else if (!currentUniverse) {
+      changeUniverse("oykus");
     }
   }, [route]);
 

@@ -46,7 +46,7 @@ export function WorldProvider({ children }) {
   // Fetch a specific universe
   // ---------------------------------------------------------
   const fetchCurrentUniverse = async (slug, signal) => {
-    if (!slug || !isAuth) return;
+    if (!slug) return;
 
     setIsLoadingWorld(true);
 
@@ -117,15 +117,6 @@ export function WorldProvider({ children }) {
   // ---------------------------------------------------------
   useEffect(() => {
     let controller = new AbortController();
-
-    if (!isAuth) {
-      setUniverses(null);
-      setCurrentUniverse(null);
-      clearTheme();
-      storeRemove(KEY_UNIVERSES);
-      storeRemove(KEY_UNIVERSE);
-      return;
-    }
 
     fetchUniverses(controller.signal);
 
