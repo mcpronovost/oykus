@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
@@ -123,21 +123,17 @@ export function WorldProvider({ children }) {
     return () => controller.abort();
   }, [isAuth]);
 
-  return (
-    <WorldContext.Provider
-      value={{
-        universes,
-        currentUniverse,
-        isLoadingWorld,
-        changeUniverse: fetchCurrentUniverse,
-        getUniverses: fetchUniverses,
-        setUniverses,
-        setCurrentUniverse
-      }}
-    >
-      {children}
-    </WorldContext.Provider>
-  );
+  const value = useMemo(() => ({
+    universes,
+    currentUniverse,
+    isLoadingWorld,
+    changeUniverse: fetchCurrentUniverse,
+    getUniverses: fetchUniverses,
+    setUniverses,
+    setCurrentUniverse
+  }), [universes, currentUniverse, isLoadingWorld]);
+
+  return <WorldContext.Provider value={value}>{children}</WorldContext.Provider>;
 }
 
 export function useWorld() {
