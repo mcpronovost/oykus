@@ -10,7 +10,7 @@ import { useWorld } from "@/services/world";
 import { OykCard, OykFeedback, OykGrid, OykGridRow, OykGridCol, OykHeading } from "@/components/ui";
 import { OykWIO } from "@/components/common";
 
-export default function Home() {
+export default function Dashboard() {
   const { params } = useRouter();
   const { t } = useTranslation();
   const { currentUniverse, changeUniverse } = useWorld();
@@ -55,14 +55,7 @@ export default function Home() {
 
   return (
     <section className="oyk-page oyk-home">
-      <OykHeading title="Oykus" />
-      <OykGrid className="oyk-home-intro">
-        <p>
-          {t(
-            "At the heart of Oykus is the idea that each universe, as unique as it may be, can resonate with others. Worlds are not isolated: they intersect, collide, and influence each other",
-          )}
-        </p>
-      </OykGrid>
+      <OykHeading title={currentUniverse?.name || "Oykus"} />
       <OykGrid>
         <OykFeedback
           title={t("Under Active Development")}
@@ -73,49 +66,6 @@ export default function Home() {
           showIcon={false}
           variant="primary"
         />
-      </OykGrid>
-      <OykGrid className="oyk-home-features">
-        <OykGridRow wrap>
-          <OykGridCol col="33" md="50" sm="100">
-            <OykCard fh alignSpace>
-              <header>
-                <Share2 size={24} color="var(--oyk-c-primary)" />
-                <h2>{t("A Living and Interconnected Multiverse")}</h2>
-              </header>
-              <p>
-                {t(
-                  "A collaborative multiverse project designed to reinvent the way role-playing game universes are created, shared, and experienced",
-                )}
-              </p>
-            </OykCard>
-          </OykGridCol>
-          <OykGridCol col="33" md="50" sm="100">
-            <OykCard fh alignSpace>
-              <header>
-                <MessagesSquare size={24} color="var(--oyk-c-primary)" />
-                <h2>{t("Modernising Forum Role-Playing")}</h2>
-              </header>
-              <p>
-                {t(
-                  "A modern, elegant, and flexible space where each creator can shape their own world, define its rules, lore, and history",
-                )}
-              </p>
-            </OykCard>
-          </OykGridCol>
-          <OykGridCol col="33" md="50" sm="100">
-            <OykCard fh alignSpace>
-              <header>
-                <Component size={24} color="var(--oyk-c-primary)" />
-                <h2>{t("Tools to Shape Your Universe")}</h2>
-              </header>
-              <p>
-                {t(
-                  "Tools designed to streamline writing and roleplay management; a series of modules designed to enrich and structure each world",
-                )}
-              </p>
-            </OykCard>
-          </OykGridCol>
-        </OykGridRow>
       </OykGrid>
       <OykWIO users={wioUsers} guests={wioGuests} isLoading={isLoadingWio} hasError={hasErrorWio} />
     </section>

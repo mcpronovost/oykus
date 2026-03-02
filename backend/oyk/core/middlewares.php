@@ -82,6 +82,8 @@ function oyk_update_wio() {
         UPDATE auth_users
         SET lastlive_at = NOW(), lastlive_ip = ?
         WHERE id = ?
+         AND (lastlive_at IS NULL OR lastlive_at < NOW() - INTERVAL 1 MINUTE)
+
       ");
       $qry->execute([$ip, $userId]);
     }

@@ -7,7 +7,7 @@ import { useTranslation } from "@/services/translation";
 import { OykBanner, OykCard, OykFeedback, OykGrid, OykGridRow, OykGridCol, OykHeading, OykLink, OykLoading } from "@/components/ui";
 
 export default function Discover() {
-  const { routeTitle } = useRouter();
+  const { n, routeTitle } = useRouter();
   const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -31,6 +31,10 @@ export default function Discover() {
         setIsLoading(false);
       }
     }
+  };
+
+  const handleUniverseClick = (slug) => {
+    n("universe", {universeSlug: slug})
   };
 
   useEffect(() => {
@@ -62,7 +66,7 @@ export default function Discover() {
           <OykGridRow wrap>
             {universes.map((u, index) => (
               <OykGridCol key={index} col="25" md="50" sm="100">
-                <OykCard nop fullCenter>
+                <OykCard nop fullCenter clickable onClick={() => handleUniverseClick(u.slug)}>
                   <header>
                     <OykBanner
                       avatarSrc={u.logo}
@@ -74,9 +78,7 @@ export default function Discover() {
                       height={148}
                     />
                     <h2>
-                      <OykLink routeName="universe" params={{ universeSlug: u.slug }}>
-                        {u.name}
-                      </OykLink>
+                      {u.name}
                     </h2>
                     <p>&nbsp;</p>
                   </header>

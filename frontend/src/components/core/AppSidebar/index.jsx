@@ -1,4 +1,5 @@
 import {
+  BookOpen,
   Compass,
   Component,
   GalleryHorizontalEnd,
@@ -40,12 +41,18 @@ export default function AppSidebar() {
               <OykAppSidebarNavItem
                 icon={isAuth ? LayoutDashboard : House}
                 text={isAuth ? t("Dashboard") : t("Home")}
-                href="home"
+                href={isAuth ? "dashboard" : "home"}
               />
               <OykAppSidebarNavItem icon={Compass} text={t("Discover")} href="discover" />
             </ul>
             {isAuth && currentUniverse ? (
               <ul className="oyk-app-sidebar-nav-list">
+                <OykAppSidebarNavItem
+                  icon={BookOpen}
+                  text={t("Rulebooks")}
+                  href="rulebooks"
+                  params={{ universeSlug: currentUniverse.slug }}
+                />
                 <OykAppSidebarNavItem
                   icon={Users}
                   text={t("Community")}

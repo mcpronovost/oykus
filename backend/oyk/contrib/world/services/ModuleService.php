@@ -132,8 +132,8 @@ class ModuleService {
     foreach ($modules as $m) {
       $result[$m["label"]] = [
         "label" => $m["label"],
-        "active" => (bool) $m["is_active"],
-        "disabled" => $m["is_disabled"] || !$m["is_available"],
+        "active" => (bool) !$m["is_disabled"] && (bool) $m["is_available"] && (bool) $m["is_active"],
+        "disabled" => (bool) $m["is_disabled"] || (bool) !$m["is_available"],
         "settings" => json_decode($m["settings"], TRUE)
       ];
     }
