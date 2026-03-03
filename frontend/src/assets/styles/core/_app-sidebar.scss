@@ -16,6 +16,10 @@
       padding-left: 12px;
     }
 
+    .oyk-app-sidebar-user-auth {
+      opacity: 1;
+    }
+
     .oyk-app-sidebar-nav-item {
       &-link {
         gap: 8px;
@@ -147,6 +151,19 @@
 
   &-user {
     text-align: center;
+    position: relative;
+
+    &-auth {
+      position: absolute;
+      top: 90px;
+      left: 50%;
+      opacity: 0;
+      transition: opacity 0.3s;
+
+      img {
+        opacity: 0.6;
+      }
+    }
 
     &-identity {
       overflow: hidden;

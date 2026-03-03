@@ -2,7 +2,7 @@ import { useAuth } from "@/services/auth";
 import { useStore } from "@/services/store";
 import { useWorld } from "@/services/world";
 
-import { OykBanner } from "@/components/ui";
+import { OykAvatar, OykBanner } from "@/components/ui";
 
 export default function User() {
   const { currentUser } = useAuth();
@@ -31,6 +31,11 @@ export default function User() {
         coverRadius="0"
         height={storeAppSidebarOpen ? 132 : 64}
       />
+      {currentCharacter && (
+        <section className="oyk-app-sidebar-user-auth">
+          <OykAvatar size={32} src={currentUser.avatar} abbr={currentUser.abbr} name={currentUser.name} />
+        </section>
+      )}
       <section className={`oyk-app-sidebar-user-identity ${storeAppSidebarOpen ? "" : "hidden"}`}>
         <div className="oyk-app-sidebar-user-identity-name">
           {currentCharacter ? currentCharacter.name : currentUser.name}
