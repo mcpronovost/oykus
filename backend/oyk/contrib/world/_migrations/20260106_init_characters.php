@@ -20,6 +20,9 @@ CREATE TABLE IF NOT EXISTS world_characters (
     `is_active` tinyint(1) NOT NULL DEFAULT 1,
     `is_valid` tinyint(1) NOT NULL DEFAULT 0,
 
+    `topics_count` mediumint UNSIGNED NOT NULL DEFAULT 0,
+    `posts_count` mediumint UNSIGNED NOT NULL DEFAULT 0,
+
     `validated_at` datetime NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
