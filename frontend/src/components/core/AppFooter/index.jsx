@@ -41,18 +41,18 @@ export default function AppFooter() {
       </nav>
       {currentUniverse ? (
         <small className="oyk-app-footer-small">
-          <p className="oyk-app-footer-small-copyright">
-            <span>{currentUniverse.name}</span> &copy;{" "}
-            <time dateTime={currentUniverse.created_at.slice(0, 10)}>{currentUniverse.created_at.slice(0, 4)}</time>{" "}
-            <span>{currentUniverse.staff.owner.name}</span>
-          </p>
-          {!currentUniverse.is_default && universes?.length > 0 ? (
+          {!currentUniverse.is_default ? (
             <p className="oyk-app-footer-small-copyright">
-              <span>{universes[0].name}</span> &copy;{" "}
-              <time dateTime={new Date().getFullYear()}>{new Date().getFullYear()}</time>{" "}
-              <span>{universes[0].staff.owner.name}</span>
+              <span>{currentUniverse.name}</span> &copy;{" "}
+              <time dateTime={currentUniverse.created_at.slice(0, 10)}>{currentUniverse.created_at.slice(0, 4)}</time>{" "}
+              <span>{currentUniverse.staff.owner.name}</span>
             </p>
           ) : null}
+          <p className="oyk-app-footer-small-copyright">
+            <span>Oykus</span> &copy;{" "}
+            <time dateTime={new Date().getFullYear()}>2022-{new Date().getFullYear()}</time>{" "}
+            <span>M-C Pronovost</span>
+          </p>
         </small>
       ) : null}
     </footer>
