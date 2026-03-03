@@ -16,8 +16,8 @@ export default function AppFooter() {
     },
     {
       label: t("Devlog"),
-      routeName: "devlog",
-      onClick: () => n("devlog"),
+      routeName: "blog",
+      params: { universeSlug: "oykus"},
     },
     {
       label: t("Privacy Policy"),
@@ -32,7 +32,7 @@ export default function AppFooter() {
         <ul className="oyk-app-footer-nav-list">
           {menuList.map((item) => (
             <li key={item.label} className="oyk-app-footer-nav-item">
-              <OykLink routeName={item.routeName} className="oyk-app-footer-nav-item-link">
+              <OykLink routeName={item.routeName} params={item.params} className="oyk-app-footer-nav-item-link">
                 {item.label}
               </OykLink>
             </li>
