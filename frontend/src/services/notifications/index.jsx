@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 
@@ -43,18 +43,17 @@ export function NotificationsProvider({ children }) {
     setNotifications(value);
   };
 
-  return (
-    <NotificationsContext.Provider
-      value={{
-        notifications,
-        isLoadingNotifications,
-        fetchNotifications,
-        updateNotifications,
-      }}
-    >
-      {children}
-    </NotificationsContext.Provider>
+  const value = useMemo(
+    () => ({
+      notifications,
+      isLoadingNotifications,
+      fetchNotifications,
+      updateNotifications,
+    }),
+    [notifications, isLoadingNotifications],
   );
+
+  return <NotificationsContext.Provider value={value}>{children}</NotificationsContext.Provider>;
 }
 
 export function useNotifications() {

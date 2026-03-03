@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef } from "react";
 import { DEFAULT_LANG, loadTranslations } from "./utils";
 
 const TranslationContext = createContext();
@@ -22,25 +22,20 @@ export function TranslationProvider({ children, lang = DEFAULT_LANG }) {
       const rules = new Intl.PluralRules(lang);
       const pluralForm = rules.select(count);
       const result = translation[pluralForm] || translation["other"];
-      return result.replace(
-        /\{(\w+)\}/g,
-        (_, varName) => varName === "count" ? count : vars[varName] ?? `{${varName}}`
+      return result.replace(/\{(\w+)\}/g, (_, varName) =>
+        varName === "count" ? count : (vars[varName] ?? `{${varName}}`),
       );
     }
 
     if (typeof translation === "object") {
-      const result =  translation["other"];
-      return result.replace(
-        /\{(\w+)\}/g,
-        (_, varName) => varName === "count" ? count : vars[varName] ?? `{${varName}}`
+      const result = translation["other"];
+      return result.replace(/\{(\w+)\}/g, (_, varName) =>
+        varName === "count" ? count : (vars[varName] ?? `{${varName}}`),
       );
     }
 
     if (typeof translation === "string") {
-      return translation.replace(
-        /\{(\w+)\}/g,
-        (_, varName) => vars[varName] ?? `{${varName}}`
-      );
+      return translation.replace(/\{(\w+)\}/g, (_, varName) => vars[varName] ?? `{${varName}}`);
     }
 
     // eslint-disable-next-line no-console
@@ -48,23 +43,22 @@ export function TranslationProvider({ children, lang = DEFAULT_LANG }) {
     return key;
   };
 
-  const value = {
-    lang,
-    t: handleTranslate,
-  };
-
-  return (
-    <TranslationContext.Provider value={value}>
-      {children}
-    </TranslationContext.Provider>
+  const value = useMemo(
+    () => ({
+      lang,
+      t: handleTranslate,
+    }),
+    [lang],
   );
+
+  return <TranslationContext.Provider value={value}>{children}</TranslationContext.Provider>;
 }
 
 export function useTranslation() {
   const context = useContext(TranslationContext);
   if (!context) {
     window.location.reload();
-    return { lang: "fr", t: () => {}};
+    return { lang: "fr", t: () => {} };
   }
   return context;
 }

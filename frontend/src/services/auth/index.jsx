@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 
 import { api } from "@/services/api";
 import { KEY_USER, KEY_RAT } from "@/services/store/constants";
@@ -63,21 +63,20 @@ export function AuthProvider({ children }) {
     }
   };
 
-  return (
-    <AuthContext.Provider
-      value={{
-        currentUser: user,
-        isAuth,
-        isDev,
-        isLoadingAuth,
-        setUser,
-        setRat,
-        fetchUser,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({
+      currentUser: user,
+      isAuth,
+      isDev,
+      isLoadingAuth,
+      setUser,
+      setRat,
+      fetchUser,
+    }),
+    [user, isAuth, isDev, isLoadingAuth],
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
