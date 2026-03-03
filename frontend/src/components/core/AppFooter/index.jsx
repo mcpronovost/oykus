@@ -1,12 +1,13 @@
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import { useWorld } from "@/services/world";
+
 import { OykLink } from "@/components/ui";
 
 export default function AppFooter() {
   const { n } = useRouter();
   const { t } = useTranslation();
-  const { currentUniverse, universes } = useWorld();
+  const { currentUniverse } = useWorld();
 
   const menuList = [
     {
@@ -17,7 +18,7 @@ export default function AppFooter() {
     {
       label: t("Devlog"),
       routeName: "blog",
-      params: { universeSlug: "oykus"},
+      params: { universeSlug: "oykus" },
     },
     {
       label: t("Privacy Policy"),
@@ -49,8 +50,7 @@ export default function AppFooter() {
             </p>
           ) : null}
           <p className="oyk-app-footer-small-copyright">
-            <span>Oykus</span> &copy;{" "}
-            <time dateTime={new Date().getFullYear()}>2022-{new Date().getFullYear()}</time>{" "}
+            <span>Oykus</span> &copy; <time dateTime={new Date().getFullYear()}>2022-{new Date().getFullYear()}</time>{" "}
             <span>M-C Pronovost</span>
           </p>
         </small>
