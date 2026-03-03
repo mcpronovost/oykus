@@ -8,10 +8,11 @@ import {
   ListTodo,
   LoaderPinwheel,
   MessagesSquare,
+  Orbit,
   ScrollText,
   Settings,
   Star,
-  Users
+  Users,
 } from "lucide-react";
 import { useAuth } from "@/services/auth";
 import { useStore } from "@/services/store";
@@ -53,48 +54,15 @@ export default function AppSidebar() {
                   href="rulebooks"
                   params={{ universeSlug: currentUniverse.slug }}
                 />
+                {currentUniverse.modules?.forum?.active ? (
+                  <OykAppSidebarNavItem icon={MessagesSquare} text={t("Forum")} href="forum" />
+                ) : null}
                 <OykAppSidebarNavItem
                   icon={Users}
                   text={t("Community")}
                   href="community"
                   params={{ universeSlug: currentUniverse.slug }}
                 />
-                {currentUniverse.modules?.planner?.active ? (
-                  <OykAppSidebarNavItem
-                    icon={ListTodo}
-                    text={currentUniverse.modules.planner.settings.display_name || t("Planner")}
-                    href="planner"
-                    params={{ universeSlug: currentUniverse.slug }}
-                  />
-                ) : null}
-                {currentUniverse.modules?.blog?.active ? (
-                  <OykAppSidebarNavItem
-                    icon={ScrollText}
-                    text={currentUniverse.modules.blog.settings.display_name || t("Blog")}
-                    href="blog"
-                    params={{ universeSlug: currentUniverse.slug }}
-                  />
-                ) : null}
-                {currentUniverse.modules?.forum?.active ? (
-                  <OykAppSidebarNavItem icon={MessagesSquare} text={t("Forum")} href="forum" disabled />
-                ) : null}
-                {currentUniverse.modules?.collectibles?.active ? (
-                  <OykAppSidebarNavItem
-                    icon={GalleryHorizontalEnd}
-                    text={t("Collectibles")}
-                    href="collectibles"
-                    params={{ universeSlug: currentUniverse.slug }}
-                    disabled
-                  />
-                ) : null}
-                {currentUniverse.modules?.rewards?.active ? (
-                  <OykAppSidebarNavItem
-                    icon={Star}
-                    text={t("Achievements")}
-                    href="achievements"
-                    params={{ universeSlug: currentUniverse.slug }}
-                  />
-                ) : null}
               </ul>
             ) : null}
           </nav>
@@ -103,10 +71,10 @@ export default function AppSidebar() {
           <nav className="oyk-app-sidebar-nav">
             <ul className="oyk-app-sidebar-nav-list">
               {isAuth ? <OykAppSidebarNavItem icon={Settings} text={t("Settings")} href="settings" /> : null}
-              {isDev ? <OykAppSidebarNavItem icon={Component} text={t("Components")} href="dev-components" /> : null}
+              {/*isDev ? <OykAppSidebarNavItem icon={Component} text={t("Components")} href="dev-components" /> : null*/}
               {isAuth && currentUniverse && currentUniverse.role === 1 ? (
                 <OykAppSidebarNavItem
-                  icon={LoaderPinwheel}
+                  icon={Orbit}
                   text={t("Admin")}
                   href="universe-admin"
                   params={{ universeSlug: currentUniverse.slug }}

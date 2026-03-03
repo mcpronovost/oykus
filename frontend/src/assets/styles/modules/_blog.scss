@@ -36,13 +36,13 @@
     }
 
     &-wrapper {
-      background-color: color-mix(in srgb, var(--oyk-card-subtle-bg) 25%, var(--oyk-card-bg));
+      background-color: var(--oyk-card-item-bg);
       border-radius: var(--oyk-radius);
       flex: 1 1 auto;
-      width: calc(100% - 32px);
+      width: calc(100% - 16px);
       position: relative;
       padding: 8px;
-      margin: 0 16px 8px;
+      margin: 0 8px 8px;
     }
 
     &-footer {
@@ -56,7 +56,7 @@
       gap: 8px;
       width: 100%;
       opacity: 0.7;
-      padding: 4px 24px 12px;
+      padding: 4px 16px 12px;
     }
   }
 

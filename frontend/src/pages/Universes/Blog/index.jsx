@@ -119,7 +119,7 @@ export default function OykBlog() {
           <section>
             <OykGridRow wrap>
               {posts.map((post, index) => (
-                <OykGridCol key={index} col={index <= 0 ? "100" : "25"} md={index <= 0 ? "100" : "50"} sm="100">
+                <OykGridCol key={index} col={index <= 0 ? "100" : "33"} md={index <= 0 ? "100" : "50"} sm="100" grow={index <= 0}>
                   <OykCard clickable nop fh className="oyk-blog-item" onClick={() => handlePostClick(post.id)}>
                     <OykBanner
                       height={index <= 0 ? 212 : 66}
