@@ -5,7 +5,6 @@ import { Frown } from "lucide-react";
 import { api } from "@/services/api";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import { useWorld } from "@/services/world";
 import {
   OykBanner,
   OykCard,
@@ -21,20 +20,17 @@ import OykAppNotAuthorized from "@/components/core/AppNotAuthorized";
 export default function OykCommunity() {
   const { n, params, routeTitle } = useRouter();
   const { t } = useTranslation();
-  const { currentUniverse } = useWorld();
 
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
   const [users, setUsers] = useState(null);
-  const [characters, setCharacters] = useState(null);
 
   const fetchCommunity = async (signal) => {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get(`/world/universes/${params.universeSlug}/community/`, signal ? { signal } : {});
-      if (!r?.ok || (!r?.characters && !r?.users)) throw r;
-      setCharacters(r.characters);
+      const r = await api.get(`/world/universes/oykus/community/`, signal ? { signal } : {});
+      if (!r?.ok || !r?.users) throw r;
       setUsers(r.users);
     } catch (e) {
       if (e?.name === "AbortError") return;
@@ -46,10 +42,6 @@ export default function OykCommunity() {
         setIsLoading(false);
       }
     }
-  };
-
-  const handleClickCharacter = (slug) => {
-    n("universe-community-profile", { universeSlug: currentUniverse.slug, characterSlug: slug });
   };
 
   const handleClickUser = (slug) => {
@@ -78,38 +70,9 @@ export default function OykCommunity() {
           <OykFeedback ghost variant="danger" title={t("Error")} message={hasError.message} />
         ) : isLoading ? (
           <OykLoading />
-        ) : characters || users ? (
+        ) : users ? (
           <OykGridRow wrap className="oyk-community-memberlist">
-            {characters.length > 0 ? (
-              characters.map((member) => (
-                <OykGridCol key={member.id} col="25" md="50" grow={false}>
-                  <OykCard
-                    nop
-                    fullCenter
-                    alignSpace
-                    clickable
-                    className="oyk-community-memberlist-item"
-                    onClick={() => handleClickCharacter(member.slug)}
-                  >
-                    <header className="oyk-community-memberlist-item-header">
-                      <OykBanner
-                        avatarSrc={member.avatar}
-                        avatarShowOnline
-                        avatarOnline={member.is_online}
-                        avatarLevel={1}
-                        coverSrc={member.cover}
-                      />
-                      <div className="oyk-community-memberlist-item-header-name">
-                        <span>{member.name}</span>
-                      </div>
-                      <div className="oyk-community-memberlist-item-header-title">
-                        <span>Qui ne fait que passer</span>
-                      </div>
-                    </header>
-                  </OykCard>
-                </OykGridCol>
-              ))
-            ) : users.length > 0 ? (
+            {users.length > 0 ? (
               users.map((member) => (
                 <OykGridCol key={member.id} col="25" md="50" grow={false}>
                   <OykCard

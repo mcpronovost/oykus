@@ -210,5 +210,7 @@
   "By {author}": "Par {author}",
   "Unexpected error": "Erreur inattendue",
   "Community": "Communauté",
-  "No members": "Aucun membre"
+  "No members": "Aucun membre",
+  "User not found": "Utilisateur introuvable",
+  "Character not found": "Personnage introuvable"
 }

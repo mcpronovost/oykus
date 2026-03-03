@@ -20,3 +20,5 @@ Router::get("{$api}/universes/{universeSlug}/theme", "{$view}universes/theme.php
 Router::post("{$api}/universes/{universeSlug}/theme/edit", "{$view}universes/theme_edit.php");
 
 Router::get("{$api}/universes/{universeSlug}/community", "{$view}characters/community.php");
+
+Router::get("{$api}/universes/{universeSlug}/community/{characterSlug}", "{$view}characters/profile.php");

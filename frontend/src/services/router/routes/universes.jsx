@@ -18,7 +18,7 @@ export const UNIVERSES_ROUTES = [
         },
         children: [
           {
-            name: "community",
+            name: "universe-community",
             component: React.lazy(() => import("../../../pages/Universes/Community")),
             paths: {
               fr: "communaute",
@@ -26,11 +26,11 @@ export const UNIVERSES_ROUTES = [
             },
             children: [
               {
-                name: "community-user-profile",
-                component: React.lazy(() => import("../../../pages/Universes/Community/UserProfile")),
+                name: "universe-community-profile",
+                component: React.lazy(() => import("../../../pages/Universes/Community/ProfileCharacter")),
                 paths: {
-                  fr: "{userSlug}",
-                  en: "{userSlug}",
+                  fr: "{characterSlug}",
+                  en: "{characterSlug}",
                 },
               },
             ],

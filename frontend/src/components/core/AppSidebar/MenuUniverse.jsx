@@ -22,7 +22,7 @@ export default function AppSidebarMenuUniverse() {
       <OykAppSidebarNavItem
         icon={Users}
         text={t("Community")}
-        href="community"
+        href={currentUniverse.is_default ? "community" : "universe-community"}
         params={{ universeSlug: currentUniverse.slug }}
       />
     </ul>
