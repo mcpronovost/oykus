@@ -1,10 +1,13 @@
 import { useAuth } from "@/services/auth";
 import { useStore } from "@/services/store";
+import { useWorld } from "@/services/world";
+
 import { OykBanner } from "@/components/ui";
 
 export default function User() {
   const { currentUser } = useAuth();
   const { storeAppSidebarOpen } = useStore();
+  const { currentCharacter } = useWorld();
 
   if (!currentUser) {
     return null;
@@ -13,7 +16,7 @@ export default function User() {
   return (
     <section className="oyk-app-sidebar-user">
       <OykBanner
-        avatarSrc={currentUser.avatar}
+        avatarSrc={currentCharacter ? currentCharacter.avatar : currentUser.avatar}
         avatarBorderSize={4}
         avatarBorderColor="var(--oyk-app-sidebar-bg)"
         avatarSize={storeAppSidebarOpen ? 96 : 32}
@@ -23,18 +26,20 @@ export default function User() {
         avatarLevelSize={storeAppSidebarOpen ? 24 : 16}
         avatarLevelBorderSize={storeAppSidebarOpen ? 4 : 2}
         avatarLevelBorderColor="var(--oyk-app-sidebar-bg)"
-        coverSrc={currentUser.cover}
+        coverSrc={currentCharacter ? currentCharacter.cover : currentUser.cover}
         coverHeight={storeAppSidebarOpen ? 72 : 32}
         coverRadius="0"
         height={storeAppSidebarOpen ? 132 : 64}
       />
-      <section className={`oyk-app-sidebar-user-identity ${storeAppSidebarOpen ? '' : 'hidden'}`}>
+      <section className={`oyk-app-sidebar-user-identity ${storeAppSidebarOpen ? "" : "hidden"}`}>
         <div className="oyk-app-sidebar-user-identity-name">
-            {currentUser.name}
+          {currentCharacter ? currentCharacter.name : currentUser.name}
         </div>
-        <div className="oyk-app-sidebar-user-identity-title">
-            Qui ne fait que passer
-        </div>
+        {currentCharacter ? (
+          currentCharacter.title && <div className="oyk-app-sidebar-user-identity-title">{currentCharacter.title}</div>
+        ) : (
+          <div className="oyk-app-sidebar-user-identity-title">Qui ne fait que passer</div>
+        )}
       </section>
     </section>
   );

@@ -5,7 +5,7 @@ import { useAuth } from "@/services/auth";
 import { getUniverseSlugFromPath } from "@/services/router/utils";
 import { storeGet, storeSet, storeRemove, oykCookieSet, oykCookieDelete } from "@/services/store/utils";
 
-import { KEY_UNIVERSES, KEY_UNIVERSE } from "./constants";
+import { KEY_UNIVERSES, KEY_UNIVERSE, KEY_CHARACTER } from "./constants";
 
 const WorldContext = createContext(null);
 
@@ -14,6 +14,7 @@ export function WorldProvider({ children }) {
 
   const [universes, setUniverses] = useState(() => storeGet(KEY_UNIVERSES) || null);
   const [currentUniverse, setCurrentUniverse] = useState(() => storeGet(KEY_UNIVERSE) || null);
+  const [currentCharacter, setCurrentCharacter] = useState(() => storeGet(KEY_CHARACTER) || null);
   const [theme, setTheme] = useState(null);
   const [isLoadingWorld, setIsLoadingWorld] = useState(false);
 
@@ -57,6 +58,15 @@ export function WorldProvider({ children }) {
       setCurrentUniverse(r.universe);
       storeSet(KEY_UNIVERSE, r.universe);
 
+      // Apply current character
+      if (r.character) {
+        setCurrentCharacter(r.character);
+        storeSet(KEY_CHARACTER, r.character);
+      } else {
+        setCurrentCharacter(null);
+        storeRemove(KEY_CHARACTER);
+      }
+
       // World cookie
       oykCookieSet("oyk-world", r.universe.slug);
 
@@ -66,10 +76,26 @@ export function WorldProvider({ children }) {
     } catch {
       setCurrentUniverse(null);
       storeRemove(KEY_UNIVERSE);
+      storeRemove(KEY_CHARACTER);
       oykCookieDelete("oyk-world");
       setTheme(null);
     } finally {
       setIsLoadingWorld(false);
+    }
+  };
+
+  // ---------------------------------------------------------
+  // Fetch a specific character
+  // ---------------------------------------------------------
+  const fetchCurrentCharacter = async (characterId) => {
+    try {
+      const r = await api.post(`/world/universes/${currentUniverse.slug}/characters/activate/`, { id: characterId });
+      if (!r.ok || !r.character) throw Error();
+      setCurrentCharacter(r.character);
+      storeSet(KEY_CHARACTER, r.character);
+    } catch {
+      setCurrentCharacter(null);
+      storeRemove(KEY_CHARACTER);
     }
   };
 
@@ -123,15 +149,21 @@ export function WorldProvider({ children }) {
     return () => controller.abort();
   }, [isAuth]);
 
-  const value = useMemo(() => ({
-    universes,
-    currentUniverse,
-    isLoadingWorld,
-    changeUniverse: fetchCurrentUniverse,
-    getUniverses: fetchUniverses,
-    setUniverses,
-    setCurrentUniverse
-  }), [universes, currentUniverse, isLoadingWorld]);
+  const value = useMemo(
+    () => ({
+      universes,
+      currentUniverse,
+      currentCharacter,
+      isLoadingWorld,
+      changeUniverse: fetchCurrentUniverse,
+      getUniverses: fetchUniverses,
+      setCurrentUniverse,
+      setUniverses,
+      changeCharacter: fetchCurrentCharacter,
+      setCurrentCharacter
+    }),
+    [universes, currentUniverse, currentCharacter, isLoadingWorld],
+  );
 
   return <WorldContext.Provider value={value}>{children}</WorldContext.Provider>;
 }
