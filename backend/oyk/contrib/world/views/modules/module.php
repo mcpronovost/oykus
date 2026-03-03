@@ -1,17 +1,17 @@
 <?php
 
 global $pdo;
-$userId = require_rat();
+$authId = require_rat();
 
 $universeService = new UniverseService($pdo);
 $moduleService = new ModuleService($pdo);
 
 // Universe context
-$context = $universeService->getContext($universeSlug, $userId);
+$context = $universeService->getContext($universeSlug, $authId);
 $universeId = $context["id"];
 
 // Check permissions
-if (!$moduleService->userCanEditModule($moduleName, $userId)) {
+if (!$moduleService->userCanEditModule($moduleName, $authId)) {
   throw new AuthorizationException("You cannot edit module");
 }
 

@@ -1,11 +1,11 @@
 <?php
 
 global $pdo;
-$userId = require_rat(FALSE);
+$authId = require_rat(FALSE);
 
 $universeService = new UniverseService($pdo);
 
-$universes = $universeService->getUniverses($userId);
+$universes = $universeService->getUniverses($authId);
 
 Response::json([
   "ok" => TRUE,

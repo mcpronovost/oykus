@@ -1,13 +1,13 @@
 <?php
 
 global $pdo;
-$userId = require_rat();
+$authId = require_rat();
 
 $universeService = new UniverseService($pdo);
 $userService = new UserService($pdo);
 $characterService = new CharacterService($pdo);
 
-$context = $universeService->getContext($universeSlug, $userId);
+$context = $universeService->getContext($universeSlug, $authId);
 $universeId = $context["id"];
 $universeIsDefault = $context["isDefault"];
 

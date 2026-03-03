@@ -4,7 +4,7 @@ require OYK . "/core/utils/uploaders.php";
 require OYK . "/core/utils/formatters.php";
 
 global $pdo;
-$authUser = require_auth();
+$authId = require_rat();
 
 /*
 |--------------------------------------------------------------------------
@@ -12,7 +12,7 @@ $authUser = require_auth();
 |--------------------------------------------------------------------------
 */
 $qry = $pdo->prepare("
-  SELECT id, name, slug, is_slug_auto, abbr, is_abbr_auto, owner, visibility, is_default
+  SELECT id, name, slug, is_slug_auto, abbr, is_abbr_auto, owner_id, visibility, is_default
   FROM world_universes
   WHERE slug = ? AND is_active = 1
   LIMIT 1
@@ -29,7 +29,7 @@ if (!$universe) {
 | Check edit permission
 |--------------------------------------------------------------------------
 */
-if ($universe["owner"] !== $authUser["id"]) {
+if ($universe["owner_id"] !== $authId) {
   Response::forbidden();
 }
 

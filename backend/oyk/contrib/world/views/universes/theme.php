@@ -1,12 +1,12 @@
 <?php
 
 global $pdo;
-$userId = require_rat(FALSE);
+$authId = require_rat(FALSE);
 
 $universeService = new UniverseService($pdo);
 $themeService = new ThemeService($pdo);
 
-$context = $universeService->getContext($universeSlug, $userId);
+$context = $universeService->getContext($universeSlug, $authId);
 $universeId = $context["id"];
 
 if (!$universeId) {

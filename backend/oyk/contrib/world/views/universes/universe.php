@@ -1,13 +1,13 @@
 <?php
 
 global $pdo;
-$userId = require_rat(FALSE);
+$authId = require_rat(FALSE);
 
 $universeService = new UniverseService($pdo);
 $themeService = new ThemeService($pdo);
 $moduleService = new ModuleService($pdo);
 
-$universe = $universeService->getUniverse($universeSlug, $userId);
+$universe = $universeService->getUniverse($universeSlug, $authId);
 $theme = $themeService->getActiveTheme($universe["id"]);
 $modules = $moduleService->getModules($universe["id"]);
 
