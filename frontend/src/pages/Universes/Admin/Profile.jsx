@@ -33,7 +33,7 @@ export default function UniverseAdminProfile() {
         formData.append(key, value);
       }
       const r = await api.post(`/world/universes/${currentUniverse.slug}/edit/`, formData);
-      if (!r?.ok) throw new Error(r || t("An error occurred"));
+      if (!r?.ok) throw r;
       changeUniverse(r.universe.slug);
       getUniverses();
       setProfileForm((prev) => ({
@@ -48,13 +48,13 @@ export default function UniverseAdminProfile() {
         message: t("The profile universe has been updated successfully"),
       });
     } catch (e) {
-      if (e?.message && e.message.includes("uniq_name")) {
+      if (e?.error && e.error.includes("uniq_name")) {
         setHasError(() => ({
           name: t("This name is already in use"),
         }));
       } else {
         setHasError(() => ({
-          message: e.message || t("An error occurred"),
+          message: t(e.error) || t("An error occurred"),
         }));
       }
     } finally {
