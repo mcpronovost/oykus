@@ -9,36 +9,8 @@ export const getLangFromPath = (pathname) => {
 };
 
 export const getUniverseSlugFromPath = (pathname) => {
-  const match = pathname.match(/\/u\/([a-z0-9-]+)/);
+  const match = pathname.match(/\/-\/([a-z0-9-]+)/);
   return match ? decodeURIComponent(match[1]) : null;
-};
-
-// Helper function to match dynamic path segments
-const matchPathSegment = (routePath, actualPath) => {
-  if (routePath === actualPath) return true;
-  
-  // Handle dynamic segments like {worldSlug}
-  const routeSegments = routePath.split("/");
-  const actualSegments = actualPath.split("/");
-  
-  if (routeSegments.length !== actualSegments.length) return false;
-  
-  for (let i = 0; i < routeSegments.length; i++) {
-    const routeSegment = routeSegments[i];
-    const actualSegment = actualSegments[i];
-    
-    // If it's a dynamic segment (wrapped in {})
-    if (routeSegment.startsWith("{") && routeSegment.endsWith("}")) {
-      continue; // Dynamic segment matches anything
-    }
-    
-    // Static segments must match exactly
-    if (routeSegment !== actualSegment) {
-      return false;
-    }
-  }
-  
-  return true;
 };
 
 // Recursive function to find route in nested structure

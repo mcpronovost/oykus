@@ -5,8 +5,8 @@ export const UNIVERSES_ROUTES = [
     name: "universes",
     component: React.lazy(() => import("../../../pages/Universes")),
     paths: {
-      fr: "u",
-      en: "u",
+      fr: "-",
+      en: "-",
     },
     children: [
       {

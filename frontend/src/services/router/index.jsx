@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, useEffect } from "react";
+import { createContext, useCallback, useContext, useMemo, useState, useEffect } from "react";
 
 import { DEFAULT_LANG, SUPPORTED_LANGS } from "@/services/translation/utils";
 import { ROUTES } from "./routes";
@@ -25,8 +25,8 @@ export function RouterProvider({ children }) {
   const [route, setRoute] = useState(INITIAL_STATE.route);
   const [params, setParams] = useState(INITIAL_STATE.params);
 
-  if (route === null && !SUPPORTED_LANGS.some(l => window.location.pathname.startsWith(`/${l}`))) {
-    window.location.pathname=`/${DEFAULT_LANG}${window.location.pathname}`;
+  if (route === null && !SUPPORTED_LANGS.some((l) => window.location.pathname.startsWith(`/${l}`))) {
+    window.location.pathname = `/${DEFAULT_LANG}${window.location.pathname}`;
     return null;
   }
 
@@ -38,7 +38,8 @@ export function RouterProvider({ children }) {
         // Fallback to 404 if route not found
         const fallbackRoute = ROUTES.find((r) => r.name === "404");
         if (fallbackRoute) {
-          const newPath = `/${language}/${fallbackRoute.paths[language]}`;
+          // const newPath = `/${language}/${fallbackRoute.paths[language]}`;
+          const newPath = `/${fallbackRoute.paths[language]}`;
           window.history.pushState({}, "", newPath);
           setHistory((h) => [...h, newPath]);
           setLang(language);
@@ -47,7 +48,8 @@ export function RouterProvider({ children }) {
         return;
       }
 
-      const newPath = `/${language}/${routePath}`;
+      // const newPath = `/${language}/${routePath}`;
+      const newPath = `/${routePath}`;
       window.history.pushState({}, "", newPath);
       setHistory((h) => [...h, newPath]);
       setLang(language);
@@ -57,7 +59,7 @@ export function RouterProvider({ children }) {
       setRoute(routeResult?.route || null);
       setParams(routeResult?.params || {});
     },
-    [lang]
+    [lang],
   );
 
   const refresh = useCallback(() => {
@@ -66,8 +68,8 @@ export function RouterProvider({ children }) {
 
   const changePageTitle = useCallback((title) => {
     const universeName = "Oykus";
-    if (title) return window.document.title = `${title} | ${universeName}`;
-    return window.document.title = universeName;
+    if (title) return (window.document.title = `${title} | ${universeName}`);
+    return (window.document.title = universeName);
   }, []);
 
   useEffect(() => {
@@ -89,16 +91,19 @@ export function RouterProvider({ children }) {
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
-  const value = {
-    route,
-    params,
-    lang,
-    history,
-    breads: (name, language = lang) => getBreadcrumbs(name, language),
-    n: (name, params = {}, language = lang) => navigate(name, params, language),
-    routeTitle: (title) => changePageTitle(title),
-    refresh,
-  };
+  const value = useMemo(
+    () => ({
+      route,
+      params,
+      lang,
+      history,
+      breads: (name, language = lang) => getBreadcrumbs(name, language),
+      n: (name, params = {}, language = lang) => navigate(name, params, language),
+      routeTitle: (title) => changePageTitle(title),
+      refresh,
+    }),
+    [route, params, lang, history],
+  );
 
   return <RouterContext.Provider value={value}>{children}</RouterContext.Provider>;
 }
