@@ -93,11 +93,15 @@ export default function OykCommunity() {
                   >
                     <header className="oyk-community-memberlist-item-header">
                       <OykBanner
+                        height={174}
                         avatarSrc={member.avatar}
+                        avatarSize={120}
+                        avatarTop={32}
+                        avatarBorderSize={8}
                         avatarShowOnline
                         avatarOnline={member.is_online}
-                        avatarLevel={1}
-                        coverSrc={member.cover}
+                        avatarOnlineBorderSize={4}
+                        coverSrc={member.cover || member.avatar}
                       />
                       <div className="oyk-community-memberlist-item-header-name">
                         <span>{member.name}</span>

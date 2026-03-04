@@ -15,9 +15,10 @@ export default function OykBanner({
   avatarTop = 64,
   avatarShowOnline = false,
   avatarOnline = false,
+  avatarOnlineBorderSize,
   avatarLevel,
   avatarLevelSize = 24,
-  avatarLevelBorderSize = 2,
+  avatarLevelBorderSize,
   avatarLevelBorderColor = "var(--oyk-card-bg)",
   showAvatar = true,
   height = 140,
@@ -65,6 +66,7 @@ export default function OykBanner({
             borderRadius={avatarBorderRadius}
             showOnline={avatarShowOnline}
             isOnline={avatarOnline}
+            isOnlineBorderSize={avatarOnlineBorderSize}
             level={avatarLevel}
             levelSize={avatarLevelSize}
             levelBorderSize={avatarLevelBorderSize}

@@ -26,16 +26,11 @@ export default function User() {
         avatarLevelSize={storeAppSidebarOpen ? 24 : 16}
         avatarLevelBorderSize={storeAppSidebarOpen ? 4 : 2}
         avatarLevelBorderColor="var(--oyk-app-sidebar-bg)"
-        coverSrc={currentCharacter ? currentCharacter.cover : currentUser.cover}
+        coverSrc={currentCharacter ? currentCharacter.cover || currentCharacter.avatar : currentUser.cover}
         coverHeight={storeAppSidebarOpen ? 72 : 32}
         coverRadius="0"
         height={storeAppSidebarOpen ? 132 : 64}
       />
-      {currentCharacter && (
-        <section className="oyk-app-sidebar-user-auth">
-          <OykAvatar size={32} src={currentUser.avatar} abbr={currentUser.abbr} name={currentUser.name} />
-        </section>
-      )}
       <section className={`oyk-app-sidebar-user-identity ${storeAppSidebarOpen ? "" : "hidden"}`}>
         <div className="oyk-app-sidebar-user-identity-name">
           {currentCharacter ? currentCharacter.name : currentUser.name}

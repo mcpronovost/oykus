@@ -19,6 +19,7 @@ export default function OykAvatar({
   borderRadius = "50%",
   showOnline = false,
   isOnline = false,
+  isOnlineBorderSize = 2,
   level,
   levelSize = 24,
   levelBorderSize = 2,
@@ -80,8 +81,9 @@ export default function OykAvatar({
         <span
           className={`oyk-avatar-log oyk-${isOnline ? "online" : "offline"}`}
           style={{
-            width: `${size / 6}px`,
-            height: `${size / 6}px`,
+            borderWidth: `${isOnlineBorderSize}px`,
+            width: `${(size / 6) + (isOnlineBorderSize / 2)}px`,
+            height: `${(size / 6) + (isOnlineBorderSize / 2)}px`,
             left: `${borderSize + size / 20}px`,
             bottom: `${borderSize + size / 20}px`,
           }}
