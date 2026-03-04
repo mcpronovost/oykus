@@ -9,11 +9,12 @@ import OykAppSidebarFooter from "./Footer";
 import OykAppSidebarUser from "./User";
 import OykAppSidebarMenuMain from "./MenuMain";
 import OykAppSidebarMenuUniverse from "./MenuUniverse";
+import OykAppSidebarMenuCharacter from "./MenuCharacter";
 
 export default function AppSidebar() {
   const { isAuth } = useAuth();
   const { storeAppSidebarOpen } = useStore();
-  const { currentUniverse } = useWorld();
+  const { currentUniverse, currentCharacter } = useWorld();
 
   return (
     <aside className={`oyk-app-sidebar ${storeAppSidebarOpen ? "open" : ""}`}>
@@ -24,6 +25,7 @@ export default function AppSidebar() {
           <nav className="oyk-app-sidebar-nav">
             <OykAppSidebarMenuMain />
             {isAuth && currentUniverse && <OykAppSidebarMenuUniverse />}
+            {isAuth && currentUniverse && currentCharacter && <OykAppSidebarMenuCharacter />}
           </nav>
         </section>
         <OykAppSidebarFooter />

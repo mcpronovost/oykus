@@ -1,4 +1,4 @@
-import { BookOpen, MessagesSquare, Users } from "lucide-react";
+import { BookOpen, MessagesSquare, Scale, Users } from "lucide-react";
 import { useTranslation } from "@/services/translation";
 import { useWorld } from "@/services/world";
 
@@ -11,14 +11,17 @@ export default function AppSidebarMenuUniverse() {
   return (
     <ul className="oyk-app-sidebar-nav-list">
       <OykAppSidebarNavItem
-        icon={BookOpen}
+        icon={Scale}
         text={t("Rulebooks")}
         href="rulebooks"
         params={{ universeSlug: currentUniverse.slug }}
       />
-      {currentUniverse.modules?.forum?.active ? (
-        <OykAppSidebarNavItem icon={MessagesSquare} text={t("Forum")} href="forum" />
-      ) : null}
+      <OykAppSidebarNavItem
+        icon={BookOpen}
+        text={t("Context")}
+        href="context"
+        params={{ universeSlug: currentUniverse.slug }}
+      />
       <OykAppSidebarNavItem
         icon={Users}
         text={t("Community")}

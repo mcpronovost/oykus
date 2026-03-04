@@ -35,11 +35,7 @@ export default function User() {
         <div className="oyk-app-sidebar-user-identity-name">
           {currentCharacter ? currentCharacter.name : currentUser.name}
         </div>
-        {currentCharacter ? (
-          currentCharacter.title && <div className="oyk-app-sidebar-user-identity-title">{currentCharacter.title}</div>
-        ) : (
-          <div className="oyk-app-sidebar-user-identity-title">Qui ne fait que passer</div>
-        )}
+        <div className="oyk-app-sidebar-user-identity-title">Qui ne fait que passer</div>
       </section>
     </section>
   );
