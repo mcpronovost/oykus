@@ -26,7 +26,7 @@ import OykModalPostCreate from "./modals/PostCreate";
 
 export default function OykBlog() {
   const { isAuth } = useAuth();
-  const { n, routeTitle } = useRouter();
+  const { n, routeTitle, params } = useRouter();
   const { t, lang } = useTranslation();
   const { currentUser, currentUniverse } = useWorld();
 
@@ -39,12 +39,12 @@ export default function OykBlog() {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get(`/blog/u/${currentUniverse.slug}/posts/`, signal ? { signal } : {});
-      if (!r.ok || !r.posts) throw Error();
+      const r = await api.get(`/blog/u/${params.universeSlug}/posts/`, signal ? { signal } : {});
+      if (!r.ok || !r.posts) throw r;
       setPosts(r.posts);
     } catch (e) {
       if (e?.name === "AbortError") return;
-      setHasError(e.message || t("An error occurred"));
+      setHasError({ message: e.error || t("An error occurred") });
     } finally {
       if (!signal || !signal.aborted) {
         setIsLoading(false);
@@ -119,7 +119,13 @@ export default function OykBlog() {
           <section>
             <OykGridRow wrap>
               {posts.map((post, index) => (
-                <OykGridCol key={index} col={index <= 0 ? "100" : "33"} md={index <= 0 ? "100" : "50"} sm="100" grow={index <= 0}>
+                <OykGridCol
+                  key={index}
+                  col={index <= 0 ? "100" : "33"}
+                  md={index <= 0 ? "100" : "50"}
+                  sm="100"
+                  grow={index <= 0}
+                >
                   <OykCard clickable nop fh className="oyk-blog-item" onClick={() => handlePostClick(post.id)}>
                     <OykBanner
                       height={index <= 0 ? 212 : 66}
@@ -143,14 +149,18 @@ export default function OykBlog() {
                             </OykLink>
                           </h2>
                         </header>
-                        {post.description ? <div className="oyk-blog-item-content-preview">{post.description}</div> : null}
+                        {post.description ? (
+                          <div className="oyk-blog-item-content-preview">{post.description}</div>
+                        ) : null}
                       </div>
                       <footer className="oyk-blog-item-footer">
                         <div>
-                          {post.author?.name ? <span>{t("By {author}", null, { author: post.author.name })}</span> : null}
+                          {post.author?.name ? (
+                            <span>{t("By {author}", null, { author: post.author.name })}</span>
+                          ) : null}
                         </div>
-                        {(currentUniverse.modules.blog.settings?.is_comments_enabled) ? (
-                          <div className="oyk-blog-item-footer-comments">{t("{count} comments", post.comments )}</div>
+                        {currentUniverse.modules.blog.settings?.is_comments_enabled ? (
+                          <div className="oyk-blog-item-footer-comments">{t("{count} comments", post.comments)}</div>
                         ) : null}
                       </footer>
                     </section>

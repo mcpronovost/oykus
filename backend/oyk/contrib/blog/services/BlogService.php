@@ -154,15 +154,15 @@ class BlogService {
         $row["author"] = json_decode($row["author"], TRUE);
         return $row;
       }, $rows);
-
-      return $result;
     }
     catch (Exception $e) {
-      throw new QueryException("Failed to get posts".$e->getMessage());
+      throw new QueryException("Failed to get posts" . $e->getMessage());
     }
+
+    return $result ?: [];
   }
 
-  public function getPost(int $universeId, int $postId): array {
+  public function getPost(int $universeId, int $postId): ?array {
     try {
       $qry = $this->pdo->prepare("
         SELECT bp.id, bp.author_id, bp.title, bp.description, bp.content, bp.created_at, bp.updated_at
@@ -177,14 +177,16 @@ class BlogService {
         $postId
       ]);
 
-      return $qry->fetch();
+      $post = $qry->fetch();
     }
     catch (Exception $e) {
       throw new QueryException("Failed to get post");
     }
+
+    return $post ?: NULL;
   }
 
-  public function createPost(int $universeId, int $authorId, array $fields): int {
+  public function createPost(int $universeId, int $authorId, array $fields): ?int {
     try {
       $qry = $this->pdo->prepare("
         INSERT INTO blog_posts (universe_id, author_id, title, description, content, created_at, updated_at)
@@ -199,11 +201,13 @@ class BlogService {
         $fields["content"]
       ]);
 
-      return (int) $this->pdo->lastInsertId();
+      $postId = (int) $this->pdo->lastInsertId();
     }
     catch (Exception $e) {
-      throw new QueryException("Failed to create post".$e->getMessage());
+      throw new QueryException("Failed to create post" . $e->getMessage());
     }
+
+    return $postId ?: NULL;
   }
 
   public function updatePost(int $postId, int $universeId, array $fields): bool {

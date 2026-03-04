@@ -47,13 +47,13 @@ export default function OykBlogPost() {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get(`/blog/u/${currentUniverse.slug}/posts/${params.postId}`, signal ? { signal } : {});
-      if (!r.ok || !r.post) throw Error();
+      const r = await api.get(`/blog/u/${params.universeSlug}/posts/${params.postId}`, signal ? { signal } : {});
+      if (!r.ok || !r.post) throw r;
       setPost(r.post);
       setReactions(r.reactions);
     } catch (e) {
       if (e?.name === "AbortError") return;
-      setHasError(e.message || t("An error occurred"));
+      setHasError({ message: e.error || t("An error occurred") });
     } finally {
       if (!signal || !signal.aborted) {
         setIsLoading(false);
@@ -151,7 +151,7 @@ export default function OykBlogPost() {
                 coverHeight={256}
               />
               <div className="oyk-blog-post-content oyk-code">
-                <div dangerouslySetInnerHTML={{__html: oykCode(post.content)}}></div>
+                <div dangerouslySetInnerHTML={{ __html: oykCode(post.content) }}></div>
               </div>
             </OykCard>
             <OykBlogPostReactions
