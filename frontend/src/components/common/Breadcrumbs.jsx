@@ -18,7 +18,7 @@ export default function OykBlogPost() {
     <section className="oyk-breadcrumbs">
       <ul className="oyk-breadcrumbs-list">
         {crumbs.map((b, index) => {
-          if (index === crumbs.length - 1 || b.path === "u") return null;
+          if (index === crumbs.length - 1 || b.path === "-") return null;
           return (
             <li key={index} className="oyk-breadcrumbs-list-item">
               {b.path.endsWith("/{universeSlug}") ? (
