@@ -24,6 +24,7 @@ export default function SettingsAccount() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
+  const [hasSuccessSubmit, setHasSuccessSubmit] = useState(null);
   const [initialAccountForm, setInitialAccountForm] = useState({
     username: "",
     email: "",
@@ -58,6 +59,29 @@ export default function SettingsAccount() {
     }
   };
 
+  const handleSubmit = async () => {
+    setIsSubmitLoading(true);
+    setHasError(null);
+    setHasSuccessSubmit(null);
+    try {
+      const formData = new FormData();
+      formData.append("username", accountForm.username);
+      formData.append("email", accountForm.email);
+      const r = await api.post("/auth/me/account/edit/", formData);
+      if (!r?.ok) throw r;
+      setHasSuccessSubmit({
+        title: t("Account updated"),
+        message: t("Your account has been updated successfully"),
+      });
+    } catch (e) {
+      setHasError(() => ({
+        message: e.error || t("An error occurred"),
+      }));
+    } finally {
+      setIsSubmitLoading(false);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setAccountForm((prev) => ({
@@ -84,24 +108,6 @@ export default function SettingsAccount() {
     });
     usernameRef.current.value = initialAccountForm.username || "";
     emailRef.current.value = initialAccountForm.email || "";
-  };
-
-  const handleSubmit = async () => {
-    setIsSubmitLoading(true);
-    setHasError(null);
-    try {
-      const formData = new FormData();
-      formData.append("username", accountForm.username);
-      formData.append("email", accountForm.email);
-      const r = await api.post("/auth/me/account/edit/", formData);
-      if (!r?.ok) throw new Error(r.error || t("An error occurred"));
-    } catch (e) {
-      setHasError(() => ({
-        message: e.message || t("An error occurred"),
-      }));
-    } finally {
-      setIsSubmitLoading(false);
-    }
   };
 
   useEffect(() => {
@@ -161,6 +167,7 @@ export default function SettingsAccount() {
               {hasError?.message && (
                 <OykFormMessage hasError={hasError?.message} />
               )}
+              {hasSuccessSubmit?.message && <OykFormMessage successTitle={hasSuccessSubmit?.title} hasSuccess={hasSuccessSubmit?.message} />}
               <div className="oyk-form-actions">
                 <OykButton
                   type="submit"

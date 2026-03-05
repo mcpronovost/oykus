@@ -26,6 +26,7 @@ export default function SettingsAccountPreferences() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
+  const [hasSuccessSubmit, setHasSuccessSubmit] = useState(null);
   const [initialAccountForm, setInitialAccountForm] = useState({
     timezone: "",
   });
@@ -63,18 +64,23 @@ export default function SettingsAccountPreferences() {
   const postSubmit = async () => {
     setIsSubmitLoading(true);
     setHasError(null);
+    setHasSuccessSubmit(null);
     try {
       const formData = new FormData();
       formData.append("timezone", accountForm.timezone);
       const r = await api.post("/auth/me/account/edit/", formData);
-      if (!r?.ok) throw new Error(r.error || t("An error occurred"));
+      if (!r?.ok) throw r;
       setUser({
         ...currentUser,
         timezone: accountForm.timezone,
       });
+      setHasSuccessSubmit({
+        title: t("Preferences updated"),
+        message: t("Your preferences have been updated successfully"),
+      });
     } catch (e) {
       setHasError(() => ({
-        message: e.message || t("An error occurred"),
+        message: e.error || t("An error occurred"),
       }));
     } finally {
       setIsSubmitLoading(false);
@@ -161,6 +167,7 @@ export default function SettingsAccountPreferences() {
               {hasError?.message && (
                 <OykFormMessage hasError={hasError?.message} />
               )}
+              {hasSuccessSubmit?.message && <OykFormMessage successTitle={hasSuccessSubmit?.title} hasSuccess={hasSuccessSubmit?.message} />}
               <div className="oyk-form-actions">
                 <OykButton
                   type="submit"
