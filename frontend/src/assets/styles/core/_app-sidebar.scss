@@ -1,5 +1,7 @@
 .oyk-app-sidebar {
-  background-color: var(--oyk-app-sidebar-bg, #0e120f);
+  // background-color: var(--oyk-app-sidebar-bg, #0e120f);
+  background: linear-gradient(145deg, var(--oyk-app-sidebar-bg) 50%, color-mix(in srgb, var(--oyk-app-sidebar-bg) 30%, var(--oyk-core-bg)));
+  box-shadow: 0 0 6px var(--oyk-app-sidebar-bg);
   color: var(--oyk-app-sidebar-fg, #FFFFFF);
   overflow: hidden;
   display: flex;
@@ -221,7 +223,8 @@
         transition: background-color 0.3s, gap 0.3s;
 
         &:not(.disabled):hover {
-          background-color: var(--oyk-app-sidebar-subtle-bg);
+          // background-color: var(--oyk-app-sidebar-subtle-bg);
+          background: linear-gradient(90deg, var(--oyk-app-sidebar-subtle-bg), transparent);
           color: var(--oyk-app-sidebar-subtle-fg);
         }
 

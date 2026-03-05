@@ -18,7 +18,7 @@ export default function NavItem({
   const { route } = useRouter();
 
   const isActive = useMemo(() => {
-    if (["community"].includes(prefix)) {
+    if (["community", "universe"].includes(prefix)) {
       return route?.name === prefix;
     }
     return route?.name.startsWith(prefix);
