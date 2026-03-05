@@ -1,7 +1,7 @@
 .oyk-card {
   // background-color: var(--oyk-card-bg);
   background: linear-gradient(45deg, color-mix(in srgb, var(--oyk-card-bg) 50%, var(--oyk-core-bg)), var(--oyk-card-bg) 120px);
-  box-shadow: 0 0 6px var(--oyk-card-bg);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
   border-radius: var(--oyk-radius);
   color: var(--oyk-card-fg);
   position: relative;

@@ -1,7 +1,7 @@
 .oyk-app-sidebar {
   // background-color: var(--oyk-app-sidebar-bg, #0e120f);
   background: linear-gradient(145deg, var(--oyk-app-sidebar-bg) 50%, color-mix(in srgb, var(--oyk-app-sidebar-bg) 30%, var(--oyk-core-bg)));
-  box-shadow: 0 0 6px var(--oyk-app-sidebar-bg);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
   color: var(--oyk-app-sidebar-fg, #FFFFFF);
   overflow: hidden;
   display: flex;
