@@ -117,6 +117,8 @@ export default function UniverseAdminTheme() {
       [name]: value,
     }));
 
+    document.documentElement.style.setProperty(`--oyk-${name.replaceAll("_", "-")}`, value);
+
     // Clear field-specific error when user starts typing
     if (hasError?.fields?.[name]) {
       setHasError((prev) => ({
@@ -201,6 +203,7 @@ export default function UniverseAdminTheme() {
     return () => {
       controller.abort();
       routeTitle();
+      document.documentElement.style.cssText = "";
     };
   }, []);
 
