@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
+import { useRouter } from "@/services/router";
 import { getUniverseSlugFromPath } from "@/services/router/utils";
 import { storeGet, storeSet, storeRemove, oykCookieSet, oykCookieDelete } from "@/services/store/utils";
 
@@ -11,6 +12,7 @@ const WorldContext = createContext(null);
 
 export function WorldProvider({ children }) {
   const { isAuth } = useAuth();
+  const { route } = useRouter();
 
   const [universes, setUniverses] = useState(() => storeGet(KEY_UNIVERSES) || null);
   const [currentUniverse, setCurrentUniverse] = useState(() => storeGet(KEY_UNIVERSE) || null);
@@ -33,8 +35,8 @@ export function WorldProvider({ children }) {
 
       // Determine which universe to load
       const slugFromPath = getUniverseSlugFromPath(window.location.pathname);
-      const fallbackSlug = currentUniverse?.slug || r.universes?.[0]?.slug;
-      const slug = slugFromPath || fallbackSlug;
+      const fallbackSlug = currentUniverse?.slug || "oykus";
+      const slug = route.name === "home" ? "oykus" : slugFromPath || fallbackSlug;
 
       if (slug) fetchCurrentUniverse(slug, signal);
     } catch {

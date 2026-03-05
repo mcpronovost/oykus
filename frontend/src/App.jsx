@@ -22,7 +22,7 @@ function MainLayout() {
   useEffect(() => {
     if (params?.universeSlug && currentUniverse && params?.universeSlug !== currentUniverse.slug) {
       changeUniverse(params.universeSlug);
-    } else if (!currentUniverse) {
+    } else if (!currentUniverse || (currentUniverse.slug !== "oykus" && route.name === "home")) {
       changeUniverse("oykus");
     }
   }, [route]);

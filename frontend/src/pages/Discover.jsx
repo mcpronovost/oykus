@@ -74,6 +74,7 @@ export default function Discover() {
                       avatarBgColor={u.c_primary}
                       avatarFgColor={u.c_primary_fg}
                       avatarBorderSize={6}
+                      avatarBorderRadius="8px"
                       coverSrc={u.cover}
                       height={148}
                     />

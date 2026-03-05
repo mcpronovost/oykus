@@ -11,7 +11,7 @@ import { OykCard, OykFeedback, OykGrid, OykGridRow, OykGridCol, OykHeading } fro
 import { OykWIO } from "@/components/common";
 
 export default function Home() {
-  const { params } = useRouter();
+  const { route, params } = useRouter();
   const { t } = useTranslation();
   const { currentUniverse, changeUniverse } = useWorld();
 
@@ -43,9 +43,6 @@ export default function Home() {
   useEffect(() => {
     const controller = new AbortController();
 
-    if (params?.universeSlug && params?.universeSlug !== currentUniverse?.slug) {
-      changeUniverse(params.universeSlug);
-    }
     fetchWio(controller.signal);
 
     return () => {
