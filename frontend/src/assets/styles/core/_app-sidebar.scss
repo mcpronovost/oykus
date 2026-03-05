@@ -1,8 +1,9 @@
 .oyk-app-sidebar {
   background-color: var(--oyk-app-sidebar-bg, #0e120f);
   color: var(--oyk-app-sidebar-fg, #FFFFFF);
-  flex: 0 0 var(--oyk-app-sidebar-width, 64px);
+  overflow: hidden;
   display: flex;
+  flex: 0 0 var(--oyk-app-sidebar-width, 64px);
   flex-direction: column;
   justify-content: space-between;
   transition: flex-basis 0.3s;
@@ -203,7 +204,7 @@
 
     &-item {
       position: relative;
-      padding: 8px;
+      padding: 4px 8px;
 
       &-link {
         background-color: transparent;
@@ -211,7 +212,7 @@
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        gap: 0;
+        gap: 8px;
         height: 100%;
         min-height: 32px;
         width: 100%;
@@ -245,7 +246,7 @@
         }
 
         &-text {
-          font-size: 1rem;
+          font-size: 0.9rem;
           line-height: 1;
           flex: 1;
           overflow: hidden;
