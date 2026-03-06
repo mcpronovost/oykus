@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import { OykBanner, OykCard, OykFeedback, OykGrid, OykGridRow, OykGridCol } from "@/components/ui";
+import { OykBanner, OykCard, OykFeedback, OykGrid, OykGridRow, OykGridCol, OykProgressCircular } from "@/components/ui";
 import OykAppNotAuthorized from "@/components/core/AppNotAuthorized";
 
 export default function CommunityProfile() {
@@ -69,7 +69,7 @@ export default function CommunityProfile() {
                   coverHeight={144}
                   height={224}
                 />
-                <section className="oyk-characterprofile-identity">
+                <section className="oyk-characterprofile-identity" style={{ textAlign: "center", paddingBottom: "24px" }}>
                   <h1 className="oyk-characterprofile-identity-name">{userData.name}</h1>
                   <small className="oyk-characterprofile-identity-title">Qui ne fait que passer</small>
                 </section>
@@ -77,14 +77,19 @@ export default function CommunityProfile() {
             </OykGridCol>
             <OykGridCol col="75" md="100" sm="100">
               <OykCard nop>
-                <OykBanner
-                  showAvatar={false}
-                  coverSrc={userData.cover}
-                  coverHeight={144}
-                  height={224}
-                />
+                <OykBanner showAvatar={false} coverSrc={userData.cover} coverHeight={144} height={152} />
                 <section className="oyk-characterprofile-identity">
-                  {t("Under construction")}
+                  <OykGridRow>
+                    <OykGridCol col="33" md="33" style={{ justifyContent: "center" }}>
+                      <OykProgressCircular progress={(3 / 10) * 100} marginAuto />
+                    </OykGridCol>
+                    <OykGridCol col="33" md="33">
+                      <OykProgressCircular progress={(1 / 10) * 100} marginAuto />
+                    </OykGridCol>
+                    <OykGridCol col="33" md="33">
+                      <OykProgressCircular progress={(6 / 10) * 100} marginAuto />
+                    </OykGridCol>
+                  </OykGridRow>
                 </section>
               </OykCard>
             </OykGridCol>
