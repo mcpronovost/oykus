@@ -117,7 +117,9 @@ export default function UniverseAdminTheme() {
       [name]: value,
     }));
 
-    document.documentElement.style.setProperty(`--oyk-${name.replaceAll("_", "-")}`, value);
+    let cssValue = name === "radius" ? `${value}px` : value;
+
+    document.documentElement.style.setProperty(`--oyk-${name.replaceAll("_", "-")}`, cssValue);
 
     // Clear field-specific error when user starts typing
     if (hasError?.fields?.[name]) {

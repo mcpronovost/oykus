@@ -12,8 +12,10 @@ class CharacterService {
                wc.slug,
                wc.abbr,
                wc.avatar,
-               wc.cover
+               wc.cover,
+               (au.lastlive_at >= NOW() - INTERVAL 5 MINUTE) AS is_online
         FROM world_characters wc
+        LEFT JOIN auth_users au ON au.id = wc.user_id
         WHERE wc.universe_id = ?
           AND wc.is_active = 1
       ");

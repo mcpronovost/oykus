@@ -58,7 +58,7 @@
         }
 
         &:disabled {
-          color: var(--oyk-card-item-subtle);
+          color: color-mix(in srgb, var(--oyk-card-item-fg) 20%, transparent);
         }
       }
   

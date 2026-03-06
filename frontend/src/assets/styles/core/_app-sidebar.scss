@@ -246,6 +246,7 @@
           flex: 0 0 32px;
           height: 18px;
           width: 18px;
+          opacity: 0.6;
         }
 
         &-text {
@@ -321,6 +322,10 @@
           &:not(.disabled):hover {
             background-color: transparent;
             transition: background-color 0s;
+          }
+
+          &-icon {
+            opacity: 1;
           }
         }
       }
