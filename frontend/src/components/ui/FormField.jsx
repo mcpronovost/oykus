@@ -16,6 +16,7 @@ export default function OykFormField({
   disabled = false,
   onChange,
   hasError,
+  rows = 6,
   block = false,
   autosize = false,
   hideLabel = false,
@@ -50,7 +51,7 @@ export default function OykFormField({
               placeholder={placeholder}
               defaultValue={defaultValue}
               onChange={handleOnChange}
-              rows={autosize ? 1 : 6}
+              rows={autosize ? 1 : rows}
               required={required}
               className={`${hasError ? "oyk-error" : ""}`}
               style={autosize ? { overflow: "hidden", resize: "none" } : {}}
