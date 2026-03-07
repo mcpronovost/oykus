@@ -55,7 +55,7 @@ if (!$theme) {
 $patch = [];
 $params = ["id" => $universe["id"]];
 
-/* ---------- Avatar ---------- */
+/* ---------- Logo ---------- */
 if (!empty($_FILES["logo"])) {
   $newLogo = oyk_save_image(
     $_FILES["logo"],
@@ -149,6 +149,13 @@ if (isset($_POST["variables"]) && $_POST["variables"] !== $theme["variables"]) {
   $paramsTheme["variables"] = json_encode($decoded_json);
 }
 
+/* ---------- stylesheet ---------- */
+if (isset($_POST["stylesheet"]) && $_POST["stylesheet"] !== $theme["stylesheet"]) {
+
+  $patchTheme["stylesheet"] = $_POST["stylesheet"];
+  $paramsTheme["stylesheet"] = $_POST["stylesheet"];
+}
+
 /*
 |--------------------------------------------------------------------------
 | Persist PATCH (transaction-safe)
@@ -223,7 +230,7 @@ $universe = array_merge($universe, $patch);
 $theme = array_merge($theme, $patchTheme);
 
 if ($theme) {
-  $theme["variables"] = json_decode($theme["variables"], TRUE);
+  if (isset($patchTheme["variables"])) { $theme["variables"] = json_decode($theme["variables"], TRUE);}
 }
 
 Response::json([

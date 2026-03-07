@@ -5,20 +5,12 @@ import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import { useWorld } from "@/services/world";
 
-import {
-  OykButton,
-  OykCard,
-  OykForm,
-  OykFormField,
-  OykFormMessage,
-  OykHeading,
-  OykLoading,
-} from "@/components/ui";
+import { OykButton, OykCard, OykForm, OykFormField, OykFormMessage, OykHeading, OykLoading } from "@/components/ui";
 
 export default function UniverseAdminThemeStylesheet() {
   const { routeTitle } = useRouter();
   const { t } = useTranslation();
-  const { currentUniverse, setCurrentUniverse } = useWorld();
+  const { currentUniverse, getUniverses } = useWorld();
 
   const stylesheetRef = useRef(null);
 
@@ -26,7 +18,7 @@ export default function UniverseAdminThemeStylesheet() {
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [hasError, setHasError] = useState(null);
   const [initialThemeForm, setInitialThemeForm] = useState({
-    stylesheet: "{}",
+    stylesheet: "",
   });
   const [themeForm, setThemeForm] = useState(initialThemeForm);
 
@@ -56,6 +48,29 @@ export default function UniverseAdminThemeStylesheet() {
     }
   };
 
+  const postSubmit = async () => {
+    setIsLoadingSubmit(true);
+    setHasError(null);
+    try {
+      const formData = new FormData();
+      formData.append("stylesheet", themeForm.stylesheet);
+      const r = await api.post(`/world/universes/${currentUniverse.slug}/theme/edit/`, formData);
+      if (!r?.ok || !r.theme) throw r;
+      setThemeForm((prev) => ({
+        ...prev,
+        stylesheet: r.theme.stylesheet,
+      }));
+      stylesheetRef.current.value = r.theme.stylesheet;
+      getUniverses();
+    } catch (e) {
+      setHasError(() => ({
+        message: e.error || t("An error occurred"),
+      }));
+    } finally {
+      setIsLoadingSubmit(false);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setThemeForm((prev) => ({
@@ -82,29 +97,6 @@ export default function UniverseAdminThemeStylesheet() {
     stylesheetRef.current.value = initialThemeForm.stylesheet;
   };
 
-  const handleSubmit = async () => {
-    setIsLoadingSubmit(true);
-    setHasError(null);
-    try {
-      const formData = new FormData();
-      formData.append("stylesheet", themeForm.stylesheet);
-      const r = await api.post(`/world/universes/${currentUniverse.slug}/theme/edit/`, formData);
-      if (!r?.ok || !r.theme) throw new Error(r || t("An error occurred"));
-      setThemeForm((prev) => ({
-        ...prev,
-        stylesheet: r.theme.stylesheet,
-      }));
-      stylesheetRef.current.value = r.theme.stylesheet;
-      setCurrentUniverse();
-    } catch (e) {
-      setHasError(() => ({
-        message: e.message || t("An error occurred"),
-      }));
-    } finally {
-      setIsLoadingSubmit(false);
-    }
-  };
-
   useEffect(() => {
     const controller = new AbortController();
 
@@ -120,12 +112,12 @@ export default function UniverseAdminThemeStylesheet() {
 
   return (
     <section className="oyk-universes-admin-profile">
-      <OykHeading subtitle tag="h2" title={t("Stylesheet")} nop />
+      <OykHeading subtitle tag="h2" title={t("Stylesheet")} description={t("Customize by defining the custom stylesheet applied to this universe: variables, overrides, and advanced CSS rules")} nop />
       <OykCard>
         {isLoading ? (
           <OykLoading />
         ) : (
-          <OykForm className="oyk-universes-admin-form" isLoading={isLoading} onSubmit={handleSubmit}>
+          <OykForm className="oyk-universes-admin-form" isLoading={isLoading} onSubmit={postSubmit}>
             <OykFormField
               ref={stylesheetRef}
               label={t("Stylesheet")}
@@ -134,12 +126,18 @@ export default function UniverseAdminThemeStylesheet() {
               defaultValue={themeForm.stylesheet}
               onChange={handleChange}
               hasError={hasError?.stylesheet}
+              rows={24}
               required
               hideLabel
             />
             {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
             <div className="oyk-form-actions">
-              <OykButton type="submit" color="primary" disabled={isLoading || isLoadingSubmit} isLoading={isLoadingSubmit}>
+              <OykButton
+                type="submit"
+                color="primary"
+                disabled={isLoading || isLoadingSubmit}
+                isLoading={isLoadingSubmit}
+              >
                 {t("Save")}
               </OykButton>
               <OykButton type="reset" disabled={isLoading || isLoadingSubmit} outline onClick={handleReset}>

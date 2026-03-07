@@ -113,19 +113,23 @@ export function WorldProvider({ children }) {
       styleNode.id = "oyk-theme";
       document.head.appendChild(styleNode);
     }
+    const variables = theme.variables
+      ? Object.entries(theme.variables)
+          .map(([k, v]) => `--oyk-${k}: ${v};`)
+          .join("\n")
+      : "";
+
+    const customCSS = theme.stylesheet ? theme.stylesheet : "";
 
     styleNode.textContent = `
       :root {
         --oyk-c-primary: ${theme.c_primary};
         --oyk-c-primary-fg: ${theme.c_primary_fg};
-        ${
-          theme.variables
-            ? Object.entries(theme.variables)
-                .map(([k, v]) => `--oyk-${k}: ${v};`)
-                .join("\n")
-            : ""
-        }
+        ${variables}
       }
+
+      /* Custom stylesheet */
+      ${customCSS}
     `;
   };
 
@@ -162,7 +166,7 @@ export function WorldProvider({ children }) {
       setCurrentUniverse,
       setUniverses,
       changeCharacter: fetchCurrentCharacter,
-      setCurrentCharacter
+      setCurrentCharacter,
     }),
     [universes, currentUniverse, currentCharacter, isLoadingWorld],
   );

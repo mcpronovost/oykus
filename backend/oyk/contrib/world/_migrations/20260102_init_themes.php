@@ -12,8 +12,12 @@ CREATE TABLE IF NOT EXISTS world_themes (
     `c_primary_fg` varchar(7) NOT NULL,
     
     `variables` json NOT NULL,
+    `stylesheet` text,
 
     `is_active` tinyint(1) NOT NULL DEFAULT 0,
+
+    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     INDEX (universe_id),
 

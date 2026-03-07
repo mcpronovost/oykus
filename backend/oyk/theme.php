@@ -16,7 +16,7 @@ if (!$universeSlug) {
 
 try {
   $qry = $pdo->prepare("
-    SELECT t.c_primary, t.c_primary_fg, t.variables
+    SELECT t.c_primary, t.c_primary_fg, t.variables, t.stylesheet
     FROM world_themes t
     JOIN world_universes u ON u.id = t.universe_id
     WHERE u.slug = ? AND
@@ -41,7 +41,13 @@ if ($theme) {
   foreach ($theme["variables"] as $k => $v) {
     echo "--oyk-$k: $v;\n";
   }
-  echo "}\n";
+  echo "}\n\n";
+
+  if (!empty($theme["stylesheet"])) {
+    echo "/* Custom stylesheet */\n";
+    echo $theme["stylesheet"];
+  }
+
   exit;
 }
 

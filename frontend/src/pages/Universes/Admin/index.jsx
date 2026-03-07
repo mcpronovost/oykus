@@ -14,7 +14,7 @@ import OykUniverseAdminModules from "./Modules";
 import OykUniverseAdminModuleBlog from "./ModuleBlog";
 import OykUniverseAdminModulePlanner from "./ModulePlanner";
 import OykUniverseAdminTheme from "./Theme";
-// import OykUniverseAdminThemeStylesheet from "./ThemeStylesheet";
+import OykUniverseAdminThemeStylesheet from "./ThemeStylesheet";
 
 export default function UniverseAdmin() {
   const { isAuth } = useAuth();
@@ -114,6 +114,8 @@ export default function UniverseAdmin() {
               <OykUniverseAdminModulePlanner />
             ) : params?.section === "theme" ? (
               <OykUniverseAdminTheme />
+            ) : params?.section === "stylesheet" ? (
+              <OykUniverseAdminThemeStylesheet />
             ) : (
               <OykCard>
                 <OykFeedback

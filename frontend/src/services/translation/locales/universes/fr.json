@@ -89,5 +89,6 @@
     "Preferences updated": "Préférences mises à jour",
     "Your preferences have been updated successfully": "Vos préférences ont été mises à jour avec succès",
     "Tasks description": "Description des tâches",
-    "Action completed successfully": "Action complétée avec succès"
+    "Action completed successfully": "Action complétée avec succès",
+    "Customize by defining the custom stylesheet applied to this universe: variables, overrides, and advanced CSS rules": "Personnalisez en définissant la feuille de style appliquée à cet univers : variables, remplacements, et règles CSS avancées."
 }

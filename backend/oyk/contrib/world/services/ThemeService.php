@@ -10,7 +10,7 @@ class ThemeService {
   public function getActiveTheme($universeId) {
     try {
       $qry = $this->pdo->prepare("
-        SELECT id, c_primary, c_primary_fg, variables
+        SELECT id, c_primary, c_primary_fg, variables, stylesheet
         FROM world_themes
         WHERE universe_id = ?
           AND is_active = 1
@@ -23,8 +23,8 @@ class ThemeService {
 
       if (!$theme) {
         $qry = $this->pdo->prepare("
-          INSERT INTO world_themes (universe_id, name, c_primary, c_primary_fg, variables, is_active)
-          VALUES (?, ?, '#3DA5CB', '#FFFFFF', '{}', 1);
+          INSERT INTO world_themes (universe_id, name, c_primary, c_primary_fg, variables, stylesheet, is_active)
+          VALUES (?, ?, '#3DA5CB', '#FFFFFF', '{}', '', 1);
         ");
 
         $qry->execute([$universeId, "Default"]);
@@ -32,7 +32,7 @@ class ThemeService {
         $themeId = $this->pdo->lastInsertId();
 
         $qry = $this->pdo->prepare("
-          SELECT c_primary, c_primary_fg, variables
+          SELECT c_primary, c_primary_fg, variables, stylesheet
           FROM world_themes
           WHERE id = ?
           LIMIT 1
