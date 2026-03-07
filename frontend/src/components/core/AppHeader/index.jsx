@@ -29,8 +29,8 @@ export default function AppHeader() {
       {!isAuth ||
       currentUniverse?.modules?.blog?.active ||
       currentUniverse?.modules?.planner?.active ||
-      currentUniverse?.modules?.rewards?.active ||
-      currentUniverse?.modules?.collections?.active ? (
+      currentUniverse?.modules?.reward?.active ||
+      currentUniverse?.modules?.collection?.active ? (
         <OykAppHeaderMenu />
       ) : (
         <div className="oyk-app-header-space"></div>

@@ -1,4 +1,4 @@
-// import "@/assets/styles/modules/_rewards.scss";
+// import "@/assets/styles/modules/_reward.scss";
 import { useEffect } from "react";
 
 import { useAuth } from "@/services/auth";
@@ -16,10 +16,10 @@ export default function OykRewards() {
   const { currentUniverse } = useWorld();
 
   useEffect(() => {
-    if (!isAuth || !currentUniverse || (currentUniverse && !currentUniverse.modules?.rewards?.active)) return;
+    if (!isAuth || !currentUniverse || (currentUniverse && !currentUniverse.modules?.reward?.active)) return;
     const controller = new AbortController();
 
-    routeTitle(currentUniverse.modules.rewards.settings.display_name || t("Rewards"));
+    routeTitle(currentUniverse.modules.reward.settings.display_name || t("Rewards"));
 
     return () => {
       controller.abort();
@@ -27,13 +27,13 @@ export default function OykRewards() {
     };
   }, []);
 
-  if (!isAuth || !currentUniverse || (currentUniverse && !currentUniverse.modules?.rewards?.active)) {
+  if (!isAuth || !currentUniverse || (currentUniverse && !currentUniverse.modules?.reward?.active)) {
     return <AppNotAuthorized />;
   }
 
   return (
-    <section className="oyk-page oyk-rewards">
-      <OykHeading title={currentUniverse.modules.rewards.settings.display_name || t("Rewards")} />
+    <section className="oyk-page oyk-reward">
+      <OykHeading title={currentUniverse.modules.reward.settings.display_name || t("Rewards")} />
       <OykGrid>
         <OykCard>
           <OykAlert ghost variant="default">

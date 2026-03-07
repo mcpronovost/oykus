@@ -33,9 +33,9 @@ export default function UniverseAdminModulesCard({
         return MessagesSquare;
       case "courrier":
         return Mail;
-      case "collections":
+      case "collection":
         return GalleryHorizontalEnd;
-      case "rewards":
+      case "reward":
         return Star;
       case "game":
         return Swords;

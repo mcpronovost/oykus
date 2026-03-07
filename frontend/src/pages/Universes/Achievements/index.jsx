@@ -33,7 +33,7 @@ export default function Achievements() {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get("/rewards/achievements/", signal ? { signal } : {});
+      const r = await api.get("/reward/achievements/", signal ? { signal } : {});
       if (!r?.ok) throw new Error(r.error || t("An error occurred"));
       setAchievements(r.achievements);
       setCategories(r.categories);
@@ -50,7 +50,7 @@ export default function Achievements() {
   };
 
   useEffect(() => {
-    if (!isAuth || (currentUniverse && !currentUniverse.modules?.rewards?.active)) return;
+    if (!isAuth || (currentUniverse && !currentUniverse.modules?.reward?.active)) return;
     const controller = new AbortController();
 
     fetchAchievements(controller.signal);
@@ -60,7 +60,7 @@ export default function Achievements() {
     };
   }, []);
 
-  if (!isAuth || (currentUniverse && !currentUniverse.modules?.rewards?.active)) {
+  if (!isAuth || (currentUniverse && !currentUniverse.modules?.reward?.active)) {
     return <AppNotAuthorized />;
   }
 

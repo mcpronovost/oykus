@@ -9,8 +9,8 @@ class ModuleService {
       "blog",
       "forum",
       "courrier",
-      "collectibles",
-      "rewards",
+      "collection",
+      "reward",
       "game",
       "leveling"
     ];

@@ -140,12 +140,14 @@
       margin: 0;
     }
 
-    &-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: var(--oyk-app-header-height);
-      width: var(--oyk-app-header-height);
+    &-group {
+      .oyk-button {
+        opacity: 0.5;
+
+        &:not(:disabled):hover {
+          opacity: 1;
+        }
+      }
     }
 
     &-alert {

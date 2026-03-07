@@ -43,14 +43,14 @@ export default function AppHeaderMenu() {
         routeName: "planner",
         params: { universeSlug: currentUniverse.slug }
       }] : []),
-      ...(currentUniverse?.modules?.rewards?.active ? [{
-        label: currentUniverse.modules.rewards.settings.display_name || t("Rewards"),
-        routeName: "universe-rewards",
+      ...(currentUniverse?.modules?.reward?.active ? [{
+        label: currentUniverse.modules.reward.settings.display_name || t("Rewards"),
+        routeName: "universe-reward",
         params: { universeSlug: currentUniverse.slug }
       }] : []),
-      ...(currentUniverse?.modules?.collections?.active ? [{
-        label: currentUniverse.modules.collections.settings.display_name || t("Collections"),
-        routeName: "universe-collections",
+      ...(currentUniverse?.modules?.collection?.active ? [{
+        label: currentUniverse.modules.collection.settings.display_name || t("Collections"),
+        routeName: "universe-collection",
         params: { universeSlug: currentUniverse.slug }
       }] : []),
     ];
