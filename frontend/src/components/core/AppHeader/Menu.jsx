@@ -45,12 +45,12 @@ export default function AppHeaderMenu() {
       }] : []),
       ...(currentUniverse?.modules?.rewards?.active ? [{
         label: currentUniverse.modules.rewards.settings.display_name || t("Rewards"),
-        routeName: "rewards",
+        routeName: "universe-rewards",
         params: { universeSlug: currentUniverse.slug }
       }] : []),
       ...(currentUniverse?.modules?.collections?.active ? [{
         label: currentUniverse.modules.collections.settings.display_name || t("Collections"),
-        routeName: "collections",
+        routeName: "universe-collections",
         params: { universeSlug: currentUniverse.slug }
       }] : []),
     ];

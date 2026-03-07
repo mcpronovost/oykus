@@ -74,6 +74,22 @@ export const UNIVERSES_ROUTES = [
             },
           },
           {
+            name: "universe-rewards",
+            component: React.lazy(() => import("../../../pages/Universes/Rewards")),
+            paths: {
+              fr: "recompenses",
+              en: "rewards",
+            },
+          },
+          {
+            name: "universe-collections",
+            component: React.lazy(() => import("../../../pages/Universes/Collections")),
+            paths: {
+              fr: "collections",
+              en: "collections",
+            },
+          },
+          {
             name: "universe-admin",
             component: React.lazy(() => import("../../../pages/Universes/Admin")),
             paths: {
