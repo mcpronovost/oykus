@@ -136,6 +136,10 @@ if (isset($_POST["variables"]) && $_POST["variables"] !== $theme["variables"]) {
         continue;
       }
     }
+    else if ($key === "core-bg-img") {
+      $decoded_json[$key] = $value;
+      continue;
+    }
     else if (!is_string($value) || !isHexColor($value)) {
       Response::badRequest("Invalid colour value for '{$key}'");
     }
