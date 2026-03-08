@@ -1,7 +1,10 @@
 .oyk-sidenav {
+  &-item {
+    padding: 6px 0;
+  }
+
   &-item:not(.oyk-first) {
     border-top: 1px solid var(--oyk-card-divider);
-    padding-top: 12px;
   }
 
   &-header {
@@ -12,6 +15,10 @@
     justify-content: space-between;
     gap: 12px;
     padding: 12px;
+
+    &.oyk-accordion {
+      cursor: pointer;
+    }
 
     &-icon {
       display: flex;
@@ -27,9 +34,10 @@
       justify-content: flex-start;
 
       &-name {
-        font-size: 1rem;
+        font-size: 0.9rem;
         font-weight: 600;
         line-height: 1.5;
+        margin: 2px 0 4px;
       }
 
       &-desc {
@@ -44,12 +52,20 @@
       display: flex;
       flex: 0 0 30px;
       justify-content: flex-end;
-      opacity: 0;
     }
   }
 
   &-menu {
-    padding: 0 20px 24px;
+    overflow: hidden;
+    height: 0;
+    opacity: 0;
+    padding: 0 20px 0;
+    transition: height 0.3s, opacity 0.3s;
+
+    &.oyk-open {
+      height: auto;
+      opacity: 1;
+    }
 
     &-item {
       font-size: 0.8rem;
