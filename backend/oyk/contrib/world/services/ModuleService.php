@@ -59,6 +59,9 @@ class ModuleService {
           if (strlen($value) > 120) {
             throw new ValidationException("Display Name cannot be longer than 120 characters");
           }
+          if (trim($value) === "") {
+            unset($decoded_json[$key]);
+          }
         }
       }
 

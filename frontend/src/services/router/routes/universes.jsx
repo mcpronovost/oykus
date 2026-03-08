@@ -130,7 +130,7 @@ export const UNIVERSES_ROUTES = [
                       en: "blog",
                     },
                     params: {
-                      section: "module-blog",
+                      section: "modules-blog",
                     },
                   },
                   {
@@ -141,7 +141,18 @@ export const UNIVERSES_ROUTES = [
                       en: "planner",
                     },
                     params: {
-                      section: "module-planner",
+                      section: "modules-planner",
+                    },
+                  },
+                  {
+                    name: "universe-admin-modules-reward",
+                    component: React.lazy(() => import("../../../pages/Universes/Admin")),
+                    paths: {
+                      fr: "recompense",
+                      en: "reward",
+                    },
+                    params: {
+                      section: "modules-reward",
                     },
                   },
                 ],
