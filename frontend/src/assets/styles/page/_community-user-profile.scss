@@ -16,4 +16,32 @@
       opacity: 0.75;
     }
   }
+
+  &-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    &-post {
+      &-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 16px;
+        margin: 0 0 16px;
+      }
+    }
+
+    .oyk-code {
+      font-size: 1rem;
+      line-height: 1.5;
+      display: -webkit-box;
+      line-clamp: 13;
+      -webkit-line-clamp: 13;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      max-height: 20rem;
+    }
+  }
 }
