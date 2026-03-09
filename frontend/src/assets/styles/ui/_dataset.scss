@@ -8,6 +8,9 @@
   &-term {
     font-size: 0.9rem;
     font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
     display: block;
     flex: 0 0 150px;
     width: 150px;
@@ -21,5 +24,24 @@
     width: 100%;
     padding: 12px 0;
     margin: 0;
+  }
+
+  &.oyk-small {
+    padding: 4px 0;
+    gap: 4px;
+
+    .oyk-dataset-term {
+      font-size: 0.8rem;
+      flex: 0 0 38%;
+      width: 38%;
+      padding: 4px 0;
+    }
+
+    .oyk-dataset-value {
+      font-size: 0.8rem;
+      flex: 0 0 calc(62% - 8px);
+      width: calc(62% - 8px);
+      padding: 4px 0;
+    }
   }
 }
