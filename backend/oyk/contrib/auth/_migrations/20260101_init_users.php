@@ -19,6 +19,12 @@ CREATE TABLE IF NOT EXISTS auth_users (
 
     `timezone` varchar(64) NOT NULL DEFAULT 'UTC',
 
+    `meta_bio` text NULL,
+    `meta_birthday` date NULL,
+    `meta_country` varchar(64) NULL,
+    `meta_job` varchar(128) NULL,
+    `meta_mood` varchar(64) NULL,
+
     `is_active` tinyint(1) NOT NULL DEFAULT '1',
     `is_dev` tinyint(1) NOT NULL DEFAULT '0',
     `is_banned` tinyint(1) NOT NULL DEFAULT '0',
