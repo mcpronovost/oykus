@@ -31,7 +31,9 @@
       line-height: 0;
       width: 100%;
 
-      input, textarea, select {
+      input,
+      textarea,
+      select {
         background-color: var(--oyk-card-item-bg);
         border: 1px solid var(--oyk-card-item-bg);
         border-radius: var(--oyk-radius);
@@ -42,31 +44,39 @@
         width: 100%;
         padding: 12px;
         transition: border-color 0.2s ease;
-  
+
         &:focus {
           border-color: var(--oyk-c-primary);
           outline: none;
         }
-  
+
         &.oyk-error {
           border-color: var(--oyk-c-danger);
         }
-  
+
         &::placeholder {
           color: var(--oyk-card-item-fg);
           opacity: 0.6;
         }
 
         &:disabled {
-          color: color-mix(in srgb, var(--oyk-card-item-fg) 20%, transparent);
+          // color: color-mix(in srgb, var(--oyk-card-item-fg) 50%, transparent);
+          opacity: 0.6;
+          cursor: not-allowed;
         }
       }
-  
+
       input[type="color"] {
         line-height: 1;
         max-width: 45px;
         height: 45px;
         padding: 1px 4px;
+      }
+
+      input[type="date"] {
+        &::-webkit-calendar-picker-indicator {
+          opacity: 0;
+        }
       }
 
       &-radio {
@@ -163,7 +173,10 @@
             width: 18px;
             height: 18px;
             opacity: 0.6;
-            transition: background-color 0.2s, left 0.2s, opacity 0.2s;
+            transition:
+              background-color 0.2s,
+              left 0.2s,
+              opacity 0.2s;
           }
 
           &.oyk-disabled {
@@ -250,12 +263,12 @@
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    
+
     .oyk-form-field {
       flex: 1 1 auto;
       margin-bottom: 0;
     }
-    
+
     .oyk-form-actions {
       margin-top: 0;
     }
