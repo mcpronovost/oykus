@@ -21,10 +21,7 @@ export const oykCode = (text) => {
     .replace(/\[\/ac\]/g, "</div>")
     .replace(/\[ad\]/g, '<div style="text-align:right;">')
     .replace(/\[\/ad\]/g, "</div>")
-    .replace(
-      /\[c=#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})\]/g,
-      '<span style="color:#$1;">'
-    )
+    .replace(/\[c=#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})\]/g, '<span style="color:#$1;">')
     .replace(/\[c=([a-zA-Z0-9_]+)\]/g, '<span style="color:var(--oyk-c-$1);">')
     .replace(/\[\/c\]/g, "</span>")
     .replace(/\[url=([^<>[\]]+)\]/g, '<a href="$1">')
@@ -48,24 +45,31 @@ export const oykCode = (text) => {
 /* eslint-enable quotes */
 
 function oykDateUTC(date) {
-    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()));
+  return new Date(
+    Date.UTC(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds(),
+    ),
+  );
 }
 
-export const oykDate = (
-  value,
-  show = "full",
-  lang = "fr",
-  tz = Intl.DateTimeFormat().resolvedOptions().timeZone
-) => {
+export const oykDate = (value, show = "full", lang = "fr", tz = Intl.DateTimeFormat().resolvedOptions().timeZone) => {
   if (lang === "en") lang = "en-CA";
   if (lang === "fr") lang = "fr-FR";
   let d = value ? oykDateUTC(new Date(value)) : oykDateUTC(new Date(new Date().toString()));
+  if (show === "truedate") {
+    d = new Date(value);
+  }
   let o = {
     timeZone: tz,
     hour12: false,
-    year: ["full", "date"].includes(show) ? "numeric" : undefined,
-    month: ["full", "date"].includes(show) ? "long" : undefined,
-    day: ["full", "date"].includes(show) ? "numeric" : undefined,
+    year: ["full", "date", "truedate"].includes(show) ? "numeric" : undefined,
+    month: ["full", "date", "truedate"].includes(show) ? "long" : undefined,
+    day: ["full", "date", "truedate"].includes(show) ? "numeric" : undefined,
     hour: ["full", "time"].includes(show) ? "2-digit" : undefined,
     minute: ["full", "time"].includes(show) ? "2-digit" : undefined,
   };
@@ -76,11 +80,7 @@ export const oykDateLessThan = (date, days) => {
   return new Date(date) < new Date(Date.now() + 1000 * 60 * 60 * 24 * days);
 };
 
-export const oykTimeAgo = (
-  value,
-  lang = "fr",
-  tz = Intl.DateTimeFormat().resolvedOptions().timeZone
-) => {
+export const oykTimeAgo = (value, lang = "fr", tz = Intl.DateTimeFormat().resolvedOptions().timeZone) => {
   const rtf = new Intl.RelativeTimeFormat(lang, { timeZone: tz, numeric: "auto" });
   const date = oykDateUTC(new Date(value));
   const now = new Date();
@@ -91,7 +91,7 @@ export const oykTimeAgo = (
     { amount: 60, name: "second" },
     { amount: 60, name: "minute" },
     { amount: 24, name: "hour" },
-    { amount: 7,  name: "day" },
+    { amount: 7, name: "day" },
     { amount: 4.34524, name: "week" },
     { amount: 12, name: "month" },
     { amount: Infinity, name: "year" },
@@ -105,7 +105,7 @@ export const oykTimeAgo = (
     }
     duration /= division.amount;
   }
-}
+};
 
 export const oykUnit = (num, digits = 2) => {
   const l = [
@@ -160,7 +160,5 @@ const adjustColor = (colour, percent) => {
 };
 
 export const oykContrast = (colour) => {
-  return isLightColor(colour)
-    ? adjustColor(colour, -0.6)
-    : adjustColor(colour, 0.6);
+  return isLightColor(colour) ? adjustColor(colour, -0.6) : adjustColor(colour, 0.6);
 };
