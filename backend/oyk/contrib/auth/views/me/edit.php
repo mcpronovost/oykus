@@ -12,7 +12,20 @@ $userId = require_rat();
 |--------------------------------------------------------------------------
 */
 $qry = $pdo->prepare("
-  SELECT id, name, slug, is_slug_auto, abbr, is_abbr_auto, avatar, cover, is_dev, timezone
+  SELECT id,
+         name,
+         slug,
+         is_slug_auto,
+         abbr, is_abbr_auto,
+         avatar,
+         cover,
+         is_dev,
+         timezone,
+         meta_bio,
+         meta_birthday,
+         meta_country,
+         meta_job,
+         meta_mood
   FROM auth_users
   WHERE id = ?
   LIMIT 1
@@ -75,6 +88,43 @@ if (!empty($_FILES["cover"])) {
   $params["cover"] = $newCover;
 }
 
+/* ---------- Meta Bio ---------- */
+if (isset($_POST["meta_bio"]) && $_POST["meta_bio"] !== $user["meta_bio"]) {
+  $patch["meta_bio"] = $_POST["meta_bio"];
+  $params["meta_bio"] = $_POST["meta_bio"];
+}
+
+/* ---------- Meta Birthday ---------- */
+if (isset($_POST["meta_birthday"]) && $_POST["meta_birthday"] !== $user["meta_birthday"]) {
+  $value = trim($_POST["meta_birthday"]);
+  if ($value === "") {
+    $patch["meta_birthday"] = NULL;
+    $params["meta_birthday"] = NULL;
+  }
+  else {
+    $patch["meta_birthday"] = $value;
+    $params["meta_birthday"] = $value;
+  }
+}
+
+/* ---------- Meta Country ---------- */
+if (isset($_POST["meta_country"]) && $_POST["meta_country"] !== $user["meta_country"]) {
+  $patch["meta_country"] = strip_tags(trim($_POST["meta_country"]));
+  $params["meta_country"] = strip_tags(trim($_POST["meta_country"]));
+}
+
+/* ---------- Meta Job ---------- */
+if (isset($_POST["meta_job"]) && $_POST["meta_job"] !== $user["meta_job"]) {
+  $patch["meta_job"] = strip_tags(trim($_POST["meta_job"]));
+  $params["meta_job"] = strip_tags(trim($_POST["meta_job"]));
+}
+
+/* ---------- Meta Mood ---------- */
+if (isset($_POST["meta_mood"]) && $_POST["meta_mood"] !== $user["meta_mood"]) {
+  $patch["meta_mood"] = strip_tags(trim($_POST["meta_mood"]));
+  $params["meta_mood"] = strip_tags(trim($_POST["meta_mood"]));
+}
+
 /*
 |--------------------------------------------------------------------------
 | Auto fields (depend on name change)
@@ -125,7 +175,7 @@ try {
 }
 catch (Exception $e) {
   $pdo->rollBack();
-  Response::serverError();
+  Response::serverError($e->getMessage());
 }
 
 /*

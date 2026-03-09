@@ -40,6 +40,17 @@ export const AUTH_ROUTES = [
         },
       },
       {
+        name: "settings-profile-informations",
+        component: React.lazy(() => import("../../../pages/Auth/Settings")),
+        paths: {
+          fr: "profil-informations",
+          en: "profile-informations",
+        },
+        params: {
+          section: "profile-informations"
+        },
+      },
+      {
         name: "settings-account",
         component: React.lazy(() => import("../../../pages/Auth/Settings")),
         paths: {

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { User, Image } from "lucide-react";
 
+import { oykDate } from "@/utils";
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
@@ -10,7 +11,7 @@ import { OykBanner, OykButton, OykCard, OykForm, OykFormField, OykFormMessage, O
 export default function SettingsProfile() {
   const { currentUser, setUser } = useAuth();
   const { routeTitle } = useRouter();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
 
   const avatarRef = useRef(null);
   const coverRef = useRef(null);
@@ -28,6 +29,28 @@ export default function SettingsProfile() {
     slug: currentUser.slug || "",
     abbr: currentUser.abbr || "",
   });
+
+  const fetchProfileData = async (signal) => {
+    setIsLoading(true);
+    setHasError(null);
+    try {
+      const r = await api.get("/auth/me/profile/", signal ? { signal } : {});
+      if (!r.ok || !r.profile) throw r;
+      setProfileForm((prev) => ({
+        ...prev,
+        created_at: oykDate(r.profile.created_at, "full", lang, currentUser?.timezone),
+      }));
+    } catch (e) {
+      if (e?.name === "AbortError") return;
+      setHasError({
+        message: t(e?.error) || t("An error occurred"),
+      });
+    } finally {
+      if (!signal || !signal.aborted) {
+        setIsLoading(false);
+      }
+    }
+  };
 
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -170,6 +193,8 @@ export default function SettingsProfile() {
 
     routeTitle(`${t("Settings")} - ${t("Profile")}`);
 
+    fetchProfileData(controller.signal);
+
     return () => {
       controller.abort();
       routeTitle();
@@ -257,8 +282,18 @@ export default function SettingsProfile() {
             required
             disabled
           />
+          <hr />
+          <OykFormField
+            label={t("Joined")}
+            name="created_at"
+            defaultValue={profileForm.created_at}
+            hasError={hasError?.created_at}
+            disabled
+          />
           {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
-          {hasSuccessSubmit?.message && <OykFormMessage successTitle={hasSuccessSubmit?.title} hasSuccess={hasSuccessSubmit?.message} />}
+          {hasSuccessSubmit?.message && (
+            <OykFormMessage successTitle={hasSuccessSubmit?.title} hasSuccess={hasSuccessSubmit?.message} />
+          )}
           <div className="oyk-form-actions">
             <OykButton type="submit" color="primary" disabled={isLoading} isLoading={isLoading}>
               {t("Save")}
