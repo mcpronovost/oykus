@@ -28,7 +28,7 @@ export function TranslationProvider({ children, lang = DEFAULT_LANG }) {
     }
 
     if (typeof translation === "object") {
-      const result = translation["other"];
+      const result = translation["zero"];
       return result.replace(/\{(\w+)\}/g, (_, varName) =>
         varName === "count" ? count : (vars[varName] ?? `{${varName}}`),
       );
