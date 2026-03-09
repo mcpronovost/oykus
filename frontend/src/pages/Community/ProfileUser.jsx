@@ -1,6 +1,6 @@
 import "@/assets/styles/page/_community-user-profile.scss";
 import { useEffect, useState } from "react";
-import { UserPlus } from "lucide-react";
+import { Globe, UserPlus } from "lucide-react";
 
 import { oykDate, oykUnit } from "@/utils";
 import { api } from "@/services/api";
@@ -9,6 +9,7 @@ import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 
 import {
+  OykAlert,
   OykBanner,
   OykButton,
   OykCard,
@@ -29,6 +30,7 @@ export default function CommunityProfile() {
   const { t, lang } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [hasError, setHasError] = useState(null);
   const [userData, setUserData] = useState(null);
   const [userCountUniverses, setUserCountUniverses] = useState(0);
@@ -61,6 +63,37 @@ export default function CommunityProfile() {
     }
   };
 
+  const handleAddFriend = async () => {
+    if (isLoadingSubmit) return;
+    setIsLoadingSubmit(true);
+    setHasError(null);
+    try {
+      const formData = new FormData();
+      formData.append("name", userData.name);
+      const r = await api.post("/social/friends/add/", formData);
+      if (!r.ok) throw new Error(r.error || t("An error occurred"));
+      onClose(true);
+    } catch (e) {
+      if (e.message == "23000") {
+        setHasError(() => ({
+          addfriend: t("You have already sent a friend request"),
+        }));
+      } else {
+        setHasError(() => ({
+          addfriend: e.message || t("An error occurred"),
+        }));
+      }
+    } finally {
+      setIsLoadingSubmit(false);
+    }
+  };
+
+  const handleWebsite = () => {
+    if (!userData.meta_website) return;
+
+    window.open(userData.meta_website, "_blank");
+  };
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -77,7 +110,7 @@ export default function CommunityProfile() {
       <OykGrid>
         {hasError && hasError.message == 401 ? (
           <OykAppNotAuthorized />
-        ) : hasError ? (
+        ) : hasError?.message ? (
           <OykFeedback ghost variant="danger" title={t("Error")} message={hasError.message} />
         ) : userData && !isLoading ? (
           <>
@@ -119,9 +152,16 @@ export default function CommunityProfile() {
                       </ul>
                     </section>
                     <section className="oyk-userprofile-header-social">
-                      {/* currentUser?.slug !== userData.slug && (<OykButton color="primary" icon={UserPlus}>{t("Add friend")}</OykButton>) */}
+                      {currentUser?.slug !== userData.sluag && (<OykButton color="primary" icon={UserPlus} onClick={handleAddFriend}>{t("Add friend")}</OykButton>)}
+                      {/* currentUser?.slug !== userData.sluag && (<OykButton>{t("Follow")}</OykButton>) */}
+                      {userData.meta_website && (<OykButton icon={Globe} onClick={handleWebsite} />)}
                     </section>
                   </div>
+                  {hasError?.addfriend && (
+                    <section className="oyk-userprofile-header-error">
+                      <OykAlert variant="danger" title={t("Error")} message={hasError.addfriend} />
+                    </section>
+                  )}
                 </OykCard>
               </OykGridCol>
               <OykGridCol col="25">

@@ -3,6 +3,8 @@
 global $pdo;
 $userAuthId = require_rat();
 
+$friendService = new FriendService($pdo);
+
 try {
   $qry = $pdo->prepare("
     SELECT au.id,
@@ -52,6 +54,10 @@ catch (Exception $e) {
 if (!$user) {
   Response::notFound("User not found");
 }
+
+$friend = $friendService->getFriendPending($userAuthId, $user["id"]);
+
+$user["friend"] = $friend;
 
 Response::json([
   "ok" => TRUE,

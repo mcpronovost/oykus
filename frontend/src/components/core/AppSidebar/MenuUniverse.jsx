@@ -1,4 +1,4 @@
-import { BookOpen, MessagesSquare, Scale, Users } from "lucide-react";
+import { BookOpen, Scale, Users } from "lucide-react";
 import { useTranslation } from "@/services/translation";
 import { useWorld } from "@/services/world";
 
@@ -15,12 +15,14 @@ export default function AppSidebarMenuUniverse() {
         text={t("Rulebooks")}
         href="rulebooks"
         params={{ universeSlug: currentUniverse.slug }}
+        disabled
       />
       <OykAppSidebarNavItem
         icon={BookOpen}
         text={t("Context")}
         href="context"
         params={{ universeSlug: currentUniverse.slug }}
+        disabled
       />
       <OykAppSidebarNavItem
         icon={Users}

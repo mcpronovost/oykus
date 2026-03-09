@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$userId = require_rat();
+$userAuthId = require_rat();
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +21,10 @@ if (!$user) {
   Response::notFound("User not found");
 }
 
+if ($userAuthId == $user["id"]) {
+  Response::conflict("You cannot send a friend request to yourself");
+}
+
 /*
 |--------------------------------------------------------------------------
 | Check for pending request
@@ -37,10 +41,10 @@ try {
     LIMIT 1
   ");
   $qry->execute([
-    "userId" => $userId,
+    "userId" => $userAuthId,
     "targetFriendId" => $user["id"],
     "targetUserId" => $user["id"],
-    "friendId" => $userId
+    "friendId" => $userAuthId
   ]);
   $pending = $qry->fetch();
 
@@ -60,7 +64,7 @@ try {
   }
 }
 catch (Exception $e) {
-  Response::serverError();
+  Response::serverError($e->getMessage());
 }
 
 /*
@@ -79,12 +83,12 @@ try {
   ");
 
   $qry->execute([
-    "userId" => $userId,
+    "userId" => $userAuthId,
     "friendId" => $user["id"]
   ]);
 }
 catch (Exception $e) {
-  Response::serverError();
+  Response::serverError($e->getMessage());
 }
 
 Response::json([

@@ -79,7 +79,9 @@ export default function UniverseAdminTheme() {
       let variables = {};
       for (const [key, value] of Object.entries(themeForm)) {
         if (key !== "logo" && key !== "logoFile" && key !== "cover" && key !== "coverFile") {
-          if (key !== "c_primary" && key !== "c_primary_fg") {
+          if (key === "core_bg_img") {
+            variables[key.replaceAll("_", "-")] = `${value}`;
+          } else if (key !== "c_primary" && key !== "c_primary_fg") {
             variables[key.replaceAll("_", "-")] = `${value}`.toUpperCase();
           } else {
             formData.append(key, value);
