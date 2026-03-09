@@ -196,7 +196,6 @@
   "No post found": "Aucun article trouvé",
   "Delete post": "Supprimer l'article",
   "Edit post": "Modifier l'article",
-  "Comment": "Commentaire",
   "View more": "Voir plus",
   "Coming soon": "Bientôt disponible",
   "Delete Post": "Supprimer l'article",
@@ -204,7 +203,7 @@
   "commented on your blog post": "a commenté votre article de blog",
   "Limitations": "Limitations",
   "Blocked Users": "Utilisateurs bloqués",
-  "{count} comments": {
+  "{count} comment": {
     "zero": "{count} commentaire",
     "one": "{count} commentaire",
     "other": "{count} commentaires"
@@ -218,5 +217,41 @@
   "Rulebooks": "Règlements",
   "Context": "Contexte",
   "Inventory": "Inventaire",
-  "Capacities": "Capacités"
+  "Capacities": "Capacités",
+  "Universes": "Univers",
+  "Country": "Pays",
+  "No posts": "Aucun article",
+  "No messages": "Aucun message",
+  "This user has no activity at the moment": "Cet utilisateur n'a aucune activité pour l'instant.",
+  "View profile": "Voir le profil",
+  "Joined": "Inscrit",
+  "Optional Information": "Informations facultatives",
+  "Birthday": "Anniversaire",
+  "Occupation": "Occupation",
+  "Mood": "Humeur",
+  "Message": {
+    "zero": "message",
+    "one": "message",
+    "other": "messages"
+  },
+  "Comment": {
+    "zero": "commentaire",
+    "one": "commentaire",
+    "other": "commentaires"
+  },
+  "RP": {
+    "zero": "RP",
+    "one": "RP",
+    "other": "RPs"
+  },
+  "Universe": {
+    "zero": "Univers",
+    "one": "Univers",
+    "other": "Univers"
+  },
+  "Reaction": {
+    "zero": "Réaction",
+    "one": "Réaction",
+    "other": "Réactions"
+  }
 }
