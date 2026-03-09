@@ -160,7 +160,7 @@ export default function OykBlog() {
                           ) : null}
                         </div>
                         {currentUniverse.modules.blog.settings?.is_comments_enabled ? (
-                          <div className="oyk-blog-item-footer-comments">{t("{count} comments", post.comments)}</div>
+                          <div className="oyk-blog-item-footer-comments">{t("{count} comment", post.comments)}</div>
                         ) : null}
                       </footer>
                     </section>
