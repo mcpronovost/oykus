@@ -19,6 +19,7 @@ try {
            au.meta_job,
            au.meta_mood,
            au.meta_website,
+           au.meta_socials,
            au.created_at,
           (
             SELECT COUNT(*)
@@ -54,6 +55,10 @@ catch (Exception $e) {
 
 if (!$user) {
   Response::notFound("User not found");
+}
+
+if (!empty($user["meta_socials"])) {
+  $user["meta_socials"] = json_decode($user["meta_socials"], TRUE);
 }
 
 $friend = $friendService->getFriendPending($userAuthId, $user["id"]);

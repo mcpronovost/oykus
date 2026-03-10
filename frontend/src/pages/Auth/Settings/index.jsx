@@ -9,6 +9,7 @@ import { OykSidenav } from "@/components/common";
 import OykError404 from "@/pages/Error404";
 import OykSettingsProfile from "./Profile";
 import OykSettingsProfileInformations from "./ProfileInformations";
+import OykSettingsProfileSocials from "./ProfileSocials";
 import OykSettingsAccount from "./Account";
 import OykSettingsAccountPreferences from "./AccountPreferences";
 
@@ -30,6 +31,10 @@ export default function Settings() {
         {
           name: t("Informations"),
           routeName: "settings-profile-informations",
+        },
+        {
+          name: t("Social Media"),
+          routeName: "settings-profile-socials",
         },
       ],
     },
@@ -84,6 +89,8 @@ export default function Settings() {
               <OykSettingsProfile />
             ) : params?.section === "profile-informations" ? (
               <OykSettingsProfileInformations />
+            ) : params?.section === "profile-socials" ? (
+              <OykSettingsProfileSocials />
             ) : params?.section === "account" ? (
               <OykSettingsAccount />
             ) : params?.section === "account-preferences" ? (

@@ -142,6 +142,32 @@ if (isset($_POST["meta_website"]) && $_POST["meta_website"] !== $user["meta_webs
   }
 }
 
+/* ---------- Meta Social Media ---------- */
+if (isset($_POST["meta_socials"])) {
+  $socials = json_decode($_POST["meta_socials"], TRUE);
+
+  if (!is_array($socials)) {
+    $socials = [];
+  }
+
+  $cleanSocials = [];
+
+  foreach ($socials as $platform => $url) {
+    $url = trim(strip_tags($url));
+    if ($url === "") {
+      continue;
+    }
+    if (!filter_var($url, FILTER_VALIDATE_URL)) {
+      return Response::badRequest("Invalid URL", ["fields" => ["{$platform}" => "Invalid URL"]]);
+    }
+    $cleanSocials[$platform] = $url;
+  }
+  $json = json_encode($cleanSocials, JSON_UNESCAPED_SLASHES);
+
+  $patch["meta_socials"] = $json;
+  $params["meta_socials"] = $json;
+}
+
 /*
 |--------------------------------------------------------------------------
 | Auto fields (depend on name change)

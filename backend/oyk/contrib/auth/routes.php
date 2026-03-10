@@ -21,6 +21,8 @@ Router::post("{$api}/me/edit", "{$view}me/edit.php");
 
 Router::get("{$api}/me/profile", "{$view}me/profile.php");
 
+Router::get("{$api}/me/profile/socials", "{$view}me/profile_socials.php");
+
 Router::get("{$api}/me/account", "{$view}me/account.php");
 
 Router::post("{$api}/me/account/edit", "{$view}me/account_edit.php");
