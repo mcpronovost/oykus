@@ -41,7 +41,7 @@ export default function OykButton({
       type={type}
       onClick={handleClick}
       disabled={disabled || isLoading}
-      className={`oyk-button ${color ? `oyk-button-${color}` : ""} ${plain ? "oyk-button-plain" : ""} ${
+      className={`oyk-button ${color && !color.startsWith("#") ? `oyk-button-${color}` : ""} ${plain ? "oyk-button-plain" : ""} ${
         outline ? "oyk-button-outline" : ""
       } ${small ? "oyk-button-small" : ""} ${block ? "oyk-button-block" : ""} ${IconComponent && !children ? "oyk-button-icon" : ""} ${className}`}
       style={{
