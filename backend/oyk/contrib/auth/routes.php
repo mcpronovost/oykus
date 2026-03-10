@@ -31,7 +31,9 @@ Router::post("{$api}/me/account/edit", "{$view}me/account_edit.php");
 // USERS ROUTES
 /* ================================================ */
 
-Router::get("{$api}/users/{userSlug}/profile", "{$view}users_profile.php");
+Router::get("{$api}/users/{userSlug}/profile", "{$view}users/profile.php");
+
+Router::get("{$api}/users/{userSlug}/profile/activities", "{$view}users/activities.php");
 
 /* ================================================ */
 // WIO ROUTES

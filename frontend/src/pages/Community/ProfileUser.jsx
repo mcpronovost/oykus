@@ -384,7 +384,7 @@ export default function CommunityProfile() {
                 </OykCard>
               </OykGridCol>
               <OykGridCol col="50">
-                <OykProfileUserFeed />
+                <OykProfileUserFeed user={userData} />
               </OykGridCol>
               <OykGridCol col="25">
                 <OykCard style={{ textAlign: "center" }}>...</OykCard>
