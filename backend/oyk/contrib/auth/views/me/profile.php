@@ -10,6 +10,7 @@ try {
            meta_country,
            meta_job,
            meta_mood,
+           meta_website,
            created_at
     FROM auth_users
     WHERE id = ?

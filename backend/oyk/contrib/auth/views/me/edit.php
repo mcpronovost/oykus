@@ -25,7 +25,8 @@ $qry = $pdo->prepare("
          meta_birthday,
          meta_country,
          meta_job,
-         meta_mood
+         meta_mood,
+         meta_website
   FROM auth_users
   WHERE id = ?
   LIMIT 1
@@ -123,6 +124,22 @@ if (isset($_POST["meta_job"]) && $_POST["meta_job"] !== $user["meta_job"]) {
 if (isset($_POST["meta_mood"]) && $_POST["meta_mood"] !== $user["meta_mood"]) {
   $patch["meta_mood"] = strip_tags(trim($_POST["meta_mood"]));
   $params["meta_mood"] = strip_tags(trim($_POST["meta_mood"]));
+}
+
+/* ---------- Meta Website ---------- */
+if (isset($_POST["meta_website"]) && $_POST["meta_website"] !== $user["meta_website"]) {
+  $raw = trim($_POST["meta_website"]);
+  $clean = strip_tags($raw);
+
+  // If no scheme is provided, add https:// before validating
+  if (!preg_match('~^https?://~i', $clean)) {
+    $clean = "https://" . $clean;
+  }
+
+  if (filter_var($clean, FILTER_VALIDATE_URL) && str_starts_with($clean, "https://")) {
+    $patch["meta_website"] = $clean;
+    $params["meta_website"] = $clean;
+  }
 }
 
 /*

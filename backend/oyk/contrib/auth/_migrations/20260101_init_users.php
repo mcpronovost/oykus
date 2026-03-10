@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS auth_users (
     `meta_country` varchar(64) NULL,
     `meta_job` varchar(128) NULL,
     `meta_mood` varchar(64) NULL,
+    `meta_website` varchar(255) NULL,
 
     `is_active` tinyint(1) NOT NULL DEFAULT '1',
     `is_dev` tinyint(1) NOT NULL DEFAULT '0',
