@@ -77,8 +77,6 @@ class StatusService {
       $fields["position"] = $position;
     }
 
-    error_log(print_r($data, TRUE));
-
     // Completed
     if (array_key_exists("is_completed", $data)) {
       $is_completed = (string) trim($data["is_completed"]);
