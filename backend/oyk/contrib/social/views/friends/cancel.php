@@ -29,18 +29,24 @@ if (!$user) {
 try {
   $qry = $pdo->prepare("
     DELETE FROM social_friends
-    WHERE friend_id = :userId
-      AND user_id = :friendId
+    WHERE (
+        friend_id = ? AND user_id = ?
+      ) OR (
+        friend_id = ? AND user_id = ?
+      )
       AND status = 'pending';
   ");
 
-  $qry->execute([
-    "userId" => $user["id"],
-    "friendId" => $userId
-  ]);
+  $qry->execute([$user["id"], $userId, $userId, $user["id"]]);
+
+  $deleted = $qry->rowCount();
 }
 catch (Exception $e) {
   Response::serverError();
+}
+
+if (!$deleted) {
+  Response::notFound("Friend request not found");
 }
 
 Response::json([

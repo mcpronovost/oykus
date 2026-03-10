@@ -44,9 +44,15 @@ try {
     "targetUserId" => $user["id"],
     "friendId" => $userId
   ]);
+
+  $deleted = $qry->rowCount();
 }
 catch (Exception $e) {
   Response::serverError();
+}
+
+if (!$deleted) {
+  Response::notFound("Friend request not found");
 }
 
 Response::json([
