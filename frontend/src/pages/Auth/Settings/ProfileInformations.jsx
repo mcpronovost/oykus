@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { oykDate } from "@/utils";
 import { api } from "@/services/api";
@@ -17,14 +17,18 @@ import {
 } from "@/components/ui";
 
 export default function SettingsProfileInformations() {
-  const { currentUser, setUser } = useAuth();
+  const { currentUser } = useAuth();
   const { routeTitle } = useRouter();
   const { t, lang } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [hasError, setHasError] = useState(null);
   const [hasSuccessSubmit, setHasSuccessSubmit] = useState(null);
-  const [profileForm, setProfileForm] = useState({});
+  const [initialProfileForm, setInitialProfileForm] = useState({});
+  const [profileForm, setProfileForm] = useState(initialProfileForm);
+
+  const formRef = useRef(null);
 
   const fetchProfileData = async (signal) => {
     setIsLoading(true);
@@ -32,15 +36,17 @@ export default function SettingsProfileInformations() {
     try {
       const r = await api.get("/auth/me/profile/", signal ? { signal } : {});
       if (!r.ok || !r.profile) throw r;
-      setProfileForm((prev) => ({
-        ...prev,
+      const payload = {
         meta_bio: r.profile.meta_bio,
         meta_birthday: r.profile.meta_birthday,
         meta_country: r.profile.meta_country,
         meta_job: r.profile.meta_job,
         meta_mood: r.profile.meta_mood,
+        meta_website: r.profile.meta_website,
         created_at: oykDate(r.profile.created_at, "full", lang, currentUser?.timezone),
-      }));
+      };
+      setInitialProfileForm(payload);
+      setProfileForm(payload);
     } catch (e) {
       if (e?.name === "AbortError") return;
       setHasError({
@@ -54,7 +60,7 @@ export default function SettingsProfileInformations() {
   };
 
   const postSubmit = async () => {
-    setIsLoading(true);
+    setIsLoadingSubmit(true);
     setHasError(null);
     setHasSuccessSubmit(null);
     try {
@@ -63,6 +69,7 @@ export default function SettingsProfileInformations() {
       formData.append("meta_country", profileForm.meta_country ?? "");
       formData.append("meta_job", profileForm.meta_job ?? "");
       formData.append("meta_mood", profileForm.meta_mood ?? "");
+      formData.append("meta_website", profileForm.meta_website ?? "");
       if (profileForm.meta_birthday) {
         const d = new Date(profileForm.meta_birthday);
         const iso = d.toISOString().slice(0, 10); // YYYY-MM-DD
@@ -72,6 +79,15 @@ export default function SettingsProfileInformations() {
       }
       const r = await api.post("/auth/me/edit/", formData);
       if (!r?.ok || !r?.user) throw r;
+      formRef?.current?.reset();
+      setInitialProfileForm((prev) => ({
+        ...prev,
+        ...r.user,
+      }));
+      setProfileForm((prev) => ({
+        ...prev,
+        ...r.user,
+      }));
       setHasSuccessSubmit({
         title: t("Profile updated"),
         message: t("Your profile has been updated successfully"),
@@ -81,7 +97,7 @@ export default function SettingsProfileInformations() {
         message: t(e?.error) || t("An error occurred"),
       }));
     } finally {
-      setIsLoading(false);
+      setIsLoadingSubmit(false);
     }
   };
 
@@ -104,8 +120,9 @@ export default function SettingsProfileInformations() {
     }
   };
 
-  const handleReset = () => {
-    setProfileForm({});
+  const handleReset = async () => {
+    formRef?.current?.reset();
+    setProfileForm(initialProfileForm);
     setHasError(null);
     setHasSuccessSubmit(null);
   };
@@ -139,7 +156,7 @@ export default function SettingsProfileInformations() {
           {isLoading ? (
             <OykLoading />
           ) : (
-            <OykForm className="oyk-settings-form" isLoading={isLoading} onSubmit={postSubmit}>
+            <OykForm ref={formRef} className="oyk-settings-form" isLoading={isLoading} onSubmit={postSubmit}>
               <OykFormField
                 label={t("About")}
                 name="meta_bio"
@@ -177,15 +194,28 @@ export default function SettingsProfileInformations() {
                 onChange={handleChange}
                 hasError={hasError?.meta_mood}
               />
+              <hr />
+              <OykFormField
+                label={t("Website")}
+                name="meta_website"
+                defaultValue={profileForm.meta_website}
+                onChange={handleChange}
+                hasError={hasError?.meta_website}
+              />
               {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
               {hasSuccessSubmit?.message && (
                 <OykFormMessage successTitle={hasSuccessSubmit?.title} hasSuccess={hasSuccessSubmit?.message} />
               )}
               <div className="oyk-form-actions">
-                <OykButton type="submit" color="primary" disabled={isLoading} isLoading={isLoading}>
+                <OykButton
+                  type="submit"
+                  color="primary"
+                  disabled={isLoading || isLoadingSubmit}
+                  isLoading={isLoading || isLoadingSubmit}
+                >
                   {t("Save")}
                 </OykButton>
-                <OykButton type="reset" disabled={isLoading} outline onClick={handleReset}>
+                <OykButton type="reset" disabled={isLoading || isLoadingSubmit} outline onClick={handleReset}>
                   {t("Cancel")}
                 </OykButton>
               </div>

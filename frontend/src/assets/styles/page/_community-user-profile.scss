@@ -86,13 +86,32 @@
       text-align: center;
       display: flex;
       flex: 1 1 50%;
-      flex-direction: row;
+      flex-direction: column;
+      flex-wrap: wrap;
       align-items: center;
       justify-content: center;
       gap: 16px;
       order: 3;
       padding: 8px;
       margin-right: 16px;
+
+      &-actions {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      &-links {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
 
       @media (max-width: 1023px) {
         flex: 1 1 100%;

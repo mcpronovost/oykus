@@ -1,6 +1,28 @@
 import "@/assets/styles/page/_community-user-profile.scss";
 import { useEffect, useState } from "react";
-import { Globe, UserPlus } from "lucide-react";
+import { Globe, Pen, UserMinus, UserPlus, UserX } from "lucide-react";
+import {
+  SiArtstation,
+  SiBluesky,
+  SiCarrd,
+  SiDeviantart,
+  SiFacebook,
+  SiGithub,
+  SiInstagram,
+  SiKofi,
+  SiLinktree,
+  SiMastodon,
+  SiPatreon,
+  SiPinterest,
+  SiReddit,
+  SiSoundcloud,
+  SiSpotify,
+  SiSteam,
+  SiTiktok,
+  SiTwitch,
+  SiYoutube,
+  SiX,
+} from "@icons-pack/react-simple-icons";
 
 import { oykDate, oykUnit } from "@/utils";
 import { api } from "@/services/api";
@@ -26,7 +48,7 @@ import OykProfileUserFeed from "./ProfileUserFeed";
 
 export default function CommunityProfile() {
   const { currentUser } = useAuth();
-  const { params, routeTitle } = useRouter();
+  const { n, params, routeTitle } = useRouter();
   const { t, lang } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -63,7 +85,7 @@ export default function CommunityProfile() {
     }
   };
 
-  const handleAddFriend = async () => {
+  const postFriendAdd = async () => {
     if (isLoadingSubmit) return;
     setIsLoadingSubmit(true);
     setHasError(null);
@@ -71,18 +93,36 @@ export default function CommunityProfile() {
       const formData = new FormData();
       formData.append("name", userData.name);
       const r = await api.post("/social/friends/add/", formData);
-      if (!r.ok) throw new Error(r.error || t("An error occurred"));
-      onClose(true);
+      if (!r.ok) throw r;
+      setUserData((prev) => ({ ...prev, friend: { status: "pending" } }));
     } catch (e) {
-      if (e.message == "23000") {
-        setHasError(() => ({
-          addfriend: t("You have already sent a friend request"),
-        }));
-      } else {
-        setHasError(() => ({
-          addfriend: e.message || t("An error occurred"),
-        }));
+      setHasError(() => ({
+        addfriend: t(e?.error) || t("An error occurred"),
+      }));
+    } finally {
+      setIsLoadingSubmit(false);
+    }
+  };
+
+  const postFriendRequest = async (action) => {
+    if (!action) return;
+
+    setIsLoadingSubmit(true);
+    setHasError(null);
+    try {
+      const formData = new FormData();
+      formData.append("slug", userData.slug);
+      const r = await api.post(`/social/friends/${action}/`, formData);
+      if (!r.ok) throw r;
+      if (action === "cancel") {
+        setUserData((prev) => ({ ...prev, friend: null }));
+      } else if (action === "delete") {
+        setUserData((prev) => ({ ...prev, friend: null }));
       }
+    } catch (e) {
+      setHasError(() => ({
+        addfriend: t(e?.error) || t("An error occurred"),
+      }));
     } finally {
       setIsLoadingSubmit(false);
     }
@@ -152,9 +192,61 @@ export default function CommunityProfile() {
                       </ul>
                     </section>
                     <section className="oyk-userprofile-header-social">
-                      {currentUser?.slug !== userData.sluag && (<OykButton color="primary" icon={UserPlus} onClick={handleAddFriend}>{t("Add friend")}</OykButton>)}
-                      {/* currentUser?.slug !== userData.sluag && (<OykButton>{t("Follow")}</OykButton>) */}
-                      {userData.meta_website && (<OykButton icon={Globe} onClick={handleWebsite} />)}
+                      <div className="oyk-userprofile-header-social-actions">
+                        {currentUser?.slug === userData.slug ? (
+                          <OykButton color="primary" icon={Pen} small onClick={() => n("settings")}>
+                            {t("Edit profile")}
+                          </OykButton>
+                        ) : !userData.friend ? (
+                          <OykButton color="primary" icon={UserPlus} small onClick={postFriendAdd}>
+                            {t("Add friend")}
+                          </OykButton>
+                        ) : userData.friend.status === "pending" ? (
+                          <OykButton
+                            outline
+                            color="primary"
+                            icon={UserX}
+                            small
+                            onClick={() => postFriendRequest("cancel")}
+                          >
+                            {t("Cancel friend request")}
+                          </OykButton>
+                        ) : userData.friend.status === "accepted" ? (
+                          <OykButton
+                            outline
+                            color="primary"
+                            icon={UserMinus}
+                            small
+                            onClick={() => postFriendRequest("delete")}
+                          >
+                            {t("Unfriend")}
+                          </OykButton>
+                        ) : null}
+                        {/* currentUser?.slug !== userData.slug && (<OykButton>{t("Follow")}</OykButton>) */}
+                      </div>
+                      <div className="oyk-userprofile-header-social-links">
+                        {userData.meta_website && <OykButton icon={Globe} small onClick={handleWebsite} />}
+                        {userData.meta_sites_artstation && <OykButton icon={SiArtstation} small />}
+                        {userData.meta_sites_bluesky && <OykButton icon={SiBluesky} small />}
+                        {userData.meta_sites_carrd && <OykButton icon={SiCarrd} small />}
+                        {userData.meta_sites_deviantart && <OykButton icon={SiDeviantart} small />}
+                        {userData.meta_sites_facebook && <OykButton icon={SiFacebook} small />}
+                        {userData.meta_sites_github && <OykButton icon={SiGithub} small />}
+                        {userData.meta_sites_instagram && <OykButton icon={SiInstagram} small />}
+                        {userData.meta_sites_kofi && <OykButton icon={SiKofi} small />}
+                        {userData.meta_sites_linktree && <OykButton icon={SiLinktree} small />}
+                        {userData.meta_sites_mastodon && <OykButton icon={SiMastodon} small />}
+                        {userData.meta_sites_patreon && <OykButton icon={SiPatreon} small />}
+                        {userData.meta_sites_pinterest && <OykButton icon={SiPinterest} small />}
+                        {userData.meta_sites_reddit && <OykButton icon={SiReddit} small />}
+                        {userData.meta_sites_soundcloud && <OykButton icon={SiSoundcloud} small />}
+                        {userData.meta_sites_spotify && <OykButton icon={SiSpotify} small />}
+                        {userData.meta_sites_steam && <OykButton icon={SiSteam} small />}
+                        {userData.meta_sites_tiktok && <OykButton icon={SiTiktok} small />}
+                        {userData.meta_sites_twitch && <OykButton icon={SiTwitch} small />}
+                        {userData.meta_sites_youtube && <OykButton icon={SiYoutube} small />}
+                        {userData.meta_sites_x && <OykButton icon={SiX} small />}
+                      </div>
                     </section>
                   </div>
                   {hasError?.addfriend && (
@@ -169,11 +261,19 @@ export default function CommunityProfile() {
                   <OykHeading subtitle title={t("About")} nop />
                   <p className="oyk-userprofile-about-bio">{userData.meta_bio}</p>
                   <OykDataset small style={{ marginTop: 16 }}>
-                    <OykDatasetField term={t("Joined")} value={oykDate(userData.created_at, "date", lang, currentUser?.timezone)} />
-                    {userData.meta_country && (<OykDatasetField term={t("Country")} value={userData.meta_country} />)}
-                    {userData.meta_birthday && (<OykDatasetField term={t("Birthday")} value={oykDate(userData.meta_birthday, "truedate", lang, "UTC")} />)}
-                    {userData.meta_job && (<OykDatasetField term={t("Occupation")} value={userData.meta_job} />)}
-                    {userData.meta_mood && (<OykDatasetField term={t("Mood")} value={userData.meta_mood} />)}
+                    <OykDatasetField
+                      term={t("Joined")}
+                      value={oykDate(userData.created_at, "date", lang, currentUser?.timezone)}
+                    />
+                    {userData.meta_country && <OykDatasetField term={t("Country")} value={userData.meta_country} />}
+                    {userData.meta_birthday && (
+                      <OykDatasetField
+                        term={t("Birthday")}
+                        value={oykDate(userData.meta_birthday, "truedate", lang, "UTC")}
+                      />
+                    )}
+                    {userData.meta_job && <OykDatasetField term={t("Occupation")} value={userData.meta_job} />}
+                    {userData.meta_mood && <OykDatasetField term={t("Mood")} value={userData.meta_mood} />}
                   </OykDataset>
                 </OykCard>
               </OykGridCol>

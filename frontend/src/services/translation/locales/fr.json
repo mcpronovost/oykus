@@ -254,5 +254,10 @@
     "zero": "Réaction",
     "one": "Réaction",
     "other": "Réactions"
-  }
+  },
+  "Friend request not found": "Demande d'ami introuvable.",
+  "Cancel friend request": "Annuler la demande d'ami",
+  "Unfriend": "Retirer des amis",
+  "Edit profile": "Modifier le profil",
+  "Social Links": "Liens sociaux"
 }

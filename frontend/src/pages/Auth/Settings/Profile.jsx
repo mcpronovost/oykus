@@ -22,13 +22,15 @@ export default function SettingsProfile() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
   const [hasSuccessSubmit, setHasSuccessSubmit] = useState(null);
-  const [profileForm, setProfileForm] = useState({
+  const [initialProfileForm, setInitialProfileForm] = useState({
     avatar: currentUser.avatar || null,
     cover: currentUser.cover || null,
     name: currentUser.name || "",
     slug: currentUser.slug || "",
     abbr: currentUser.abbr || "",
+    created_at: ""
   });
+  const [profileForm, setProfileForm] = useState(initialProfileForm);
 
   const fetchProfileData = async (signal) => {
     setIsLoading(true);
@@ -36,9 +38,14 @@ export default function SettingsProfile() {
     try {
       const r = await api.get("/auth/me/profile/", signal ? { signal } : {});
       if (!r.ok || !r.profile) throw r;
+      const created_at = oykDate(r.profile.created_at, "full", lang, currentUser?.timezone);
+      setInitialProfileForm((prev) => ({
+        ...prev,
+        created_at: created_at,
+      }));
       setProfileForm((prev) => ({
         ...prev,
-        created_at: oykDate(r.profile.created_at, "full", lang, currentUser?.timezone),
+        created_at: created_at,
       }));
     } catch (e) {
       if (e?.name === "AbortError") return;
@@ -163,13 +170,7 @@ export default function SettingsProfile() {
   };
 
   const handleReset = async (e) => {
-    setProfileForm({
-      avatar: currentUser.avatar || null,
-      cover: currentUser.cover || null,
-      name: currentUser.name || "",
-      slug: currentUser.slug || "",
-      abbr: currentUser.abbr || "",
-    });
+    setProfileForm(initialProfileForm);
     nameRef.current.value = currentUser.name || "";
     slugRef.current.value = currentUser.slug || "";
     abbrRef.current.value = currentUser.abbr || "";
