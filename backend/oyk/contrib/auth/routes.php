@@ -35,6 +35,8 @@ Router::get("{$api}/users/{userSlug}/profile", "{$view}users/profile.php");
 
 Router::get("{$api}/users/{userSlug}/profile/activities", "{$view}users/activities.php");
 
+Router::get("{$api}/users/{userSlug}/profile/activities/{activitiesOffset}", "{$view}users/activities.php");
+
 /* ================================================ */
 // WIO ROUTES
 /* ================================================ */

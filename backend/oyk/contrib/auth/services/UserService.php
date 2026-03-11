@@ -57,4 +57,71 @@ class UserService {
 
     return $user ?: NULL;
   }
+
+  public function getUserActivities(string $userSlug, int $offset = 0): array {
+    $activities = [];
+
+    try {
+      $qry = $this->pdo->prepare("
+        SELECT 
+            au.id,
+            (
+                SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'id', x.id,
+                        'type', x.type,
+                        'content', x.content,
+                        'created_at', x.created_at,
+                        'updated_at', x.updated_at
+                    )
+                )
+                FROM (
+                    SELECT *
+                    FROM (
+                        SELECT 
+                            bp.id,
+                            'post' AS type,
+                            bp.content,
+                            bp.created_at,
+                            bp.updated_at
+                        FROM blog_posts bp
+                        WHERE bp.author_id = au.id
+
+                        UNION ALL
+
+                        SELECT 
+                            bc.id,
+                            'comment' AS type,
+                            bc.content,
+                            bc.created_at,
+                            bc.updated_at
+                        FROM blog_comments bc
+                        WHERE bc.author_id = au.id
+                    ) AS merged
+                    ORDER BY merged.created_at DESC
+                    LIMIT 5 OFFSET ?
+                ) AS x
+            ) AS activities
+        FROM auth_users au
+        WHERE au.slug = ?
+        LIMIT 1;
+      ");
+
+      $qry->execute([$offset, $userSlug]);
+      $user = $qry->fetch();
+    }
+    catch (Exception) {
+      throw new QueryException("User activities retrieval failed");
+    }
+
+    if (!$user) {
+      throw new NotFoundException();
+    }
+
+    if (!empty($user["activities"])) {
+      $activities = json_decode($user["activities"], TRUE);
+    }
+
+    return $activities;
+  }
 }

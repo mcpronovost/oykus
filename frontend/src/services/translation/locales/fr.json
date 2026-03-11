@@ -193,6 +193,7 @@
   "Write a reply": "Écrire une réponse",
   "Be the first to comment": "Sois le premier à commenter",
   "Edited": "Modifié",
+  "edited": "modifié",
   "Author": "Auteur",
   "No post found": "Aucun article trouvé",
   "Delete post": "Supprimer l'article",
@@ -259,5 +260,6 @@
   "Cancel friend request": "Annuler la demande d'ami",
   "Unfriend": "Retirer des amis",
   "Edit profile": "Modifier le profil",
-  "Social Media": "Réseaux sociaux"
+  "Social Media": "Réseaux sociaux",
+  "Load more": "Voir plus"
 }

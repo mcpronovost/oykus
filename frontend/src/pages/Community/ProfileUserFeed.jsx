@@ -3,27 +3,37 @@ import { Ellipsis, Frown } from "lucide-react";
 
 import { oykCode, oykDate, oykTimeAgo } from "@/utils";
 import { api } from "@/services/api";
+import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 
 import { OykAvatar, OykButton, OykCard, OykDropdown, OykFeedback, OykLoading } from "@/components/ui";
 
 export default function OykProfileUserFeed({ user }) {
+  const { currentUser } = useAuth();
   const { n, params } = useRouter();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasError, setHasError] = useState(null);
   const [activities, setActivities] = useState([]);
+  const [activitiesOffset, setActivitiesOffset] = useState(0);
+  const [showLoadMore, setShowLoadMore] = useState(false);
 
   const fetchActivities = async (signal) => {
-    setIsLoading(true);
+    if (activities.length <= 0) setIsLoading(true);
+    else setIsLoadingMore(true);
     setHasError(null);
     try {
       if (!params?.userSlug) throw new Error(t("User doesn't exist"));
-      const r = await api.get(`/auth/users/${params.userSlug}/profile/activities/`, signal ? { signal } : {});
+      const r = await api.get(`/auth/users/${params.userSlug}/profile/activities/${activitiesOffset}/`, signal ? { signal } : {});
       if (!r?.ok || !r?.activities) throw r;
-      setActivities(r.activities);
+      setActivities((prev) => [...prev, ...r.activities]);
+      if (r.activities.length === 5) {
+        setShowLoadMore(true);
+        setActivitiesOffset((prev) => prev + 5);
+      } else setShowLoadMore(false);
     } catch (e) {
       if (e?.name === "AbortError") return;
       setHasError(() => ({
@@ -32,8 +42,13 @@ export default function OykProfileUserFeed({ user }) {
     } finally {
       if (!signal || !signal.aborted) {
         setIsLoading(false);
+        setIsLoadingMore(false);
       }
     }
+  };
+
+  const handleNextActivities = () => {
+    fetchActivities();
   };
 
   useEffect(() => {
@@ -63,7 +78,15 @@ export default function OykProfileUserFeed({ user }) {
                     <span>{user.name}</span>
                   </div>
                   <div className="oyk-userprofile-feed-post-header-identity-date">
-                    <span>{oykTimeAgo(post.created_at)}</span>
+                    <span>{oykTimeAgo(post.created_at, lang, currentUser?.timezone)}</span>
+                    {post.updated_at != post.created_at && (
+                      <span className="oyk-userprofile-feed-post-header-identity-date-edited">
+                        {t("edited")}{" "}
+                        <time dateTime={post.updated_at}>
+                          {oykTimeAgo(post.updated_at, lang, currentUser?.timezone)}
+                        </time>
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div className="oyk-userprofile-feed-post-header-actions">
@@ -96,6 +119,13 @@ export default function OykProfileUserFeed({ user }) {
           />
         </>
       )}
+      {showLoadMore ? (
+        <div className="oyk-userprofile-feed-loadmore">
+          <OykButton color="primary" isLoading={isLoadingMore} disabled={isLoadingMore} onClick={handleNextActivities}>
+            {t("Load more")}
+          </OykButton>
+        </div>
+      ) : null}
     </section>
   );
 }

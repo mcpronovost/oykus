@@ -165,6 +165,25 @@
             font-size: 0.8125rem;
             line-height: 1.2;
             opacity: 0.6;
+
+            &-edited {
+              font-size: 0.8125rem;
+              line-height: 1.2;
+              position: relative;
+              opacity: 0.6;
+              padding: 0 0 0 28px; 
+
+              &::before {
+                content: "";
+                background-color: var(--oyk-card-fg);
+                border-radius: 50%;
+                width: 4px;
+                height: 4px;
+                position: absolute;
+                left: 12px;
+                top: 0.55em;
+              }
+            }
           }
         }
 
@@ -172,6 +191,13 @@
           //
         }
       }
+    }
+
+    &-loadmore {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
     }
 
     .oyk-code {
