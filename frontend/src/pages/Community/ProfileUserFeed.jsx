@@ -1,19 +1,16 @@
 import { useEffect, useState } from "react";
-import { Ellipsis, Frown } from "lucide-react";
+import { Frown } from "lucide-react";
 
-import { oykCode, oykDate, oykTimeAgo } from "@/utils";
 import { api } from "@/services/api";
-import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 
-import { OykAvatar, OykButton, OykCard, OykDropdown, OykFeedback, OykLoading } from "@/components/ui";
+import { OykButton, OykFeedback, OykLoading } from "@/components/ui";
 import OykProfileUserFeedCard from "./ProfileUserFeedCard";
 
 export default function OykProfileUserFeed({ user }) {
-  const { currentUser } = useAuth();
-  const { n, params } = useRouter();
-  const { t, lang } = useTranslation();
+  const { params } = useRouter();
+  const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -28,7 +25,10 @@ export default function OykProfileUserFeed({ user }) {
     setHasError(null);
     try {
       if (!params?.userSlug) throw new Error(t("User doesn't exist"));
-      const r = await api.get(`/auth/users/${params.userSlug}/profile/activities/${activitiesOffset}/`, signal ? { signal } : {});
+      const r = await api.get(
+        `/auth/users/${params.userSlug}/profile/activities/${activitiesOffset}/`,
+        signal ? { signal } : {},
+      );
       if (!r?.ok || !r?.activities) throw r;
       setActivities((prev) => [...prev, ...r.activities]);
       if (r.activities.length === 5) {
@@ -69,9 +69,7 @@ export default function OykProfileUserFeed({ user }) {
       ) : isLoading ? (
         <OykLoading />
       ) : activities && activities.length > 0 ? (
-        activities.map((post, index) => (
-          <OykProfileUserFeedCard key={index} user={user} post={post} />
-        ))
+        activities.map((post, index) => <OykProfileUserFeedCard key={index} user={user} post={post} />)
       ) : (
         <>
           <OykFeedback

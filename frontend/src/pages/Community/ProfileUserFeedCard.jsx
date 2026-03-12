@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Ellipsis, Frown } from "lucide-react";
+import { Ellipsis } from "lucide-react";
 
 import { oykCode, oykTimeAgo } from "@/utils";
 import { useAuth } from "@/services/auth";
@@ -36,9 +36,7 @@ export default function OykProfileUserFeed({ user, post }) {
               {post.updated_at != post.created_at && (
                 <span className="oyk-userprofile-feed-post-header-identity-date-edited">
                   {t("edited")}{" "}
-                  <time dateTime={post.updated_at}>
-                    {oykTimeAgo(post.updated_at, lang, currentUser?.timezone)}
-                  </time>
+                  <time dateTime={post.updated_at}>{oykTimeAgo(post.updated_at, lang, currentUser?.timezone)}</time>
                 </span>
               )}
             </div>
