@@ -8,6 +8,7 @@ import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 
 import { OykAvatar, OykButton, OykCard, OykDropdown, OykFeedback, OykLoading } from "@/components/ui";
+import OykProfileUserFeedCard from "./ProfileUserFeedCard";
 
 export default function OykProfileUserFeed({ user }) {
   const { currentUser } = useAuth();
@@ -69,45 +70,7 @@ export default function OykProfileUserFeed({ user }) {
         <OykLoading />
       ) : activities && activities.length > 0 ? (
         activities.map((post, index) => (
-          <article key={index} className="oyk-userprofile-feed-post">
-            <OykCard>
-              <header className="oyk-userprofile-feed-post-header">
-                <OykAvatar size={48} src={user.avatar} />
-                <div className="oyk-userprofile-feed-post-header-identity">
-                  <div className="oyk-userprofile-feed-post-header-identity-name">
-                    <span>{user.name}</span>
-                  </div>
-                  <div className="oyk-userprofile-feed-post-header-identity-date">
-                    <span>{oykTimeAgo(post.created_at, lang, currentUser?.timezone)}</span>
-                    {post.updated_at != post.created_at && (
-                      <span className="oyk-userprofile-feed-post-header-identity-date-edited">
-                        {t("edited")}{" "}
-                        <time dateTime={post.updated_at}>
-                          {oykTimeAgo(post.updated_at, lang, currentUser?.timezone)}
-                        </time>
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <div className="oyk-userprofile-feed-post-header-actions">
-                  {/* <OykDropdown
-                    float
-                    toggle={<OykButton icon={Ellipsis} plain />}
-                    menu={[
-                      {
-                        label: t("Report"),
-                        // icon: <Pencil size={16} />,
-                        onClick: () => {},
-                      },
-                    ]}
-                  /> */}
-                </div>
-              </header>
-              <div className="oyk-code">
-                <div dangerouslySetInnerHTML={{ __html: oykCode(post.content) }}></div>
-              </div>
-            </OykCard>
-          </article>
+          <OykProfileUserFeedCard key={index} user={user} post={post} />
         ))
       ) : (
         <>

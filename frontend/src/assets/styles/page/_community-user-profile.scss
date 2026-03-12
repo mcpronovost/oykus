@@ -224,6 +224,14 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
       max-height: 20rem;
+
+      &.oyk-showfull {
+        display: block;
+        line-clamp: unset;
+        -webkit-line-clamp: unset;
+        max-height: unset;
+        overflow: unset;
+      }
     }
   }
 }
