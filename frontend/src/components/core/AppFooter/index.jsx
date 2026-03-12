@@ -51,7 +51,9 @@ export default function AppFooter() {
           ) : null}
           <p className="oyk-app-footer-small-copyright">
             <span>Oykus</span> &copy; <time dateTime={new Date().getFullYear()}>2022-{new Date().getFullYear()}</time>{" "}
-            <span>M-C Pronovost</span>
+            <span>M-C Pronovost</span>{" — "}
+            <span>{t("All rights reserved")}</span><br />
+            <span>v{import.meta.env.VITE_VERSION}</span>
           </p>
         </small>
       ) : null}

@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { version } from "./package.json";
 
 export default defineConfig(({ mode }) => {
   // Manual override
@@ -24,6 +25,7 @@ export default defineConfig(({ mode }) => {
       "import.meta.env.VITE_DOMAIN": JSON.stringify(DOMAIN),
       "import.meta.env.VITE_PROTOCOL": JSON.stringify(PROTOCOL),
       "import.meta.env.VITE_API": JSON.stringify(API),
+      "import.meta.env.VITE_VERSION": JSON.stringify(version),
     },
     build: {
       outDir: "dist",
