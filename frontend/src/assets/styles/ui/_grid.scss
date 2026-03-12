@@ -140,5 +140,75 @@
         }
       }
     }
+
+    &.oyk-order {
+      &-0 {
+        order: 0;
+      }
+
+      &-1 {
+        order: 1;
+      }
+
+      &-2 {
+        order: 2;
+      }
+
+      &-3 {
+        order: 3;
+      }
+
+      &-md {
+        &-0 {
+          @media (max-width: 1023px) {
+            order: 0;
+          }
+        }
+
+        &-1 {
+          @media (max-width: 1023px) {
+            order: 1;
+          }
+        }
+
+        &-2 {
+          @media (max-width: 1023px) {
+            order: 2;
+          }
+        }
+
+        &-3 {
+          @media (max-width: 1023px) {
+            order: 3;
+          }
+        }
+      }
+
+      &-sm {
+        &-0 {
+          @media (max-width: 767px) {
+            order: 0;
+          }
+        }
+
+        &-1 {
+          @media (max-width: 767px) {
+            order: 1;
+          }
+        }
+
+        &-2 {
+          @media (max-width: 767px) {
+            order: 2;
+          }
+        }
+
+        &-3 {
+          @media (max-width: 767px) {
+            order: 3;
+          }
+        }
+      }
+    }
   }
 }

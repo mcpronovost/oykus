@@ -16,9 +16,12 @@ export function OykGridRow({ wrap, children, className, ...props }) {
   );
 }
 
-export function OykGridCol({ col = "100", md = "100", sm = "100", grow = true, children, className, ...props }) {
+export function OykGridCol({ col = "100", md = "100", sm = "100", order = 0, orderMd = 0, orderSm = 0, grow = true, children, className, ...props }) {
   return (
-    <div className={`oyk-grid-col oyk-col-${col} oyk-col-md-${md} oyk-col-sm-${sm} ${grow ? "oyk-grow" : ""} ${className ? className : ""}`} {...props}>
+    <div
+      className={`oyk-grid-col oyk-col-${col} oyk-col-md-${md} oyk-col-sm-${sm} oyk-order-${order} oyk-order-md-${orderMd} oyk-order-sm-${orderSm} ${grow ? "oyk-grow" : ""} ${className ? className : ""}`}
+      {...props}
+    >
       {children}
     </div>
   );
