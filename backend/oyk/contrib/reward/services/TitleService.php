@@ -28,10 +28,30 @@ class TitleService {
     return $titles ?: [];
   }
 
-  public function getActiveTitle(int $userId): ?string {
+  public function getUserTitlesList(int $userId, int $universeId): array {
     try {
       $qry = $this->pdo->prepare("
-        SELECT rt.name
+        SELECT rt.id,
+               rt.name
+        FROM reward_titles rt
+        JOIN reward_titles_users rut ON rut.title_id = rt.id
+        WHERE rt.universe_id = ? AND rut.user_id = ?
+      ");
+
+      $qry->execute([$universeId, $userId]);
+      $titles = $qry->fetchAll();
+    }
+    catch (Exception $e) {
+      Response::serverError($e->getMessage());
+    }
+
+    return $titles ?: [];
+  }
+
+  public function getUserActiveTitle(int $userId): ?array {
+    try {
+      $qry = $this->pdo->prepare("
+        SELECT rt.id, rt.name
         FROM reward_titles_users rut
         JOIN reward_titles rt ON rt.id = rut.title_id
         WHERE rut.user_id = ? AND
@@ -46,6 +66,6 @@ class TitleService {
       Response::serverError($e->getMessage());
     }
 
-    return $title ? $title["name"] : NULL;
+    return $title ?: NULL;
   }
 }

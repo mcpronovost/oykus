@@ -65,9 +65,10 @@ export default function OykFormField({
               onChange={onChange}
               required={required}
               className={`${hasError ? "oyk-error" : ""}`}
+              disabled={disabled}
             >
               {options.map((option) => (
-                <option key={option[optionValue]} value={option[optionValue]}>
+                <option key={option[optionValue]} value={option[optionValue]} selected={defaultValue === option[optionValue]}>
                   {option[optionLabel]}
                 </option>
               ))}

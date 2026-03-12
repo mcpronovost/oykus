@@ -6,33 +6,45 @@ require OYK . "/core/utils/formatters.php";
 global $pdo;
 $userId = require_rat();
 
+$titleService = new TitleService($pdo);
+
 /*
 |--------------------------------------------------------------------------
 | Load current user
 |--------------------------------------------------------------------------
 */
-$qry = $pdo->prepare("
-  SELECT id,
-         name,
-         slug,
-         is_slug_auto,
-         abbr, is_abbr_auto,
-         avatar,
-         cover,
-         is_dev,
-         timezone,
-         meta_bio,
-         meta_birthday,
-         meta_country,
-         meta_job,
-         meta_mood,
-         meta_website
-  FROM auth_users
-  WHERE id = ?
-  LIMIT 1
-");
-$qry->execute([$userId]);
-$user = $qry->fetch();
+try {
+  $qry = $pdo->prepare("
+    SELECT u.id,
+          u.name,
+          u.slug,
+          u.is_slug_auto,
+          u.abbr,
+          u.is_abbr_auto,
+          u.avatar,
+          u.cover,
+          u.is_dev,
+          u.timezone,
+          u.meta_bio,
+          u.meta_birthday,
+          u.meta_country,
+          u.meta_job,
+          u.meta_mood,
+          u.meta_website,
+          rt.id AS title_id,
+          rt.name AS title
+    FROM auth_users u
+    LEFT JOIN reward_titles_users rut ON rut.user_id = u.id AND rut.is_active = 1
+    LEFT JOIN reward_titles rt ON rt.id = rut.title_id
+    WHERE u.id = ?
+    LIMIT 1
+  ");
+  $qry->execute([$userId]);
+  $user = $qry->fetch();
+}
+catch (Exception $e) {
+  throw new QueryException($e->getMessage());
+}
 
 if (!$user) {
   Response::notFound("User not found");
@@ -87,6 +99,12 @@ if (!empty($_FILES["cover"])) {
 
   $patch["cover"] = $newCover;
   $params["cover"] = $newCover;
+}
+
+/* ---------- Title ---------- */
+$changeTitleId = NULL;
+if (isset($_POST["title"]) && (int) $_POST["title"] !== (int) $user["title_id"]) {
+  $changeTitleId = (int) $_POST["title"];
 }
 
 /* ---------- Meta Bio ---------- */
@@ -188,7 +206,7 @@ if ($nameChanged && $user["is_abbr_auto"]) {
 | Nothing to update → OK
 |--------------------------------------------------------------------------
 */
-if (!$patch) {
+if (!$patch && !is_int($changeTitleId)) {
   unset($user["is_slug_auto"], $user["is_abbr_auto"]);
   Response::json(["ok" => TRUE, "user" => $user]);
 }
@@ -201,18 +219,33 @@ if (!$patch) {
 $pdo->beginTransaction();
 
 try {
-  $sets = [];
-  foreach ($patch as $field => $_) {
-    $sets[] = "$field = :$field";
+  if ($patch) {
+    $sets = [];
+    foreach ($patch as $field => $_) {
+      $sets[] = "$field = :$field";
+    }
+
+    $sql = "
+      UPDATE auth_users
+      SET " . implode(", ", $sets) . "
+      WHERE id = :id
+    ";
+
+    $pdo->prepare($sql)->execute($params);
   }
 
-  $sql = "
-    UPDATE auth_users
-    SET " . implode(", ", $sets) . "
-    WHERE id = :id
-  ";
+  if (is_int($changeTitleId)) {
+    $pdo->prepare(
+      "UPDATE reward_titles_users SET is_active = 0 WHERE user_id = :id AND title_id != :title_id"
+    )->execute([$userId, $changeTitleId]);
 
-  $pdo->prepare($sql)->execute($params);
+    if ($changeTitleId > 0) {
+      $pdo->prepare(
+        "UPDATE reward_titles_users SET is_active = 1 WHERE user_id = :id AND title_id = :title_id"
+      )->execute([$userId, $changeTitleId]);
+    }
+  }
+
   $pdo->commit();
 
 }
@@ -247,6 +280,11 @@ if (isset($patch["cover"]) && $user["cover"]) {
 */
 $user = array_merge($user, $patch);
 unset($user["is_slug_auto"], $user["is_abbr_auto"]);
+
+if (is_int($changeTitleId)) {
+  $title = $titleService->getUserActiveTitle($userId);
+  $user["title"] = $title ? $title["name"] : NULL;
+}
 
 Response::json([
   "ok" => TRUE,

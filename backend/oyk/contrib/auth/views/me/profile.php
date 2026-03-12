@@ -3,6 +3,8 @@
 global $pdo;
 $userAuthId = require_rat();
 
+$titleService = new TitleService($pdo);
+
 try {
   $qry = $pdo->prepare("
     SELECT meta_bio,
@@ -28,7 +30,12 @@ if (!$user) {
   throw new NotFoundException("User not found");
 }
 
+$activeTitle = $titleService->getUserActiveTitle($userAuthId);
+$user["title"] = $activeTitle ? $activeTitle["id"] : NULL;
+$titles = $titleService->getUserTitlesList($userAuthId, 1);
+
 Response::json([
   "ok" => TRUE,
-  "profile" => $user
+  "profile" => $user,
+  "titles" => $titles
 ]);

@@ -6,7 +6,7 @@ import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import { OykBanner, OykButton, OykCard, OykForm, OykFormField, OykFormMessage, OykHeading } from "@/components/ui";
+import { OykBanner, OykButton, OykCard, OykFeedback, OykForm, OykFormField, OykFormMessage, OykHeading, OykLoading } from "@/components/ui";
 
 export default function SettingsProfile() {
   const { currentUser, setUser } = useAuth();
@@ -19,7 +19,8 @@ export default function SettingsProfile() {
   const slugRef = useRef(null);
   const abbrRef = useRef(null);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [hasError, setHasError] = useState(null);
   const [hasSuccessSubmit, setHasSuccessSubmit] = useState(null);
   const [initialProfileForm, setInitialProfileForm] = useState({
@@ -31,6 +32,7 @@ export default function SettingsProfile() {
     created_at: ""
   });
   const [profileForm, setProfileForm] = useState(initialProfileForm);
+  const [userTitles, setUserTitles] = useState([]);
 
   const fetchProfileData = async (signal) => {
     setIsLoading(true);
@@ -41,12 +43,15 @@ export default function SettingsProfile() {
       const created_at = oykDate(r.profile.created_at, "full", lang, currentUser?.timezone);
       setInitialProfileForm((prev) => ({
         ...prev,
+        title: r.profile.title,
         created_at: created_at,
       }));
       setProfileForm((prev) => ({
         ...prev,
+        title: r.profile.title,
         created_at: created_at,
       }));
+      setUserTitles(r.titles);
     } catch (e) {
       if (e?.name === "AbortError") return;
       setHasError({
@@ -59,13 +64,14 @@ export default function SettingsProfile() {
     }
   };
 
-  const handleSubmit = async () => {
-    setIsLoading(true);
+  const postSubmit = async () => {
+    setIsLoadingSubmit(true);
     setHasError(null);
     setHasSuccessSubmit(null);
     try {
       const formData = new FormData();
       formData.append("name", profileForm.name);
+      formData.append("title", profileForm.title);
       if (profileForm.avatarFile) {
         formData.append("avatar", profileForm.avatarFile);
       }
@@ -99,7 +105,7 @@ export default function SettingsProfile() {
         }));
       }
     } finally {
-      setIsLoading(false);
+      setIsLoadingSubmit(false);
     }
   };
 
@@ -204,6 +210,11 @@ export default function SettingsProfile() {
 
   return (
     <section className="oyk-settings-profile">
+      {isLoading ? (
+        <OykLoading />
+      ) : hasError?.message ? (
+        <OykFeedback title={t("An error occurred")} message={hasError?.message} variant="danger" ghost />
+      ) : (<>
       <article className="oyk-settings-profile-visual">
         <div className="oyk-settings-profile-visual-preview">
           <OykCard nop fullCenter alignTop>
@@ -253,7 +264,7 @@ export default function SettingsProfile() {
       </article>
       <OykCard>
         <OykHeading subtitle tag="h2" title={t("Your Profile")} nop />
-        <OykForm className="oyk-settings-form" isLoading={isLoading} onSubmit={handleSubmit}>
+        <OykForm className="oyk-settings-form" isLoading={isLoadingSubmit} onSubmit={postSubmit}>
           <OykFormField
             ref={nameRef}
             label={t("Public Name")}
@@ -283,6 +294,21 @@ export default function SettingsProfile() {
             required
             disabled
           />
+          <OykFormField
+            label={t("Title")}
+            name="title"
+            defaultValue={profileForm.title}
+            type="select"
+            options={[
+              {label: t("None"), value: ""},
+              ...userTitles.map((title) => ({
+                label: title.name,
+                value: title.id,
+              })),
+            ]}
+            onChange={handleChange}
+            hasError={hasError?.title}
+          />
           <hr />
           <OykFormField
             label={t("Joined")}
@@ -296,15 +322,16 @@ export default function SettingsProfile() {
             <OykFormMessage successTitle={hasSuccessSubmit?.title} hasSuccess={hasSuccessSubmit?.message} />
           )}
           <div className="oyk-form-actions">
-            <OykButton type="submit" color="primary" disabled={isLoading} isLoading={isLoading}>
+            <OykButton type="submit" color="primary" disabled={isLoadingSubmit} isLoading={isLoadingSubmit}>
               {t("Save")}
             </OykButton>
-            <OykButton type="reset" disabled={isLoading} outline onClick={handleReset}>
+            <OykButton type="reset" disabled={isLoadingSubmit} outline onClick={handleReset}>
               {t("Cancel")}
             </OykButton>
           </div>
         </OykForm>
       </OykCard>
+      </>)}
     </section>
   );
 }
