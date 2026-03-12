@@ -4,6 +4,27 @@ class FriendService {
   public function __construct(private PDO $pdo) {
   }
 
+  public function getFriendsList(int $userId): array {
+    try {
+      $qry = $this->pdo->prepare("
+        SELECT u.name, u.abbr, u.slug, u.avatar, u.cover
+        FROM social_friends f
+        JOIN auth_users u ON u.id = f.friend_id
+        WHERE f.user_id = ?
+            AND f.status = 'accepted'
+        ORDER BY u.name ASC;
+      ");
+
+      $qry->execute([$userId]);
+      $friends = $qry->fetchAll();
+    }
+    catch (Exception) {
+      throw new QueryException("Failed to get friends list");
+    }
+
+    return $friends ?: [];
+  }
+
   public function getFriendPending(int $userId, int $friendId): ?array {
     try {
       $qry = $this->pdo->prepare("

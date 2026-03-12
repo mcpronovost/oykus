@@ -32,6 +32,7 @@ import { useTranslation } from "@/services/translation";
 
 import {
   OykAlert,
+  OykAvatar,
   OykBanner,
   OykButton,
   OykCard,
@@ -42,6 +43,7 @@ import {
   OykGridRow,
   OykGridCol,
   OykHeading,
+  OykLink,
 } from "@/components/ui";
 import OykAppNotAuthorized from "@/components/core/AppNotAuthorized";
 import OykProfileUserFeed from "./ProfileUserFeed";
@@ -224,135 +226,145 @@ export default function CommunityProfile() {
                         ) : null}
                         {/* currentUser?.slug !== userData.slug && (<OykButton>{t("Follow")}</OykButton>) */}
                       </div>
-                      {userData.meta_website || userData.meta_socials ? (<div className="oyk-userprofile-header-social-links">
-                        {userData.meta_website && (
-                          <OykButton icon={Globe} small onClick={() => handleOpenSite(userData.meta_website)} />
-                        )}
-                        {userData.meta_socials?.artstation && (
-                          <OykButton
-                            icon={SiArtstation}
-                            small
-                            onClick={() => handleOpenSite(userData.meta_socials.artstation)}
-                          />
-                        )}
-                        {userData.meta_socials?.bluesky && (
-                          <OykButton
-                            icon={SiBluesky}
-                            small
-                            onClick={() => handleOpenSite(userData.meta_socials.bluesky)}
-                          />
-                        )}
-                        {userData.meta_socials?.carrd && (
-                          <OykButton icon={SiCarrd} small onClick={() => handleOpenSite(userData.meta_socials.carrd)} />
-                        )}
-                        {userData.meta_socials?.deviantart && (
-                          <OykButton
-                            icon={SiDeviantart}
-                            small
-                            onClick={() => handleOpenSite(userData.meta_socials.deviantart)}
-                          />
-                        )}
-                        {userData.meta_socials?.facebook && (
-                          <OykButton
-                            icon={SiFacebook}
-                            small
-                            onClick={() => handleOpenSite(userData.meta_socials.facebook)}
-                          />
-                        )}
-                        {userData.meta_socials?.github && (
-                          <OykButton
-                            icon={SiGithub}
-                            small
-                            onClick={() => handleOpenSite(userData.meta_socials.github)}
-                          />
-                        )}
-                        {userData.meta_socials?.instagram && (
-                          <OykButton
-                            icon={SiInstagram}
-                            small
-                            onClick={() => handleOpenSite(userData.meta_socials.instagram)}
-                          />
-                        )}
-                        {userData.meta_socials?.kofi && (
-                          <OykButton icon={SiKofi} small onClick={() => handleOpenSite(userData.meta_socials.kofi)} />
-                        )}
-                        {userData.meta_socials?.linktree && (
-                          <OykButton
-                            icon={SiLinktree}
-                            small
-                            onClick={() => handleOpenSite(userData.meta_socials.linktree)}
-                          />
-                        )}
-                        {userData.meta_socials?.mastodon && (
-                          <OykButton
-                            icon={SiMastodon}
-                            small
-                            onClick={() => handleOpenSite(userData.meta_socials.mastodon)}
-                          />
-                        )}
-                        {userData.meta_socials?.patreon && (
-                          <OykButton
-                            icon={SiPatreon}
-                            small
-                            onClick={() => handleOpenSite(userData.meta_socials.patreon)}
-                          />
-                        )}
-                        {userData.meta_socials?.pinterest && (
-                          <OykButton
-                            icon={SiPinterest}
-                            small
-                            onClick={() => handleOpenSite(userData.meta_socials.pinterest)}
-                          />
-                        )}
-                        {userData.meta_socials?.reddit && (
-                          <OykButton
-                            icon={SiReddit}
-                            small
-                            onClick={() => handleOpenSite(userData.meta_socials.reddit)}
-                          />
-                        )}
-                        {userData.meta_socials?.soundcloud && (
-                          <OykButton
-                            icon={SiSoundcloud}
-                            small
-                            onClick={() => handleOpenSite(userData.meta_socials.soundcloud)}
-                          />
-                        )}
-                        {userData.meta_socials?.spotify && (
-                          <OykButton
-                            icon={SiSpotify}
-                            small
-                            onClick={() => handleOpenSite(userData.meta_socials.spotify)}
-                          />
-                        )}
-                        {userData.meta_socials?.steam && (
-                          <OykButton icon={SiSteam} small onClick={() => handleOpenSite(userData.meta_socials.steam)} />
-                        )}
-                        {userData.meta_socials?.tiktok && (
-                          <OykButton
-                            icon={SiTiktok}
-                            small
-                            onClick={() => handleOpenSite(userData.meta_socials.tiktok)}
-                          />
-                        )}
-                        {userData.meta_socials?.twitch && (
-                          <OykButton
-                            icon={SiTwitch}
-                            small
-                            onClick={() => handleOpenSite(userData.meta_socials.twitch)}
-                          />
-                        )}
-                        {userData.meta_socials?.youtube && (
-                          <OykButton
-                            icon={SiYoutube}
-                            small
-                            onClick={() => handleOpenSite(userData.meta_socials.youtube)}
-                          />
-                        )}
-                        {userData.meta_socials?.x && (
-                          <OykButton icon={SiX} small onClick={() => handleOpenSite(userData.meta_socials.x)} />
-                        )}
-                      </div>) : null}
+                      {userData.meta_website || userData.meta_socials ? (
+                        <div className="oyk-userprofile-header-social-links">
+                          {userData.meta_website && (
+                            <OykButton icon={Globe} small onClick={() => handleOpenSite(userData.meta_website)} />
+                          )}
+                          {userData.meta_socials?.artstation && (
+                            <OykButton
+                              icon={SiArtstation}
+                              small
+                              onClick={() => handleOpenSite(userData.meta_socials.artstation)}
+                            />
+                          )}
+                          {userData.meta_socials?.bluesky && (
+                            <OykButton
+                              icon={SiBluesky}
+                              small
+                              onClick={() => handleOpenSite(userData.meta_socials.bluesky)}
+                            />
+                          )}
+                          {userData.meta_socials?.carrd && (
+                            <OykButton
+                              icon={SiCarrd}
+                              small
+                              onClick={() => handleOpenSite(userData.meta_socials.carrd)}
+                            />
+                          )}
+                          {userData.meta_socials?.deviantart && (
+                            <OykButton
+                              icon={SiDeviantart}
+                              small
+                              onClick={() => handleOpenSite(userData.meta_socials.deviantart)}
+                            />
+                          )}
+                          {userData.meta_socials?.facebook && (
+                            <OykButton
+                              icon={SiFacebook}
+                              small
+                              onClick={() => handleOpenSite(userData.meta_socials.facebook)}
+                            />
+                          )}
+                          {userData.meta_socials?.github && (
+                            <OykButton
+                              icon={SiGithub}
+                              small
+                              onClick={() => handleOpenSite(userData.meta_socials.github)}
+                            />
+                          )}
+                          {userData.meta_socials?.instagram && (
+                            <OykButton
+                              icon={SiInstagram}
+                              small
+                              onClick={() => handleOpenSite(userData.meta_socials.instagram)}
+                            />
+                          )}
+                          {userData.meta_socials?.kofi && (
+                            <OykButton icon={SiKofi} small onClick={() => handleOpenSite(userData.meta_socials.kofi)} />
+                          )}
+                          {userData.meta_socials?.linktree && (
+                            <OykButton
+                              icon={SiLinktree}
+                              small
+                              onClick={() => handleOpenSite(userData.meta_socials.linktree)}
+                            />
+                          )}
+                          {userData.meta_socials?.mastodon && (
+                            <OykButton
+                              icon={SiMastodon}
+                              small
+                              onClick={() => handleOpenSite(userData.meta_socials.mastodon)}
+                            />
+                          )}
+                          {userData.meta_socials?.patreon && (
+                            <OykButton
+                              icon={SiPatreon}
+                              small
+                              onClick={() => handleOpenSite(userData.meta_socials.patreon)}
+                            />
+                          )}
+                          {userData.meta_socials?.pinterest && (
+                            <OykButton
+                              icon={SiPinterest}
+                              small
+                              onClick={() => handleOpenSite(userData.meta_socials.pinterest)}
+                            />
+                          )}
+                          {userData.meta_socials?.reddit && (
+                            <OykButton
+                              icon={SiReddit}
+                              small
+                              onClick={() => handleOpenSite(userData.meta_socials.reddit)}
+                            />
+                          )}
+                          {userData.meta_socials?.soundcloud && (
+                            <OykButton
+                              icon={SiSoundcloud}
+                              small
+                              onClick={() => handleOpenSite(userData.meta_socials.soundcloud)}
+                            />
+                          )}
+                          {userData.meta_socials?.spotify && (
+                            <OykButton
+                              icon={SiSpotify}
+                              small
+                              onClick={() => handleOpenSite(userData.meta_socials.spotify)}
+                            />
+                          )}
+                          {userData.meta_socials?.steam && (
+                            <OykButton
+                              icon={SiSteam}
+                              small
+                              onClick={() => handleOpenSite(userData.meta_socials.steam)}
+                            />
+                          )}
+                          {userData.meta_socials?.tiktok && (
+                            <OykButton
+                              icon={SiTiktok}
+                              small
+                              onClick={() => handleOpenSite(userData.meta_socials.tiktok)}
+                            />
+                          )}
+                          {userData.meta_socials?.twitch && (
+                            <OykButton
+                              icon={SiTwitch}
+                              small
+                              onClick={() => handleOpenSite(userData.meta_socials.twitch)}
+                            />
+                          )}
+                          {userData.meta_socials?.youtube && (
+                            <OykButton
+                              icon={SiYoutube}
+                              small
+                              onClick={() => handleOpenSite(userData.meta_socials.youtube)}
+                            />
+                          )}
+                          {userData.meta_socials?.x && (
+                            <OykButton icon={SiX} small onClick={() => handleOpenSite(userData.meta_socials.x)} />
+                          )}
+                        </div>
+                      ) : null}
                     </section>
                   </div>
                   {hasError?.addfriend && (
@@ -387,7 +399,18 @@ export default function CommunityProfile() {
                 <OykProfileUserFeed user={userData} />
               </OykGridCol>
               <OykGridCol col="25">
-                <OykCard style={{ textAlign: "center" }}>...</OykCard>
+                {userData.friends?.length > 0 ? (
+                  <OykCard className="oyk-userprofile-friends">
+                    <OykHeading subtitle title={t("Friends")} nop />
+                    <div className="oyk-userprofile-friends-list">
+                      {userData.friends.map((friend) => (
+                        <OykLink key={friend.slug} routeName={"community-user-profile"} params={{ userSlug: friend.slug }}>
+                          <OykAvatar src={friend.avatar} abbr={friend.abbr} size={48} />
+                        </OykLink>
+                      ))}
+                    </div>
+                  </OykCard>
+                ) : null}
               </OykGridCol>
             </OykGridRow>
           </>

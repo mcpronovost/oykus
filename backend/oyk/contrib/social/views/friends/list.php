@@ -3,22 +3,9 @@
 global $pdo;
 $userId = require_rat();
 
-try {
-  $qry = $pdo->prepare("
-    SELECT u.name, u.abbr, u.slug, u.avatar, u.cover
-    FROM social_friends f
-    JOIN auth_users u ON u.id = f.friend_id
-    WHERE f.user_id = ?
-        AND f.status = 'accepted'
-    ORDER BY u.name ASC;
-  ");
+$friendService = new FriendService($pdo);
 
-  $qry->execute([$userId]);
-  $friends = $qry->fetchAll();
-}
-catch (Exception $e) {
-  Response::serverError();
-}
+$friends = $friendService->getFriendsList($userId);
 
 Response::json([
   "ok" => TRUE,

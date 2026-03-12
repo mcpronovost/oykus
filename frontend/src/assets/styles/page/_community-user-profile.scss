@@ -138,6 +138,21 @@
     }
   }
 
+  &-friends {
+    &-list {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+
+      .oyk-link {
+        flex: 1 1 auto;
+      }
+    }
+  }
+
   &-feed {
     display: flex;
     flex-direction: column;
@@ -171,7 +186,7 @@
               line-height: 1.2;
               position: relative;
               opacity: 0.6;
-              padding: 0 0 0 28px; 
+              padding: 0 0 0 28px;
 
               &::before {
                 content: "";

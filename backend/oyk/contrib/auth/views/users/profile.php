@@ -62,8 +62,10 @@ if (!empty($user["meta_socials"])) {
 }
 
 $friend = $friendService->getFriendPending($userAuthId, $user["id"]);
+$friends = $friendService->getFriendsList($user["id"]);
 
 $user["friend"] = $friend;
+$user["friends"] = $friends;
 
 Response::json([
   "ok" => TRUE,

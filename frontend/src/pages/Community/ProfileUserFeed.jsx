@@ -68,8 +68,8 @@ export default function OykProfileUserFeed({ user }) {
       ) : isLoading ? (
         <OykLoading />
       ) : activities && activities.length > 0 ? (
-        activities.map((post) => (
-          <article className="oyk-userprofile-feed-post">
+        activities.map((post, index) => (
+          <article key={index} className="oyk-userprofile-feed-post">
             <OykCard>
               <header className="oyk-userprofile-feed-post-header">
                 <OykAvatar size={48} src={user.avatar} />
@@ -90,7 +90,7 @@ export default function OykProfileUserFeed({ user }) {
                   </div>
                 </div>
                 <div className="oyk-userprofile-feed-post-header-actions">
-                  <OykDropdown
+                  {/* <OykDropdown
                     float
                     toggle={<OykButton icon={Ellipsis} plain />}
                     menu={[
@@ -100,7 +100,7 @@ export default function OykProfileUserFeed({ user }) {
                         onClick: () => {},
                       },
                     ]}
-                  />
+                  /> */}
                 </div>
               </header>
               <div className="oyk-code">
