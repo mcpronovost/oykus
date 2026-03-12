@@ -155,6 +155,17 @@ export const UNIVERSES_ROUTES = [
                       section: "modules-reward",
                     },
                   },
+                  {
+                    name: "universe-admin-modules-reward-titles",
+                    component: React.lazy(() => import("../../../pages/Universes/Admin")),
+                    paths: {
+                      fr: "recompense-titres",
+                      en: "reward-titles",
+                    },
+                    params: {
+                      section: "modules-reward-titles",
+                    },
+                  },
                 ],
               },
               {

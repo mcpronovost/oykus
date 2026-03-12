@@ -23,6 +23,7 @@ import OykUniverseAdminModules from "./Modules";
 import OykUniverseAdminModuleBlog from "./ModuleBlog";
 import OykUniverseAdminModulePlanner from "./ModulePlanner";
 import OykUniverseAdminModuleReward from "./ModuleReward";
+import OykUniverseAdminModuleRewardTitles from "./ModuleRewardTitles";
 import OykUniverseAdminTheme from "./Theme";
 import OykUniverseAdminThemeStylesheet from "./ThemeStylesheet";
 
@@ -120,7 +121,6 @@ export default function UniverseAdmin() {
                 name: t("Titles"),
                 routeName: "universe-admin-modules-reward-titles",
                 params: { universeSlug: params?.universeSlug },
-                disabled: true,
               },
               {
                 name: t("Achievements"),
@@ -165,6 +165,8 @@ export default function UniverseAdmin() {
               <OykUniverseAdminModulePlanner />
             ) : params?.section === "modules-reward" ? (
               <OykUniverseAdminModuleReward />
+            ) : params?.section === "modules-reward-titles" ? (
+              <OykUniverseAdminModuleRewardTitles />
             ) : params?.section === "theme" ? (
               <OykUniverseAdminTheme />
             ) : params?.section === "stylesheet" ? (

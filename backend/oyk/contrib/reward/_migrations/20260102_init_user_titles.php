@@ -2,7 +2,7 @@
 global $pdo;
 
 $pdo->exec("
-CREATE TABLE IF NOT EXISTS reward_user_titles (
+CREATE TABLE IF NOT EXISTS reward_titles_users (
     `id` int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `user_id` int UNSIGNED NOT NULL,
     `title_id` int UNSIGNED NOT NULL,

@@ -94,9 +94,10 @@ export default function OykCommunity() {
                       <div className="oyk-community-memberlist-item-header-name">
                         <span>{member.name}</span>
                       </div>
-                      <div className="oyk-community-memberlist-item-header-title">
-                        <span>Qui ne fait que passer</span>
-                      </div>
+                      {member.title && (
+                        <div className="oyk-community-memberlist-item-header-title">
+                        <span>{member.title}</span>
+                      </div>)}
                     </header>
                   </OykCard>
                 </OykGridCol>

@@ -194,7 +194,7 @@ export default function CommunityProfile() {
                   <div className="oyk-userprofile-header">
                     <section className="oyk-userprofile-header-identity">
                       <h1 className="oyk-userprofile-header-identity-name">{userData.name}</h1>
-                      <small className="oyk-userprofile-header-identity-title">Qui ne fait que passer</small>
+                      {userData.title && (<small className="oyk-userprofile-header-identity-title">{userData.title}</small>)}
                     </section>
                     <section className="oyk-userprofile-header-stats">
                       <ul>

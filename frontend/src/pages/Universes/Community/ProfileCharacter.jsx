@@ -69,9 +69,12 @@ export default function CommunityProfile() {
                   coverHeight={144}
                   height={224}
                 />
-                <section className="oyk-characterprofile-identity" style={{ textAlign: "center", paddingBottom: "24px" }}>
+                <section
+                  className="oyk-characterprofile-identity"
+                  style={{ textAlign: "center", padding: "0 16px 24px" }}
+                >
                   <h1 className="oyk-characterprofile-identity-name">{userData.name}</h1>
-                  <small className="oyk-characterprofile-identity-title">Qui ne fait que passer</small>
+                  {userData.title && <small className="oyk-characterprofile-identity-title">{userData.title}</small>}
                 </section>
               </OykCard>
             </OykGridCol>

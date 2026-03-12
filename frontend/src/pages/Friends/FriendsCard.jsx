@@ -30,9 +30,9 @@ export default function SettingsFriendsCard({ friend, fetchData = () => {} }) {
           <div className="oyk-settings-friends-list-item-header-name">
             <span>{friend.name}</span>
           </div>
-          <div className="oyk-settings-friends-list-item-header-title">
-            <span>Qui ne fait que passer</span>
-          </div>
+          {friend.title && (<div className="oyk-settings-friends-list-item-header-title">
+            <span>{friend.title}</span>
+          </div>)}
         </header>
         <div className="oyk-settings-friends-list-item-actions">
           <OykButton outline icon={Eye} onClick={() => n("community-user-profile", { userSlug: friend.slug })} />

@@ -7,7 +7,7 @@ import { useWorld } from "@/services/world";
 
 import { OykButton, OykCard, OykForm, OykFormField, OykFormMessage, OykHeading, OykLoading } from "@/components/ui";
 
-export default function UniverseAdminModuleReward() {
+export default function OykUniverseAdminModuleReward() {
   const { routeTitle, params } = useRouter();
   const { t } = useTranslation();
   const { currentUniverse, changeUniverse } = useWorld();
@@ -101,7 +101,7 @@ export default function UniverseAdminModuleReward() {
   useEffect(() => {
     const controller = new AbortController();
 
-    routeTitle(`${t("Admin")} - ${t("Universe Blog Module")}`);
+    routeTitle(`${t("Admin")} - ${t("Universe Reward Module")}`);
 
     fetchModuleData(controller.signal);
 
@@ -129,7 +129,9 @@ export default function UniverseAdminModuleReward() {
               />
             </section>
             {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
-            {hasSuccessSubmit?.message && <OykFormMessage successTitle={hasSuccessSubmit?.title} hasSuccess={hasSuccessSubmit?.message} />}
+            {hasSuccessSubmit?.message && (
+              <OykFormMessage successTitle={hasSuccessSubmit?.title} hasSuccess={hasSuccessSubmit?.message} />
+            )}
             <div className="oyk-form-actions">
               <OykButton
                 type="submit"
