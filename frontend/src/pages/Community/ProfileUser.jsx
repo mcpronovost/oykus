@@ -374,7 +374,7 @@ export default function CommunityProfile() {
                   )}
                 </OykCard>
               </OykGridCol>
-              <OykGridCol col="25">
+              <OykGridCol col="25" order="1" orderMd="1">
                 <OykCard className="oyk-userprofile-about">
                   <OykHeading subtitle title={t("About")} nop />
                   <p className="oyk-userprofile-about-bio">{userData.meta_bio}</p>
@@ -395,10 +395,10 @@ export default function CommunityProfile() {
                   </OykDataset>
                 </OykCard>
               </OykGridCol>
-              <OykGridCol col="50">
+              <OykGridCol col="50" order="2" orderMd="3">
                 <OykProfileUserFeed user={userData} />
               </OykGridCol>
-              <OykGridCol col="25">
+              <OykGridCol col="25" order="3" orderMd="2">
                 {userData.friends?.length > 0 ? (
                   <OykCard className="oyk-userprofile-friends">
                     <OykHeading subtitle title={t("Friends")} nop />
