@@ -7,8 +7,6 @@ CREATE TABLE IF NOT EXISTS reward_titles_characters (
     `character_id` int UNSIGNED NOT NULL,
     `title_id` int UNSIGNED NOT NULL,
 
-    `source` varchar(255) NULL,
-
     `is_active` tinyint(1) NOT NULL DEFAULT 0,
 
     `obtained_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
