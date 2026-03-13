@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Frown, Key, X } from "lucide-react";
+import { Frown, Key, Plus, X } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useRouter } from "@/services/router";
@@ -7,6 +7,7 @@ import { useTranslation } from "@/services/translation";
 import { useWorld } from "@/services/world";
 
 import { OykButton, OykCard, OykFeedback, OykHeading, OykLoading } from "@/components/ui";
+import OykModalTitleCreate from "./modals/TitleCreate";
 
 export default function OykUniverseAdminModuleRewardTitles() {
   const { routeTitle, params } = useRouter();
@@ -17,6 +18,7 @@ export default function OykUniverseAdminModuleRewardTitles() {
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [hasError, setHasError] = useState(null);
   const [hasSuccessSubmit, setHasSuccessSubmit] = useState(null);
+  const [isModalTitleCreateOpen, setIsModalTitleCreateOpen] = useState(false);
   const [titles, setTitles] = useState({});
 
   const fetchModuleData = async (signal) => {
@@ -69,6 +71,13 @@ export default function OykUniverseAdminModuleRewardTitles() {
     }
   };
 
+  const handleCloseModalTitleCreate = (updated) => {
+    setIsModalTitleCreateOpen(false);
+    if (updated) {
+      fetchModuleData();
+    }
+  };
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -84,7 +93,14 @@ export default function OykUniverseAdminModuleRewardTitles() {
 
   return (
     <section className="oyk-universes-admin-module-reward-titles">
-      <OykHeading subtitle tag="h2" title={t("Titles")} nop />
+      <OykModalTitleCreate isOpen={isModalTitleCreateOpen} onClose={handleCloseModalTitleCreate} />
+      <OykHeading subtitle tag="h2" title={t("Titles")} nop actions={(
+        <>
+          <OykButton color="primary" icon={Plus} onClick={() => setIsModalTitleCreateOpen(true)}>
+            {t("Create a new title")}
+          </OykButton>
+        </>
+      )} />
       {isLoading ? (
         <OykLoading />
       ) : hasError?.message ? (

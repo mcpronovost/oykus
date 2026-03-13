@@ -4,6 +4,7 @@ global $pdo;
 
 $authService = new AuthService($pdo);
 $userService = new UserService($pdo);
+$titleService = new TitleService($pdo);
 
 $fields = $authService->validateData($_POST);
 
@@ -18,6 +19,8 @@ $user = $userService->getCurrentUser($authUser["id"]);
 $accessToken = $authService->getRat($authUser["id"], TRUE);
 
 // EventBus::dispatch("user.login", ["user_id" => $user["id"]]);
+
+$titleService->giveUserTitle($user["id"], "first_login");
 
 Response::json([
   "ok" => TRUE,
