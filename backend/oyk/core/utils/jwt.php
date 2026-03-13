@@ -88,7 +88,7 @@ function get_guest_id(): string {
     setcookie(
       "oyk-gid",
       $token,
-      time() + 86400,
+      time() + (30 * 86400),
       "/",
       "",
       FALSE,
