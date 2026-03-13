@@ -202,6 +202,9 @@
   "Coming soon": "Bientôt disponible",
   "Delete Post": "Supprimer l'article",
   "Are you sure you want to delete this post?": "Êtes-vous sûr de vouloir supprimer cet article ?",
+  "Delete Title": "Supprimer le titre",
+  "Are you sure you want to delete this title?": "Êtes-vous sûr de vouloir supprimer ce titre ?",
+  "It will be removed for anyone who obtained it": "Il sera supprimé pour toute personne l'ayant obtenu.",
   "commented on your blog post": "a commenté votre article de blog",
   "Limitations": "Limitations",
   "Blocked Users": "Utilisateurs bloqués",
@@ -269,5 +272,12 @@
   "All rights reserved": "Tout droits réservés",
   "Create a new title": "Créer un nouveau titre",
   "Edit title": "Modifier le titre",
-  "How to obtain": "Comment l'obtenir"
+  "Obtaining": "Obtention",
+  "Hidden": "Caché",
+  "Unique": "Unique",
+  "Will only be obtainable by a single user": "Ne sera attribué qu'à un seul utilisateur",
+  "Will not appear in rewards page until it is obtained": "Ne sera pas visible sur la page des récompenses avant d'être obtenu",
+  "Target": "Cible",
+  "Character": "Personnage",
+  "User": "Utilisateur"
 }

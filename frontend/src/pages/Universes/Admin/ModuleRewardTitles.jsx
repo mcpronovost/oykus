@@ -7,7 +7,9 @@ import { useTranslation } from "@/services/translation";
 import { useWorld } from "@/services/world";
 
 import { OykButton, OykCard, OykFeedback, OykHeading, OykLoading } from "@/components/ui";
+import OykUniverseAdminModuleRewardTitlesCard from "./ModuleRewardTitlesCard";
 import OykModalTitleCreate from "./modals/TitleCreate";
+import OykModalTitleDelete from "./modals/TitleDelete";
 
 export default function OykUniverseAdminModuleRewardTitles() {
   const { routeTitle, params } = useRouter();
@@ -15,9 +17,7 @@ export default function OykUniverseAdminModuleRewardTitles() {
   const { currentUniverse } = useWorld();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [hasError, setHasError] = useState(null);
-  const [hasSuccessSubmit, setHasSuccessSubmit] = useState(null);
   const [isModalTitleCreateOpen, setIsModalTitleCreateOpen] = useState(false);
   const [titles, setTitles] = useState({});
 
@@ -40,38 +40,7 @@ export default function OykUniverseAdminModuleRewardTitles() {
     }
   };
 
-  const postSubmit = async () => {
-    setIsLoadingSubmit(true);
-    setHasError(null);
-    setHasSuccessSubmit(null);
-    try {
-      const formData = new FormData();
-      let settings = {};
-      for (const [key, value] of Object.entries(rewardForm)) {
-        settings[key] = value.trim();
-      }
-      formData.append("settings", JSON.stringify(settings));
-      const r = await api.post(`/world/universes/${currentUniverse.slug}/modules/reward/edit/`, formData);
-      if (!r?.ok || !r.module) throw r;
-      changeUniverse(params?.universeSlug);
-      setRewardForm((prev) => ({
-        ...prev,
-        ...r.module.settings,
-      }));
-      setHasSuccessSubmit({
-        title: t("Settings updated"),
-        message: t("Settings of the reward module have been updated successfully"),
-      });
-    } catch (e) {
-      setHasError(() => ({
-        message: e.error || t("An error occurred"),
-      }));
-    } finally {
-      setIsLoadingSubmit(false);
-    }
-  };
-
-  const handleCloseModalTitleCreate = (updated) => {
+  const handleCloseModalTitle = (updated) => {
     setIsModalTitleCreateOpen(false);
     if (updated) {
       fetchModuleData();
@@ -93,7 +62,7 @@ export default function OykUniverseAdminModuleRewardTitles() {
 
   return (
     <section className="oyk-universes-admin-module-reward-titles">
-      <OykModalTitleCreate isOpen={isModalTitleCreateOpen} onClose={handleCloseModalTitleCreate} />
+      <OykModalTitleCreate isOpen={isModalTitleCreateOpen} onClose={handleCloseModalTitle} />
       <OykHeading subtitle tag="h2" title={t("Titles")} nop actions={(
         <>
           <OykButton color="primary" icon={Plus} onClick={() => setIsModalTitleCreateOpen(true)}>
@@ -108,23 +77,7 @@ export default function OykUniverseAdminModuleRewardTitles() {
       ) : titles?.length > 0 ? (
         <ul className="oyk-universes-admin-module-reward-titles-list">
           {titles.map((title) => (
-            <li key={title.id} className="oyk-universes-admin-module-reward-titles-list-item">
-              <OykCard>
-                <header className="oyk-universes-admin-module-reward-titles-list-item-info">
-                  <h3>{title.name}</h3>
-                  <p>{title.description}</p>
-                  <small>
-                    <Key size={14} /> {title.how_to_obtain}
-                  </small>
-                </header>
-                <div className="oyk-universes-admin-module-reward-titles-list-item-actions">
-                  <OykButton outline onClick={() => {}}>
-                    {t("Edit")}
-                  </OykButton>
-                  <OykButton outline color="danger" icon={X} onClick={() => {}} />
-                </div>
-              </OykCard>
-            </li>
+            <OykUniverseAdminModuleRewardTitlesCard key={title.id} title={title} onCloseModal={handleCloseModalTitle} />
           ))}
         </ul>
       ) : (

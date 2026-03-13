@@ -20,16 +20,18 @@ export default function OykModalTitleCreate({ isOpen, onClose }) {
     setIsLoading(true);
     setHasError(null);
     try {
-      const url = `/planner/u/${currentUniverse.slug}/statuses/create/`;
+      const url = `/reward/u/${currentUniverse.slug}/titles/create/`;
       const formData = new FormData();
       for (const [key, value] of Object.entries(titleForm)) {
         formData.append(key, value);
       }
       const r = await api.post(url, formData);
-      if (!r.ok) throw new Error(r.error || t("An error occurred"));
+      if (!r.ok) throw r;
       onClose(true);
     } catch (e) {
-      setHasError(e.message || t("An error occurred"));
+      setHasError({
+        message: t(e?.error) || t("An error occurred")
+      });
     } finally {
       setIsLoading(false);
     }
@@ -59,6 +61,7 @@ export default function OykModalTitleCreate({ isOpen, onClose }) {
       name: "",
       description: "",
       how_to_obtain: "",
+      target: "character",
       is_unique: false,
       is_hidden: false,
     });
@@ -67,7 +70,7 @@ export default function OykModalTitleCreate({ isOpen, onClose }) {
   }, [isOpen]);
 
   return (
-    <OykModal title={t("Create a new status")} isOpen={isOpen} onClose={onClose}>
+    <OykModal title={t("Create a new title")} isOpen={isOpen} onClose={onClose}>
       <OykForm onSubmit={postSubmit} isLoading={isLoading}>
         <OykFormField
           label={t("Name")}
@@ -85,7 +88,7 @@ export default function OykModalTitleCreate({ isOpen, onClose }) {
           onChange={handleChange}
         />
         <OykFormField
-          label={t("How to obtain")}
+          label={t("Obtaining")}
           name="how_to_obtain"
           type="select"
           defaultValue={titleForm.how_to_obtain}
@@ -101,11 +104,25 @@ export default function OykModalTitleCreate({ isOpen, onClose }) {
           onChange={handleChange}
         />
         <OykFormField
+          label={t("Target")}
+          name="target"
+          type="select"
+          defaultValue={titleForm.target}
+          options={[
+            ...(currentUniverse.is_default ? [{ label: t("User"), value: "user" }] : []),
+            { label: t("Character"), value: "character" },
+            ...(currentUniverse.is_default ? [{ label: t("Universe"), value: "universe" }] : []),
+          ]}
+          onChange={handleChange}
+          disabled={!currentUniverse.is_default}
+        />
+        <OykFormField
           label={t("Unique")}
           name="is_unique"
           type="checkbox"
           defaultValue={titleForm.is_unique}
           onChange={handleChange}
+          helptext={titleForm.is_unique ? t("Will only be obtainable by a single user") : null}
         />
         <OykFormField
           label={t("Hidden")}
@@ -113,6 +130,7 @@ export default function OykModalTitleCreate({ isOpen, onClose }) {
           type="checkbox"
           defaultValue={titleForm.is_hidden}
           onChange={handleChange}
+          helptext={titleForm.is_hidden ? t("Will not appear in rewards page until it is obtained") : null}
         />
         {hasError?.message && <OykFormMessage hasError={hasError.message} />}
         <div className="oyk-form-actions">
