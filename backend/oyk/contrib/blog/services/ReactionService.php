@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Blog reactions service
- * 
- * - getReactionsForPost
- * - setReaction
- */
 class ReactionService {
 
   public function __construct(private PDO $pdo) {

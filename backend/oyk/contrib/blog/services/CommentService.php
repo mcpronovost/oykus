@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Blog comments service
- */
 class CommentService {
 
   public function __construct(private PDO $pdo) {
