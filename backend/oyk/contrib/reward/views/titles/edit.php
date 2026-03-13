@@ -11,15 +11,15 @@ $context = $universeService->getContext($universeSlug, $userAuthId);
 $universeId = $context["id"];
 
 // Check permissions
-if (!$titleService->userCanCreateTitle($universeId, $userAuthId)) {
+if (!$titleService->userCanEditTitle($universeId, $titleId, $userAuthId)) {
   Response::unauthorized("Permission denied");
 }
 
 // Validation
-$fields = $titleService->validateCreateData($_POST);
+$fields = $titleService->validateData($_POST);
 
-// Create title
-$titleService->createTitle($universeId, $fields);
+// Edit title
+$titleService->updateTitle($universeId, $titleId, $fields);
 
 Response::json([
   "ok" => TRUE,

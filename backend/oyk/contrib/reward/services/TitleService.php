@@ -23,6 +23,28 @@ class TitleService {
     return (bool) $qry->fetchColumn();
   }
 
+  public function userCanEditTitle(int $universeId, int $titleId, int $userId): bool {
+    if (!$universeId || $universeId <= 0) {
+      throw new NotFoundException("Universe not found");
+    }
+    if (!$titleId || $titleId <= 0) {
+      throw new NotFoundException("Title not found");
+    }
+    if (!$userId || $userId <= 0) {
+      throw new NotFoundException("User not found");
+    }
+
+    $qry = $this->pdo->prepare("
+      SELECT EXISTS (
+        SELECT 1
+        FROM world_universes
+        WHERE id = ? AND owner_id = ?
+      )
+    ");
+    $qry->execute([$universeId, $userId]);
+    return (bool) $qry->fetchColumn();
+  }
+
   public function userCanDeleteTitle(int $universeId, int $titleId, int $userId): bool {
     if (!$universeId || $universeId <= 0) {
       throw new NotFoundException("Universe not found");
@@ -74,13 +96,13 @@ class TitleService {
 
     // Is Unique
     if (array_key_exists("is_unique", $data)) {
-      $is_unique = (bool) $data["is_unique"];
+      $is_unique = $data["is_unique"] == "true" ? 1 : 0;
       $fields["is_unique"] = $is_unique;
     }
 
     // Is Hidden
     if (array_key_exists("is_hidden", $data)) {
-      $is_hidden = (bool) $data["is_hidden"];
+      $is_hidden = $data["is_hidden"] == "true" ? 1 : 0;
       $fields["is_hidden"] = $is_hidden;
     }
 
@@ -237,6 +259,33 @@ class TitleService {
             $fields["target"],
             $fields["is_unique"],
             $fields["is_hidden"]
+          ]);
+    }
+    catch (Exception $e) {
+      throw new QueryException($e->getMessage());
+    }
+  }
+
+  public function updateTitle(int $universeId, int $titleId, array $fields): void {
+    try {
+      $this->pdo->prepare("
+        UPDATE reward_titles
+        SET name = ?,
+            description = ?,
+            how_to_obtain = ?,
+            target = ?,
+            is_unique = ?,
+            is_hidden = ?
+        WHERE id = ? AND universe_id = ?
+      ")->execute([
+            $fields["name"],
+            $fields["description"],
+            $fields["how_to_obtain"],
+            $fields["target"],
+            $fields["is_unique"],
+            $fields["is_hidden"],
+            $titleId,
+            $universeId
           ]);
     }
     catch (Exception $e) {
