@@ -27,7 +27,11 @@ export default function OykUniverseAdminModuleRewardTitlesCard({ title, onCloseM
             <h3>{title.name}</h3>
             <p>{title.description}</p>
             <small>
-              {title.is_unique ? <OykChip outline color="primary">{t("Unique")}</OykChip> : null}
+              {title.is_unique ? (
+                <OykChip outline color="primary">
+                  {t("Unique")}
+                </OykChip>
+              ) : null}
               {title.is_hidden ? <OykChip outline>{t("Hidden")}</OykChip> : null}
               <Key size={14} /> {title.how_to_obtain}
             </small>
