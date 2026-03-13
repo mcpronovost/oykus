@@ -18,6 +18,15 @@ function oykUserService(): UserService {
   return $instance;
 }
 
+function oykCourrierAlertService(): AlertService {
+  global $pdo;
+  static $instance = NULL;
+  if ($instance === NULL) {
+    $instance = new AlertService($pdo);
+  }
+  return $instance;
+}
+
 function oykSecurityLogService(): LogService {
   global $pdo;
   static $instance = NULL;

@@ -9,7 +9,7 @@ class NotificationService {
       $qry = $this->pdo->prepare("
         SELECT COUNT(*)
         FROM courrier_alerts
-        WHERE recipient = :id AND is_read = 0
+        WHERE user_id = :id AND is_read = 0
       ");
 
       $qry->execute([$userId]);

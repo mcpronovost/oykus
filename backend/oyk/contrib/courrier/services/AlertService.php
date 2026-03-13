@@ -5,15 +5,15 @@ class AlertService {
   public function __construct(private PDO $pdo) {
   }
 
-  public function createAlert(int $recipientId, string $title, string $tag, string $source_table, int $source_id, array $payload): void {
+  public function createAlert(int $userId, string $title, string $tag, string $source_table, int $source_id, array $payload): void {
     try {
       $qry = $this->pdo->prepare("
-        INSERT INTO courrier_alerts (recipient, title, tag, source_table, source_id, payload)
+        INSERT INTO courrier_alerts (user_id, title, tag, source_table, source_id, payload)
         VALUES (?, ?, ?, ?, ?, ?)
       ");
 
       $qry->execute([
-        $recipientId,
+        $userId,
         $title,
         $tag,
         $source_table,
