@@ -9,7 +9,7 @@ import { useWorld } from "@/services/world";
 import AppNotAuthorized from "@/components/core/AppNotAuthorized";
 import { OykAlert, OykCard, OykGrid, OykHeading } from "@/components/ui";
 
-export default function OykRewards() {
+export default function OykProgress() {
   const { isAuth } = useAuth();
   const { routeTitle } = useRouter();
   const { t } = useTranslation();
@@ -19,7 +19,7 @@ export default function OykRewards() {
     if (!isAuth || !currentUniverse || (currentUniverse && !currentUniverse.modules?.progress?.active)) return;
     const controller = new AbortController();
 
-    routeTitle(currentUniverse.modules.progress.settings.display_name || t("Rewards"));
+    routeTitle(currentUniverse.modules.progress.settings.display_name || t("Progress"));
 
     return () => {
       controller.abort();
@@ -33,7 +33,7 @@ export default function OykRewards() {
 
   return (
     <section className="oyk-page oyk-progress">
-      <OykHeading title={currentUniverse.modules.progress.settings.display_name || t("Rewards")} />
+      <OykHeading title={currentUniverse.modules.progress.settings.display_name || t("Progress")} />
       <OykGrid>
         <OykCard>
           <OykAlert ghost variant="default">

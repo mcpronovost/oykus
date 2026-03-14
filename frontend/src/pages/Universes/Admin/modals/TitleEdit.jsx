@@ -130,7 +130,7 @@ export default function OykModalTitleEdit({ title, isOpen, onClose }) {
           type="checkbox"
           defaultValue={titleForm.is_hidden}
           onChange={handleChange}
-          helptext={titleForm.is_hidden ? t("Will not appear in rewards page until it is obtained") : null}
+          helptext={titleForm.is_hidden ? t("Will not appear in progress page until it is obtained") : null}
         />
         {hasError?.message && <OykFormMessage hasError={hasError.message} />}
         <div className="oyk-form-actions">
