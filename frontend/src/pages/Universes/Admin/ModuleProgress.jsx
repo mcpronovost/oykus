@@ -7,7 +7,7 @@ import { useWorld } from "@/services/world";
 
 import { OykButton, OykCard, OykForm, OykFormField, OykFormMessage, OykHeading, OykLoading } from "@/components/ui";
 
-export default function OykUniverseAdminModuleReward() {
+export default function OykUniverseAdminModuleProgress() {
   const { routeTitle, params } = useRouter();
   const { t } = useTranslation();
   const { currentUniverse, changeUniverse } = useWorld();
@@ -16,19 +16,19 @@ export default function OykUniverseAdminModuleReward() {
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [hasError, setHasError] = useState(null);
   const [hasSuccessSubmit, setHasSuccessSubmit] = useState(null);
-  const [rewardForm, setRewardForm] = useState({});
+  const [progressForm, setProgressForm] = useState({});
 
-  const rewardFormRef = useRef(null);
+  const progressFormRef = useRef(null);
 
   const fetchModuleData = async (signal) => {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get(`/world/universes/${currentUniverse.slug}/modules/reward/`, signal ? { signal } : {});
-      if (!r.ok || !r.module || !r.module.reward) throw r;
-      setRewardForm((prev) => ({
+      const r = await api.get(`/world/universes/${currentUniverse.slug}/modules/progress/`, signal ? { signal } : {});
+      if (!r.ok || !r.module || !r.module.progress) throw r;
+      setProgressForm((prev) => ({
         ...prev,
-        ...r.module.reward.settings,
+        ...r.module.progress.settings,
       }));
     } catch (e) {
       if (e?.name === "AbortError") return;
@@ -49,20 +49,20 @@ export default function OykUniverseAdminModuleReward() {
     try {
       const formData = new FormData();
       let settings = {};
-      for (const [key, value] of Object.entries(rewardForm)) {
+      for (const [key, value] of Object.entries(progressForm)) {
         settings[key] = value.trim();
       }
       formData.append("settings", JSON.stringify(settings));
-      const r = await api.post(`/world/universes/${currentUniverse.slug}/modules/reward/edit/`, formData);
+      const r = await api.post(`/world/universes/${currentUniverse.slug}/modules/progress/edit/`, formData);
       if (!r?.ok || !r.module) throw r;
       changeUniverse(params?.universeSlug);
-      setRewardForm((prev) => ({
+      setProgressForm((prev) => ({
         ...prev,
         ...r.module.settings,
       }));
       setHasSuccessSubmit({
         title: t("Settings updated"),
-        message: t("Settings of the reward module have been updated successfully"),
+        message: t("Settings of the progress module have been updated successfully"),
       });
     } catch (e) {
       setHasError(() => ({
@@ -75,7 +75,7 @@ export default function OykUniverseAdminModuleReward() {
 
   const handleChange = (e) => {
     const { name, value, checked } = e.target;
-    setRewardForm((prev) => ({
+    setProgressForm((prev) => ({
       ...prev,
       [name]: e.target.type === "checkbox" ? checked : value,
     }));
@@ -95,13 +95,13 @@ export default function OykUniverseAdminModuleReward() {
   const handleReset = async () => {
     setHasError(null);
     setHasSuccessSubmit(null);
-    rewardFormRef.current?.reset();
+    progressFormRef.current?.reset();
   };
 
   useEffect(() => {
     const controller = new AbortController();
 
-    routeTitle(`${t("Admin")} - ${t("Universe Reward Module")}`);
+    routeTitle(`${t("Admin")} - ${t("Universe Progress Module")}`);
 
     fetchModuleData(controller.signal);
 
@@ -113,17 +113,17 @@ export default function OykUniverseAdminModuleReward() {
 
   return (
     <section className="oyk-universes-admin-profile">
-      <OykHeading subtitle tag="h2" title={t("Reward Module")} nop />
+      <OykHeading subtitle tag="h2" title={t("Progress Module")} nop />
       <OykCard>
         {isLoading ? (
           <OykLoading />
         ) : (
-          <OykForm ref={rewardFormRef} className="oyk-universes-admin-form" isLoading={isLoading} onSubmit={postSubmit}>
+          <OykForm ref={progressFormRef} className="oyk-universes-admin-form" isLoading={isLoading} onSubmit={postSubmit}>
             <section>
               <OykFormField
                 label={t("Display Name")}
                 name="display_name"
-                defaultValue={rewardForm.display_name || t("Rewards")}
+                defaultValue={progressForm.display_name || t("Progress")}
                 onChange={handleChange}
                 hasError={hasError?.display_name}
               />

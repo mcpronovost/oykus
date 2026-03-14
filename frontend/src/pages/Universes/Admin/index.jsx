@@ -1,5 +1,5 @@
 import "@/assets/styles/page/_universes-admin.scss";
-import { Eye, Orbit, Construction, ListTodo, Paintbrush, ScrollText, Star } from "lucide-react";
+import { Eye, Orbit, Construction, ListTodo, Paintbrush, ScrollText, CircleFadingArrowUp } from "lucide-react";
 
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
@@ -22,8 +22,8 @@ import OykUniverseAdminProfile from "./Profile";
 import OykUniverseAdminModules from "./Modules";
 import OykUniverseAdminModuleBlog from "./ModuleBlog";
 import OykUniverseAdminModulePlanner from "./ModulePlanner";
-import OykUniverseAdminModuleReward from "./ModuleReward";
-import OykUniverseAdminModuleRewardTitles from "./ModuleRewardTitles";
+import OykUniverseAdminModuleProgress from "./ModuleProgress";
+import OykUniverseAdminModuleProgressTitles from "./ModuleProgressTitles";
 import OykUniverseAdminTheme from "./Theme";
 import OykUniverseAdminThemeStylesheet from "./ThemeStylesheet";
 
@@ -104,27 +104,27 @@ export default function UniverseAdmin() {
           },
         ]
       : []),
-    ...(currentUniverse?.modules?.reward?.active
+    ...(currentUniverse?.modules?.progress?.active
       ? [
           {
-            id: "modules-reward",
-            title: t("Reward"),
-            description: t("mod.reward.description"),
-            Icon: Star,
+            id: "modules-progress",
+            title: t("Progress"),
+            description: t("mod.progress.description"),
+            Icon: CircleFadingArrowUp,
             links: [
               {
                 name: t("Settings"),
-                routeName: "universe-admin-modules-reward",
+                routeName: "universe-admin-modules-progress",
                 params: { universeSlug: params?.universeSlug },
               },
               {
                 name: t("Titles"),
-                routeName: "universe-admin-modules-reward-titles",
+                routeName: "universe-admin-modules-progress-titles",
                 params: { universeSlug: params?.universeSlug },
               },
               {
                 name: t("Achievements"),
-                routeName: "universe-admin-modules-reward-achievements",
+                routeName: "universe-admin-modules-progress-achievements",
                 params: { universeSlug: params?.universeSlug },
                 disabled: true,
               },
@@ -163,10 +163,10 @@ export default function UniverseAdmin() {
               <OykUniverseAdminModuleBlog />
             ) : params?.section === "modules-planner" ? (
               <OykUniverseAdminModulePlanner />
-            ) : params?.section === "modules-reward" ? (
-              <OykUniverseAdminModuleReward />
-            ) : params?.section === "modules-reward-titles" ? (
-              <OykUniverseAdminModuleRewardTitles />
+            ) : params?.section === "modules-progress" ? (
+              <OykUniverseAdminModuleProgress />
+            ) : params?.section === "modules-progress-titles" ? (
+              <OykUniverseAdminModuleProgressTitles />
             ) : params?.section === "theme" ? (
               <OykUniverseAdminTheme />
             ) : params?.section === "stylesheet" ? (

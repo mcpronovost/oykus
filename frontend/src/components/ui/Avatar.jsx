@@ -25,6 +25,7 @@ export default function OykAvatar({
   levelBorderSize = 2,
   levelBorderColor = "var(--oyk-card-bg)",
   isPrivate = true,
+  clickable = false
 }) {
   const { isAuth } = useAuth();
   const { t } = useTranslation();
@@ -34,7 +35,7 @@ export default function OykAvatar({
 
   return (
     <div
-      className="oyk-avatar"
+      className={`oyk-avatar ${clickable ? "oyk-clickable" : ""}`}
       style={{
         width: `${size + borderSize * 2}px`,
         height: `${size + borderSize * 2}px`,

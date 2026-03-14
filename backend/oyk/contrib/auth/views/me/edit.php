@@ -34,8 +34,8 @@ try {
           rt.id AS title_id,
           rt.name AS title
     FROM auth_users u
-    LEFT JOIN reward_titles_users rut ON rut.user_id = u.id AND rut.is_active = 1
-    LEFT JOIN reward_titles rt ON rt.id = rut.title_id
+    LEFT JOIN progress_titles_users rut ON rut.user_id = u.id AND rut.is_active = 1
+    LEFT JOIN progress_titles rt ON rt.id = rut.title_id
     WHERE u.id = ?
     LIMIT 1
   ");
@@ -236,12 +236,12 @@ try {
 
   if (is_int($changeTitleId)) {
     $pdo->prepare(
-      "UPDATE reward_titles_users SET is_active = 0 WHERE user_id = :id AND title_id != :title_id"
+      "UPDATE progress_titles_users SET is_active = 0 WHERE user_id = :id AND title_id != :title_id"
     )->execute([$userId, $changeTitleId]);
 
     if ($changeTitleId > 0) {
       $pdo->prepare(
-        "UPDATE reward_titles_users SET is_active = 1 WHERE user_id = :id AND title_id = :title_id"
+        "UPDATE progress_titles_users SET is_active = 1 WHERE user_id = :id AND title_id = :title_id"
       )->execute([$userId, $changeTitleId]);
     }
   }

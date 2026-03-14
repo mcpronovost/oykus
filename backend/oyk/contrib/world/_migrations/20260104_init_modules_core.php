@@ -55,6 +55,6 @@ $pdo->prepare("
 
 $pdo->prepare("
     INSERT INTO world_modules_core (label, description, is_visible, is_available, settings)
-    VALUES ('reward', 'mod.reward.description', 1, 0, '{}')
-    ON DUPLICATE KEY UPDATE id = 'reward';
+    VALUES ('progress', 'mod.progress.description', 1, 0, '{}')
+    ON DUPLICATE KEY UPDATE id = 'progress';
 ")->execute();

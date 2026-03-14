@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
-import { Frown, Key, Plus, X } from "lucide-react";
+import { Frown, Plus } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import { useWorld } from "@/services/world";
 
-import { OykButton, OykCard, OykFeedback, OykHeading, OykLoading } from "@/components/ui";
-import OykUniverseAdminModuleRewardTitlesCard from "./ModuleRewardTitlesCard";
+import { OykButton, OykFeedback, OykHeading, OykLoading } from "@/components/ui";
+import OykUniverseAdminModuleProgressTitlesCard from "./ModuleProgressTitlesCard";
 import OykModalTitleCreate from "./modals/TitleCreate";
-import OykModalTitleDelete from "./modals/TitleDelete";
 
-export default function OykUniverseAdminModuleRewardTitles() {
+export default function OykUniverseAdminModuleProgressTitles() {
   const { routeTitle, params } = useRouter();
   const { t } = useTranslation();
   const { currentUniverse } = useWorld();
@@ -25,7 +24,7 @@ export default function OykUniverseAdminModuleRewardTitles() {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get(`/reward/u/${currentUniverse.slug}/titles/`, signal ? { signal } : {});
+      const r = await api.get(`/progress/u/${currentUniverse.slug}/titles/`, signal ? { signal } : {});
       if (!r.ok || !r.titles) throw r;
       setTitles(r.titles);
     } catch (e) {
@@ -50,7 +49,7 @@ export default function OykUniverseAdminModuleRewardTitles() {
   useEffect(() => {
     const controller = new AbortController();
 
-    routeTitle(`${t("Admin")} - ${t("Universe Reward Module")}`);
+    routeTitle(`${t("Admin")} - ${t("Universe Progress Module")}`);
 
     fetchModuleData(controller.signal);
 
@@ -61,7 +60,7 @@ export default function OykUniverseAdminModuleRewardTitles() {
   }, []);
 
   return (
-    <section className="oyk-universes-admin-module-reward-titles">
+    <section className="oyk-universes-admin-module-progress-titles">
       <OykModalTitleCreate isOpen={isModalTitleCreateOpen} onClose={handleCloseModalTitle} />
       <OykHeading subtitle tag="h2" title={t("Titles")} nop actions={(
         <>
@@ -75,9 +74,9 @@ export default function OykUniverseAdminModuleRewardTitles() {
       ) : hasError?.message ? (
         <OykFeedback title={t("An error occurred")} message={hasError?.message} variant="danger" ghost />
       ) : titles?.length > 0 ? (
-        <ul className="oyk-universes-admin-module-reward-titles-list">
+        <ul className="oyk-universes-admin-module-progress-titles-list">
           {titles.map((title) => (
-            <OykUniverseAdminModuleRewardTitlesCard key={title.id} title={title} onCloseModal={handleCloseModalTitle} />
+            <OykUniverseAdminModuleProgressTitlesCard key={title.id} title={title} onCloseModal={handleCloseModalTitle} />
           ))}
         </ul>
       ) : (

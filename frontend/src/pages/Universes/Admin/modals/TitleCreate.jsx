@@ -20,7 +20,7 @@ export default function OykModalTitleCreate({ isOpen, onClose }) {
     setIsLoading(true);
     setHasError(null);
     try {
-      const url = `/reward/u/${currentUniverse.slug}/titles/create/`;
+      const url = `/progress/u/${currentUniverse.slug}/titles/create/`;
       const formData = new FormData();
       for (const [key, value] of Object.entries(titleForm)) {
         formData.append(key, value);

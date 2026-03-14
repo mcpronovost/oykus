@@ -43,9 +43,9 @@ export default function AppHeaderMenu() {
         routeName: "planner",
         params: { universeSlug: currentUniverse.slug }
       }] : []),
-      ...(currentUniverse?.modules?.reward?.active ? [{
-        label: currentUniverse.modules.reward.settings.display_name || t("Rewards"),
-        routeName: "universe-reward",
+      ...(currentUniverse?.modules?.progress?.active ? [{
+        label: currentUniverse.modules.progress.settings.display_name || t("Progress"),
+        routeName: "universe-progress",
         params: { universeSlug: currentUniverse.slug }
       }] : []),
       ...(currentUniverse?.modules?.collection?.active ? [{

@@ -20,6 +20,7 @@ try {
            au.meta_mood,
            au.meta_website,
            au.meta_socials,
+           au.lastlive_at,
            au.created_at,
            rt.name AS title,
           (
@@ -43,8 +44,8 @@ try {
             WHERE br.user_id = au.id
           ) AS count_blog_reactions
     FROM auth_users au
-    LEFT JOIN reward_titles_users rut ON rut.user_id = au.id AND rut.is_active = 1
-    LEFT JOIN reward_titles rt ON rt.id = rut.title_id
+    LEFT JOIN progress_titles_users rut ON rut.user_id = au.id AND rut.is_active = 1
+    LEFT JOIN progress_titles rt ON rt.id = rut.title_id
     WHERE au.slug = ?
     LIMIT 1
   ");

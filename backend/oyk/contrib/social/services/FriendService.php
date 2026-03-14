@@ -10,8 +10,8 @@ class FriendService {
         SELECT u.name, u.abbr, u.slug, u.avatar, u.cover, rt.name AS title
         FROM social_friends f
         JOIN auth_users u ON u.id = f.friend_id
-        LEFT JOIN reward_titles_users rut ON rut.user_id = u.id AND rut.is_active = 1
-        LEFT JOIN reward_titles rt ON rt.id = rut.title_id
+        LEFT JOIN progress_titles_users rut ON rut.user_id = u.id AND rut.is_active = 1
+        LEFT JOIN progress_titles rt ON rt.id = rut.title_id
         WHERE f.user_id = ?
             AND f.status = 'accepted'
         ORDER BY u.name ASC;

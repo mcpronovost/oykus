@@ -7,7 +7,6 @@ import {
   Mail,
   MessagesSquare,
   ScrollText,
-  Star,
   Swords,
 } from "lucide-react";
 
@@ -35,12 +34,10 @@ export default function UniverseAdminModulesCard({
         return Mail;
       case "collection":
         return GalleryHorizontalEnd;
-      case "reward":
-        return Star;
+      case "progress":
+        return CircleFadingArrowUp;
       case "game":
         return Swords;
-      case "leveling":
-        return CircleFadingArrowUp;
       default:
         return Component;
     }

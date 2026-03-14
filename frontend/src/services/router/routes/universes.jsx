@@ -145,25 +145,25 @@ export const UNIVERSES_ROUTES = [
                     },
                   },
                   {
-                    name: "universe-admin-modules-reward",
+                    name: "universe-admin-modules-progress",
                     component: React.lazy(() => import("../../../pages/Universes/Admin")),
                     paths: {
-                      fr: "recompense",
-                      en: "reward",
+                      fr: "progression",
+                      en: "progress",
                     },
                     params: {
-                      section: "modules-reward",
+                      section: "modules-progress",
                     },
                   },
                   {
-                    name: "universe-admin-modules-reward-titles",
+                    name: "universe-admin-modules-progress-titles",
                     component: React.lazy(() => import("../../../pages/Universes/Admin")),
                     paths: {
-                      fr: "recompense-titres",
-                      en: "reward-titles",
+                      fr: "progression-titres",
+                      en: "progress-titles",
                     },
                     params: {
-                      section: "modules-reward-titles",
+                      section: "modules-progress-titles",
                     },
                   },
                 ],

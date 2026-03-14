@@ -29,7 +29,7 @@ export default function AppHeader() {
       {!isAuth ||
       currentUniverse?.modules?.blog?.active ||
       currentUniverse?.modules?.planner?.active ||
-      currentUniverse?.modules?.reward?.active ||
+      currentUniverse?.modules?.progress?.active ||
       currentUniverse?.modules?.collection?.active ? (
         <OykAppHeaderMenu />
       ) : (

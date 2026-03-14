@@ -140,8 +140,8 @@ class TitleService {
       $qry = $this->pdo->prepare("
         SELECT rt.id,
                rt.name
-        FROM reward_titles rt
-        JOIN reward_titles_users rut ON rut.title_id = rt.id
+        FROM progress_titles rt
+        JOIN progress_titles_users rut ON rut.title_id = rt.id
         WHERE rt.universe_id = ? AND rut.user_id = ?
       ");
 
@@ -159,8 +159,8 @@ class TitleService {
     try {
       $qry = $this->pdo->prepare("
         SELECT rt.id, rt.name
-        FROM reward_titles_users rut
-        JOIN reward_titles rt ON rt.id = rut.title_id
+        FROM progress_titles_users rut
+        JOIN progress_titles rt ON rt.id = rut.title_id
         WHERE rut.user_id = ? AND
               rut.is_active = 1
         LIMIT 1
@@ -180,13 +180,13 @@ class TitleService {
     // Fetch titles matching the event
     try {
       $qry = $this->pdo->prepare("
-        SELECT id, name FROM reward_titles
+        SELECT id, name FROM progress_titles
         WHERE how_to_obtain = :event
           AND (is_unique = 0 OR id NOT IN (
-            SELECT title_id FROM reward_titles_users
+            SELECT title_id FROM progress_titles_users
           ))
           AND id NOT IN (
-            SELECT title_id FROM reward_titles_users WHERE user_id = :userId
+            SELECT title_id FROM progress_titles_users WHERE user_id = :userId
           )
       ");
       $qry->execute([":event" => $event, ":userId" => $userId]);
@@ -200,7 +200,7 @@ class TitleService {
     foreach ($titles as $title) {
       try {
         $this->pdo->prepare("
-          INSERT INTO reward_titles_users (user_id, title_id)
+          INSERT INTO progress_titles_users (user_id, title_id)
           VALUES (:userId, :titleId)
         ")->execute([":userId" => $userId, ":titleId" => $title["id"]]);
 
@@ -208,8 +208,8 @@ class TitleService {
         oykCourrierAlertService()->createAlert(
           $userId,
           "You obtained a new title",
-          "reward_title",
-          "reward_titles",
+          "progress_title",
+          "progress_titles",
           (int) $title["id"],
           [
             "title" => $title["name"]
@@ -232,7 +232,7 @@ class TitleService {
                rt.target,
                rt.is_unique,
                rt.is_hidden
-        FROM reward_titles rt
+        FROM progress_titles rt
         WHERE rt.universe_id = ?
       ");
 
@@ -249,7 +249,7 @@ class TitleService {
   public function createTitle(int $universeId, array $fields): void {
     try {
       $this->pdo->prepare("
-        INSERT INTO reward_titles (universe_id, name, description, how_to_obtain, target, is_unique, is_hidden)
+        INSERT INTO progress_titles (universe_id, name, description, how_to_obtain, target, is_unique, is_hidden)
         VALUES (?, ?, ?, ?, ?, ?, ?)
       ")->execute([
             $universeId,
@@ -269,7 +269,7 @@ class TitleService {
   public function updateTitle(int $universeId, int $titleId, array $fields): void {
     try {
       $this->pdo->prepare("
-        UPDATE reward_titles
+        UPDATE progress_titles
         SET name = ?,
             description = ?,
             how_to_obtain = ?,
@@ -296,7 +296,7 @@ class TitleService {
   public function deleteTitle(int $universeId, int $titleId): void {
     try {
       $this->pdo->prepare("
-        DELETE FROM reward_titles
+        DELETE FROM progress_titles
         WHERE id = ? AND universe_id = ?
       ")->execute([$titleId, $universeId]);
     }

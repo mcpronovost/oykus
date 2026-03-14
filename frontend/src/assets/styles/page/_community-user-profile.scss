@@ -139,6 +139,8 @@
   }
 
   &-friends {
+    margin: 0 0 16px;
+
     &-list {
       display: flex;
       flex-direction: row;
@@ -200,10 +202,6 @@
               }
             }
           }
-        }
-
-        &-actions {
-          //
         }
       }
     }

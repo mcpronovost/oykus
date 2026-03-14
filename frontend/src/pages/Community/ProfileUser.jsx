@@ -24,7 +24,7 @@ import {
   SiX,
 } from "@icons-pack/react-simple-icons";
 
-import { oykDate, oykUnit } from "@/utils";
+import { oykDate, oykTimeAgo, oykUnit } from "@/utils";
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
@@ -285,6 +285,10 @@ export default function CommunityProfile() {
                       term={t("Joined")}
                       value={oykDate(userData.created_at, "date", lang, currentUser?.timezone)}
                     />
+                    <OykDatasetField
+                      term={t("Connected")}
+                      value={userData.lastlive_at ? oykTimeAgo(userData.lastlive_at, lang, currentUser?.timezone) : "-"}
+                    />
                     {userData.meta_country && <OykDatasetField term={t("Country")} value={userData.meta_country} />}
                     {userData.meta_birthday && (
                       <OykDatasetField
@@ -303,7 +307,19 @@ export default function CommunityProfile() {
               <OykGridCol col="25" order="3" orderMd="2">
                 {userData.friends?.length > 0 ? (
                   <OykCard className="oyk-userprofile-friends">
-                    <OykHeading subtitle title={t("Friends")} nop />
+                    <OykHeading subtitle title={`${t("Friends")} (${userData.friends.length})`} nop />
+                    <div className="oyk-userprofile-friends-list">
+                      {userData.friends.map((friend) => (
+                        <OykLink key={friend.slug} routeName={"community-user-profile"} params={{ userSlug: friend.slug }}>
+                          <OykAvatar src={friend.avatar} abbr={friend.abbr} size={48} clickable />
+                        </OykLink>
+                      ))}
+                    </div>
+                  </OykCard>
+                ) : null}
+                {userData.friends?.length > 0 ? (
+                  <OykCard className="oyk-userprofile-badges">
+                    <OykHeading subtitle title={`${t("Badges")} (${userData.friends.length})`} nop />
                     <div className="oyk-userprofile-friends-list">
                       {userData.friends.map((friend) => (
                         <OykLink key={friend.slug} routeName={"community-user-profile"} params={{ userSlug: friend.slug }}>

@@ -16,8 +16,8 @@ class UserService {
                (au.lastlive_at >= NOW() - INTERVAL 5 MINUTE) AS is_online,
                rt.name AS title
         FROM auth_users au
-        LEFT JOIN reward_titles_users rut ON rut.user_id = au.id AND rut.is_active = 1
-        LEFT JOIN reward_titles rt ON rt.id = rut.title_id
+        LEFT JOIN progress_titles_users rut ON rut.user_id = au.id AND rut.is_active = 1
+        LEFT JOIN progress_titles rt ON rt.id = rut.title_id
         WHERE au.is_active = 1
         ORDER BY au.lastlive_at IS NULL,
                  au.lastlive_at DESC
@@ -39,8 +39,8 @@ class UserService {
       $qry = $this->pdo->prepare("
         SELECT u.id, u.name, u.slug, u.abbr, u.avatar, u.cover, u.is_dev, u.timezone, rt.name AS title
         FROM auth_users u
-        LEFT JOIN reward_titles_users rut ON rut.user_id = u.id AND rut.is_active = 1
-        LEFT JOIN reward_titles rt ON rt.id = rut.title_id
+        LEFT JOIN progress_titles_users rut ON rut.user_id = u.id AND rut.is_active = 1
+        LEFT JOIN progress_titles rt ON rt.id = rut.title_id
         WHERE u.id = ?
         LIMIT 1
       ");

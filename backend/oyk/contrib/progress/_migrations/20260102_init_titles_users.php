@@ -2,7 +2,7 @@
 global $pdo;
 
 $pdo->exec("
-CREATE TABLE IF NOT EXISTS reward_titles_users (
+CREATE TABLE IF NOT EXISTS progress_titles_users (
     `id` int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `user_id` int UNSIGNED NOT NULL,
     `title_id` int UNSIGNED NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS reward_titles_users (
         FOREIGN KEY (user_id) REFERENCES auth_users(id)
         ON DELETE CASCADE,
     CONSTRAINT fk_rut_title
-        FOREIGN KEY (title_id) REFERENCES reward_titles(id)
+        FOREIGN KEY (title_id) REFERENCES progress_titles(id)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 ");

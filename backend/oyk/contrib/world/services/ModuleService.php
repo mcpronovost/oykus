@@ -10,7 +10,7 @@ class ModuleService {
       "forum",
       "courrier",
       "collection",
-      "reward",
+      "progress",
       "game",
       "leveling"
     ];

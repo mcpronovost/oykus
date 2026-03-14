@@ -19,7 +19,7 @@ export default function OykModalTitleDelete({ titleId, isOpen, onClose }) {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.post(`/reward/u/${currentUniverse.slug}/titles/${titleId}/delete/`);
+      const r = await api.post(`/progress/u/${currentUniverse.slug}/titles/${titleId}/delete/`);
       if (!r.ok) throw r;
       onClose(true);
     } catch (e) {

@@ -279,5 +279,7 @@
   "Will not appear in rewards page until it is obtained": "Ne sera pas visible sur la page des récompenses avant d'être obtenu",
   "Target": "Cible",
   "Character": "Personnage",
-  "User": "Utilisateur"
+  "User": "Utilisateur",
+  "Connected": "Connecté",
+  "Progress": "Progression"
 }
