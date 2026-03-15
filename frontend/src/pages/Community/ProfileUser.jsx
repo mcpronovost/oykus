@@ -317,18 +317,6 @@ export default function CommunityProfile() {
                     </div>
                   </OykCard>
                 ) : null}
-                {userData.friends?.length > 0 ? (
-                  <OykCard className="oyk-userprofile-badges">
-                    <OykHeading subtitle title={`${t("Badges")} (${userData.friends.length})`} nop />
-                    <div className="oyk-userprofile-friends-list">
-                      {userData.friends.map((friend) => (
-                        <OykLink key={friend.slug} routeName={"community-user-profile"} params={{ userSlug: friend.slug }}>
-                          <OykAvatar src={friend.avatar} abbr={friend.abbr} size={48} />
-                        </OykLink>
-                      ))}
-                    </div>
-                  </OykCard>
-                ) : null}
               </OykGridCol>
             </OykGridRow>
           </>
