@@ -1,5 +1,14 @@
 import "@/assets/styles/page/_universes-admin.scss";
-import { Eye, Orbit, Construction, ListTodo, Paintbrush, ScrollText, CircleFadingArrowUp } from "lucide-react";
+import {
+  CircleFadingArrowUp,
+  Construction,
+  Eye,
+  ListTodo,
+  MessagesSquare,
+  Orbit,
+  Paintbrush,
+  ScrollText,
+} from "lucide-react";
 
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
@@ -21,6 +30,7 @@ import OykError404 from "@/pages/Error404";
 import OykUniverseAdminProfile from "./Profile";
 import OykUniverseAdminModules from "./Modules";
 import OykUniverseAdminModuleBlog from "./ModuleBlog";
+import OykUniverseAdminModuleForum from "./ModuleForum";
 import OykUniverseAdminModulePlanner from "./ModulePlanner";
 import OykUniverseAdminModuleProgress from "./ModuleProgress";
 import OykUniverseAdminModuleProgressTitles from "./ModuleProgressTitles";
@@ -81,6 +91,23 @@ export default function UniverseAdmin() {
               {
                 name: t("Settings"),
                 routeName: "universe-admin-modules-blog",
+                params: { universeSlug: params?.universeSlug },
+              },
+            ],
+          },
+        ]
+      : []),
+    ...(currentUniverse?.modules?.forum?.active
+      ? [
+          {
+            id: "modules-forum",
+            title: t("Forum"),
+            description: t("mod.forum.description"),
+            Icon: MessagesSquare,
+            links: [
+              {
+                name: t("Settings"),
+                routeName: "universe-admin-modules-forum",
                 params: { universeSlug: params?.universeSlug },
               },
             ],
@@ -167,6 +194,8 @@ export default function UniverseAdmin() {
               <OykUniverseAdminModules />
             ) : params?.section === "modules-blog" ? (
               <OykUniverseAdminModuleBlog />
+            ) : params?.section === "modules-forum" ? (
+              <OykUniverseAdminModuleForum />
             ) : params?.section === "modules-planner" ? (
               <OykUniverseAdminModulePlanner />
             ) : params?.section === "modules-progress" ? (

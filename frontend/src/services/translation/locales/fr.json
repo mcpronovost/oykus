@@ -282,5 +282,7 @@
   "User": "Utilisateur",
   "Connected": "Connecté",
   "Progress": "Progression",
-  "Challenges": "Défis"
+  "Challenges": "Défis",
+  "Settings updated": "Paramètres mis à jour",
+  "Settings of the forum module have been updated successfully": "Les paramètres du module forum ont été mis à jour avec succès."
 }

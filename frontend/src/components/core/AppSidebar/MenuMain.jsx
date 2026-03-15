@@ -23,7 +23,11 @@ export default function AppSidebarMenuMain() {
         <OykAppSidebarNavItem icon={Compass} text={t("Discover")} href="discover" />
       ) : null}
       {currentUniverse && !currentUniverse.is_default && currentUniverse.modules?.forum?.active ? (
-        <OykAppSidebarNavItem icon={MessagesSquare} text={t("Forum")} href="forum" />
+        <OykAppSidebarNavItem
+          icon={MessagesSquare}
+          text={currentUniverse.modules.forum.settings.display_name || t("Forum")}
+          href="forum"
+        />
       ) : null}
     </ul>
   );

@@ -134,6 +134,17 @@ export const UNIVERSES_ROUTES = [
                     },
                   },
                   {
+                    name: "universe-admin-modules-forum",
+                    component: React.lazy(() => import("../../../pages/Universes/Admin")),
+                    paths: {
+                      fr: "forum",
+                      en: "forum",
+                    },
+                    params: {
+                      section: "modules-forum",
+                    },
+                  },
+                  {
                     name: "universe-admin-modules-planner",
                     component: React.lazy(() => import("../../../pages/Universes/Admin")),
                     paths: {
