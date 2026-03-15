@@ -3,7 +3,9 @@
 $api = "/api/v1/world";
 $view = OYK . "/contrib/world/views/";
 
-Router::get("{$api}/universes", "{$view}universes/universes.php");
+Router::get("{$api}/universes", "{$view}universes/list_user.php");
+
+Router::get("{$api}/universes/list", "{$view}universes/list.php");
 
 Router::get("{$api}/universes/{universeSlug}", "{$view}universes/universe.php");
 

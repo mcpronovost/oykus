@@ -4,7 +4,16 @@ import { Frown } from "lucide-react";
 import { api } from "@/services/api";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import { OykBanner, OykCard, OykFeedback, OykGrid, OykGridRow, OykGridCol, OykHeading, OykLink, OykLoading } from "@/components/ui";
+import {
+  OykBanner,
+  OykCard,
+  OykFeedback,
+  OykGrid,
+  OykGridRow,
+  OykGridCol,
+  OykHeading,
+  OykLoading,
+} from "@/components/ui";
 
 export default function Discover() {
   const { n, routeTitle } = useRouter();
@@ -18,7 +27,7 @@ export default function Discover() {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get("/world/universes/", signal ? { signal } : {});
+      const r = await api.get("/world/universes/list/", signal ? { signal } : {});
       if (!r.ok || !r.universes) throw Error();
       setUniverses(r.universes);
     } catch (e) {
@@ -34,7 +43,7 @@ export default function Discover() {
   };
 
   const handleUniverseClick = (slug) => {
-    n("universe", {universeSlug: slug})
+    n("universe", { universeSlug: slug });
   };
 
   useEffect(() => {
@@ -54,12 +63,7 @@ export default function Discover() {
       <OykHeading title={t("Discover")} />
       <OykGrid>
         {hasError ? (
-          <OykFeedback
-            ghost
-            title={t("An error occurred")}
-            message={t(hasError.message)}
-            variant="danger"
-         />
+          <OykFeedback ghost title={t("An error occurred")} message={t(hasError.message)} variant="danger" />
         ) : isLoading ? (
           <OykLoading />
         ) : universes?.length > 0 ? (
@@ -78,9 +82,7 @@ export default function Discover() {
                       coverSrc={u.cover}
                       height={148}
                     />
-                    <h2>
-                      {u.name}
-                    </h2>
+                    <h2>{u.name}</h2>
                     <p>&nbsp;</p>
                   </header>
                 </OykCard>
