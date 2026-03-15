@@ -118,15 +118,21 @@ export default function UniverseAdmin() {
                 params: { universeSlug: params?.universeSlug },
               },
               {
-                name: t("Titles"),
-                routeName: "universe-admin-modules-progress-titles",
+                name: t("Challenges"),
+                routeName: "universe-admin-modules-progress-challenges",
                 params: { universeSlug: params?.universeSlug },
+                disabled: true,
               },
               {
                 name: t("Achievements"),
                 routeName: "universe-admin-modules-progress-achievements",
                 params: { universeSlug: params?.universeSlug },
                 disabled: true,
+              },
+              {
+                name: t("Titles"),
+                routeName: "universe-admin-modules-progress-titles",
+                params: { universeSlug: params?.universeSlug },
               },
             ],
           },
