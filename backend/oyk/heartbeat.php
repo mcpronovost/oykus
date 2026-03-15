@@ -28,7 +28,7 @@ $user = $userService->getCurrentUser($userId);
 // WORLD
 try {
   $currentUniverse = $universeService->getUniverse($universeSlug, $userId);
-  $universes = $universeService->getUniverses($userId ?? NULL);
+  $universes = $universeService->getUniversesForUser($userId);
   $theme = $currentUniverse ? $themeService->getActiveTheme($currentUniverse["id"]) : NULL;
   if ($currentUniverse) {
     $modules = $moduleService->getModules($currentUniverse["id"]);

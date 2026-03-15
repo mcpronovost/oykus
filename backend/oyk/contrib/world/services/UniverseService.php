@@ -40,66 +40,51 @@ class UniverseService {
     ];
   }
 
-  public function getEditableUniverseId($universeSlug, $userId) {
-    try {
-      $qry = $this->pdo->prepare("
-        SELECT id, owner
-        FROM world_universes
-        WHERE slug = ? AND is_active = 1
-        LIMIT 1
-      ");
-
-      $qry->execute([$universeSlug]);
-      $universe = $qry->fetch();
-    }
-    catch (Exception $e) {
-      return NULL;
-    }
-
-    if (!$universe) {
-      return NULL;
-    }
-
-    if ((int) $universe["owner"] !== (int) $userId) {
-      return NULL;
-    }
-
-    return $universe["id"] ?: NULL;
-  }
-
   public function getUniverses(?int $userId): array {
     try {
-      $qry = $this->pdo->prepare("
-        SELECT wu.id,
-               wu.name,
-               wu.slug,
-               wu.abbr,
-               wu.logo,
-               wu.cover,
-               wu.visibility,
-               wt.c_primary,
-               wt.c_primary_fg,
-               CASE
-                WHEN ? <= 0 THEN 6
-                ELSE COALESCE(wr.role, 5)
-              END AS role
-        FROM world_universes wu
-        LEFT JOIN world_themes wt ON wt.universe_id = wu.id AND wt.is_active = 1
-        LEFT JOIN world_roles wr ON wr.universe_id = wu.id AND wr.user_id = COALESCE(?, -1)
-        WHERE wu.is_active = 1 AND wu.visibility >= CASE
-            WHEN ? <= 0 THEN 6
-            ELSE COALESCE(wr.role, 5)
-        END
-        ORDER BY wu.is_default DESC,
-                (wu.owner_id = ?) DESC,
-                 wu.name ASC;
+      $qry = $this->pdo->prepare("SELECT
+          wu.id,
+          wu.name,
+          wu.slug,
+          wu.abbr,
+          wu.logo,
+          wu.cover,
+          wu.visibility,
+          wt.c_primary,
+          wt.c_primary_fg,
+          CASE
+              WHEN ? IS NULL THEN 6
+              ELSE COALESCE(wr.role, 5)
+          END AS role
+      FROM world_universes wu
+
+      LEFT JOIN world_themes wt
+            ON wt.universe_id = wu.id
+            AND wt.is_active = 1
+
+      LEFT JOIN world_roles wr
+            ON wr.universe_id = wu.id
+            AND wr.user_id = ?
+
+      WHERE
+          wu.is_active = 1
+          AND wu.visibility >=
+              CASE
+                  WHEN ? IS NULL THEN 6
+                  ELSE COALESCE(wr.role, 5)
+              END
+
+      ORDER BY
+          wu.is_default DESC,
+          (wu.owner_id = ?) DESC,
+          wu.name;
       ");
 
       $qry->execute([$userId, $userId, $userId, $userId]);
       $universes = $qry->fetchAll();
     }
-    catch (Exception) {
-      throw new QueryException("Universes retrieval failed");
+    catch (Exception $e) {
+      throw new QueryException("Universes retrieval failed: " . $e->getMessage());
     }
 
     foreach ($universes as &$u) {
@@ -152,6 +137,48 @@ class UniverseService {
     $universe["staff"] = $this->getUniverseStaff((int) $universe["id"]);
 
     return $universe ?: NULL;
+  }
+
+  public function getUniversesForUser(?int $userId): array {
+    try {
+      $qry = $this->pdo->prepare("SELECT
+          wu.id,
+          wu.name,
+          wu.slug,
+          wu.abbr,
+          wu.logo,
+          wt.c_primary,
+          wt.c_primary_fg,
+          COALESCE(wr.role, 5) AS role
+      FROM world_universes wu
+
+      LEFT JOIN world_themes wt
+            ON wt.universe_id = wu.id
+            AND wt.is_active = 1
+
+      LEFT JOIN world_roles wr
+            ON wr.universe_id = wu.id
+            AND wr.user_id = ?
+
+      WHERE
+          wu.is_active = 1
+          AND wu.visibility >= COALESCE(wr.role, 5)
+          AND COALESCE(wr.role, 5) <= 4
+
+      ORDER BY
+          wu.is_default DESC,
+          COALESCE(wr.role, 5) ASC,
+          wu.name
+      ;");
+
+      $qry->execute([$userId]);
+      $universes = $qry->fetchAll();
+    }
+    catch (Exception) {
+      throw new QueryException("Universes retrieval failed");
+    }
+
+    return $universes;
   }
 
   public function getUniverseStaff(int $universeId): array {
