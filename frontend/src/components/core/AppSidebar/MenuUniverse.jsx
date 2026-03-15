@@ -10,20 +10,24 @@ export default function AppSidebarMenuUniverse() {
 
   return (
     <ul className="oyk-app-sidebar-nav-list">
-      <OykAppSidebarNavItem
-        icon={Scale}
-        text={t("Rulebooks")}
-        href="rulebooks"
-        params={{ universeSlug: currentUniverse.slug }}
-        disabled
-      />
-      <OykAppSidebarNavItem
-        icon={BookOpen}
-        text={t("Context")}
-        href="context"
-        params={{ universeSlug: currentUniverse.slug }}
-        disabled
-      />
+      {!currentUniverse.is_default && (
+        <OykAppSidebarNavItem
+          icon={Scale}
+          text={t("Rulebooks")}
+          href="rulebooks"
+          params={{ universeSlug: currentUniverse.slug }}
+          disabled
+        />
+      )}
+      {!currentUniverse.is_default && (
+        <OykAppSidebarNavItem
+          icon={BookOpen}
+          text={t("Context")}
+          href="context"
+          params={{ universeSlug: currentUniverse.slug }}
+          disabled
+        />
+      )}
       <OykAppSidebarNavItem
         icon={Users}
         text={t("Community")}
