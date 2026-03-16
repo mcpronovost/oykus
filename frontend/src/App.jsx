@@ -22,7 +22,7 @@ function MainLayout() {
   useEffect(() => {
     if (params?.universeSlug && currentUniverse && params?.universeSlug !== currentUniverse.slug) {
       changeUniverse(params.universeSlug);
-    } else if (!currentUniverse || (currentUniverse.slug !== "oykus" && route.name === "home")) {
+    } else if (!currentUniverse || (currentUniverse.slug !== "oykus" && route?.name === "home")) {
       changeUniverse("oykus");
     }
   }, [route]);
@@ -33,8 +33,8 @@ function MainLayout() {
         <Suspense fallback={<OykAppLoading />}>
           <OykScrollbar isMainScroll height={"100%"}>
             <>
-              {route.require_dev && !isDev ? <OykAppNotAuthorized /> : createElement(route.component)}
-              {isAuth ? <OykAppFooter /> : null}
+              {(route.require_auth && !isAuth) || (route.require_dev && !isDev)  ? <OykAppNotAuthorized /> : createElement(route.component)}
+              <OykAppFooter />
             </>
           </OykScrollbar>
         </Suspense>

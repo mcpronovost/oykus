@@ -4,6 +4,7 @@ export const DEV_ROUTES = [
   {
     name: "dev",
     component: React.lazy(() => import("../../../pages/Dev")),
+    require_dev: true,
     paths: {
       fr: "dev",
       en: "dev",

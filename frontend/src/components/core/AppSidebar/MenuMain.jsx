@@ -1,4 +1,4 @@
-import { Compass, House, LayoutDashboard, MessagesSquare } from "lucide-react";
+import { Compass, House, LayoutDashboard, Earth } from "lucide-react";
 
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
@@ -24,7 +24,7 @@ export default function AppSidebarMenuMain() {
       ) : null}
       {currentUniverse && !currentUniverse.is_default && currentUniverse.modules?.forum?.active ? (
         <OykAppSidebarNavItem
-          icon={MessagesSquare}
+          icon={Earth}
           text={currentUniverse.modules.forum.settings.display_name || t("Forum")}
           href="universe-forum"
           params={{ universeSlug: currentUniverse.slug }}

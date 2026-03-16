@@ -20,6 +20,7 @@ export const AUTH_ROUTES = [
   {
     name: "settings",
     component: React.lazy(() => import("../../../pages/Auth/Settings")),
+    require_auth: true,
     paths: {
       fr: "parametres",
       en: "settings",
@@ -31,6 +32,7 @@ export const AUTH_ROUTES = [
       {
         name: "settings-profile",
         component: React.lazy(() => import("../../../pages/Auth/Settings")),
+        require_auth: true,
         paths: {
           fr: "profil",
           en: "profile",
@@ -42,6 +44,7 @@ export const AUTH_ROUTES = [
       {
         name: "settings-profile-informations",
         component: React.lazy(() => import("../../../pages/Auth/Settings")),
+        require_auth: true,
         paths: {
           fr: "profil-informations",
           en: "profile-informations",
@@ -53,6 +56,7 @@ export const AUTH_ROUTES = [
       {
         name: "settings-profile-socials",
         component: React.lazy(() => import("../../../pages/Auth/Settings")),
+        require_auth: true,
         paths: {
           fr: "profil-reseaux-sociaux",
           en: "profile-social-media",
@@ -64,6 +68,7 @@ export const AUTH_ROUTES = [
       {
         name: "settings-account",
         component: React.lazy(() => import("../../../pages/Auth/Settings")),
+        require_auth: true,
         paths: {
           fr: "compte",
           en: "account",
@@ -75,6 +80,7 @@ export const AUTH_ROUTES = [
       {
         name: "settings-account-preferences",
         component: React.lazy(() => import("../../../pages/Auth/Settings")),
+        require_auth: true,
         paths: {
           fr: "compte-preferences",
           en: "account-preferences",
@@ -86,6 +92,7 @@ export const AUTH_ROUTES = [
       {
         name: "settings-account-password",
         component: React.lazy(() => import("../../../pages/Auth/Settings")),
+        require_auth: true,
         paths: {
           fr: "compte-mot-de-passe",
           en: "account-password",
@@ -97,34 +104,13 @@ export const AUTH_ROUTES = [
       {
         name: "settings-account-privacy",
         component: React.lazy(() => import("../../../pages/Auth/Settings")),
+        require_auth: true,
         paths: {
           fr: "compte-vie-privee",
           en: "account-privacy",
         },
         params: {
           section: "account-privacy"
-        },
-      },
-      {
-        name: "settings-friends",
-        component: React.lazy(() => import("../../../pages/Auth/Settings")),
-        paths: {
-          fr: "amis",
-          en: "friends",
-        },
-        params: {
-          section: "friends"
-        },
-      },
-      {
-        name: "settings-friends-requests",
-        component: React.lazy(() => import("../../../pages/Auth/Settings")),
-        paths: {
-          fr: "amis-demandes",
-          en: "friends-requests",
-        },
-        params: {
-          section: "friends-requests"
         },
       },
     ],

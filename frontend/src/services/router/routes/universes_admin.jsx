@@ -4,6 +4,7 @@ export const UNIVERSES_ADMIN_ROUTES = [
   {
     name: "universe-admin",
     component: React.lazy(() => import("../../../pages/Universes/Admin")),
+    require_auth: true,
     paths: {
       fr: "admin",
       en: "admin",
@@ -15,6 +16,7 @@ export const UNIVERSES_ADMIN_ROUTES = [
       {
         name: "universe-admin-profile",
         component: React.lazy(() => import("../../../pages/Universes/Admin")),
+        require_auth: true,
         paths: {
           fr: "profil",
           en: "profile",
@@ -26,6 +28,7 @@ export const UNIVERSES_ADMIN_ROUTES = [
       {
         name: "universe-admin-modules",
         component: React.lazy(() => import("../../../pages/Universes/Admin")),
+        require_auth: true,
         paths: {
           fr: "modules",
           en: "modules",
@@ -37,6 +40,7 @@ export const UNIVERSES_ADMIN_ROUTES = [
           {
             name: "universe-admin-modules-blog",
             component: React.lazy(() => import("../../../pages/Universes/Admin")),
+            require_auth: true,
             paths: {
               fr: "blog",
               en: "blog",
@@ -48,6 +52,7 @@ export const UNIVERSES_ADMIN_ROUTES = [
           {
             name: "universe-admin-modules-forum",
             component: React.lazy(() => import("../../../pages/Universes/Admin")),
+            require_auth: true,
             paths: {
               fr: "forum",
               en: "forum",
@@ -59,6 +64,7 @@ export const UNIVERSES_ADMIN_ROUTES = [
           {
             name: "universe-admin-modules-planner",
             component: React.lazy(() => import("../../../pages/Universes/Admin")),
+            require_auth: true,
             paths: {
               fr: "planificateur",
               en: "planner",
@@ -70,6 +76,7 @@ export const UNIVERSES_ADMIN_ROUTES = [
           {
             name: "universe-admin-modules-progress",
             component: React.lazy(() => import("../../../pages/Universes/Admin")),
+            require_auth: true,
             paths: {
               fr: "progression",
               en: "progress",
@@ -81,6 +88,7 @@ export const UNIVERSES_ADMIN_ROUTES = [
           {
             name: "universe-admin-modules-progress-titles",
             component: React.lazy(() => import("../../../pages/Universes/Admin")),
+            require_auth: true,
             paths: {
               fr: "progression-titres",
               en: "progress-titles",
@@ -94,6 +102,7 @@ export const UNIVERSES_ADMIN_ROUTES = [
       {
         name: "universe-admin-theme",
         component: React.lazy(() => import("../../../pages/Universes/Admin")),
+        require_auth: true,
         paths: {
           fr: "theme",
           en: "theme",
@@ -105,6 +114,7 @@ export const UNIVERSES_ADMIN_ROUTES = [
       {
         name: "universe-admin-stylesheet",
         component: React.lazy(() => import("../../../pages/Universes/Admin")),
+        require_auth: true,
         paths: {
           fr: "stylesheet",
           en: "stylesheet",

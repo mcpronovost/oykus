@@ -4,6 +4,7 @@ export const FRIENDS_ROUTES = [
   {
     name: "friends",
     component: React.lazy(() => import("../../../pages/Friends")),
+    require_auth: true,
     paths: {
       fr: "amis",
       en: "friends",
@@ -15,6 +16,7 @@ export const FRIENDS_ROUTES = [
   {
     name: "friends-requests",
     component: React.lazy(() => import("../../../pages/Friends")),
+    require_auth: true,
     paths: {
       fr: "amis-demandes",
       en: "friends-requests",

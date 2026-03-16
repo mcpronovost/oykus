@@ -9,7 +9,6 @@ export default function AppNotAuthorized() {
 
   return (
     <section className="oyk-page oyk-error401">
-      <OykHeading title="401" />
       <OykGrid>
         <OykFeedback ghost title={t("Not Authorized")} message={t("You are not authorized to access this page.")} icon={ShieldX}>
           <OykButton onClick={() => n("home")} color="primary">

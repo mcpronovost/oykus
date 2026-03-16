@@ -39,7 +39,7 @@ class OykApi {
     try {
       let response = await fetch(url, fetchOptions);
 
-      if (response.status === 401) {
+      if (response.status === 401 && this.rat) {
         await this.refresh();
 
         response = await fetch(url, {
@@ -129,6 +129,7 @@ class OykApi {
   }
 
   async refresh() {
+    if (!this.rat) return;
     try {
       const r = await this.post("/auth/refresh/", {}, { withCredentials: true });
       if (!r.ok) throw new Error(401);
