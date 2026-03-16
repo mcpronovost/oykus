@@ -43,7 +43,7 @@ button {
   padding: 0;
   margin: 0;
 
-  &:not(:disabled) {
+  &:not(:disabled):not(.oyk-unclickable):hover {
     cursor: pointer;
   }
 }

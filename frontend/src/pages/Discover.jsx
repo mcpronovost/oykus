@@ -81,6 +81,7 @@ export default function Discover() {
                       avatarBorderRadius="8px"
                       coverSrc={u.cover}
                       height={148}
+                      isPrivate={false}
                     />
                     <h2>{u.name}</h2>
                     <p>&nbsp;</p>

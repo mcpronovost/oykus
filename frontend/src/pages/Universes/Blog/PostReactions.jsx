@@ -40,7 +40,6 @@ export default function OykBlogPostReactions({
   };
 
   if (
-    !isAuth ||
     !currentUniverse ||
     !currentUniverse.modules?.blog?.active ||
     !currentUniverse.modules.blog.settings?.is_reactions_enabled
@@ -54,8 +53,9 @@ export default function OykBlogPostReactions({
       <OykButton
         color="card"
         isLoading={isLoading === "like"}
-        disabled={isLoading}
-        onClick={() => postReaction("like")}
+        disabled={!isAuth || isLoading}
+        onClick={isAuth ? () => postReaction("like") : null}
+        clickable={isAuth}
       >
         <ThumbsUp size={16} color={reaction === "like" ? "var(--oyk-c-success)" : "var(--oyk-card-fg)"} />
         {likes > 0 ? likes : null}
@@ -63,8 +63,9 @@ export default function OykBlogPostReactions({
       <OykButton
         color="card"
         isLoading={isLoading === "dislike"}
-        disabled={isLoading}
-        onClick={() => postReaction("dislike")}
+        disabled={!isAuth || isLoading}
+        onClick={isAuth ? () => postReaction("dislike") : null}
+        clickable={isAuth}
       >
         <ThumbsDown size={16} color={reaction === "dislike" ? "var(--oyk-c-danger)" : "var(--oyk-card-fg)"} />
         {dislikes > 0 ? dislikes : null}

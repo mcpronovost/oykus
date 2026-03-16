@@ -101,7 +101,6 @@ export default function OykBlogPostComments({ postId, postAuthorId }) {
 
   useEffect(() => {
     if (
-      !isAuth ||
       !currentUniverse ||
       !currentUniverse.modules?.blog?.active ||
       !currentUniverse.modules?.blog?.settings?.is_comments_enabled
@@ -118,7 +117,6 @@ export default function OykBlogPostComments({ postId, postAuthorId }) {
   }, []);
 
   if (
-    !isAuth ||
     !currentUniverse ||
     !currentUniverse.modules?.blog?.active ||
     !currentUniverse.modules?.blog?.settings?.is_comments_enabled
@@ -136,7 +134,7 @@ export default function OykBlogPostComments({ postId, postAuthorId }) {
           <OykLoading />
         ) : (
           <>
-            <OykForm ref={formRef} onSubmit={postBlogComment} isLoading={isSubmitLoading}>
+            {isAuth && (<><OykForm ref={formRef} onSubmit={postBlogComment} isLoading={isSubmitLoading}>
               <div className="oyk-form-oneline">
                 <OykAvatar src={currentUser.avatar} size={40} />
                 <OykFormField
@@ -162,7 +160,7 @@ export default function OykBlogPostComments({ postId, postAuthorId }) {
                 </div>
               </div>
             </OykForm>
-            <hr />
+            <hr /></>)}
             {comments.length > 0 ? (
               <section className="oyk-blog-comments-list">
                 {comments.map((comment) => (
@@ -184,7 +182,7 @@ export default function OykBlogPostComments({ postId, postAuthorId }) {
                 ) : null}
               </section>
             ) : (
-              <OykFeedback title={t("Be the first to comment")} variant="primary" showIcon={false} ghost />
+              <OykFeedback title={isAuth ? t("Be the first to comment") : t("No comments found")} variant="primary" showIcon={false} ghost />
             )}
           </>
         )}

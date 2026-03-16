@@ -43,7 +43,7 @@ class ReactionService {
     return $fields;
   }
 
-  public function getReactions(int $userId, string $targetTag, int $targetId): array {
+  public function getReactions(?int $userId, string $targetTag, int $targetId): array {
     try {
       $qry = $this->pdo->prepare("
         SELECT

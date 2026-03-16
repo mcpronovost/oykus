@@ -4,7 +4,7 @@ class UniverseService {
   public function __construct(private PDO $pdo) {
   }
 
-  public function getContext(?string $slug, int $userId): array {
+  public function getContext(?string $slug, ?int $userId): array {
     // Default universe if no context
     if (!$slug) {
       $qry = $this->pdo->prepare("
@@ -95,7 +95,7 @@ class UniverseService {
     return $universes;
   }
 
-  public function getUniverse(?string $universeSlug, int $userId): array {
+  public function getUniverse(?string $universeSlug, ?int $userId): array {
     $universeSlug ?? "oykus";
 
     try {

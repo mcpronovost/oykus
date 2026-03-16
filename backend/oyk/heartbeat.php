@@ -6,9 +6,6 @@ $universeSlug = $_COOKIE["oyk-world"] ?? NULL;
 
 // Auth needed but silent (if invalid token → no crash)
 $userId = require_rat(FALSE);
-if (!$userId) {
-  return;
-}
 
 // Services
 try {
@@ -23,11 +20,17 @@ catch (Exception) {
 }
 
 // USER
-$user = $userService->getCurrentUser($userId);
+$user = $userId ? $userService->getCurrentUser($userId) : NULL;
 
 // WORLD
 try {
   $currentUniverse = $universeService->getUniverse($universeSlug, $userId);
+}
+catch (Exception) {
+  Response::forbidden("Universe not found", ["code" => 403]);
+}
+
+try {
   $universes = $universeService->getUniversesForUser($userId);
   $theme = $currentUniverse ? $themeService->getActiveTheme($currentUniverse["id"]) : NULL;
   if ($currentUniverse) {
@@ -41,7 +44,7 @@ catch (Exception) {
 
 // NOTIFICATIONS
 try {
-  $notifications = $notificationService->getNotificationsCounts($userId);
+  $notifications = $userId ? $notificationService->getNotificationsCounts($userId) : NULL;
 }
 catch (Exception) {
   // fail silently

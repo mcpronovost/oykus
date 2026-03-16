@@ -64,7 +64,7 @@ export default function OykBlog() {
   };
 
   useEffect(() => {
-    if (!isAuth || (currentUniverse && !currentUniverse.modules?.blog?.active)) return;
+    if ((currentUniverse && !currentUniverse.modules?.blog?.active)) return;
     const controller = new AbortController();
 
     routeTitle(currentUniverse.modules.blog.settings.display_name || t("Blog"));
@@ -77,7 +77,7 @@ export default function OykBlog() {
     };
   }, []);
 
-  if (!isAuth || !currentUniverse || (currentUniverse && !currentUniverse.modules?.blog?.active)) {
+  if (!currentUniverse || (currentUniverse && !currentUniverse.modules?.blog?.active)) {
     return <AppNotAuthorized />;
   }
 

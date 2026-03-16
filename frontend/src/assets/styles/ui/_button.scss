@@ -18,17 +18,17 @@
   padding: 12px 24px;
   transition: opacity 0.2s;
 
-  &:not(:disabled):hover {
+  &:not(:disabled):not(.oyk-unclickable):hover {
     opacity: 0.8;
     cursor: pointer;
   }
 
-  &:not(:disabled):active {
+  &:not(:disabled):not(.oyk-unclickable):active {
     opacity: 0.6;
     transform: scale(0.98);
   }
 
-  &:disabled {
+  &:disabled:not(.oyk-unclickable) {
     cursor: default;
     opacity: 0.5;
   }

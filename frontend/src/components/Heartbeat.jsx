@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
+
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
+import { useRouter } from "@/services/router";
 import { useWorld } from "@/services/world";
 import { useNotifications } from "@/services/notifications";
 
@@ -8,9 +10,10 @@ const INTERVAL = 1000 * 30; // 30 sec
 const ACTIVITY_TIMEOUT = 1000 * 60 * 10; // 10 min
 
 export default function OykHeartbeat() {
-  const auth = useAuth();
-  const world = useWorld();
-  const notif = useNotifications();
+  const { isAuth, setUser } = useAuth();
+  const { n } = useRouter();
+  const { changeUniverse, setCurrentUniverse, setUniverses } = useWorld();
+  const { updateNotifications } = useNotifications();
 
   const lastActivityRef = useRef(Date.now());
 
@@ -34,7 +37,7 @@ export default function OykHeartbeat() {
   }, []);
 
   useEffect(() => {
-    if (!auth.isAuth) return;
+    // if (!isAuth) return;
 
     let controller = new AbortController();
 
@@ -47,17 +50,18 @@ export default function OykHeartbeat() {
 
       try {
         const r = await api.get("/heartbeat/", { signal: controller.signal });
-        if (!r.ok) return;
+        if (!r.ok) throw r;
 
         // Update
-        if (r.user) auth.setUser(r.user);
+        if (r.user) setUser(r.user);
         if (r.world) {
-          if (r.world.current) world.setCurrentUniverse(r.world.current);
-          if (r.world.universes) world.setUniverses(r.world.universes);
+          if (r.world.current) setCurrentUniverse(r.world.current);
+          if (r.world.universes) setUniverses(r.world.universes);
         }
-        if (r.notifications) notif.updateNotifications(r.notifications);
+        if (r.notifications) updateNotifications(r.notifications);
       } catch {
-        // fail silently
+        n("error");
+        changeUniverse("oykus");
       }
     };
 
@@ -68,7 +72,7 @@ export default function OykHeartbeat() {
       controller.abort();
       clearInterval(id);
     };
-  }, [auth.isAuth]);
+  }, [isAuth]);
 
   return null;
 }

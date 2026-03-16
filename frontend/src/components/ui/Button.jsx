@@ -6,6 +6,7 @@ export default function OykButton({
   children,
   routeName,
   params = {},
+  clickable = true,
   onClick,
   icon: IconComponent,
   iconSize = 16,
@@ -43,7 +44,7 @@ export default function OykButton({
       disabled={disabled || isLoading}
       className={`oyk-button ${color && !color.startsWith("#") ? `oyk-button-${color}` : ""} ${plain ? "oyk-button-plain" : ""} ${
         outline ? "oyk-button-outline" : ""
-      } ${small ? "oyk-button-small" : ""} ${block ? "oyk-button-block" : ""} ${IconComponent && !children ? "oyk-button-icon" : ""} ${className}`}
+      } ${small ? "oyk-button-small" : ""} ${block ? "oyk-button-block" : ""} ${IconComponent && !children ? "oyk-button-icon" : ""} ${clickable ? "" : "oyk-unclickable"} ${className}`}
       style={{
         ...style,
         ...(color?.startsWith("#") && {

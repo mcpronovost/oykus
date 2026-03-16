@@ -17,7 +17,7 @@ export default function OykBlogPostCommentsCard({
   isLastReply = false,
   handleReply = () => {},
 }) {
-  const { currentUser } = useAuth();
+  const { isAuth, currentUser } = useAuth();
   const { t, lang } = useTranslation();
   const { currentUniverse } = useWorld();
 
@@ -107,7 +107,7 @@ export default function OykBlogPostCommentsCard({
           <div className="oyk-blog-comments-card-content">
             <p>{comment.content}</p>
           </div>
-          <footer className="oyk-blog-comments-card-footer">
+          {isAuth && (<footer className="oyk-blog-comments-card-footer">
             <OykBlogCommentsActions
               postId={postId}
               commentId={comment.id}
@@ -118,7 +118,7 @@ export default function OykBlogPostCommentsCard({
               handleReactions={setReactions}
               handleReply={toggleReplyForm}
             />
-          </footer>
+          </footer>)}
         </div>
       </div>
       {currentUniverse.modules.blog.settings.is_comments_replies_enabled && showReplyForm && isLastReply ? (

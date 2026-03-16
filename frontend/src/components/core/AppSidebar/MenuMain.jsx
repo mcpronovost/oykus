@@ -9,24 +9,25 @@ import OykAppSidebarNavItem from "./NavItem";
 export default function AppSidebarMenuMain() {
   const { isAuth } = useAuth();
   const { t } = useTranslation();
-  const { currentUniverse, currentCharacter } = useWorld();
+  const { currentUniverse } = useWorld();
 
   return (
     <ul className="oyk-app-sidebar-nav-list">
       <OykAppSidebarNavItem
         icon={isAuth ? LayoutDashboard : House}
         text={isAuth ? t("Dashboard") : t("Home")}
-        href={isAuth ? (!currentUniverse || currentUniverse.is_default ? "dashboard" : "universe") : "home"}
+        href={!currentUniverse || currentUniverse.is_default ? "dashboard" : "universe"}
         params={{ universeSlug: currentUniverse?.slug }}
       />
-      {!currentUniverse || currentUniverse.is_default ? (
+      {!isAuth || !currentUniverse || currentUniverse.is_default ? (
         <OykAppSidebarNavItem icon={Compass} text={t("Discover")} href="discover" />
       ) : null}
       {currentUniverse && !currentUniverse.is_default && currentUniverse.modules?.forum?.active ? (
         <OykAppSidebarNavItem
           icon={MessagesSquare}
           text={currentUniverse.modules.forum.settings.display_name || t("Forum")}
-          href="forum"
+          href="universe-forum"
+          params={{ universeSlug: currentUniverse.slug }}
         />
       ) : null}
     </ul>

@@ -3,6 +3,9 @@ import OykAvatar from "./Avatar";
 
 export default function OykBanner({
   children,
+  height = 140,
+  isPrivate = true,
+  showAvatar = true,
   avatarSrc,
   avatarAbbr,
   avatarIcon,
@@ -20,8 +23,6 @@ export default function OykBanner({
   avatarLevelSize = 24,
   avatarLevelBorderSize,
   avatarLevelBorderColor = "var(--oyk-card-bg)",
-  showAvatar = true,
-  height = 140,
   coverSrc,
   coverHeight = 100,
   coverRadius = "var(--oyk-radius)",
@@ -71,6 +72,7 @@ export default function OykBanner({
             levelSize={avatarLevelSize}
             levelBorderSize={avatarLevelBorderSize}
             levelBorderColor={avatarLevelBorderColor}
+            isPrivate={isPrivate}
           />
         </div>
       )}

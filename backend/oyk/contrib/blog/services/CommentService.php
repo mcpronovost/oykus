@@ -56,7 +56,7 @@ class CommentService {
     ];
   }
 
-  public function getCommentsForPost(int $postId, int $userId): array {
+  public function getCommentsForPost(int $postId, ?int $userId): array {
     try {
       $qry = $this->pdo->prepare("
         SELECT

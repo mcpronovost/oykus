@@ -32,13 +32,13 @@ function oyk_handle_exceptions(Throwable $e) {
   Response::serverError("Unexpected error");
 }
 
-function require_rat($is_required = True): int {
+function require_rat($is_required = True): ?int {
   $headers = getallheaders();
   $authHeader = $headers["Authorization"] ?? $headers["authorization"] ?? "";
 
   if (!str_starts_with($authHeader, "Oyk ")) {
     if (!$is_required) {
-      return 0;
+      return NULL;
     }
     http_response_code(401);
     echo json_encode(["error" => 401]);

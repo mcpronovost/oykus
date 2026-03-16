@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$userId = require_rat();
+$userId = require_rat(FALSE);
 
 $universeService = new UniverseService($pdo);
 $moduleService = new ModuleService($pdo);
