@@ -1,9 +1,9 @@
 <?php
 
-$host = getenv("HTTP_DB_HOST");
-$name = getenv("HTTP_DB_NAME");
-$user = getenv("HTTP_DB_USER");
-$pass = getenv("HTTP_DB_PASS");
+$host = getenv("HTTP_DB_HOST") or die("Database host not set");
+$name = getenv("HTTP_DB_NAME") or die("Database name not set");
+$user = getenv("HTTP_DB_USER") or die("Database user not set");
+$pass = getenv("HTTP_DB_PASS") or die("Database password not set");
 $charset = "utf8mb4";
 
 $dsn = "mysql:host=$host;port=3306;dbname=$name;charset=$charset";
