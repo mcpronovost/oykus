@@ -16,7 +16,7 @@ export default function AppSidebarMenuMain() {
       <OykAppSidebarNavItem
         icon={isAuth ? LayoutDashboard : House}
         text={isAuth ? t("Dashboard") : t("Home")}
-        href={!currentUniverse || currentUniverse.is_default ? "dashboard" : "universe"}
+        href={!currentUniverse || currentUniverse.is_default ? "home" : "universe"}
         params={{ universeSlug: currentUniverse?.slug }}
       />
       {!isAuth || !currentUniverse || currentUniverse.is_default ? (
