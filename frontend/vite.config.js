@@ -4,9 +4,9 @@ import { version } from "./package.json";
 
 export default defineConfig(({ mode }) => {
   // Manual override
-  const DOMAIN = mode === "development" ? "localhost:8080" : "oykus.ovh";
+  const DOMAIN = mode === "development" ? "localhost:8000" : "oykus.ovh";
   const PROTOCOL = mode === "development" ? "http" : "https";
-  const API = mode === "development" ? "localhost:8080/api/v1" : "oykus.ovh/api/v1";
+  const API = mode === "development" ? "localhost:8000/api" : "oykus.ovh/api";
 
   return {
     plugins: [react(),
@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
       transformIndexHtml(html) {
         html = html.replace(
           /(<\/head>)/,
-          `<link rel="stylesheet" href="${PROTOCOL}://${API}/theme.php" id="oyk-theme">$1`
+          `<link rel="stylesheet" href="${PROTOCOL}://${API}/theme" id="oyk-theme">$1`
         );
 
         return html;
@@ -36,12 +36,12 @@ export default defineConfig(({ mode }) => {
       },
     },
     server: {
-      port: 8000,
+      port: 5173,
       host: true,
       watch: { usePolling: true },
       proxy: {
         "/api": {
-          target: "http://backend:80",
+          target: "http://backend:8000",
           changeOrigin: true,
           secure: false,
         },
