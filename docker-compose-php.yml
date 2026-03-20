@@ -1,0 +1,76 @@
+services:
+  db:
+    image: mysql:8.4
+    container_name: oykus-db
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    env_file:
+      - .env
+    environment:
+      TZ: ${TZ}
+      MYSQL_ROOT_PASSWORD: ${HTTP_DB_PASS}
+      MYSQL_DATABASE: ${HTTP_DB_NAME}
+      MYSQL_USER: ${HTTP_DB_USER}
+      MYSQL_PASSWORD: ${HTTP_DB_PASS}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${HTTP_DB_PASS}"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
+      start_period: 30s
+
+  backend:
+    build: ./backend
+    container_name: oykus-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    volumes:
+      - ./backend:/var/www/html
+      - ./backend/oyk/uploads:/app/oyk/uploads
+    env_file:
+      - .env
+    environment:
+      TZ: ${TZ}
+
+  frontend:
+    build: ./frontend
+    container_name: oykus-frontend
+    command: sh -c "npm run start"
+    depends_on:
+      - db
+      - backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - /app/node_modules
+      - ./frontend:/app
+    env_file:
+      - .env
+    environment:
+      TZ: ${TZ}
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: oykus-phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: ${HTTP_DB_USER}
+      PMA_PASSWORD: ${HTTP_DB_PASS}
+      MYSQL_ROOT_PASSWORD: ${HTTP_DB_PASS}
+
+volumes:
+  db_data: 
