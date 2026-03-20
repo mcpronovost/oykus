@@ -59,9 +59,11 @@ export default function OykHeartbeat() {
           if (r.world.universes) setUniverses(r.world.universes);
         }
         if (r.notifications) updateNotifications(r.notifications);
-      } catch {
-        n("error");
-        changeUniverse("oykus");
+      } catch (e) {
+        if (e?.cause === 401) {
+          n("404");
+          changeUniverse("oykus");
+        }
       }
     };
 
