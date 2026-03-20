@@ -24,7 +24,8 @@ class OykApi {
     }
 
     if (this.rat) {
-      headers.Authorization = `Oyk ${this.rat}`;
+      // headers.Authorization = `Oyk ${this.rat}`;
+      headers["X-CSRFToken"] = this.rat;
     }
 
     const fetchOptions = {
@@ -32,7 +33,7 @@ class OykApi {
       headers,
     };
 
-    if (options.withCredentials === true) {
+    if (this.rat || options.withCredentials === true) {
       fetchOptions.credentials = "include";
     }
 

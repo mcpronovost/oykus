@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     # tiers
     "corsheaders",
     # oyk
+    "oyk.core",
     "oyk.contrib.auth",
     # cleanup
     "django_cleanup.apps.CleanupConfig"
@@ -97,8 +98,8 @@ DATABASES = {
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "static"
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/uploads/"
+MEDIA_ROOT = BASE_DIR / "uploads"
 
 TIME_ZONE = os.getenv("TZ", "UTC")
 
