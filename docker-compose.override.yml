@@ -1,0 +1,33 @@
+services:
+  backend:
+    command: sh -c "python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    environment:
+      # En dev, tu peux bypass PgBouncer si tu veux
+      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
+
+  frontend:
+    build: ./frontend
+    image: oykus-frontend
+    command: sh -c "npm install && npm run start -- --host"
+    volumes:
+      - /app/node_modules
+      - ./frontend:/app
+    ports:
+      - "5173:5173"
+
+  traefik:
+    # En dev, on désactive Traefik (pas utile)
+    profiles: ["disabled"]
+
+  bouncer:
+    # En dev, PgBouncer n'est pas nécessaire
+    profiles: ["disabled"]
+
+  # Optionnel : expose PostgreSQL en local
+  db:
+    ports:
+      - "5432:5432"

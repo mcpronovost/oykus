@@ -1,75 +1,126 @@
 services:
+  traefik:
+    image: traefik:v3.0
+    container_name: oykus-traefik
+    restart: unless-stopped
+    env_file:
+      - .env
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.le.acme.httpchallenge=true"
+      - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=websecure"
+      - "--certificatesresolvers.le.acme.email=${TRAEFIK_ACME_EMAIL}"
+      - "--certificatesresolvers.le.acme.storage=/acme.json"
+    ports:
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./oykus/traefik/acme.json:/acme.json
+    networks:
+      - oykus-public
+
   db:
-    image: mysql:8.4
+    image: postgres:16
     container_name: oykus-db
     restart: unless-stopped
-    ports:
-      - "3306:3306"
-    volumes:
-      - db_data:/var/lib/mysql
     env_file:
       - .env
     environment:
-      TZ: ${TZ}
-      MYSQL_ROOT_PASSWORD: ${HTTP_DB_PASS}
-      MYSQL_DATABASE: ${HTTP_DB_NAME}
-      MYSQL_USER: ${HTTP_DB_USER}
-      MYSQL_PASSWORD: ${HTTP_DB_PASS}
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${HTTP_DB_PASS}"]
-      timeout: 20s
-      retries: 10
-      interval: 10s
-      start_period: 30s
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - oykus-internal
+
+  bouncer:
+    image: edoburu/pgbouncer:latest
+    container_name: oykus-bouncer
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      POOL_MODE: session
+      MAX_CLIENT_CONN: 200
+      DEFAULT_POOL_SIZE: 20
+    depends_on:
+      - db
+    networks:
+      - oykus-internal
 
   backend:
     build: ./backend
     container_name: oykus-backend
     restart: unless-stopped
-    depends_on:
-      db:
-        condition: service_healthy
-    ports:
-      - "8080:80"
-    volumes:
-      - ./backend:/var/www/html
     env_file:
       - .env
     environment:
-      TZ: ${TZ}
+      DATABASE_URL: ${DATABASE_URL}
+    volumes:
+      - media_data:/app/media
+      - static_data:/app/static
+    networks:
+      - oykus-internal
+      - oykus-public
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`oykus.ovh`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls.certresolver=le"
+      - "traefik.http.services.backend.loadbalancer.server.port=8000"
+  
+  assets:
+    image: nginx:alpine
+    container_name: oykus-assets
+    restart: unless-stopped
+    volumes:
+      - ./backend/nginx.conf:/etc/nginx/nginx.conf:ro
+      - media_data:/app/media
+      - static_data:/app/static
+    networks:
+      - oykus-public
+      - oykus-internal
+    depends_on:
+      - backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.assets.rule=Host(oykus.ovh) && (PathPrefix(/media) || PathPrefix(/static))"
+      - "traefik.http.routers.assets.entrypoints=websecure"
+      - "traefik.http.routers.assets.tls.certresolver=le"
+      - "traefik.http.services.assets.loadbalancer.server.port=80"
 
   frontend:
-    build: ./frontend
+    image: nginx:alpine
     container_name: oykus-frontend
-    command: sh -c "npm run start"
-    depends_on:
-      - db
-      - backend
-    ports:
-      - "8000:8000"
-    volumes:
-      - /app/node_modules
-      - ./frontend:/app
+    restart: unless-stopped
     env_file:
       - .env
-    environment:
-      TZ: ${TZ}
-
-  phpmyadmin:
-    image: phpmyadmin:latest
-    container_name: oykus-phpmyadmin
-    restart: unless-stopped
-    depends_on:
-      db:
-        condition: service_healthy
-    ports:
-      - "8081:80"
-    environment:
-      PMA_HOST: db
-      PMA_PORT: 3306
-      PMA_USER: ${HTTP_DB_USER}
-      PMA_PASSWORD: ${HTTP_DB_PASS}
-      MYSQL_ROOT_PASSWORD: ${HTTP_DB_PASS}
+    volumes:
+      - ./frontend/dist:/usr/share/nginx/html:ro
+    networks:
+      - oykus-public
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`oykus.ovh`) && PathPrefix(`/`) && !PathPrefix(`/api`) && !PathPrefix(`/media`) && !PathPrefix(`/static`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=le"
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
 
 volumes:
-  db_data: 
+  pgdata:
+  media_data:
+  static_data:
+
+networks:
+  oykus-internal:
+    driver: bridge
+  oykus-public:
+    driver: bridge
