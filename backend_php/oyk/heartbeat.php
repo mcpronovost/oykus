@@ -1,0 +1,63 @@
+<?php
+
+global $pdo;
+
+$universeSlug = $_COOKIE["oyk-world"] ?? NULL;
+
+// Auth needed but silent (if invalid token → no crash)
+$userId = require_rat(FALSE);
+
+// Services
+try {
+  $userService = new UserService($pdo);
+  $universeService = new UniverseService($pdo);
+  $themeService = new ThemeService($pdo);
+  $moduleService = new ModuleService($pdo);
+  $notificationService = new NotificationService($pdo);
+}
+catch (Exception) {
+  // fail silently
+}
+
+// USER
+$user = $userId ? $userService->getCurrentUser($userId) : NULL;
+
+// WORLD
+try {
+  $currentUniverse = $universeService->getUniverse($universeSlug, $userId);
+}
+catch (Exception) {
+  Response::forbidden("Universe not found", ["code" => 403]);
+}
+
+try {
+  $universes = $universeService->getUniversesForUser($userId);
+  $theme = $currentUniverse ? $themeService->getActiveTheme($currentUniverse["id"]) : NULL;
+  if ($currentUniverse) {
+    $modules = $moduleService->getModules($currentUniverse["id"]);
+    $currentUniverse["modules"] = $modules;
+  }
+}
+catch (Exception) {
+  // fail silently
+}
+
+// NOTIFICATIONS
+try {
+  $notifications = $userId ? $notificationService->getNotificationsCounts($userId) : NULL;
+}
+catch (Exception) {
+  // fail silently
+}
+
+// Response
+Response::json([
+  "ok" => TRUE,
+  "user" => $user,
+  "world" => [
+    "current" => $currentUniverse ?? NULL,
+    "universes" => $universes ?? NULL,
+    "theme" => $theme ?? NULL,
+  ],
+  "notifications" => $notifications ?? NULL,
+]);
