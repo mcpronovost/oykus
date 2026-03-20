@@ -61,10 +61,10 @@ class OykApi {
         try {
           const errorData = await response.json();
           return errorData;
-        } catch (err) {
-          errorMsg = `HTTP error! status: ${response.status}`;
+        } catch {
+          //
         }
-        throw new Error(errorMsg);
+        throw new Error(errorMsg, { cause: response.status});
       }
 
       if (response.status === 204) {
