@@ -63,6 +63,7 @@ services:
     env_file:
       - .env
     environment:
+      TZ: ${TZ}
       DATABASE_URL: ${DATABASE_URL}
     volumes:
       - media_data:/app/media

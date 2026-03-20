@@ -100,4 +100,6 @@ STATIC_ROOT = BASE_DIR / "static"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+TIME_ZONE = os.getenv("TZ", "UTC")
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
