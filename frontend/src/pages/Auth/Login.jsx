@@ -53,7 +53,7 @@ export default function Login() {
     }
   };
 
-  const handleSubmit = async () => {
+  const postSubmit = async () => {
     setIsLoading(true);
     setHasError(null);
     if (!validateForm()) {
@@ -65,7 +65,7 @@ export default function Login() {
       formData.append("username", loginForm.username);
       formData.append("password", loginForm.password);
       const r = await api.login(formData);
-      if (!r.ok) throw r;
+      if (!r.ok || !r.rat || !r.user) throw r;
       setRat(r.rat);
       setUser(r.user);
       n("home");
@@ -97,7 +97,7 @@ export default function Login() {
         }));
       } else {
         setHasError(() => ({
-          message: e.message || t("An error occurred"),
+          message: t(e?.error) || t("An error occurred"),
         }));
       }
     } finally {
@@ -130,7 +130,7 @@ export default function Login() {
         </div>
 
         <OykCard>
-          <OykForm className="oyk-auth-form" onSubmit={handleSubmit} isLoading={isLoading}>
+          <OykForm className="oyk-auth-form" onSubmit={postSubmit} isLoading={isLoading}>
             <OykFormField
               label={t("Username")}
               name="username"

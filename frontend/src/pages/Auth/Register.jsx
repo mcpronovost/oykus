@@ -10,7 +10,7 @@ export default function Register() {
   const { n, routeTitle } = useRouter();
   const { t } = useTranslation();
 
-  const [formData, setFormData] = useState({
+  const [registerForm, setRegisterForm] = useState({
     username: "",
     password: "",
     confirmPassword: "",
@@ -19,15 +19,16 @@ export default function Register() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
+  const [hasSuccess, setHasSuccess] = useState(null);
 
   const validateForm = () => {
     const newErrors = {};
 
     // Fields validation
-    const usernameError = validateUsername(formData.username);
-    const passwordError = validatePassword(formData.password);
-    const emailError = validateEmail(formData.email);
-    const nameError = validateName(formData.name);
+    const usernameError = validateUsername(registerForm.username);
+    const passwordError = validatePassword(registerForm.password);
+    const emailError = validateEmail(registerForm.email);
+    const nameError = validateName(registerForm.name);
 
     usernameError && (newErrors.username = usernameError);
     passwordError && (newErrors.password = passwordError);
@@ -35,9 +36,9 @@ export default function Register() {
     nameError && (newErrors.name = nameError);
 
     // Confirm password validation
-    if (!formData.confirmPassword) {
+    if (!registerForm.confirmPassword) {
       newErrors.confirmPassword = "Please confirm your password";
-    } else if (formData.password !== formData.confirmPassword) {
+    } else if (registerForm.password !== registerForm.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
     }
 
@@ -47,7 +48,7 @@ export default function Register() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setRegisterForm((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -64,22 +65,38 @@ export default function Register() {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const postSubmit = async () => {
     setIsLoading(true);
     setHasError(null);
+    setHasSuccess(null);
     if (!validateForm()) {
       setIsLoading(false);
       return;
     }
     try {
-      const { confirmPassword, ...registrationData } = formData;
-      const r = await api.post("/auth/register/", registrationData);
-      if (!r.ok) throw new Error();
+      const formData = new FormData();
+      formData.append("username", registerForm.username);
+      formData.append("password", registerForm.password);
+      formData.append("confirmPassword", registerForm.confirmPassword);
+      formData.append("email", registerForm.email);
+      formData.append("name", registerForm.name);
+      const r = await api.post("/auth/register/", formData);
+      if (!r.ok) throw r;
+      setHasSuccess(() => ({
+        title: t("Account created"),
+        message: t("You can now log in")
+      }));
       n("login");
     } catch (e) {
-      setHasError(() => ({
-        message: e.error || t("An error occurred")
-      }));
+      if (e?.fields) {
+        setHasError(() => ({
+          fields: t(e.fields)
+        }));
+      } else {
+        setHasError(() => ({
+          message: t(e?.error) || t("An error occurred")
+        }));
+      }
     } finally {
       setIsLoading(false);
     }
@@ -109,11 +126,11 @@ export default function Register() {
           </p>
         </div>
         <OykCard>
-          <OykForm className="oyk-auth-form" onSubmit={handleSubmit} isLoading={isLoading}>
+          <OykForm className="oyk-auth-form" onSubmit={postSubmit} isLoading={isLoading}>
             <OykFormField
               label={t("Username")}
               name="username"
-              defaultValue={formData.username}
+              defaultValue={registerForm.username}
               onChange={handleChange}
               hasError={hasError?.fields?.username}
               required
@@ -123,7 +140,7 @@ export default function Register() {
               label={t("Password")}
               name="password"
               type="password"
-              defaultValue={formData.password}
+              defaultValue={registerForm.password}
               onChange={handleChange}
               hasError={hasError?.fields?.password}
               required
@@ -133,7 +150,7 @@ export default function Register() {
               label={t("Confirm Password")}
               name="confirmPassword"
               type="password"
-              defaultValue={formData.confirmPassword}
+              defaultValue={registerForm.confirmPassword}
               onChange={handleChange}
               hasError={hasError?.fields?.confirmPassword}
               required
@@ -143,7 +160,7 @@ export default function Register() {
               label={t("Email")}
               name="email"
               type="email"
-              defaultValue={formData.email}
+              defaultValue={registerForm.email}
               onChange={handleChange}
               hasError={hasError?.fields?.email}
               required
@@ -152,13 +169,14 @@ export default function Register() {
             <OykFormField
               label={t("Name")}
               name="name"
-              defaultValue={formData.name}
+              defaultValue={registerForm.name}
               onChange={handleChange}
               hasError={hasError?.fields?.name}
               required
               block
             />
             {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
+            {hasSuccess?.message && <OykFormMessage successTitle={hasSuccess?.title} hasSuccess={hasSuccess?.message} />}
             <div className="oyk-form-actions">
               <OykButton type="submit" color="primary" disabled={isLoading} block>
                 {isLoading ? t("Creating account...") : t("Create account")}
