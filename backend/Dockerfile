@@ -1,22 +1,36 @@
-FROM php:8.5-apache
+FROM python:3.14-alpine AS builder
 
-RUN apt-get update && \
-    apt-get install -y zlib1g-dev libpng-dev libjpeg-dev libwebp-dev
+RUN apk add --no-cache \
+    build-base \
+    libjpeg-turbo-dev \
+    zlib-dev \
+    libwebp-dev \
+    musl-dev
 
-RUN docker-php-ext-install pdo pdo_mysql mysqli
-RUN docker-php-ext-configure gd --with-jpeg --with-webp && \
-    docker-php-ext-install gd
+WORKDIR /app
 
-# Enable Apache rewrite module
-RUN a2enmod rewrite
+COPY requirements.txt .
+RUN pip wheel --no-cache-dir --wheel-dir /wheels -r requirements.txt
 
-# Allow .htaccess overrides
-RUN sed -i "s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
+FROM python:3.14-alpine
 
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+RUN apk add --no-cache \
+    libjpeg-turbo \
+    zlib \
+    libwebp \
+    libstdc++ \
+    bash
 
-RUN echo "log_errors=On" > /usr/local/etc/php/conf.d/docker-logs.ini \
- && echo "error_log=/proc/self/fd/2" >> /usr/local/etc/php/conf.d/docker-logs.ini
+WORKDIR /app
 
-# Restart Apache
-RUN service apache2 restart
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+COPY --from=builder /wheels /wheels
+RUN pip install --no-cache-dir /wheels/*
+
+COPY . .
+
+EXPOSE 8000
+
+CMD ["gunicorn", "oyk.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "4"]
