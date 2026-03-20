@@ -14,7 +14,8 @@ export default function OykLink({
   const { n, lang } = useRouter();
 
   const buildPath = buildRoutePath(routeName, params, lang) || "";
-  const href = !disabled ? `/${lang}/${!buildPath && routeName !== "home" ? routeName : buildPath}` : "/";
+  // const href = !disabled ? `/${lang}/${!buildPath && routeName !== "home" ? routeName : buildPath}` : "/";
+  const href = !disabled ? `/${!buildPath && routeName !== "home" ? routeName : buildPath}` : "/";
 
   const handleClick = (e) => {
     e.preventDefault();
