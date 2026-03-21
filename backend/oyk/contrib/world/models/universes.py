@@ -1,3 +1,4 @@
+from tabnanny import verbose
 from django.contrib.auth import get_user_model
 from django.core.validators import FileExtensionValidator
 from django.db import models
@@ -7,6 +8,8 @@ from oyk.core.enums import OykVisibility
 from oyk.core.fields import OykImageField
 from oyk.core.utils import get_abbr, get_slug
 from oyk.core.validators import oyk_image_size_validator
+
+from .roles import OykRole
 
 OykUser = get_user_model()
 
@@ -34,6 +37,13 @@ class OykUniverse(models.Model):
         verbose_name=_("Abbreviation is auto"),
         default=True,
     )
+    owner = models.ForeignKey(
+        OykUser,
+        related_name="universes",
+        on_delete=models.CASCADE,
+        verbose_name=_("Owner"),
+    )
+    # Media
     logo = OykImageField(
         verbose_name=_("Logo"),
         upload_to="w/u/l",
@@ -62,12 +72,7 @@ class OykUniverse(models.Model):
             ),
         ],
     )
-    owner = models.ForeignKey(
-        OykUser,
-        related_name="universes",
-        on_delete=models.CASCADE,
-        verbose_name=_("Owner"),
-    )
+    # Statuses
     is_default = models.BooleanField(
         verbose_name=_("Is Default"),
         default=False,
@@ -81,6 +86,26 @@ class OykUniverse(models.Model):
         choices=OykVisibility.choices,
         default=OykVisibility.OWNER,
     )
+    # Mods
+    is_mod_blog_active = models.BooleanField(
+        verbose_name=_("Mod Blog Active"),
+        default=False,
+    )
+    mod_blog_settings = models.JSONField(
+        verbose_name=_("Mod Blog Settings"),
+        blank=True,
+        null=True,
+    )
+    is_mod_agenda_active = models.BooleanField(
+        verbose_name=_("Mod Agenda Active"),
+        default=False,
+    )
+    mod_agenda_settings = models.JSONField(
+        verbose_name=_("Mod Agenda Settings"),
+        blank=True,
+        null=True,
+    )
+    # Important Dates
     created_at = models.DateTimeField(
         verbose_name=_("Created At"),
         auto_now_add=True,
@@ -111,3 +136,28 @@ class OykUniverse(models.Model):
         if self.is_slug_auto:
             self.slug = get_slug(self.name, self, OykUniverse)
         super().save(*args, **kwargs)
+
+    # -- Serializers ---------------------------------------------------
+
+    def get_short_data(self):
+        return {
+            "id": self.pk,
+            "name": self.name,
+            "abbr": self.abbr,
+            "slug": self.slug,
+            "logo": self.logo.url if self.logo else None,
+            "cover": self.cover.url if self.cover else None,
+            "created_at": self.created_at,
+        }
+
+    def get_staff(self):
+        staff = {
+            "owner": None,
+            "admins": [],
+            "modos": [],
+        }
+
+        # TODO: serialize staff members
+        # owner = OykRole.get_universe_members(self, 3)
+
+        return staff

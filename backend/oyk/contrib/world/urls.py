@@ -1,16 +1,12 @@
 from django.urls import path
 
 from .views import (
-    OykRegisterView,
-    OykLoginView,
-    OykLogoutView,
-    OykMeView,
+    OykUniversesListView,
+    OykUniverseView,
 )
 
 
 urlpatterns = [
-    path("register/", OykRegisterView.as_view(), name="oyk_auth_register"),
-    path("login/", OykLoginView.as_view(), name="oyk_auth_login"),
-    path("logout/", OykLogoutView.as_view(), name="oyk_auth_logout"),
-    path("me/", OykMeView.as_view(), name="oyk_auth_me"),
+    path("universes/", OykUniversesListView.as_view()),
+    path("universes/<slug:slug>/", OykUniverseView.as_view()),
 ]

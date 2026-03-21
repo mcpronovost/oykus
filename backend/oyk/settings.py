@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     # oyk
     "oyk.core",
     "oyk.contrib.auth",
+    "oyk.contrib.world",
     # cleanup
     "django_cleanup.apps.CleanupConfig"
 ]

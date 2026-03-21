@@ -45,8 +45,8 @@ export default function AppFooter() {
           {!currentUniverse.is_default ? (
             <p className="oyk-app-footer-small-copyright">
               <span>{currentUniverse.name}</span> &copy;{" "}
-              <time dateTime={currentUniverse.created_at.slice(0, 10)}>{currentUniverse.created_at.slice(0, 4)}</time>{" "}
-              <span>{currentUniverse.staff.owner.name}</span>
+              <time dateTime={currentUniverse.created_at?.split("T")[0]}>{currentUniverse.created_at?.slice(0, 4)}</time>{" "}
+              <span>{currentUniverse.staff?.owner?.name}</span>
             </p>
           ) : null}
           <p className="oyk-app-footer-small-copyright">

@@ -70,13 +70,13 @@ class OykRole(models.Model):
         return cls.objects.filter(universe=universe, user=user).first()
 
     @classmethod
-    def get_universe_members(cls, universe, min_role=OykRoles.MEMBERS):
+    def get_universe_members(cls, universe, min_role=OykRoles.MEMBER):
         """Return all roles for a universe,
         filtered by minimum role level."""
         return cls.objects.filter(universe=universe, role__lte=min_role)
 
     @classmethod
-    def get_user_universes(cls, user, min_role=OykRoles.MEMBERS):
+    def get_user_universes(cls, user, min_role=OykRoles.MEMBER):
         """Return all roles for a user across universes,
         filtered by minimum role level."""
         return cls.objects.filter(user=user, role__lte=min_role)

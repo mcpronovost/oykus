@@ -60,6 +60,9 @@ export function WorldProvider({ children }) {
       setCurrentUniverse(r.universe);
       storeSet(KEY_UNIVERSE, r.universe);
 
+      // World cookie
+      oykCookieSet("oyk-world", r.universe.slug);
+
       // Apply current character
       if (r.character) {
         setCurrentCharacter(r.character);
@@ -68,9 +71,6 @@ export function WorldProvider({ children }) {
         setCurrentCharacter(null);
         storeRemove(KEY_CHARACTER);
       }
-
-      // World cookie
-      oykCookieSet("oyk-world", r.universe.slug);
 
       // Theme data
       if (r.theme) setTheme(r.theme);

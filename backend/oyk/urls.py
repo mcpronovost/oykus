@@ -15,7 +15,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("oyk.contrib.urls")),
     path("api/health/", health),
-    path("api/heartbeat/", OykHeartbeatView.as_view(), name="oyk_heartbeat"),
+    path("api/heartbeat/", OykHeartbeatView.as_view()),
 ]
 
 urlpatterns += static(

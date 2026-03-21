@@ -188,7 +188,7 @@ class OykUser(AbstractBaseUser, PermissionsMixin):
     )
 
     # ------------------------------------------------------------------
-    # Timestamps
+    # Important dates
     # ------------------------------------------------------------------
     created_at = models.DateTimeField(default=tz.now, editable=False)
     updated_at = models.DateTimeField(auto_now=True)
