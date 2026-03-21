@@ -210,6 +210,9 @@ class OykUser(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = _("Users")
         ordering = ["-created_at"]
 
+    def __str__(self):
+        return self.name or self.username
+
     # ------------------------------------------------------------------
     # Save
     # ------------------------------------------------------------------
@@ -223,18 +226,8 @@ class OykUser(AbstractBaseUser, PermissionsMixin):
     # ------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------
-    def __str__(self) -> str:
-        return self.username
 
-    def get_full_name(self) -> str:
-        return self.name
-
-    def get_short_name(self) -> str:
-        return self.abbr or self.username
-
-    # -- Ban helpers ---------------------------------------------------
-
-    def is_currently_banned(self) -> bool:
+    def is_currently_banned(self):
         """True if the user is banned and the ban has not expired."""
         if not self.is_banned:
             return False
@@ -242,31 +235,31 @@ class OykUser(AbstractBaseUser, PermissionsMixin):
             return True  # permanent ban
         return tz.now() < self.banned_until
 
-    def is_currently_locked(self) -> bool:
+    def is_currently_locked(self):
         """True if the account is temporarily locked out."""
         if self.locked_until is None:
             return False
         return tz.now() < self.locked_until
 
-    def record_failed_login(self) -> None:
+    def record_failed_login(self):
         """Increment the failed-login counter and timestamp."""
         self.failedlogin_count += 1
         self.failedlogin_at = tz.now()
         self.save(update_fields=["failedlogin_count", "failedlogin_at"])
 
-    def reset_failed_login(self) -> None:
+    def reset_failed_login(self):
         """Clear failed-login tracking after a successful login."""
         self.failedlogin_count = 0
         self.failedlogin_at = None
         self.save(update_fields=["failedlogin_count", "failedlogin_at"])
 
-    def record_login(self, ip: str | None = None) -> None:
+    def record_login(self, ip=None):
         """Update last-login timestamp and IP."""
         self.lastlogin_at = tz.now()
         self.lastlogin_ip = ip
         self.save(update_fields=["lastlogin_at", "lastlogin_ip"])
 
-    def record_live(self, ip: str | None = None) -> None:
+    def record_live(self, ip=None):
         """Update last-seen / last-live timestamp and IP."""
         self.lastlive_at = tz.now()
         self.lastlive_ip = ip
@@ -274,7 +267,7 @@ class OykUser(AbstractBaseUser, PermissionsMixin):
 
     # -- Serializers ---------------------------------------------------
 
-    def get_me_data(self) -> dict:
+    def get_me_data(self):
         return {
             "id": self.pk,
             "name": self.name,
