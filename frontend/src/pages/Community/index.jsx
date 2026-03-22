@@ -35,7 +35,7 @@ export default function OykCommunity() {
     } catch (e) {
       if (e?.name === "AbortError") return;
       setHasError(() => ({
-        message: e.error || t("An error occurred"),
+        message: t(e?.error) || t("An error occurred"),
       }));
     } finally {
       if (!signal || !signal.aborted) {

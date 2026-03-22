@@ -1,13 +1,15 @@
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from .universes import OykUniverse
+
+class OykThemeQuerySet(models.QuerySet):
+    def short(self, universe_slug):
+        return None
 
 
 class OykTheme(models.Model):
     universe = models.ForeignKey(
-        OykUniverse,
+        "oyk_world.OykUniverse",
         on_delete=models.CASCADE,
         related_name="themes",
         verbose_name=_("Universe"),
@@ -44,6 +46,11 @@ class OykTheme(models.Model):
         verbose_name=_("Updated At"),
         auto_now=True,
     )
+
+    # ------------------------------------------------------------------
+    # Manager
+    # ------------------------------------------------------------------
+    objects = OykThemeQuerySet.as_manager()
 
     class Meta:
         db_table = "oyk_world_themes"

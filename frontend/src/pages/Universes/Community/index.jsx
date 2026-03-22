@@ -33,9 +33,8 @@ export default function OykCommunity() {
     setHasError(null);
     try {
       const r = await api.get(`/world/universes/${params.universeSlug}/community/`, signal ? { signal } : {});
-      if (!r?.ok || (!r?.characters && !r?.users)) throw r;
+      if (!r?.ok || !r?.characters) throw r;
       setCharacters(r.characters);
-      setUsers(r.users);
     } catch (e) {
       if (e?.name === "AbortError") return;
       setHasError(() => ({

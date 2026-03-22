@@ -1,17 +1,99 @@
-from tabnanny import verbose
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.validators import FileExtensionValidator
 from django.db import models
+from django.db.models import F, OuterRef, Q, Subquery, Value
+from django.db.models.functions import Coalesce
 from django.utils.translation import gettext_lazy as _
 
-from oyk.core.enums import OykVisibility
+from oyk.core.enums import OykRolesEnum, OykVisibilityEnum
 from oyk.core.fields import OykImageField
 from oyk.core.utils import get_abbr, get_slug
 from oyk.core.validators import oyk_image_size_validator
 
+from .themes import OykTheme
 from .roles import OykRole
 
 OykUser = get_user_model()
+
+
+class OykUniverseQuerySet(models.QuerySet):
+    SHORT_FIELDS = (
+        "id",
+        "name",
+        "abbr",
+        "slug",
+        "logo",
+        "cover",
+    )
+    PUBLIC_FIELDS = (
+        "id",
+        "name",
+        "abbr",
+        "slug",
+        "logo",
+        "cover",
+        "created_at",
+        "updated_at",
+    )
+
+    def _with_media_urls(self, qs_values):
+        return [
+            {
+                **u,
+                "logo": (
+                    f"{settings.MEDIA_URL}{u['logo']}" if u["logo"] else None
+                ),
+                "cover": (
+                    f"{settings.MEDIA_URL}{u['cover']}" if u["cover"] else None
+                ),
+            }
+            for u in qs_values
+        ]
+
+    def visible_to(self, user):
+        """Filter universes the user has permission to see."""
+        if not user or not user.is_authenticated:
+            # Unauthenticated users: only PUBLIC universes (no role needed)
+            return self.filter(visibility=OykVisibilityEnum.PUBLIC)
+
+        # User's role for each universe (None if no role exists)
+        user_role = OykRole.objects.filter(
+            universe=OuterRef("pk"),
+            user=user,
+        ).values("role")[:1]
+
+        return self.annotate(
+            user_role=Coalesce(
+                Subquery(user_role),
+                Value(OykRolesEnum.VISITOR),
+            )
+        ).filter(
+            # Either the universe visibility <= user's role
+            Q(user_role__lte=F("visibility"))
+            # Or the user is the owner (always sees their own)
+            | Q(owner=user)
+        )
+
+    def short(self, user, slug=None):
+        qs = self.visible_to(user)
+        if slug:
+            qs = qs.filter(is_active=True, slug=slug)
+        r = self._with_media_urls(qs.values(*self.SHORT_FIELDS))
+        return r
+
+    def current(self, user, slug="oykus"):
+        qs = self.visible_to(user)
+        if slug:
+            qs = qs.filter(is_active=True, slug=slug)
+        results = self._with_media_urls(qs.values(*self.PUBLIC_FIELDS))
+        if not results:
+            return None
+        r = results[0]
+        if slug == "oykus":
+            r["is_default"] = True
+        r["staff"] = OykRole.objects.staff(slug)
+        return r
 
 
 class OykUniverse(models.Model):
@@ -83,8 +165,8 @@ class OykUniverse(models.Model):
     )
     visibility = models.PositiveSmallIntegerField(
         verbose_name=_("Visibility"),
-        choices=OykVisibility.choices,
-        default=OykVisibility.OWNER,
+        choices=OykVisibilityEnum.choices,
+        default=OykVisibilityEnum.OWNER,
     )
     # Mods
     is_mod_blog_active = models.BooleanField(
@@ -115,6 +197,11 @@ class OykUniverse(models.Model):
         auto_now=True,
     )
 
+    # ------------------------------------------------------------------
+    # Manager
+    # ------------------------------------------------------------------
+    objects = OykUniverseQuerySet.as_manager()
+
     class Meta:
         db_table = "oyk_world_universes"
         verbose_name = _("Universe")
@@ -140,7 +227,7 @@ class OykUniverse(models.Model):
     # -- Serializers ---------------------------------------------------
 
     def get_short_data(self):
-        return {
+        data = {
             "id": self.pk,
             "name": self.name,
             "abbr": self.abbr,
@@ -149,6 +236,13 @@ class OykUniverse(models.Model):
             "cover": self.cover.url if self.cover else None,
             "created_at": self.created_at,
         }
+        staff = {
+            "owner": None,
+            "admins": [],
+            "modos": [],
+        }
+        data["staff"] = staff
+        return data
 
     def get_staff(self):
         staff = {

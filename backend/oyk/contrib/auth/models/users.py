@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -13,7 +14,36 @@ from oyk.core.utils import get_abbr, get_slug
 from oyk.core.validators import oyk_image_size_validator
 
 
-class OykUserManager(BaseUserManager):
+class OykUserQuerySet(models.QuerySet):
+    SHORT_FIELDS = (
+        "id",
+        "name",
+        "abbr",
+        "slug",
+        "avatar",
+        "cover"
+    )
+
+    def short(self):
+        return [
+            {
+                **u,
+                "avatar": (
+                    f"{settings.MEDIA_URL}{u['avatar']}"
+                    if u["avatar"]
+                    else None
+                ),
+                "cover": (
+                    f"{settings.MEDIA_URL}{u['cover']}"
+                    if u["cover"]
+                    else None
+                ),
+            }
+            for u in self.values(*self.SHORT_FIELDS)
+        ]
+
+
+class OykUserManager(BaseUserManager.from_queryset(OykUserQuerySet)):
     """
     Custom manager for OykUser.
     Login is handled via username + password.

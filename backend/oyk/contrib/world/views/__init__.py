@@ -1,1 +1,5 @@
-from .universes import OykUniversesListView, OykUniverseView
+from .universes import (
+    OykUniversesListView,
+    OykUniverseView,
+    OykUniverseCommunityView,
+)

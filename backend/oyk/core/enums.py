@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-class OykRoles(models.IntegerChoices):
+class OykRolesEnum(models.IntegerChoices):
     """User roles"""
     OWNER = 1, _("Owner")
     ADMIN = 2, _("Administrator")
@@ -12,7 +12,7 @@ class OykRoles(models.IntegerChoices):
     PUBLIC = 6, _("Public")
 
 
-class OykVisibility(models.IntegerChoices):
+class OykVisibilityEnum(models.IntegerChoices):
     """Visibility levels (higher = more open)."""
     OWNER = 1, _("Owner")
     ADMINS = 2, _("Administrators")

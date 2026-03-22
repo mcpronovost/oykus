@@ -1,7 +1,8 @@
-from django.apps import apps
 from django.core.cache import cache
 from django.http import JsonResponse
 from django.views import View
+
+from oyk.contrib.world.models import OykUniverse
 
 HEARTBEAT_CACHE_KEY = "heartbeat_data"
 HEARTBEAT_CACHE_TIMEOUT = 10
@@ -31,6 +32,13 @@ class OykHeartbeatView(OykView):
                 user = request.user.get_me_data()
         except Exception:
             pass
+
+        worldSlug = request.COOKIES.get("oyk-world", "oykus")
+        worldCurrent = OykUniverse.objects.current(request.user, worldSlug)
+        worldUniverses = OykUniverse.objects.short(request.user)
+
+        if worldCurrent is None:
+            return JsonResponse({}, status=401)
 
         data = {
             "ok": True,

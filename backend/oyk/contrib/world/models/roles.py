@@ -2,16 +2,45 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from oyk.core.enums import OykRoles
-
-from .universes import OykUniverse
+from oyk.core.enums import OykRolesEnum
 
 OykUser = get_user_model()
 
 
+class OykRoleQuerySet(models.QuerySet):
+    def staff(self, universe_slug):
+        roles = (
+            self.filter(
+                universe__slug=universe_slug,
+                role__in=[
+                    OykRolesEnum.OWNER,
+                    OykRolesEnum.ADMIN,
+                    OykRolesEnum.MODO,
+                ],
+            )
+            .select_related("user")
+            .values("role", "user__id", "user__name")
+        )
+
+        result = {"owner": None, "admins": [], "modos": []}
+        for r in roles:
+            member = {
+                "id": r["user__id"],
+                "name": r["user__name"],
+            }
+            if r["role"] == OykRolesEnum.OWNER:
+                result["owner"] = member
+            elif r["role"] == OykRolesEnum.ADMIN:
+                result["admins"].append(member)
+            elif r["role"] == OykRolesEnum.MODO:
+                result["modos"].append(member)
+
+        return result
+
+
 class OykRole(models.Model):
     universe = models.ForeignKey(
-        OykUniverse,
+        "oyk_world.OykUniverse",
         on_delete=models.CASCADE,
         related_name="roles",
         verbose_name=_("Universe"),
@@ -24,8 +53,8 @@ class OykRole(models.Model):
     )
     role = models.PositiveSmallIntegerField(
         verbose_name=_("Role"),
-        choices=OykRoles.choices,
-        default=OykRoles.VISITOR,
+        choices=OykRolesEnum.choices,
+        default=OykRolesEnum.VISITOR,
     )
     created_at = models.DateTimeField(
         verbose_name=_("Created At"),
@@ -35,6 +64,11 @@ class OykRole(models.Model):
         verbose_name=_("Updated At"),
         auto_now=True,
     )
+
+    # ------------------------------------------------------------------
+    # Manager
+    # ------------------------------------------------------------------
+    objects = OykRoleQuerySet.as_manager()
 
     class Meta:
         db_table = "oyk_world_roles"
@@ -70,13 +104,13 @@ class OykRole(models.Model):
         return cls.objects.filter(universe=universe, user=user).first()
 
     @classmethod
-    def get_universe_members(cls, universe, min_role=OykRoles.MEMBER):
+    def get_universe_members(cls, universe, min_role=OykRolesEnum.MEMBER):
         """Return all roles for a universe,
         filtered by minimum role level."""
         return cls.objects.filter(universe=universe, role__lte=min_role)
 
     @classmethod
-    def get_user_universes(cls, user, min_role=OykRoles.MEMBER):
+    def get_user_universes(cls, user, min_role=OykRolesEnum.MEMBER):
         """Return all roles for a user across universes,
         filtered by minimum role level."""
         return cls.objects.filter(user=user, role__lte=min_role)
