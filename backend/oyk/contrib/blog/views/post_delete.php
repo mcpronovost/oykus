@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$userId = require_rat();
+$authUserId = require_rat();
 
 // Services
 $universeService = new UniverseService($pdo);
@@ -10,11 +10,11 @@ $blogService = new BlogService($pdo);
 $universeSlug ??= NULL;
 
 // Universe context
-$context = $universeService->getContext($universeSlug, $userId);
+$context = $universeService->getContext($universeSlug, $authUserId);
 $universeId = $context["id"];
 
 // Check permissions
-if (!$blogService->userCanDeletePost($universeId, $postId, $userId)) {
+if (!$blogService->userCanDeletePost($universeId, $postId, $authUserId)) {
   Response::notFound("Post not found");
 }
 

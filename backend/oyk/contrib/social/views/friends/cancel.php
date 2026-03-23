@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$userId = require_rat();
+$authUserId = require_rat();
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +37,7 @@ try {
       AND status = 'pending';
   ");
 
-  $qry->execute([$user["id"], $userId, $userId, $user["id"]]);
+  $qry->execute([$user["id"], $authUserId, $authUserId, $user["id"]]);
 
   $deleted = $qry->rowCount();
 }

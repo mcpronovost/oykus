@@ -5,7 +5,7 @@ global $pdo;
 $universeSlug = $_COOKIE["oyk-world"] ?? NULL;
 
 // Auth needed but silent (if invalid token → no crash)
-$userId = require_rat(FALSE);
+$authUserId = require_rat(FALSE);
 
 // Services
 try {
@@ -20,18 +20,18 @@ catch (Exception) {
 }
 
 // USER
-$user = $userId ? $userService->getCurrentUser($userId) : NULL;
+$user = $authUserId ? $userService->getCurrentUser($authUserId) : NULL;
 
 // WORLD
 try {
-  $currentUniverse = $universeService->getUniverse($universeSlug, $userId);
+  $currentUniverse = $universeService->getUniverse($universeSlug, $authUserId);
 }
 catch (Exception) {
   Response::forbidden("Universe not found", ["code" => 403]);
 }
 
 try {
-  $universes = $universeService->getUniversesForUser($userId);
+  $universes = $universeService->getUniversesForUser($authUserId);
   $theme = $currentUniverse ? $themeService->getActiveTheme($currentUniverse["id"]) : NULL;
   if ($currentUniverse) {
     $modules = $moduleService->getModules($currentUniverse["id"]);
@@ -44,7 +44,7 @@ catch (Exception) {
 
 // NOTIFICATIONS
 try {
-  $notifications = $userId ? $notificationService->getNotificationsCounts($userId) : NULL;
+  $notifications = $authUserId ? $notificationService->getNotificationsCounts($authUserId) : NULL;
 }
 catch (Exception) {
   // fail silently

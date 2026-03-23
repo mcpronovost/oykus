@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$userAuthId = require_rat();
+$authUserId = require_rat();
 
 $friendService = new FriendService($pdo);
 
@@ -65,7 +65,7 @@ if (!empty($user["meta_socials"])) {
   $user["meta_socials"] = json_decode($user["meta_socials"], TRUE);
 }
 
-$friend = $friendService->getFriendPending($userAuthId, $user["id"]);
+$friend = $friendService->getFriendPending($authUserId, $user["id"]);
 $friends = $friendService->getFriendsList($user["id"]);
 
 $user["friend"] = $friend;

@@ -4,7 +4,7 @@ require OYK . "/core/utils/uploaders.php";
 require OYK . "/core/utils/formatters.php";
 
 global $pdo;
-$userId = require_rat();
+$authUserId = require_rat();
 
 $titleService = new TitleService($pdo);
 
@@ -39,7 +39,7 @@ try {
     WHERE u.id = ?
     LIMIT 1
   ");
-  $qry->execute([$userId]);
+  $qry->execute([$authUserId]);
   $user = $qry->fetch();
 }
 catch (Exception $e) {
@@ -237,12 +237,12 @@ try {
   if (is_int($changeTitleId)) {
     $pdo->prepare(
       "UPDATE progress_titles_users SET is_active = 0 WHERE user_id = :id AND title_id != :title_id"
-    )->execute([$userId, $changeTitleId]);
+    )->execute([$authUserId, $changeTitleId]);
 
     if ($changeTitleId > 0) {
       $pdo->prepare(
         "UPDATE progress_titles_users SET is_active = 1 WHERE user_id = :id AND title_id = :title_id"
-      )->execute([$userId, $changeTitleId]);
+      )->execute([$authUserId, $changeTitleId]);
     }
   }
 
@@ -282,7 +282,7 @@ $user = array_merge($user, $patch);
 unset($user["is_slug_auto"], $user["is_abbr_auto"]);
 
 if (is_int($changeTitleId)) {
-  $title = $titleService->getUserActiveTitle($userId);
+  $title = $titleService->getUserActiveTitle($authUserId);
   $user["title"] = $title ? $title["name"] : NULL;
 }
 

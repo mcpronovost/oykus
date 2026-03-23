@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$userAuthId = require_rat();
+$authUserId = require_rat();
 
 $activitiesOffset ??= 0;
 

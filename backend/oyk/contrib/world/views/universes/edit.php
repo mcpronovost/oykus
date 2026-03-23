@@ -4,7 +4,7 @@ require OYK . "/core/utils/uploaders.php";
 require OYK . "/core/utils/formatters.php";
 
 global $pdo;
-$authId = require_rat();
+$authUserId = require_rat();
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +29,7 @@ if (!$universe) {
 | Check edit permission
 |--------------------------------------------------------------------------
 */
-if ($universe["owner_id"] !== $authId) {
+if ($universe["owner_id"] !== $authUserId) {
   Response::forbidden();
 }
 

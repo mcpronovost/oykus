@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$userId = require_rat();
+$authUserId = require_rat();
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +35,7 @@ try {
       AND status = 'pending';
   ");
 
-  $qry->execute([$user["id"], $userId]);
+  $qry->execute([$user["id"], $authUserId]);
 }
 catch (Exception $e) {
   Response::serverError();

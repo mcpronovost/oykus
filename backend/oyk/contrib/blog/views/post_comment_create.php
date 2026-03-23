@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$userId = require_rat();
+$authUserId = require_rat();
 
 $universeService = new UniverseService($pdo);
 $alertService = new AlertService($pdo);
@@ -12,11 +12,11 @@ $universeSlug ??= NULL;
 $postId ??= 0;
 
 // Universe context
-$context = $universeService->getContext($universeSlug, $userId);
+$context = $universeService->getContext($universeSlug, $authUserId);
 $universeId = $context["id"];
 
 // Check permissions
-if (!$commentService->userCanAddComment($universeId, $postId, $userId)) {
+if (!$commentService->userCanAddComment($universeId, $postId, $authUserId)) {
   Response::notFound("Post not found");
 }
 
@@ -24,7 +24,7 @@ if (!$commentService->userCanAddComment($universeId, $postId, $userId)) {
 $fields = $commentService->validateCreateData($_POST);
 
 // Add comment
-$comments = $commentService->createComment($universeId, $postId, $userId, $fields);
+$comments = $commentService->createComment($universeId, $postId, $authUserId, $fields);
 
 // Create alert
 $post = $blogService->getPost($universeId, $postId);

@@ -5,7 +5,7 @@ require OYK . "/core/utils/uploaders.php";
 require OYK . "/core/utils/validaters.php";
 
 global $pdo;
-$authId = require_rat();
+$authUserId = require_rat();
 
 $themeService = new ThemeService($pdo);
 
@@ -32,7 +32,7 @@ if (!$universe) {
 | Check edit permission
 |--------------------------------------------------------------------------
 */
-if ($universe["owner_id"] !== $authId) {
+if ($universe["owner_id"] !== $authUserId) {
   Response::forbidden();
 }
 

@@ -66,10 +66,10 @@ function oyk_update_wio() {
     return;
   }
 
-  $userId = require_rat(FALSE);
+  $authUserId = require_rat(FALSE);
 
   try {
-    if ($userId > 0) {
+    if ($authUserId > 0) {
       $ip = $_SERVER["REMOTE_ADDR"] ?? null;
 
       $qry = $pdo->prepare("
@@ -77,7 +77,7 @@ function oyk_update_wio() {
         VALUES (?, NOW())
         ON DUPLICATE KEY UPDATE lastlive_at = NOW()
       ");
-      $qry->execute([$userId]);
+      $qry->execute([$authUserId]);
       $qry = $pdo->prepare("
         UPDATE auth_users
         SET lastlive_at = NOW(), lastlive_ip = ?
@@ -85,7 +85,7 @@ function oyk_update_wio() {
          AND (lastlive_at IS NULL OR lastlive_at < NOW() - INTERVAL 1 MINUTE)
 
       ");
-      $qry->execute([$ip, $userId]);
+      $qry->execute([$ip, $authUserId]);
     }
     else {
       $guest = get_guest_id();

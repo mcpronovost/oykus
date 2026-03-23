@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$userId = require_rat();
+$authUserId = require_rat();
 
 /*
 |--------------------------------------------------------------------------
@@ -39,10 +39,10 @@ try {
   ");
 
   $qry->execute([
-    "userId" => $userId,
+    "userId" => $authUserId,
     "targetFriendId" => $user["id"],
     "targetUserId" => $user["id"],
-    "friendId" => $userId
+    "friendId" => $authUserId
   ]);
 
   $deleted = $qry->rowCount();

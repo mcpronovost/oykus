@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$userId = require_rat();
+$authUserId = require_rat();
 
 try {
   $qry = $pdo->prepare("
@@ -11,7 +11,7 @@ try {
     LIMIT 1
   ");
 
-  $qry->execute([$userId]);
+  $qry->execute([$authUserId]);
   $user = $qry->fetch();
 }
 catch (Exception $e) {

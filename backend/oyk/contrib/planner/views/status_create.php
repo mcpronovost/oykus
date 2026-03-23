@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-$userId = require_rat();
+$authUserId = require_rat();
 
 // Services
 $universeService = new UniverseService($pdo);
@@ -10,7 +10,7 @@ $statusService = new StatusService($pdo);
 $universeSlug = $universeSlug ?? NULL;
 
 // Universe context
-$context = $universeService->getContext($universeSlug, $userId);
+$context = $universeService->getContext($universeSlug, $authUserId);
 $universeId = $context["id"];
 
 // Validations
