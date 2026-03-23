@@ -60,8 +60,7 @@ export default function OykHeartbeat() {
         }
         if (r.notifications) updateNotifications(r.notifications);
       } catch {
-        n("error");
-        changeUniverse("oykus");
+        // changeUniverse("oykus");
       }
     };
 

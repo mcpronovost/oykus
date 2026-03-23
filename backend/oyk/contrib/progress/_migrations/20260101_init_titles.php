@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS progress_titles (
     INDEX (how_to_obtain),
     INDEX (how_to_obtain, is_unique),
 
-    CONSTRAINT fk_rt_universe
+    CONSTRAINT fk_progress_t_universe
         FOREIGN KEY (universe_id) REFERENCES world_universes(id)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;

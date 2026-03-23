@@ -11,10 +11,10 @@ CREATE TABLE IF NOT EXISTS progress_titles_characters (
 
     `obtained_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_rct_character
+    CONSTRAINT fk_ptc_character
         FOREIGN KEY (character_id) REFERENCES world_characters(id)
         ON DELETE CASCADE,
-    CONSTRAINT fk_rct_title
+    CONSTRAINT fk_ptc_title
         FOREIGN KEY (title_id) REFERENCES progress_titles(id)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;

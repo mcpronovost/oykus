@@ -42,26 +42,4 @@ CREATE TABLE IF NOT EXISTS world_universes (
 
 $pdo->exec($sql);
 
-$qry = $pdo->prepare("
-    INSERT INTO world_universes (id, name, slug, abbr, owner_id, visibility, is_default)
-    VALUES (1, 'Oykus', 'oykus', 'O', 1, 6, 1)
-    ON DUPLICATE KEY UPDATE id = 1;
-")->execute();
 
-$qry = $pdo->prepare("
-    INSERT INTO world_universes (id, name, slug, abbr, owner_id, visibility)
-    VALUES (2, 'Qalatlán', 'qalatlan', 'Q', 1, 1)
-    ON DUPLICATE KEY UPDATE id = 1;
-")->execute();
-
-$qry = $pdo->prepare("
-    INSERT INTO world_universes (id, name, slug, abbr, owner_id, visibility)
-    VALUES (3, 'Edenwood', 'edenwood', 'E', 1, 1)
-    ON DUPLICATE KEY UPDATE id = 3;
-")->execute();
-
-$qry = $pdo->prepare("
-    INSERT INTO world_universes (id, name, slug, abbr, owner_id, visibility)
-    VALUES (4, 'Rhansidor', 'rhansidor', 'R', 1, 3)
-    ON DUPLICATE KEY UPDATE id = 4;
-")->execute();

@@ -11,15 +11,15 @@ CREATE TABLE IF NOT EXISTS progress_titles_users (
 
     `obtained_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    INDEDX (user_id),
-    INDEDX (title_id),
-    INDEDX (user_id, is_active),
+    INDEX (user_id),
+    INDEX (title_id),
+    INDEX (user_id, is_active),
     UNIQUE (user_id, title_id),
 
-    CONSTRAINT fk_rut_user
+    CONSTRAINT fk_ptu_user
         FOREIGN KEY (user_id) REFERENCES auth_users(id)
         ON DELETE CASCADE,
-    CONSTRAINT fk_rut_title
+    CONSTRAINT fk_ptu_title
         FOREIGN KEY (title_id) REFERENCES progress_titles(id)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
