@@ -27,6 +27,7 @@ export default function UniverseAdminTheme() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
+  const [hasSuccessSubmit, setHasSuccessSubmit] = useState(null);
   const [hasError, setHasError] = useState(null);
   const [initialThemeForm, setInitialThemeForm] = useState({
     logo: currentUniverse.logo || null,
@@ -74,6 +75,7 @@ export default function UniverseAdminTheme() {
   const handleSubmit = async () => {
     setIsLoadingSubmit(true);
     setHasError(null);
+    setHasSuccessSubmit(null);
     try {
       const formData = new FormData();
       let variables = {};
@@ -103,6 +105,10 @@ export default function UniverseAdminTheme() {
         c_primary_fg: r.theme.c_primary_fg,
       }));
       getUniverses();
+      setHasSuccessSubmit({
+        title: t("Theme updated"),
+        message: t("The theme universe has been updated successfully"),
+      });
     } catch (e) {
       setHasError(() => ({
         message: e.error || t("An error occurred"),
@@ -503,6 +509,9 @@ export default function UniverseAdminTheme() {
               />
             </section>
             {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
+            {hasSuccessSubmit?.message && (
+              <OykFormMessage successTitle={hasSuccessSubmit?.title} hasSuccess={hasSuccessSubmit?.message} />
+            )}
             <div className="oyk-form-actions">
               <OykButton type="submit" color="primary" disabled={isLoading || isLoadingSubmit} isLoading={isLoadingSubmit}>
                 {t("Save")}
