@@ -12,7 +12,7 @@ export const UNIVERSES_ROUTES = [
     children: [
       {
         name: "universe",
-        component: React.lazy(() => import("../../../pages/Home")),
+        component: React.lazy(() => import("../../../pages/Universes/Dashboard")),
         paths: {
           fr: "{universeSlug}",
           en: "{universeSlug}",
