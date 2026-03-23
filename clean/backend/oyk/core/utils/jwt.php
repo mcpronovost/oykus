@@ -1,6 +1,6 @@
 <?php
 
-define("JWT_SECRET", getenv("HTTP_JWT_SECRET"));
+define("JWT_SECRET", getenv("HTTP_JWT_SECRET").".v".VERSION);
 define("JWT_ISSUER", "oykus");
 define("JWT_EXPIRATION", 3600 * 24 * 30);
 

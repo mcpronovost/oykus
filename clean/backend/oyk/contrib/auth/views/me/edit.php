@@ -77,8 +77,8 @@ if (!empty($_FILES["avatar"])) {
     $_FILES["avatar"],
     200,
     200,
-    "a/u/avatars",
-    $user["slug"],
+    "a/u/a",
+    $user["id"],
     2
   );
 
@@ -92,8 +92,8 @@ if (!empty($_FILES["cover"])) {
     $_FILES["cover"],
     1136,
     256,
-    "a/u/covers",
-    $user["slug"],
+    "a/u/c",
+    $user["id"],
     2
   );
 
@@ -260,14 +260,14 @@ catch (Exception $e) {
 |--------------------------------------------------------------------------
 */
 if (isset($patch["avatar"]) && $user["avatar"]) {
-  $path = OYK . "/../.." . $user["avatar"];
+  $path = OYK . "/.." . $user["avatar"];
   if (is_file($path)) {
     unlink($path);
   }
 }
 
 if (isset($patch["cover"]) && $user["cover"]) {
-  $path = OYK . "/../.." . $user["cover"];
+  $path = OYK . "/.." . $user["cover"];
   if (is_file($path)) {
     unlink($path);
   }

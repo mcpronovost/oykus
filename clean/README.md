@@ -8,7 +8,7 @@
 
 <div align="center">
 
-[![Version](https://img.shields.io/badge/Version-0.3.11-blue.svg)](./CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-0.3.12-blue.svg)](./CHANGELOG.md)
 [![License](https://img.shields.io/badge/License-BSD--3--Clause-red.svg)](./LICENSE)
 [![made in Canada](https://img.shields.io/badge/Made%20in-Canada-FF0000)](#)
 [![made in Québec](https://img.shields.io/badge/Fait%20au-Québec-003399)](#)
@@ -36,7 +36,7 @@ Oykus is an **experimental RPG project** blending story-creation with gameplay �
   - ✅ Comments
   - 🧱 Comments Reactions
   - 🧱 Comments Replies
-- 🧱 **Collectibles**: Collect and manage objects
+- 🧱 **Collection**: Collect and manage objects
   - 🧱 Collections
   - 🧱 Items
 - 🧱 **Forum**: Chat and interact with other members
@@ -47,16 +47,15 @@ Oykus is an **experimental RPG project** blending story-creation with gameplay �
   - 🧱 Reads
   - 🧱 Reactions
   - 🧱 Threads
-- 🧱 **Game**: Game mechanics specific to each universe
-- 🧱 **Leveling**: Gain levels based on interactions and activities
 - ✅ **Planner**: Plan and track tasks, assign people, and more
   - ✅ Statuses
   - ✅ Tasks
-  - 🔨 Assignees
-- 🔨 **Rewards**: Unlock achievements, earn titles, badges, and more
-  - 🔨 Achievements
-  - 🧱 Titles
+  - 🧱 Assignees
+- 🔨 **Progress**: Unlock achievements, earn titles, badges, and more
+  - 🧱 Achievements
+  - ✅ Titles
   - 🧱 Badges
+- 🧱 **Game**: Game mechanics specific to each universe
 
 ## 🌐 Internationalization
 

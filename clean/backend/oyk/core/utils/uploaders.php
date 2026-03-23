@@ -1,6 +1,6 @@
 <?php
 
-function oyk_save_image($file, $dstSizeW = 200, $dstSizeH = 200, $field = "avatars", $prefix = "", $maxSize = 2) {
+function oyk_save_image($file, $dstSizeW = 200, $dstSizeH = 200, $field = "a", $prefix = "", $maxSize = 2) {
     if ($file["size"] > $maxSize * 1024 * 1024) {
         http_response_code(400);
         exit;

@@ -3,10 +3,9 @@ import react from "@vitejs/plugin-react";
 import { version } from "./package.json";
 
 export default defineConfig(({ mode }) => {
-  // Manual override
-  const DOMAIN = mode === "development" ? "localhost:8080" : "oykus.ovh";
-  const PROTOCOL = mode === "development" ? "http" : "https";
-  const API = mode === "development" ? "localhost:8080/api/v1" : "oykus.ovh/api/v1";
+  // Manual override for build
+  const DOMAIN = mode === "development" ? "http://localhost:8080" : "https://oykus.ovh";
+  const API = mode === "development" ? "/api/v1" : "https://oykus.ovh/api/v1";
 
   return {
     plugins: [react(),
@@ -15,7 +14,7 @@ export default defineConfig(({ mode }) => {
       transformIndexHtml(html) {
         html = html.replace(
           /(<\/head>)/,
-          `<link rel="stylesheet" href="${PROTOCOL}://${API}/theme.php" id="oyk-theme">$1`
+          `<link rel="stylesheet" href="${API}/theme.php" id="oyk-theme">$1`
         );
 
         return html;
@@ -23,7 +22,6 @@ export default defineConfig(({ mode }) => {
     }],
     define: {
       "import.meta.env.VITE_DOMAIN": JSON.stringify(DOMAIN),
-      "import.meta.env.VITE_PROTOCOL": JSON.stringify(PROTOCOL),
       "import.meta.env.VITE_API": JSON.stringify(API),
       "import.meta.env.VITE_VERSION": JSON.stringify(version),
     },

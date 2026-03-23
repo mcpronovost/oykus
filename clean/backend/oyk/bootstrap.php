@@ -5,6 +5,7 @@ date_default_timezone_set("UTC");
 header("Content-Type: application/json; charset=utf-8");
 
 define("OYK", __DIR__);
+define("VERSION", "0.3.11");
 
 // CORE FILES
 require_once __DIR__ . "/core/db.php";

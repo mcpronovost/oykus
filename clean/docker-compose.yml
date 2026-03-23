@@ -42,6 +42,7 @@ services:
     build: ./frontend
     container_name: oykus-frontend
     command: sh -c "npm run start"
+    restart: unless-stopped
     depends_on:
       - db
       - backend
