@@ -8,7 +8,7 @@ import { useTranslation } from "@/services/translation";
 import { OykAvatar, OykDropdown } from "@/components/ui";
 
 export default function AppHeaderUser() {
-  const { currentUser, setUser, setRat } = useAuth();
+  const { currentUser, setUser } = useAuth();
   const { n } = useRouter();
   const { t } = useTranslation();
 
@@ -16,7 +16,6 @@ export default function AppHeaderUser() {
     try {
       await api.logout();
       setUser(null);
-      setRat(null);
     } finally {
       n("login");
     }

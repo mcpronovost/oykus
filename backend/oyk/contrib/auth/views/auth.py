@@ -2,7 +2,7 @@ import re
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 
 from oyk.core.utils import get_ip
@@ -110,8 +110,8 @@ class OykRegisterView(OykView):
         return JsonResponse({"ok": True}, status=201)
 
 
+@method_decorator(csrf_exempt, name="dispatch")
 class OykLoginView(OykView):
-    @method_decorator(csrf_exempt)
     def post(self, request, *args, **kwargs):
         username = request.POST.get("username")
         password = request.POST.get("password")

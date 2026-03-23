@@ -1,11 +1,8 @@
 import { createContext, useContext, useMemo, useState } from "react";
 
 import { api } from "@/services/api";
-import { KEY_USER, KEY_RAT } from "@/services/store/constants";
-
+import { KEY_USER } from "@/services/store/constants";
 import { storeGet, storeSet, storeRemove } from "@/services/store/utils";
-
-const REFRESH_INTERVAL = 1000 * 60 * 5; // 5 minutes
 
 const AuthContext = createContext(null);
 
@@ -14,14 +11,6 @@ export function AuthProvider({ children }) {
   const [isAuth, setIsAuth] = useState(() => !!storeGet(KEY_USER));
   const [isDev, setIsDev] = useState(() => storeGet(KEY_USER)?.is_dev || false);
   const [isLoadingAuth, setIsLoadingAuth] = useState(false);
-
-  // ---------------------------------------------------------
-  // Token (rat)
-  // ---------------------------------------------------------
-  const setRat = (rat) => {
-    if (rat) storeSet(KEY_RAT, rat);
-    else storeRemove(KEY_RAT);
-  };
 
   // ---------------------------------------------------------
   // Set user
@@ -45,9 +34,6 @@ export function AuthProvider({ children }) {
   // Fetch user
   // ---------------------------------------------------------
   const fetchUser = async (signal) => {
-    const token = storeGet(KEY_RAT);
-    if (!token) return;
-
     setIsLoadingAuth(true);
 
     try {
@@ -56,7 +42,6 @@ export function AuthProvider({ children }) {
       setUser(r.user);
     } catch {
       // Token invalid → logout
-      setRat(null);
       setUser(null);
     } finally {
       setIsLoadingAuth(false);
@@ -70,7 +55,6 @@ export function AuthProvider({ children }) {
       isDev,
       isLoadingAuth,
       setUser,
-      setRat,
       fetchUser,
     }),
     [user, isAuth, isDev, isLoadingAuth],

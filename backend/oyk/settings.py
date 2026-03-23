@@ -29,7 +29,9 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "oyk.core.middleware.OykWIOMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -71,6 +73,8 @@ CSRF_TRUSTED_ORIGINS = [
     "https://oykus.ovh",
     "http://localhost:5173",
 ]
+
+CSRF_COOKIE_NAME = "oyk-rat"
 
 if DEBUG:
     SESSION_COOKIE_SECURE = False

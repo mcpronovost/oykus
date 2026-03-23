@@ -60,7 +60,7 @@ function oykDateUTC(date) {
 export const oykDate = (value, show = "full", lang = "fr", tz = Intl.DateTimeFormat().resolvedOptions().timeZone) => {
   if (lang === "en") lang = "en-CA";
   if (lang === "fr") lang = "fr-FR";
-  let d = value ? oykDateUTC(new Date(value)) : oykDateUTC(new Date(new Date().toString()));
+  let d = value ? new Date(value) : new Date(new Date().toString());
   if (show === "truedate") {
     d = new Date(value);
   }
@@ -82,7 +82,7 @@ export const oykDateLessThan = (date, days) => {
 
 export const oykTimeAgo = (value, lang = "fr", tz = Intl.DateTimeFormat().resolvedOptions().timeZone) => {
   const rtf = new Intl.RelativeTimeFormat(lang, { timeZone: tz, numeric: "auto" });
-  const date = oykDateUTC(new Date(value));
+  const date = new Date(value);
   const now = new Date();
 
   const seconds = Math.floor((date - now) / 1000);

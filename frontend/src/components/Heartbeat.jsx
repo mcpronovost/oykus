@@ -53,7 +53,7 @@ export default function OykHeartbeat() {
         if (!r.ok) throw r;
 
         // Update
-        if (r.user) setUser(r.user);
+        setUser(r.user);
         if (r.world) {
           if (r.world.current) setCurrentUniverse(r.world.current);
           if (r.world.universes) setUniverses(r.world.universes);

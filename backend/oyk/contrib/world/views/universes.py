@@ -9,7 +9,14 @@ OykUser = get_user_model()
 
 class OykUniversesListView(OykView):
     def get(self, request, *args, **kwargs):
-        return JsonResponse({"ok": True})
+        universes = OykUniverse.objects.short(request.user)
+
+        return JsonResponse(
+            {
+                "ok": True,
+                "universes": universes,
+            }
+        )
 
 
 class OykUniverseView(OykView):
@@ -29,9 +36,7 @@ class OykUniverseView(OykView):
 
 class OykUniverseCommunityView(OykView):
     def get(self, request, *args, **kwargs):
-        users = OykUser.objects.filter(
-            is_active=True
-        ).short()
+        users = OykUser.objects.filter(is_active=True).short(request.user)
 
         return JsonResponse(
             {

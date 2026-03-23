@@ -27,11 +27,8 @@ class OykHeartbeatView(OykView):
         worldUniverses = []
         notifications = None
 
-        try:
-            if not request.user.is_authenticated:
-                user = request.user.get_me_data()
-        except Exception:
-            pass
+        if request.user.is_authenticated:
+            user = request.user.get_me_data()
 
         worldSlug = request.COOKIES.get("oyk-world", "oykus")
         worldCurrent = OykUniverse.objects.current(request.user, worldSlug)

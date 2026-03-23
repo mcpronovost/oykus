@@ -27,7 +27,7 @@ export default function Discover() {
     setIsLoading(true);
     setHasError(null);
     try {
-      const r = await api.get("/world/universes/list/", signal ? { signal } : {});
+      const r = await api.get("/world/universes/", signal ? { signal } : {});
       if (!r.ok || !r.universes) throw Error();
       setUniverses(r.universes);
     } catch (e) {

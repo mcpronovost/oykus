@@ -1,3 +1,4 @@
+from datetime import timedelta
 from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -6,6 +7,7 @@ from django.contrib.auth.models import (
 )
 from django.core.validators import FileExtensionValidator
 from django.db import models
+from django.db.models import BooleanField, ExpressionWrapper, F, Q
 from django.utils import timezone as tz
 from django.utils.translation import gettext_lazy as _
 
@@ -15,16 +17,26 @@ from oyk.core.validators import oyk_image_size_validator
 
 
 class OykUserQuerySet(models.QuerySet):
+    CURRENT_FIELDS = (
+        "id",
+        "name",
+        "abbr",
+        "slug",
+        "avatar",
+        "cover",
+        "timezone",
+    )
     SHORT_FIELDS = (
         "id",
         "name",
         "abbr",
         "slug",
         "avatar",
-        "cover"
+        "cover",
+        "is_online",
     )
 
-    def short(self):
+    def _with_media_urls(self, qs_values):
         return [
             {
                 **u,
@@ -34,13 +46,41 @@ class OykUserQuerySet(models.QuerySet):
                     else None
                 ),
                 "cover": (
-                    f"{settings.MEDIA_URL}{u['cover']}"
-                    if u["cover"]
-                    else None
+                    f"{settings.MEDIA_URL}{u['cover']}" if u["cover"] else None
                 ),
             }
-            for u in self.values(*self.SHORT_FIELDS)
+            for u in qs_values
         ]
+
+    def _without_media_urls(self, qs_values):
+        return [
+            {
+                **u,
+                "avatar": None,
+                "cover": None,
+            }
+            for u in qs_values
+        ]
+
+    def current(self):
+        threshold = tz.now() - timedelta(minutes=5)
+        qs = self.annotate(
+            is_online=ExpressionWrapper(
+                Q(lastlive_at__gte=threshold), output_field=BooleanField()
+            )
+        )
+        return qs._with_media_urls(qs.values(*qs.CURRENT_FIELDS))
+
+    def short(self, user=None):
+        threshold = tz.now() - timedelta(minutes=5)
+        qs = self.annotate(
+            is_online=ExpressionWrapper(
+                Q(lastlive_at__gte=threshold), output_field=BooleanField()
+            )
+        )
+        if not user or not user.is_authenticated:
+            return qs._without_media_urls(qs.values(*qs.SHORT_FIELDS))
+        return qs._with_media_urls(qs.values(*qs.SHORT_FIELDS))
 
 
 class OykUserManager(BaseUserManager.from_queryset(OykUserQuerySet)):
@@ -238,7 +278,7 @@ class OykUser(AbstractBaseUser, PermissionsMixin):
         db_table = "oyk_auth_users"
         verbose_name = _("User")
         verbose_name_plural = _("Users")
-        ordering = ["-created_at"]
+        ordering = [F("lastlive_at").desc(nulls_last=True), "-created_at"]
 
     def __str__(self):
         return self.name or self.username
@@ -252,6 +292,13 @@ class OykUser(AbstractBaseUser, PermissionsMixin):
         if self.is_slug_auto:
             self.slug = get_slug(self.name, self, OykUser)
         super().save(*args, **kwargs)
+
+    @property
+    def is_online(self):
+        return (
+            self.lastlive_at is not None
+            and self.lastlive_at >= tz.now() - timedelta(minutes=5)
+        )
 
     # ------------------------------------------------------------------
     # Helpers
@@ -305,4 +352,5 @@ class OykUser(AbstractBaseUser, PermissionsMixin):
             "slug": self.slug,
             "avatar": self.avatar.url if self.avatar else None,
             "cover": self.cover.url if self.cover else None,
+            "timezone": self.timezone,
         }

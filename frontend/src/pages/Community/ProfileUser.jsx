@@ -89,19 +89,19 @@ export default function CommunityProfile() {
     setIsLoading(true);
     setHasError(null);
     try {
-      if (!params?.userSlug) throw new Error(t("User doesn't exist"));
+      if (!params?.userSlug) throw new Error("User doesn't exist");
       const r = await api.get(`/auth/users/${params.userSlug}/profile/`, signal ? { signal } : {});
-      if (!r?.ok || !r?.user) throw new Error(r.error || t("User doesn't exist"));
+      if (!r?.ok || !r?.user) throw r;
       setUserData(r.user);
-      setUserCountUniverses(r.user.count_universes_owned);
-      setUserCountPosts(r.user.count_blog_posts);
-      setUserCountComments(r.user.count_blog_comments);
-      setUserCountReactions(r.user.count_blog_reactions);
+      setUserCountUniverses(r.user.count_universes_owned || 0);
+      setUserCountPosts(r.user.count_blog_posts || 0);
+      setUserCountComments(r.user.count_blog_comments || 0);
+      setUserCountReactions(r.user.count_blog_reactions || 0);
       routeTitle(r.user.name);
     } catch (e) {
       if (e?.name === "AbortError") return;
       setHasError(() => ({
-        message: e.message || t("An error occurred"),
+        message: t(e?.error) || t(e?.message) || t("An error occurred"),
       }));
     } finally {
       if (!signal || !signal.aborted) {
@@ -254,7 +254,7 @@ export default function CommunityProfile() {
                           {userData.meta_website && (
                             <OykButton icon={Globe} small onClick={() => handleOpenSite(userData.meta_website)} />
                           )}
-                          {SOCIALS.map((social) => {
+                          {userData.meta_socials ? SOCIALS.map((social) => {
                             if (!userData.meta_socials[social.label]) return null;
                             return (
                               <OykButton
@@ -264,7 +264,7 @@ export default function CommunityProfile() {
                                 onClick={() => handleOpenSite(userData.meta_socials[social.label])}
                               />
                             );
-                          })}
+                          }) : null}
                         </div>
                       ) : null}
                     </section>

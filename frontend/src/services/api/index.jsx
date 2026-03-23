@@ -1,6 +1,6 @@
 import { API_URL, API_HEADERS, oykEncode, oykDecode } from "./utils";
-import { KEY_USER, KEY_RAT } from "@/services/store/constants";
-import { storeGet, storeSet, storeRemove } from "@/services/store/utils";
+import { KEY_USER } from "@/services/store/constants";
+import { storeRemove } from "@/services/store/utils";
 
 class OykApi {
   get lang() {
@@ -8,7 +8,10 @@ class OykApi {
   }
 
   get rat() {
-    return storeGet(KEY_RAT);
+    return document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("oyk-rat="))
+      ?.split("=")[1];
   }
 
   async request(endpoint, options = {}) {
@@ -31,26 +34,11 @@ class OykApi {
     const fetchOptions = {
       ...options,
       headers,
+      credentials: "include",
     };
 
-    if (this.rat || options.withCredentials === true) {
-      fetchOptions.credentials = "include";
-    }
-
     try {
-      let response = await fetch(url, fetchOptions);
-
-      if (response.status === 401 && this.rat) {
-        await this.refresh();
-
-        response = await fetch(url, {
-          ...fetchOptions,
-          headers: {
-            ...fetchOptions.headers,
-            Authorization: `Oyk ${this.rat}`,
-          },
-        });
-      }
+      const response = await fetch(url, fetchOptions);
 
       if (!response.ok) {
         if (url.endsWith("logout/") || url.endsWith("logoutall/")) {
@@ -63,9 +51,9 @@ class OykApi {
           const errorData = await response.json();
           return errorData;
         } catch {
-          //
+          if (response.status === 404) errorMsg = `Not found`;
         }
-        throw new Error(errorMsg, { cause: response.status});
+        throw new Error(errorMsg, { cause: response.status });
       }
 
       if (response.status === 204) {
@@ -129,24 +117,11 @@ class OykApi {
     return r;
   }
 
-  async refresh() {
-    if (!this.rat) return;
-    try {
-      const r = await this.post("/auth/refresh/", {}, { withCredentials: true });
-      if (!r.ok) throw new Error(401);
-      storeSet(KEY_RAT, r.rat);
-    } catch {
-      this.logout();
-    }
-    return;
-  }
-
   async logout() {
     try {
       await this.post("/auth/logout/", {}, { withCredentials: true });
     } finally {
       storeRemove(KEY_USER);
-      storeRemove(KEY_RAT);
       return;
     }
   }

@@ -6,3 +6,6 @@ from .auth import (
 from .me import (
     OykMeView,
 )
+from .users import (
+    OykUserProfileView,
+)

@@ -9,7 +9,7 @@ import { validateUsername, validatePassword } from "@/utils";
 import { OykButton, OykCard, OykForm, OykFormField, OykFormMessage, OykLink } from "@/components/ui";
 
 export default function Login() {
-  const { setUser, setRat } = useAuth();
+  const { setUser } = useAuth();
   const { n, routeTitle } = useRouter();
   const { t, lang } = useTranslation();
 
@@ -65,8 +65,7 @@ export default function Login() {
       formData.append("username", loginForm.username);
       formData.append("password", loginForm.password);
       const r = await api.login(formData);
-      if (!r.ok || !r.rat || !r.user) throw r;
-      setRat(r.rat);
+      if (!r.ok || !r.user) throw r;
       setUser(r.user);
       n("home");
     } catch (e) {
