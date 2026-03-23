@@ -1,6 +1,6 @@
 <?php
 
-$api = "/api/v1/auth";
+$api = "/api/auth";
 $view = OYK . "/contrib/auth/views/";
 
 Router::post("{$api}/register", "{$view}register.php");

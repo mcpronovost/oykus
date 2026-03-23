@@ -1,6 +1,6 @@
 <?php
 
-$api = "/api/v1/blog";
+$api = "/api/blog";
 $view = OYK . "/contrib/blog/views/";
 
 Router::get("{$api}/u/{universeSlug}/posts", "{$view}posts.php");

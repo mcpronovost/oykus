@@ -5,7 +5,7 @@ import { version } from "./package.json";
 export default defineConfig(({ mode }) => {
   // Manual override for build
   const DOMAIN = mode === "development" ? "http://localhost:8080" : "https://oykus.ovh";
-  const API = mode === "development" ? "/api/v1" : "https://oykus.ovh/api/v1";
+  const API = mode === "development" ? "/api" : "https://oykus.ovh/api";
 
   return {
     plugins: [react(),

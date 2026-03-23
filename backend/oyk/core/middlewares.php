@@ -60,7 +60,7 @@ function require_rat($is_required = True): ?int {
 function oyk_update_wio() {
   global $pdo;
 
-  $ignore_paths = ["/api/v1/theme.php", "/api/v1/auth/refresh/", "/api/v1/heartbeat/"];
+  $ignore_paths = ["/api/theme.php", "/api/auth/refresh/", "/api/heartbeat/"];
 
   if (in_array($_SERVER["REQUEST_URI"], $ignore_paths)) {
     return;

@@ -1,6 +1,6 @@
 <?php
 
-$api = "/api/v1/social";
+$api = "/api/social";
 $view = OYK . "/contrib/social/views/";
 
 Router::get("{$api}/friends", "{$view}friends/list.php");

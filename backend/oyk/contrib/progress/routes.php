@@ -1,6 +1,6 @@
 <?php
 
-$api = "/api/v1/progress";
+$api = "/api/progress";
 $view = OYK . "/contrib/progress/views/";
 
 Router::get("{$api}/u/{universeSlug}/titles", "{$view}titles/list.php");

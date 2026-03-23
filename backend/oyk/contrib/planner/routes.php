@@ -1,6 +1,6 @@
 <?php
 
-$api = "/api/v1/planner";
+$api = "/api/planner";
 $view = OYK . "/contrib/planner/views/";
 
 Router::get("{$api}/tasks", "{$view}tasks.php");

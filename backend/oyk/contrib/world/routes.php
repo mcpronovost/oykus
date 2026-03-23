@@ -1,6 +1,6 @@
 <?php
 
-$api = "/api/v1/world";
+$api = "/api/world";
 $view = OYK . "/contrib/world/views/";
 
 Router::get("{$api}/universes", "{$view}universes/list_user.php");
