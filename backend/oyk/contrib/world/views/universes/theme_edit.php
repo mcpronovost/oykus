@@ -61,8 +61,8 @@ if (!empty($_FILES["logo"])) {
     $_FILES["logo"],
     200,
     200,
-    "w/u/logos",
-    $universe["slug"],
+    "w/u/l",
+    $universe["id"],
     2
   );
 
@@ -76,8 +76,8 @@ if (!empty($_FILES["cover"])) {
     $_FILES["cover"],
     1136,
     256,
-    "w/u/covers",
-    $universe["slug"],
+    "w/u/c",
+    $universe["id"],
     2
   );
 
