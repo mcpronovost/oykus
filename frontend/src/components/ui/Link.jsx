@@ -14,7 +14,8 @@ export default function OykLink({
   const { n, lang } = useRouter();
 
   const buildPath = buildRoutePath(routeName, params, lang) || "";
-  const href = !disabled ? `/${lang}/${!buildPath && routeName !== "home" ? routeName : buildPath}` : "/";
+  // const href = !disabled ? `/${lang}/${!buildPath && routeName !== "home" ? routeName : buildPath}` : "/";
+  const href = !disabled ? `/${!buildPath && routeName !== "home" ? routeName : buildPath}` : "/";
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -24,7 +25,12 @@ export default function OykLink({
   };
 
   return (
-    <a href={href} onClick={handleClick} className={`oyk-link ${disabled ? "oyk-disabled" : ""} ${block ? "oyk-block" : ""} ${colorHover ? `oyk-link-hover-${colorHover}` : ""} ${className}`} {...props}>
+    <a
+      href={href}
+      onClick={handleClick}
+      className={`oyk-link ${disabled ? "oyk-disabled" : ""} ${block ? "oyk-block" : ""} ${colorHover ? `oyk-link-hover-${colorHover}` : ""} ${className}`}
+      {...props}
+    >
       {children}
     </a>
   );
