@@ -5,14 +5,12 @@ class ModuleService {
 
   public function __construct(private PDO $pdo) {
     $this->allowedModules = [
-      "planner",
-      "blog",
-      "forum",
-      "courrier",
-      "collection",
-      "progress",
-      "game",
-      "leveling"
+      "planner" => 1,
+      "blog" => 1,
+      "forum" => 0,
+      "collection" => 0,
+      "progress" => 1,
+      "game" => 0,
     ];
   }
 
@@ -34,7 +32,7 @@ class ModuleService {
 
     if (array_key_exists("module", $data)) {
       $module = $data["module"];
-      if (!in_array($module, $this->allowedModules)) {
+      if (!array_key_exists($module, $this->allowedModules) || !$this->allowedModules[$module]) {
         throw new ValidationException("Invalid module");
       }
       $fields["label"] = $module;
@@ -74,27 +72,9 @@ class ModuleService {
   public function getModules(int $universeId): array {
     try {
       $qry = $this->pdo->prepare("
-        SELECT wmc.id, wmc.label, wmc.is_available, wmc.settings
-        FROM world_modules_core wmc
-        LEFT JOIN world_modules wm
-            ON wm.core_id = wmc.id AND wm.universe_id = ?
-        WHERE wm.id IS NULL
-          AND wmc.is_visible = 1
-        ORDER BY wmc.label ASC
-      ");
-      $qry->execute([$universeId]);
-      $core_modules = $qry->fetchAll();
-    }
-    catch (Exception $e) {
-      throw new QueryException("Core modules retrieval failed" . $e->getMessage());
-    }
-
-    try {
-      $qry = $this->pdo->prepare("
-        SELECT wm.id, wm.label, wm.is_active, wm.is_disabled, wm.settings, wmc.is_available
+        SELECT wm.id, wm.label, wm.is_active, wm.is_disabled, wm.settings
         FROM world_modules wm
-        LEFT JOIN world_modules_core wmc ON wmc.id = wm.core_id
-        WHERE wm.universe_id = ? AND wmc.is_visible = 1
+        WHERE wm.universe_id = ?
         ORDER BY wm.label ASC
       ");
       $qry->execute([$universeId]);
@@ -104,22 +84,21 @@ class ModuleService {
       throw new QueryException("Module retrieval failed");
     }
 
-    if (count($core_modules) > 0) {
-      foreach ($core_modules as $m) {
+    if (count($modules) !== count($this->allowedModules)) {
+      foreach ($this->allowedModules as $m => $enabled) {
         $qry = $this->pdo->prepare("
-          INSERT INTO world_modules (universe_id, core_id, label, is_disabled, settings)
-          VALUES (?, ?, ?, NOT ?, ?)
+          INSERT INTO world_modules (universe_id, label, is_disabled, settings)
+          VALUES (?, ?, not ?, ?)
           ON DUPLICATE KEY UPDATE label = label
         ");
-        $qry->execute([$universeId, $m["id"], $m["label"], $m["is_available"], $m["settings"]]);
+        $qry->execute([$universeId, $m, $enabled, "{}"]);
       }
 
       try {
         $qry = $this->pdo->prepare("
-          SELECT wm.id, wm.label, wm.is_active, wm.is_disabled, wm.settings, wmc.is_available
+          SELECT wm.id, wm.label, wm.is_active, wm.is_disabled, wm.settings
           FROM world_modules wm
-          LEFT JOIN world_modules_core wmc ON wmc.id = wm.core_id
-          WHERE wm.universe_id = ? AND wmc.is_visible = 1
+          WHERE wm.universe_id = ?
           ORDER BY wm.label ASC
         ");
         $qry->execute([$universeId]);
@@ -135,8 +114,8 @@ class ModuleService {
     foreach ($modules as $m) {
       $result[$m["label"]] = [
         "label" => $m["label"],
-        "active" => (bool) !$m["is_disabled"] && (bool) $m["is_available"] && (bool) $m["is_active"],
-        "disabled" => (bool) $m["is_disabled"] || (bool) !$m["is_available"],
+        "active" => (bool) !$m["is_disabled"] && (bool) $m["is_active"],
+        "disabled" => (bool) $m["is_disabled"],
         "settings" => json_decode($m["settings"], TRUE)
       ];
     }
@@ -147,10 +126,9 @@ class ModuleService {
   public function getModule(int $universeId, string $moduleName): array {
     try {
       $qry = $this->pdo->prepare("
-        SELECT wm.id, wm.label, wm.is_active, wm.is_disabled, wm.settings, wmc.is_available
+        SELECT wm.id, wm.label, wm.is_active, wm.is_disabled, wm.settings
         FROM world_modules wm
-        LEFT JOIN world_modules_core wmc ON wmc.id = wm.core_id
-        WHERE wm.universe_id = ? AND wm.label = ? AND wmc.is_visible = 1
+        WHERE wm.universe_id = ? AND wm.label = ?
         ORDER BY wm.label ASC
         LIMIT 1
       ");
@@ -161,13 +139,11 @@ class ModuleService {
       throw new QueryException("Module retrieval failed" . $e->getMessage());
     }
 
-    $result = [];
-
-    $result[$module["label"]] = [
+    $result = [
       "label" => $module["label"],
       "active" => (bool) $module["is_active"],
-      "disabled" => (bool) $module["is_disabled"] || !$module["is_available"],
-      "settings" => json_decode($module["settings"], TRUE)
+      "disabled" => (bool) $module["is_disabled"],
+      "settings" => json_decode($module["settings"])
     ];
 
     return $result ?: [];

@@ -25,15 +25,15 @@ export default function OykUniverseAdminModuleForum() {
     setHasError(null);
     try {
       const r = await api.get(`/world/universes/${currentUniverse.slug}/modules/forum/`, signal ? { signal } : {});
-      if (!r.ok || !r.module || !r.module.forum) throw r;
+      if (!r.ok || !r.module) throw r;
       setForumForm((prev) => ({
         ...prev,
-        ...r.module.forum.settings,
+        ...r.module.settings,
       }));
     } catch (e) {
       if (e?.name === "AbortError") return;
       setHasError({
-        message: e.message || t("An error occurred"),
+        message: t(e?.error) || t(e?.message) || t("An error occurred"),
       });
     } finally {
       if (!signal || !signal.aborted) {
@@ -61,8 +61,8 @@ export default function OykUniverseAdminModuleForum() {
         ...r.module.settings,
       }));
       setHasSuccessSubmit({
-        title: t("Settings updated"),
-        message: t("Settings of the forum module have been updated successfully"),
+        title: t("Module updated"),
+        message: t("The module has been updated successfully"),
       });
     } catch (e) {
       setHasError(() => ({

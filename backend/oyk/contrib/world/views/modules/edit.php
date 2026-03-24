@@ -23,9 +23,9 @@ if (!$moduleService->userCanEditModule($moduleName, $authUserId)) {
 // Update
 $moduleService->updateModule($moduleName, $universeId, $fields);
 
-$module = $moduleService->getModules($universeId);
+$module = $moduleService->getModule($universeId, $moduleName);
 
 Response::json([
   "ok" => TRUE,
-  "module" => $module[$moduleName]
+  "module" => $module
 ]);

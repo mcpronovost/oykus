@@ -6,15 +6,7 @@ import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import { useWorld } from "@/services/world";
 
-import {
-  OykButton,
-  OykCard,
-  OykForm,
-  OykFormField,
-  OykFormMessage,
-  OykHeading,
-  OykLoading,
-} from "@/components/ui";
+import { OykButton, OykCard, OykForm, OykFormField, OykFormMessage, OykHeading, OykLoading } from "@/components/ui";
 
 export default function UniverseAdminModulePlanner() {
   const { routeTitle } = useRouter();
@@ -24,6 +16,7 @@ export default function UniverseAdminModulePlanner() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [hasError, setHasError] = useState(null);
+  const [hasSuccessSubmit, setHasSuccessSubmit] = useState(null);
   const [initialPlannerForm, setInitialPlannerForm] = useState({});
   const [plannerForm, setPlannerForm] = useState(initialPlannerForm);
 
@@ -32,14 +25,14 @@ export default function UniverseAdminModulePlanner() {
     setHasError(null);
     try {
       const r = await api.get(`/world/universes/${currentUniverse.slug}/modules/planner/`, signal ? { signal } : {});
-      if (!r.ok || !r.module || !r.module.planner) throw Error();
+      if (!r.ok || !r.module) throw Error();
       setInitialPlannerForm((prev) => ({
         ...prev,
-        ...r.module.planner.settings
+        ...r.module.settings,
       }));
       setPlannerForm((prev) => ({
         ...prev,
-        ...r.module.planner.settings
+        ...r.module.settings,
       }));
     } catch (e) {
       if (e?.name === "AbortError") return;
@@ -53,22 +46,27 @@ export default function UniverseAdminModulePlanner() {
     }
   };
 
-  const handleSubmit = async () => {
+  const postSubmit = async () => {
     setIsLoadingSubmit(true);
     setHasError(null);
+    setHasSuccessSubmit(null);
     try {
       const formData = new FormData();
       let settings = {};
       for (const [key, value] of Object.entries(plannerForm)) {
         settings[key] = value;
-      };
+      }
       formData.append("settings", JSON.stringify(settings));
       const r = await api.post(`/world/universes/${currentUniverse.slug}/modules/planner/edit/`, formData);
-      if (!r?.ok) throw new Error(r || t("An error occurred"));
+      if (!r?.ok) throw r;
       getUniverses();
+      setHasSuccessSubmit({
+        title: t("Module updated"),
+        message: t("The module has been updated successfully"),
+      });
     } catch (e) {
       setHasError(() => ({
-        message: e.message || t("An error occurred"),
+        message: t(e?.error) || t(e?.message) || t("An error occurred"),
       }));
     } finally {
       setIsLoadingSubmit(false);
@@ -118,19 +116,27 @@ export default function UniverseAdminModulePlanner() {
         {isLoading ? (
           <OykLoading />
         ) : (
-          <OykForm className="oyk-universes-admin-form" isLoading={isLoading} onSubmit={handleSubmit}>
+          <OykForm className="oyk-universes-admin-form" isLoading={isLoading} onSubmit={postSubmit}>
             <section>
               <OykFormField
                 label={t("Display Name")}
                 name="display_name"
-                defaultValue={plannerForm.display_name}
+                defaultValue={plannerForm.display_name || t("Planner")}
                 onChange={handleChange}
                 hasError={hasError?.display_name}
               />
             </section>
             {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
+            {hasSuccessSubmit?.message && (
+              <OykFormMessage successTitle={hasSuccessSubmit?.title} hasSuccess={hasSuccessSubmit?.message} />
+            )}
             <div className="oyk-form-actions">
-              <OykButton type="submit" color="primary" disabled={isLoading || isLoadingSubmit} isLoading={isLoadingSubmit}>
+              <OykButton
+                type="submit"
+                color="primary"
+                disabled={isLoading || isLoadingSubmit}
+                isLoading={isLoadingSubmit}
+              >
                 {t("Save")}
               </OykButton>
               <OykButton type="reset" disabled={isLoading || isLoadingSubmit} outline onClick={handleReset}>

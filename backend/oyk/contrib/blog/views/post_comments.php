@@ -20,7 +20,7 @@ $context = $universeService->getContext($universeSlug, $authUserId);
 $universeId = $context["id"];
 
 $module = $moduleService->getModule($universeId, "blog");
-$moduleSettings = $module["blog"]["settings"];
+$moduleSettings = $module["settings"];
 
 // Get comments
 if ((int) $moduleSettings["is_comments_enabled"] === 1) {

@@ -23,6 +23,7 @@ export default function UniverseAdminModuleBlog() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [hasError, setHasError] = useState(null);
+  const [hasSuccessSubmit, setHasSuccessSubmit] = useState(null);
   const [initialBlogForm, setInitialBlogForm] = useState({});
   const [blogForm, setBlogForm] = useState(initialBlogForm);
 
@@ -31,14 +32,14 @@ export default function UniverseAdminModuleBlog() {
     setHasError(null);
     try {
       const r = await api.get(`/world/universes/${currentUniverse.slug}/modules/blog/`, signal ? { signal } : {});
-      if (!r.ok || !r.module || !r.module.blog) throw Error();
+      if (!r.ok || !r.module) throw Error();
       setInitialBlogForm((prev) => ({
         ...prev,
-        ...r.module.blog.settings
+        ...r.module.settings
       }));
       setBlogForm((prev) => ({
         ...prev,
-        ...r.module.blog.settings
+        ...r.module.settings
       }));
     } catch (e) {
       if (e?.name === "AbortError") return;
@@ -52,9 +53,10 @@ export default function UniverseAdminModuleBlog() {
     }
   };
 
-  const handleSubmit = async () => {
+  const postSubmit = async () => {
     setIsLoadingSubmit(true);
     setHasError(null);
+    setHasSuccessSubmit(null);
     try {
       const formData = new FormData();
       let settings = {};
@@ -63,11 +65,15 @@ export default function UniverseAdminModuleBlog() {
       };
       formData.append("settings", JSON.stringify(settings));
       const r = await api.post(`/world/universes/${currentUniverse.slug}/modules/blog/edit/`, formData);
-      if (!r?.ok) throw new Error(r || t("An error occurred"));
+      if (!r?.ok) throw r;
       changeUniverse(params?.universeSlug);
+      setHasSuccessSubmit({
+        title: t("Module updated"),
+        message: t("The module has been updated successfully"),
+      });
     } catch (e) {
       setHasError(() => ({
-        message: e.message || t("An error occurred"),
+        message: t(e?.error) || t(e?.message) || t("An error occurred"),
       }));
     } finally {
       setIsLoadingSubmit(false);
@@ -117,12 +123,12 @@ export default function UniverseAdminModuleBlog() {
         {isLoading ? (
           <OykLoading />
         ) : (
-          <OykForm className="oyk-universes-admin-form" isLoading={isLoading} onSubmit={handleSubmit}>
+          <OykForm className="oyk-universes-admin-form" isLoading={isLoading} onSubmit={postSubmit}>
             <section>
               <OykFormField
                 label={t("Display Name")}
                 name="display_name"
-                defaultValue={blogForm.display_name}
+                defaultValue={blogForm.display_name || t("Blog")}
                 onChange={handleChange}
                 hasError={hasError?.display_name}
               />
@@ -164,6 +170,9 @@ export default function UniverseAdminModuleBlog() {
               />
             </section>
             {hasError?.message && <OykFormMessage hasError={hasError?.message} />}
+            {hasSuccessSubmit?.message && (
+              <OykFormMessage successTitle={hasSuccessSubmit?.title} hasSuccess={hasSuccessSubmit?.message} />
+            )}
             <div className="oyk-form-actions">
               <OykButton type="submit" color="primary" disabled={isLoading || isLoadingSubmit} isLoading={isLoadingSubmit}>
                 {t("Save")}

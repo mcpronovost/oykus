@@ -25,10 +25,10 @@ export default function OykUniverseAdminModuleProgress() {
     setHasError(null);
     try {
       const r = await api.get(`/world/universes/${currentUniverse.slug}/modules/progress/`, signal ? { signal } : {});
-      if (!r.ok || !r.module || !r.module.progress) throw r;
+      if (!r.ok || !r.module) throw r;
       setProgressForm((prev) => ({
         ...prev,
-        ...r.module.progress.settings,
+        ...r.module.settings,
       }));
     } catch (e) {
       if (e?.name === "AbortError") return;
@@ -61,12 +61,12 @@ export default function OykUniverseAdminModuleProgress() {
         ...r.module.settings,
       }));
       setHasSuccessSubmit({
-        title: t("Settings updated"),
-        message: t("Settings of the progress module have been updated successfully"),
+        title: t("Module updated"),
+        message: t("The module has been updated successfully"),
       });
     } catch (e) {
       setHasError(() => ({
-        message: e.error || t("An error occurred"),
+        message: t(e?.error) || t(e?.message) || t("An error occurred"),
       }));
     } finally {
       setIsLoadingSubmit(false);
@@ -118,7 +118,12 @@ export default function OykUniverseAdminModuleProgress() {
         {isLoading ? (
           <OykLoading />
         ) : (
-          <OykForm ref={progressFormRef} className="oyk-universes-admin-form" isLoading={isLoading} onSubmit={postSubmit}>
+          <OykForm
+            ref={progressFormRef}
+            className="oyk-universes-admin-form"
+            isLoading={isLoading}
+            onSubmit={postSubmit}
+          >
             <section>
               <OykFormField
                 label={t("Display Name")}

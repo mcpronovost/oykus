@@ -21,7 +21,7 @@ $context = $universeService->getContext($universeSlug, $authUserId);
 $universeId = $context["id"];
 
 $module = $moduleService->getModule($universeId, "blog");
-$moduleSettings = $module["blog"]["settings"];
+$moduleSettings = $module["settings"];
 
 // Get post
 $post = $blogService->getPost($universeId, $postId);

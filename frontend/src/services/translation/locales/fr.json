@@ -287,5 +287,7 @@
   "Settings updated": "Paramètres mis à jour",
   "Settings of the forum module have been updated successfully": "Les paramètres du module forum ont été mis à jour avec succès.",
   "Theme updated": "Thème mis à jour",
-  "The theme universe has been updated successfully": "Le thème de l'univers a été mis à jour avec succès."
+  "The theme universe has been updated successfully": "Le thème de l'univers a été mis à jour avec succès.",
+  "Module updated": "Module mis à jour",
+  "The module has been updated successfully": "Le module a été mis à jour avec succès."
 }
