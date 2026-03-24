@@ -9,10 +9,15 @@ export default function OykAlert({
   icon: IconComponent,
   iconSize = 24,
   ghost = false,
-  small = false
+  small = false,
+  clickable = false,
+  ...props
 }) {
   return (
-    <div className={`oyk-alert oyk-alert-variant-${variant} ${ghost ? "oyk-alert-ghost" : ""} ${small ? "oyk-small" : ""}`}>
+    <div
+      className={`oyk-alert oyk-alert-variant-${variant} ${ghost ? "oyk-alert-ghost" : ""} ${small ? "oyk-small" : ""} ${clickable ? "oyk-alert-clickable" : ""}`}
+      {...props}
+    >
       {showIcon && (
         <div className="oyk-alert-icon">
           {IconComponent ? (

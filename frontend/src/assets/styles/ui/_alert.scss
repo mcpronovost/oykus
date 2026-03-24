@@ -24,6 +24,17 @@
     }
   }
 
+  &-variant-card {
+    background-color: var(--oyk-card-bg);
+    border-color: var(--oyk-card-bg);
+    color: var(--oyk-card-fg);
+
+    &.oyk-alert-ghost {
+      background-color: color-mix(in srgb, var(--oyk-card-bg) 50%, transparent);
+      border-color: color-mix(in srgb, var(--oyk-card-fg) 10%, transparent);
+    }
+  }
+
   &-variant-primary {
     background-color: color-mix(in srgb, var(--oyk-c-primary) 10%, transparent);
     border-color: color-mix(in srgb, var(--oyk-c-primary) 20%, transparent);
@@ -83,6 +94,20 @@
       &-message {
         font-size: 0.86rem;
       }
+    }
+  }
+
+  &-clickable {
+    transition: box-shadow 0.3s, transform 0.3s;
+
+    &:hover {
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transform: translateY(-4px);
+    }
+
+    &:active {
+      transform: scale(0.96);
     }
   }
 }
