@@ -35,12 +35,12 @@ export default function AppHeaderMenu() {
     return [
       ...(currentUniverse?.modules?.blog?.active ? [{
         label: currentUniverse.modules.blog.settings.display_name || t("Blog"),
-        routeName: "blog",
+        routeName: "universe-blog",
         params: { universeSlug: currentUniverse.slug }
       }] : []),
       ...(currentUniverse?.modules?.planner?.active ? [{
         label: currentUniverse.modules.planner.settings.display_name || t("Planner"),
-        routeName: "planner",
+        routeName: "universe-planner",
         params: { universeSlug: currentUniverse.slug }
       }] : []),
       ...(currentUniverse?.modules?.progress?.active ? [{

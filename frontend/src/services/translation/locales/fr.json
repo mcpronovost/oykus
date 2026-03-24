@@ -292,5 +292,11 @@
   "The theme universe has been updated successfully": "Le thème de l'univers a été mis à jour avec succès.",
   "Module updated": "Module mis à jour",
   "The module has been updated successfully": "Le module a été mis à jour avec succès.",
-  "You obtained a new title": "Vous avez débloqué un nouveau titre"
+  "You obtained a new title": "Vous avez débloqué un nouveau titre",
+  "Alerts": "Alertes",
+  "All Alerts": "Toutes les alertes",
+  "Unread Alerts": "Alertes non lues",
+  "Unread": "Non lus",
+  "Someone": "Quelqu'un",
+  "See and manage your alerts": "Voir et gérer vos alertes"
 }

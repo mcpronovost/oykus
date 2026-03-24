@@ -30,21 +30,22 @@ $comments = $commentService->createComment($universeId, $postId, $authUserId, $f
 $post = $blogService->getPost($universeId, $postId);
 
 try {
-  $alertService->createAlert(
-    $post["author_id"],
-    "New blog comment",
-    "blog_comment",
-    "blog_posts",
-    $postId,
-    [
-      "universe_slug" => $universeSlug,
-      "comment_id" => $comments[0]["id"],
-      "comment_author" => $comments[0]["author"]["id"],
-      "comment_content" => substr($comments[0]["content"], 0, 32),
-      "post_id" => $postId,
-      "post_title" => $post["title"]
-    ]
-  );
+  if ($authUserId !== $post["author_id"]) {
+    $alertService->createAlert(
+      (int) $post["author_id"],
+      "New blog comment",
+      "blog_comment",
+      "blog_posts",
+      $postId,
+      [
+        "universe_slug" => $universeSlug,
+        "comment_id" => (int) $comments[0]["id"],
+        "comment_author" => $comments[0]["author"],
+        "comment_content" => $comments[0]["content"],
+        "post_id" => (int) $postId,
+      ]
+    );
+  }
 }
 catch (Exception) {
   // fail silently

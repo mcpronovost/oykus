@@ -26,7 +26,7 @@ export default function AppHeaderNotifications() {
           iconSize={18}
           badgeDot={notifications?.alerts}
           badgeBorderColor="var(--oyk-app-header-bg)"
-          onClick={() => (n("alerts"))}
+          onClick={() => (notifications?.alerts ? n("alerts-unread") : n("alerts"))}
         />
       </div>
       <div className="oyk-app-header-notifications-group">

@@ -6,7 +6,8 @@ import { useTranslation } from "@/services/translation";
 import { OykCard, OykFeedback, OykGrid, OykGridRow, OykGridNav, OykGridMain, OykHeading } from "@/components/ui";
 import { OykSidenav } from "@/components/common";
 import OykError404 from "@/pages/Error404";
-import OykManageAlerts from "./Alerts";
+import OykAllAlerts from "./Alerts";
+import OykUnreadAlerts from "./AlertsUnread";
 
 export default function OykAlerts() {
   const { isAuth } = useAuth();
@@ -16,17 +17,16 @@ export default function OykAlerts() {
   const menu = [
     {
       title: t("Alerts"),
-      description: t("Manage friends, accept and block requests"),
+      description: t("See and manage your alerts"),
       Icon: Bell,
       links: [
         {
-          name: t("All"),
+          name: t("All Alerts"),
           routeName: "alerts",
         },
         {
-          name: t("Blocked Users"),
-          routeName: "friends-blocked",
-          disabled: true,
+          name: t("Unread"),
+          routeName: "alerts-unread",
         },
       ],
     },
@@ -46,7 +46,9 @@ export default function OykAlerts() {
           </OykGridNav>
           <OykGridMain>
             {params?.section === "alerts" ? (
-              <OykManageAlerts />
+              <OykAllAlerts />
+            ) : params?.section === "alerts-unread" ? (
+              <OykUnreadAlerts />
             ) : (
               <OykCard>
                 <OykFeedback

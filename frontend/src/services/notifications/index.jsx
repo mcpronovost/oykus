@@ -43,12 +43,20 @@ export function NotificationsProvider({ children }) {
     setNotifications(value);
   };
 
+  const updateAlerts = (value) => {
+    setNotifications((prev) => ({
+      ...prev,
+      alerts: value
+    }));
+  };
+
   const value = useMemo(
     () => ({
       notifications,
       isLoadingNotifications,
       fetchNotifications,
       updateNotifications,
+      updateAlerts,
     }),
     [notifications, isLoadingNotifications],
   );

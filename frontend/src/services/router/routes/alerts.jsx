@@ -13,4 +13,16 @@ export const ALERTS_ROUTES = [
       section: "alerts"
     },
   },
+  {
+    name: "alerts-unread",
+    component: React.lazy(() => import("../../../pages/Alerts")),
+    require_auth: true,
+    paths: {
+      fr: "alertes-nonlus",
+      en: "alerts-unread",
+    },
+    params: {
+      section: "alerts-unread"
+    },
+  },
 ];

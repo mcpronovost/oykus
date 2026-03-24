@@ -6,7 +6,7 @@ import { useTranslation } from "@/services/translation";
 import { OykAlert, OykButton, OykCard, OykFeedback, OykHeading, OykLoading } from "@/components/ui";
 import OykAlertsCard from "./AlertsCard";
 
-export default function OykAllAlerts() {
+export default function OykUnreadAlerts() {
   const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -21,7 +21,7 @@ export default function OykAllAlerts() {
     else setIsLoadingMore(true);
     setHasError(null);
     try {
-      const r = await api.get(`/courrier/alerts/${alertsOffset}/`, signal ? { signal } : {});
+      const r = await api.get(`/courrier/alerts/unread/${alertsOffset}/`, signal ? { signal } : {});
       if (!r?.ok || !r?.alerts) throw r;
       setAlerts((prev) => [...prev, ...r.alerts]);
       if (r.alerts.length === 5) {
