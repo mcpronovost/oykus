@@ -14,7 +14,6 @@ export default function AppSidebarFooter() {
     <footer className="oyk-app-sidebar-footer">
       <nav className="oyk-app-sidebar-nav">
         <ul className="oyk-app-sidebar-nav-list">
-          {isAuth ? <OykAppSidebarNavItem icon={Settings} text={t("Settings")} href="settings" /> : null}
           {/*isDev ? <OykAppSidebarNavItem icon={Component} text={t("Components")} href="dev-components" /> : null*/}
           {isAuth && currentUniverse && currentUniverse.role === 1 ? (
             <OykAppSidebarNavItem
@@ -25,6 +24,7 @@ export default function AppSidebarFooter() {
               prefix="universe-admin"
             />
           ) : null}
+          {isAuth ? <OykAppSidebarNavItem icon={Settings} text={t("Settings")} href="settings" /> : null}
         </ul>
       </nav>
     </footer>
