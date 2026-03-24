@@ -106,6 +106,7 @@
   "Unable to access account data": "Impossible d'accéder aux données de votre compte",
   "Unable to access friends requests": "Impossible d'accéder aux demandes d'amis",
   "Unable to access modules list": "Impossible d'accéder à la liste des modules",
+  "Unable to access alerts": "Impossible d'accéder aux alertes",
   "Universe Profile": "Profil de l'univers",
   "Manage Modules": "Gérer les modules",
   "Change Logo": "Modifier le logo",
@@ -228,6 +229,7 @@
   "Country": "Pays",
   "No posts": "Aucun article",
   "No messages": "Aucun message",
+  "No alerts": "Aucune alerte",
   "This user has no activity at the moment": "Cet utilisateur n'a aucune activité pour l'instant.",
   "View profile": "Voir le profil",
   "Joined": "Inscrit",
@@ -289,5 +291,6 @@
   "Theme updated": "Thème mis à jour",
   "The theme universe has been updated successfully": "Le thème de l'univers a été mis à jour avec succès.",
   "Module updated": "Module mis à jour",
-  "The module has been updated successfully": "Le module a été mis à jour avec succès."
+  "The module has been updated successfully": "Le module a été mis à jour avec succès.",
+  "You obtained a new title": "Vous avez débloqué un nouveau titre"
 }
