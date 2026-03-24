@@ -143,7 +143,7 @@ class ModuleService {
       "label" => $module["label"],
       "active" => (bool) $module["is_active"],
       "disabled" => (bool) $module["is_disabled"],
-      "settings" => json_decode($module["settings"])
+      "settings" => json_decode($module["settings"], TRUE)
     ];
 
     return $result ?: [];
