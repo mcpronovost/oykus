@@ -53,7 +53,7 @@ export default function OykBlog() {
   };
 
   const handlePostClick = (id) => {
-    n("blog-post", { universeSlug: currentUniverse.slug, postId: id });
+    n("universe-blog-post", { universeSlug: currentUniverse.slug, postId: id });
   };
 
   const handleCloseModalPostCreate = (updated) => {

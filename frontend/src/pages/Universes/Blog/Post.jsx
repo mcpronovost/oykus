@@ -71,7 +71,7 @@ export default function OykBlogPost() {
   const handleCloseModalPostDelete = (updated) => {
     setIsModalPostDeleteOpen(false);
     if (updated) {
-      n("blog", { universeSlug: currentUniverse.slug });
+      n("universe-blog", { universeSlug: currentUniverse.slug });
     }
   };
 

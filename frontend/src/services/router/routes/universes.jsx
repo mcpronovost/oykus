@@ -37,7 +37,7 @@ export const UNIVERSES_ROUTES = [
             ],
           },
           {
-            name: "blog",
+            name: "universe-blog",
             component: React.lazy(() => import("../../../pages/Universes/Blog")),
             paths: {
               fr: "blog",
@@ -49,7 +49,7 @@ export const UNIVERSES_ROUTES = [
             },
             children: [
               {
-                name: "blog-post",
+                name: "universe-blog-post",
                 component: React.lazy(() => import("../../../pages/Universes/Blog/Post")),
                 paths: {
                   fr: "{postId}",
