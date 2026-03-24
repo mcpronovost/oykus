@@ -79,12 +79,16 @@ export default function OykSidenav({ menu = [], accordion = false }) {
                 className={`oyk-sidenav-header ${accordion ? "oyk-accordion" : ""}`}
                 onClick={() => handleToggle(id)}
               >
-                {m.Icon && <span className="oyk-sidenav-header-icon">
-                  <m.Icon size={24} color={"var(--oyk-c-primary)"} />
-                </span>}
+                {m.Icon && (
+                  <span className="oyk-sidenav-header-icon">
+                    <m.Icon size={24} color={"var(--oyk-c-primary)"} />
+                  </span>
+                )}
                 <span className="oyk-sidenav-header-title">
                   <span className="oyk-sidenav-header-title-name">{m.title}</span>
-                  <small className={`oyk-sidenav-header-title-desc ${isOpen ? "" : "oyk-clamped"}`}>{m.description}</small>
+                  <small className={`oyk-sidenav-header-title-desc ${isOpen ? "" : "oyk-clamped"}`}>
+                    {m.description}
+                  </small>
                 </span>
                 {accordion && (
                   <span className="oyk-sidenav-header-toggle">
