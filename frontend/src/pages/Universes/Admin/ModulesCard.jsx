@@ -47,7 +47,15 @@ export default function UniverseAdminModulesCard({
     <li className="oyk-universes-admin-modules-list-item">
       <OykCard nop fullCenter alignSpace>
         <header className="oyk-universes-admin-modules-list-item-header">
-          <OykBanner avatarIcon={module.icon} avatarTop={16} avatarBorderSize={8} coverHeight={64} height={96} />
+          <OykBanner
+            avatarIcon={module.icon}
+            avatarTop={16}
+            avatarBorderSize={8}
+            avatarBgColor={module.active ? "var(--oyk-c-primary)" : "var(--oyk-card-subtle-bg)"}
+            avatarFgColor={module.active ? "var(--oyk-c-primary-fg)" : "var(--oyk-card-subtle-fg)"}
+            coverHeight={64}
+            height={96}
+          />
           <div className="oyk-universes-admin-modules-list-item-header-name">
             <span>{t(`mod.${module.label}.name`)}</span>
           </div>
