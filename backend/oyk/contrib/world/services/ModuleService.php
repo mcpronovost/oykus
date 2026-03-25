@@ -10,7 +10,7 @@ class ModuleService {
       "forum" => 0,
       "collection" => 0,
       "progress" => 1,
-      "game" => 0,
+      "game" => 1,
     ];
   }
 
@@ -91,7 +91,7 @@ class ModuleService {
           VALUES (?, ?, not ?, ?)
           ON DUPLICATE KEY UPDATE label = label
         ");
-        $qry->execute([$universeId, $m, $enabled, "{}"]);
+        $qry->execute([$universeId, $m, FALSE, "{}"]);
       }
 
       try {
@@ -112,10 +112,11 @@ class ModuleService {
     $result = [];
 
     foreach ($modules as $m) {
+      $allowed = (bool) ((int) $this->allowedModules[$m["label"]]);
       $result[$m["label"]] = [
         "label" => $m["label"],
-        "active" => (bool) !$m["is_disabled"] && (bool) $m["is_active"],
-        "disabled" => (bool) $m["is_disabled"],
+        "active" => (bool) $m["is_active"] && (bool) !$m["is_disabled"] && $allowed,
+        "disabled" => (bool) $m["is_disabled"] || !$allowed,
         "settings" => json_decode($m["settings"], TRUE)
       ];
     }
@@ -139,10 +140,12 @@ class ModuleService {
       throw new QueryException("Module retrieval failed" . $e->getMessage());
     }
 
+    $allowed = (bool) ((int) $this->allowedModules[$module["label"]]);
+
     $result = [
       "label" => $module["label"],
-      "active" => (bool) $module["is_active"],
-      "disabled" => (bool) $module["is_disabled"],
+      "active" => (bool) $module["is_active"] && $allowed,
+      "disabled" => (bool) $module["is_disabled"] || !$allowed,
       "settings" => json_decode($module["settings"], TRUE)
     ];
 

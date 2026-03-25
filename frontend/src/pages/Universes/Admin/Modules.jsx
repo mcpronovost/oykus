@@ -20,17 +20,18 @@ export default function UniverseAdminModules() {
   const [modules, setModules] = useState([]);
 
   const fetchModulesData = async (signal) => {
+    console.log(">>> fetch modules");
     setIsLoading(true);
     setHasError(null);
     setModules([]);
     try {
-      const r = await api.get(`/world/universes/${params?.universeSlug}/`, signal ? { signal } : {});
-      if (!r.ok || !r.universe) throw Error();
-      setModules(r.universe.modules);
+      const r = await api.get(`/world/universes/${params?.universeSlug}/modules/`, signal ? { signal } : {});
+      if (!r.ok || !r.modules) throw r;
+      setModules(r.modules);
     } catch (e) {
       if (e?.name === "AbortError") return;
       setHasError({
-        fetch: t("An error occurred"),
+        fetch: t(e?.error) || t(e?.message) || t("An error occurred"),
       });
     } finally {
       if (!signal || !signal.aborted) {

@@ -11,6 +11,8 @@ Router::get("{$api}/universes/{universeSlug}", "{$view}universes/universe.php");
 
 Router::post("{$api}/universes/{universeSlug}/edit", "{$view}universes/edit.php");
 
+Router::get("{$api}/universes/{universeSlug}/modules", "{$view}modules/list.php");
+
 Router::post("{$api}/universes/{universeSlug}/modules/edit", "{$view}modules/edit.php");
 
 Router::get("{$api}/universes/{universeSlug}/modules/{moduleName}", "{$view}modules/module.php");
