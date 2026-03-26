@@ -37,6 +37,18 @@ export const UNIVERSES_ROUTES = [
             ],
           },
           {
+            name: "universe-game",
+            component: React.lazy(() => import("../../../pages/Universes/Game")),
+            paths: {
+              fr: "jeu",
+              en: "game",
+            },
+            labels: {
+              fr: "Jeu",
+              en: "Game",
+            },
+          },
+          {
             name: "universe-blog",
             component: React.lazy(() => import("../../../pages/Universes/Blog")),
             paths: {
@@ -57,18 +69,6 @@ export const UNIVERSES_ROUTES = [
                 },
               },
             ],
-          },
-          {
-            name: "universe-forum",
-            component: React.lazy(() => import("../../../pages/Universes/Forum")),
-            paths: {
-              fr: "forum",
-              en: "forum",
-            },
-            labels: {
-              fr: "Forum",
-              en: "Forum",
-            },
           },
           {
             name: "planner",

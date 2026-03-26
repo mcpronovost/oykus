@@ -22,11 +22,11 @@ export default function AppSidebarMenuMain() {
       {!isAuth || !currentUniverse || currentUniverse.is_default ? (
         <OykAppSidebarNavItem icon={Compass} text={t("Discover")} href="discover" />
       ) : null}
-      {currentUniverse && !currentUniverse.is_default && currentUniverse.modules?.forum?.active ? (
+      {currentUniverse && !currentUniverse.is_default && currentUniverse.modules?.game?.active ? (
         <OykAppSidebarNavItem
           icon={Earth}
-          text={currentUniverse.modules.forum.settings.display_name || t("Forum")}
-          href="universe-forum"
+          text={currentUniverse.modules.game.settings.display_name || t("Game")}
+          href="universe-game"
           params={{ universeSlug: currentUniverse.slug }}
         />
       ) : null}
