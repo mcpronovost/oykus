@@ -25,10 +25,10 @@ export function RouterProvider({ children }) {
   const [route, setRoute] = useState(INITIAL_STATE.route);
   const [params, setParams] = useState(INITIAL_STATE.params);
 
-  if (route === null && !SUPPORTED_LANGS.some((l) => window.location.pathname.startsWith(`/${l}`))) {
+  /* if (route === null && !SUPPORTED_LANGS.some((l) => window.location.pathname.startsWith(`/${l}`))) {
     window.location.pathname = `/${DEFAULT_LANG}${window.location.pathname}`;
     return null;
-  }
+  } */
 
   const navigate = useCallback(
     (name, params = {}, language = lang) => {
