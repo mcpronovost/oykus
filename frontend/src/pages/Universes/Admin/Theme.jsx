@@ -333,71 +333,107 @@ export default function UniverseAdminTheme() {
               <OykHeading subtitle tag="h3" title={t("Header Colours")} nop />
               <OykFormField
                 label={t("Header Background")}
-                name="app_header_bg"
+                name="core_topbar_bg"
                 type="color"
-                defaultValue={themeForm.app_header_bg}
+                defaultValue={themeForm.core_topbar_bg}
                 onChange={handleChange}
-                hasError={hasError?.app_header_bg}
+                hasError={hasError?.core_topbar_bg}
               />
               <OykFormField
                 label={t("Header Foreground")}
-                name="app_header_fg"
+                name="core_topbar_fg"
                 type="color"
-                defaultValue={themeForm.app_header_fg}
+                defaultValue={themeForm.core_topbar_fg}
                 onChange={handleChange}
-                hasError={hasError?.app_header_fg}
+                hasError={hasError?.core_topbar_fg}
               />
               <OykFormField
                 label={t("Header Subtle Background")}
-                name="app_header_subtle_bg"
+                name="core_topbar_subtle_bg"
                 type="color"
-                defaultValue={themeForm.app_header_subtle_bg}
+                defaultValue={themeForm.core_topbar_subtle_bg}
                 onChange={handleChange}
-                hasError={hasError?.app_header_subtle_bg}
+                hasError={hasError?.core_topbar_subtle_bg}
               />
               <OykFormField
                 label={t("Header Subtle Foreground")}
-                name="app_header_subtle_fg"
+                name="core_topbar_subtle_fg"
                 type="color"
-                defaultValue={themeForm.app_header_subtle_fg}
+                defaultValue={themeForm.core_topbar_subtle_fg}
                 onChange={handleChange}
-                hasError={hasError?.app_header_subtle_fg}
+                hasError={hasError?.core_topbar_subtle_fg}
               />
             </section>
             <hr />
             <section>
-              <OykHeading subtitle tag="h3" title={t("Sidebar Colours")} nop />
+              <OykHeading subtitle tag="h3" title={t("Navbar Colours")} nop />
               <OykFormField
-                label={t("Sidebar Background")}
-                name="app_sidebar_bg"
+                label={t("Navbar Background")}
+                name="core_navbar_bg"
                 type="color"
-                defaultValue={themeForm.app_sidebar_bg}
+                defaultValue={themeForm.core_navbar_bg}
                 onChange={handleChange}
-                hasError={hasError?.app_sidebar_bg}
+                hasError={hasError?.core_navbar_bg}
               />
               <OykFormField
-                label={t("Sidebar Foreground")}
-                name="app_sidebar_fg"
+                label={t("Navbar Foreground")}
+                name="core_navbar_fg"
                 type="color"
-                defaultValue={themeForm.app_sidebar_fg}
+                defaultValue={themeForm.core_navbar_fg}
                 onChange={handleChange}
-                hasError={hasError?.app_sidebar_fg}
+                hasError={hasError?.core_navbar_fg}
               />
               <OykFormField
-                label={t("Sidebar Subtle Background")}
-                name="app_sidebar_subtle_bg"
+                label={t("Navbar Subtle Background")}
+                name="core_navbar_subtle_bg"
                 type="color"
-                defaultValue={themeForm.app_sidebar_subtle_bg}
+                defaultValue={themeForm.core_navbar_subtle_bg}
                 onChange={handleChange}
-                hasError={hasError?.app_sidebar_subtle_bg}
+                hasError={hasError?.core_navbar_subtle_bg}
               />
               <OykFormField
-                label={t("Sidebar Subtle Foreground")}
-                name="app_sidebar_subtle_fg"
+                label={t("Navbar Subtle Foreground")}
+                name="core_navbar_subtle_fg"
                 type="color"
-                defaultValue={themeForm.app_sidebar_subtle_fg}
+                defaultValue={themeForm.core_navbar_subtle_fg}
                 onChange={handleChange}
-                hasError={hasError?.app_sidebar_subtle_fg}
+                hasError={hasError?.core_navbar_subtle_fg}
+              />
+            </section>
+            <hr />
+            <section>
+              <OykHeading subtitle tag="h3" title={t("Gamebar Colours")} nop />
+              <OykFormField
+                label={t("Gamebar Background")}
+                name="core_gamebar_bg"
+                type="color"
+                defaultValue={themeForm.core_gamebar_bg}
+                onChange={handleChange}
+                hasError={hasError?.core_gamebar_bg}
+              />
+              <OykFormField
+                label={t("Gamebar Foreground")}
+                name="core_gamebar_fg"
+                type="color"
+                defaultValue={themeForm.core_gamebar_fg}
+                onChange={handleChange}
+                hasError={hasError?.core_gamebar_fg}
+              />
+              <OykFormField
+                label={t("Gamebar Subtle Background")}
+                name="core_gamebar_subtle_bg"
+                type="color"
+                defaultValue={themeForm.core_gamebar_subtle_bg}
+                onChange={handleChange}
+                hasError={hasError?.core_gamebar_subtle_bg}
+              />
+              <OykFormField
+                label={t("Gamebar Subtle Foreground")}
+                name="core_gamebar_subtle_fg"
+                type="color"
+                defaultValue={themeForm.core_gamebar_subtle_fg}
+                onChange={handleChange}
+                hasError={hasError?.core_gamebar_subtle_fg}
               />
             </section>
             <hr />

@@ -14,18 +14,25 @@
   --oyk-c-warning: #dea125;
   --oyk-c-success: #129929;
 
-  --oyk-app-header-bg: #0E0F12;
-  --oyk-app-header-fg: #838489;
-  --oyk-app-header-subtle-bg: #151619;
-  --oyk-app-header-subtle-fg: #a6a9b5;
-  --oyk-app-header-height: 48px;
+  --oyk-core-topbar-bg: #0E0F12;
+  --oyk-core-topbar-fg: #838489;
+  --oyk-core-topbar-subtle-bg: #151619;
+  --oyk-core-topbar-subtle-fg: #a6a9b5;
+  --oyk-core-topbar-height: 48px;
 
-  --oyk-app-sidebar-bg: #0E0F12;
-  --oyk-app-sidebar-fg: #838489;
-  --oyk-app-sidebar-subtle-bg: #17181d;
-  --oyk-app-sidebar-subtle-fg: #838489;
-  --oyk-app-sidebar-width: 48px;
-  --oyk-app-sidebar-width-open: 220px;
+  --oyk-core-navbar-bg: #0E0F12;
+  --oyk-core-navbar-fg: #838489;
+  --oyk-core-navbar-subtle-bg: #17181d;
+  --oyk-core-navbar-subtle-fg: #838489;
+  --oyk-core-navbar-width: 48px;
+  --oyk-core-navbar-width-open: 220px;
+
+  --oyk-core-gamebar-bg: #0E0F12;
+  --oyk-core-gamebar-fg: #838489;
+  --oyk-core-gamebar-subtle-bg: #17181d;
+  --oyk-core-gamebar-subtle-fg: #838489;
+  --oyk-core-gamebar-width: 48px;
+  --oyk-core-gamebar-width-open: 220px;
 
   --oyk-popper-bg: #0E0F12;
   --oyk-popper-fg: #aeafb7;

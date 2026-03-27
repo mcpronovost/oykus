@@ -1,4 +1,4 @@
-import { createElement, Suspense, useEffect } from "react";
+import { createElement, Suspense, useEffect, useMemo } from "react";
 
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
@@ -7,9 +7,10 @@ import { useWorld } from "@/services/world";
 import { OykScrollbar } from "@/components/ui";
 
 import Providers from "@/components/Providers";
-import OykAppHeader from "@/components/core/AppHeader";
-import OykAppSidebar from "@/components/core/AppSidebar";
-import OykAppFooter from "@/components/core/AppFooter";
+import OykCoreTopbar from "@/components/core/Topbar";
+import OykCoreNavbar from "@/components/core/Navbar";
+import OykCoreGamebar from "@/components/core/Gamebar";
+import OykCoreFooter from "@/components/core/Footer";
 import OykAppLoading from "@/components/core/AppLoading";
 import OykAppNotAuthorized from "@/components/core/AppNotAuthorized";
 import OykAppNotFound from "@/components/core/AppNotFound";
@@ -28,13 +29,17 @@ function MainLayout() {
   }, [route]);
 
   return (
-    <main id="oyk-app-main">
+    <main id="oyk-main">
       {route && route.component && !isLoadingAuth ? (
         <Suspense fallback={<OykAppLoading />}>
           <OykScrollbar isMainScroll height={"100%"}>
             <>
-              {(route.require_auth && !isAuth) || (route.require_dev && !isDev)  ? <OykAppNotAuthorized /> : createElement(route.component)}
-              <OykAppFooter />
+              {(route.require_auth && !isAuth) || (route.require_dev && !isDev) ? (
+                <OykAppNotAuthorized />
+              ) : (
+                createElement(route.component)
+              )}
+              <OykCoreFooter />
             </>
           </OykScrollbar>
         </Suspense>
@@ -48,12 +53,27 @@ function MainLayout() {
 }
 
 function Layout() {
+  const { route } = useRouter();
+  const { currentUniverse } = useWorld();
+
+  const isGameMode = useMemo(
+    () =>
+      currentUniverse &&
+      !currentUniverse.is_default &&
+      route.name.startsWith("universe-game"),
+    [currentUniverse, route.name],
+  );
+
   return (
     <div id="oyk-app">
-      <OykAppSidebar />
-      <div id="oyk-app-core">
-        <OykAppHeader />
+      <OykCoreTopbar isGameMode={isGameMode} />
+      <div id="oyk-core">
+        <OykCoreNavbar isGameMode={isGameMode} />
+        {isGameMode ? <OykCoreGamebar isGameMode={isGameMode} /> : null}
         <MainLayout />
+        {/*<aside id="oyk-sidebar">
+          sidebar
+        </aside>*/}
       </div>
     </div>
   );

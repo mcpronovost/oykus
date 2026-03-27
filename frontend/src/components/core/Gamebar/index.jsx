@@ -1,0 +1,35 @@
+import { Backpack, CircleUser, Flame } from "lucide-react";
+
+import { useAuth } from "@/services/auth";
+import { useStore } from "@/services/store";
+import { useTranslation } from "@/services/translation";
+import { useWorld } from "@/services/world";
+
+import { OykScrollbar } from "@/components/ui";
+
+import OykCoreGamebarCharacter from "./Character";
+import OykCoreNavbarNavItem from "./NavItem";
+
+export default function OykCoreGamebar() {
+  const { isAuth } = useAuth();
+  const { storeCoreGamebarOpen } = useStore();
+  const { t } = useTranslation();
+  const { currentUniverse, currentCharacter } = useWorld();
+
+  return (
+    <aside className={`oyk-core-gamebar ${storeCoreGamebarOpen ? "open" : ""}`}>
+      <OykScrollbar height="100%" className="oyk-core-gamebar-scrollbar">
+        <OykCoreGamebarCharacter />
+        <section className="oyk-core-navbar-menu">
+          <nav className="oyk-core-navbar-nav">
+            <ul className="oyk-core-navbar-nav-list">
+              <OykCoreNavbarNavItem icon={CircleUser} text={t("Profile")} href="inventory" />
+              <OykCoreNavbarNavItem icon={Backpack} text={t("Inventory")} href="inventory" />
+              <OykCoreNavbarNavItem icon={Flame} text={t("Capacities")} href="capacities" />
+            </ul>
+          </nav>
+        </section>
+      </OykScrollbar>
+    </aside>
+  );
+}

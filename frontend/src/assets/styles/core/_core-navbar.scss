@@ -1,24 +1,18 @@
-.oyk-app-sidebar {
-  background: var(--oyk-app-sidebar-bg);
+.oyk-core-navbar {
+  background: var(--oyk-core-navbar-bg);
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-  color: var(--oyk-app-sidebar-fg, #FFFFFF);
+  color: var(--oyk-core-navbar-fg, #FFFFFF);
   overflow: hidden;
   display: flex;
-  flex: 0 0 var(--oyk-app-sidebar-width, 64px);
+  flex: 0 0 var(--oyk-core-navbar-width, 64px);
   flex-direction: column;
   justify-content: space-between;
   transition: flex-basis 0.3s;
 
   &.open {
-    flex-basis: var(--oyk-app-sidebar-width-open);
+    flex-basis: var(--oyk-core-navbar-width-open);
 
-    .oyk-app-sidebar-header-button-brand {
-      width: auto;
-      opacity: 1;
-      padding-left: 12px;
-    }
-
-    .oyk-app-sidebar-nav-item {
+    .oyk-core-navbar-nav-item {
       &-link {
         gap: 8px;
 
@@ -181,8 +175,8 @@
       }
 
       &.hidden {
-        .oyk-app-sidebar-user-identity-name,
-        .oyk-app-sidebar-user-identity-title {
+        .oyk-core-navbar-user-identity-name,
+        .oyk-core-navbar-user-identity-title {
           font-size: 0;
           line-height: 0;
           opacity: 0;
@@ -198,7 +192,7 @@
 
   &-nav {
     &-list + &-list {
-      border-top: 1px solid var(--oyk-app-sidebar-subtle-bg);
+      border-top: 1px solid var(--oyk-core-navbar-subtle-bg);
       margin-top: 16px;
       padding-top: 16px;
     }
@@ -222,9 +216,9 @@
         transition: background-color 0.3s, gap 0.3s;
 
         &:not(.disabled):hover {
-          // background-color: var(--oyk-app-sidebar-subtle-bg);
-          background: linear-gradient(90deg, var(--oyk-app-sidebar-subtle-bg), transparent);
-          color: var(--oyk-app-sidebar-subtle-fg);
+          // background-color: var(--oyk-core-navbar-subtle-bg);
+          background: linear-gradient(90deg, var(--oyk-core-navbar-subtle-bg), transparent);
+          color: var(--oyk-core-navbar-subtle-fg);
         }
 
         &:not(.disabled):active {
@@ -265,7 +259,7 @@
         }
 
         &-side-icon {
-          background-color: var(--oyk-app-sidebar-bg);
+          background-color: var(--oyk-core-navbar-bg);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -278,7 +272,7 @@
         }
 
         &-side-chip {
-          background-color: var(--oyk-app-sidebar-bg);
+          background-color: var(--oyk-core-navbar-bg);
           line-height: 1;
           display: flex;
           align-items: center;
@@ -317,7 +311,7 @@
           width: 4px;
         }
 
-        .oyk-app-sidebar-nav-item-link {
+        .oyk-core-navbar-nav-item-link {
           &:not(.disabled):hover {
             background-color: transparent;
             transition: background-color 0s;

@@ -7,7 +7,7 @@ import { useWorld } from "@/services/world";
 
 import { OykButton, OykDropdown, OykLink } from "@/components/ui";
 
-export default function AppHeaderMenu() {
+export default function CoreTopbarMenu() {
   const { n } = useRouter();
   const { t } = useTranslation();
   const { currentUniverse } = useWorld();
@@ -57,11 +57,11 @@ export default function AppHeaderMenu() {
   }, [currentUniverse]);
 
   return (
-    <section className="oyk-app-header-menu">
-      <div className="oyk-app-header-menu-mobile">
+    <section className="oyk-core-topbar-menu">
+      <div className="oyk-core-topbar-menu-mobile">
         <OykDropdown
           toggle={
-            <OykButton className="oyk-app-header-menu-mobile-toggle" plain style={{ padding: 0 }}>
+            <OykButton className="oyk-core-topbar-menu-mobile-toggle" plain style={{ padding: 0 }}>
               <Menu size={24} />
             </OykButton>
           }
@@ -69,11 +69,11 @@ export default function AppHeaderMenu() {
           direction="right"
         />
       </div>
-      <nav className="oyk-app-header-menu-nav">
-        <ul className="oyk-app-header-menu-nav-list">
+      <nav className="oyk-core-topbar-menu-nav">
+        <ul className="oyk-core-topbar-menu-nav-list">
           {menuList.map((item) => (
-            <li key={item.label} className="oyk-app-header-menu-nav-item">
-              <OykLink routeName={item.routeName} params={item.params} className="oyk-app-header-menu-nav-item-link">
+            <li key={item.label} className="oyk-core-topbar-menu-nav-item">
+              <OykLink routeName={item.routeName} params={item.params} className="oyk-core-topbar-menu-nav-item-link">
                 {item.label}
               </OykLink>
             </li>

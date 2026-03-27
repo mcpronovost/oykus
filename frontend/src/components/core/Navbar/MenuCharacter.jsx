@@ -2,20 +2,20 @@ import { Backpack, Flame } from "lucide-react";
 import { useTranslation } from "@/services/translation";
 import { useWorld } from "@/services/world";
 
-import OykAppSidebarNavItem from "./NavItem";
+import OykCoreNavbarNavItem from "./NavItem";
 
-export default function AppSidebarMenuCharacter() {
+export default function CoreNavbarMenuCharacter() {
   const { t } = useTranslation();
   const { currentUniverse } = useWorld();
 
   return (
-    <ul className="oyk-app-sidebar-nav-list">
-      <OykAppSidebarNavItem
+    <ul className="oyk-core-navbar-nav-list">
+      <OykCoreNavbarNavItem
         icon={Backpack}
         text={t("Inventory")}
         href="inventory"
       />
-      <OykAppSidebarNavItem
+      <OykCoreNavbarNavItem
         icon={Flame}
         text={t("Capacities")}
         href="capacities"

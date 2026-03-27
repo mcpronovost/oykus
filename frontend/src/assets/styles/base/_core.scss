@@ -33,29 +33,52 @@ body {
 
 #oyk-app {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   height: 100vh;
 }
 
-#oyk-app-core {
+#oyk-core {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex: 1;
-  max-width: 100%;
-
-  @media (max-width: 1023px) {
-    max-width: calc(100% - var(--oyk-app-sidebar-width, 64px));
-  }
+  width: 100%;
+  height: calc(100vh - var(--oyk-core-topbar-height));
 }
 
-#oyk-app-main {
+#oyk-gamebar {
+  background: var(--oyk-card-bg);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+  color: var(--oyk-core-navbar-fg);
+  overflow: hidden;
+  display: flex;
+  flex: 0 0 200px;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: flex-basis 0.3s;
+}
+
+#oyk-main {
   background-image: var(--oyk-core-bg-img);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   overflow: hidden;
   display: flex;
-  height: calc(100vh - var(--oyk-app-header-height, 64px));
+  flex: 1 1 100%;
+  width: 100%;
+  height: calc(100vh - var(--oyk-core-topbar-height));
+}
+
+#oyk-sidebar {
+  background: var(--oyk-core-navbar-bg);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+  color: var(--oyk-core-navbar-fg);
+  overflow: hidden;
+  display: flex;
+  flex: 0 0 var(--oyk-core-navbar-width);
+  flex-direction: column;
+  justify-content: space-between;
+  transition: flex-basis 0.3s;
 }
 
 .oyk-page {

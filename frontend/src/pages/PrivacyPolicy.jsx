@@ -44,7 +44,7 @@ export default function PrivacyPolicy() {
             <h3>3.2 Application Preferences</h3>
             <p>We store your application preferences locally:</p>
             <ul>
-              <li>Sidebar open/close state</li>
+              <li>Navbar open/close state</li>
               <li>Current active world selection</li>
               <li>User interface preferences</li>
             </ul>

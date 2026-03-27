@@ -2,24 +2,35 @@ import { createContext, useContext, useState, useCallback } from "react";
 
 import { storeGet, storeSet } from "./utils";
 
-export const KEY_APP_SIDEBAR_OPEN = "app-sidebar-open";
+export const KEY_NAVBAR_OPEN = "core-navbar-open";
+export const KEY_GAMEBAR_OPEN = "core-gamebar-open";
 
 const StoreContext = createContext();
 
 export function StoreProvider({ children }) {
-  const [storeAppSidebarOpen, setStoreAppSidebarOpen] = useState(() => {
-    return storeGet(KEY_APP_SIDEBAR_OPEN) ?? true;
+  const [storeCoreNavbarOpen, setStoreCoreNavbarOpen] = useState(() => {
+    return storeGet(KEY_NAVBAR_OPEN) ?? true;
+  });
+  const [storeCoreGamebarOpen, setStoreCoreGamebarOpen] = useState(() => {
+    return storeGet(KEY_GAMEBAR_OPEN) ?? true;
   });
 
-  const handleSetStoreAppSidebarOpen = useCallback((value) => {
-    storeSet(KEY_APP_SIDEBAR_OPEN, value);
-    setStoreAppSidebarOpen(value);
+  const handleSetStoreCoreNavbarOpen = useCallback((value) => {
+    storeSet(KEY_NAVBAR_OPEN, value);
+    setStoreCoreNavbarOpen(value);
+  }, []);
+
+  const handleSetStoreCoreGamebarOpen = useCallback((value) => {
+    storeSet(KEY_GAMEBAR_OPEN, value);
+    setStoreCoreGamebarOpen(value);
   }, []);
 
   const value = {
-    // App
-    storeAppSidebarOpen,
-    setStoreAppSidebarOpen: handleSetStoreAppSidebarOpen,
+    // Core
+    storeCoreNavbarOpen,
+    setStoreCoreNavbarOpen: handleSetStoreCoreNavbarOpen,
+    storeCoreGamebarOpen,
+    setStoreCoreGamebarOpen: handleSetStoreCoreGamebarOpen,
   };
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;

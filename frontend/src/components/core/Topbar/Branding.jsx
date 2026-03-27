@@ -8,7 +8,7 @@ import { useWorld } from "@/services/world";
 import { OykAvatar, OykDropdown } from "@/components/ui";
 import imgOykus from "@/assets/img/oykus-32.webp";
 
-export default function Header() {
+export default function OykCoreTopbarBranding({ isOpen }) {
   const { isAuth } = useAuth();
   const { n } = useRouter();
   const { universes, currentUniverse, changeUniverse } = useWorld();
@@ -33,10 +33,10 @@ export default function Header() {
               label: u.name,
               element: (
                 <button
-                  className="oyk-app-sidebar-header-button-dropdown-item"
+                  className="oyk-core-navbar-header-button-dropdown-item"
                   onClick={() => handleUniverseClick(u.slug)}
                 >
-                  <span className="oyk-app-sidebar-header-button-dropdown-item-logo">
+                  <span className="oyk-core-navbar-header-button-dropdown-item-logo">
                     {u.logo ? (
                       <OykAvatar
                         src={u.logo}
@@ -51,7 +51,7 @@ export default function Header() {
                       <SquircleDashed size={24} color={u.c_primary ? u.c_primary : "var(--oyk-default-primary)"} />
                     )}
                   </span>
-                  <span className="oyk-app-sidebar-header-button-dropdown-item-brand">{u.name}</span>
+                  <span className="oyk-core-navbar-header-button-dropdown-item-brand">{u.name}</span>
                 </button>
               ),
             })),
@@ -61,12 +61,12 @@ export default function Header() {
   );
 
   return (
-    <header className="oyk-app-sidebar-header">
+    <header className={`oyk-core-topbar-branding ${isOpen ? "oyk-open" : ""}`}>
       <OykDropdown
         ref={dropdownRef}
         toggle={
-          <div className="oyk-app-sidebar-header-button">
-            <span className="oyk-app-sidebar-header-button-logo">
+          <div className="oyk-core-topbar-branding-button">
+            <span className="oyk-core-topbar-branding-button-logo">
               {!currentUniverse ? (
                 <OykAvatar
                   src={imgOykus}
@@ -91,16 +91,16 @@ export default function Header() {
                 <SquircleDashed size={24} color="var(--oyk-c-primary)" />
               )}
             </span>
-            <span className="oyk-app-sidebar-header-button-brand">{currentUniverse?.name || "Oykus"}</span>
+            <span className="oyk-core-topbar-branding-button-brand">{currentUniverse?.name || "Oykus"}</span>
           </div>
         }
         menu={universesMenu}
         direction="full"
         disabled={!isAuth}
-        bgColor="var(--oyk-app-header-bg)"
-        fgColor="var(--oyk-app-header-fg)"
-        bgSubtleColor="var(--oyk-app-header-subtle-bg)"
-        fgSubtleColor="var(--oyk-app-header-subtle-fg)"
+        bgColor="var(--oyk-core-topbar-bg)"
+        fgColor="var(--oyk-core-topbar-fg)"
+        bgSubtleColor="var(--oyk-core-topbar-subtle-bg)"
+        fgSubtleColor="var(--oyk-core-topbar-subtle-fg)"
       />
     </header>
   );

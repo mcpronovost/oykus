@@ -3,20 +3,20 @@ import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
 import { useWorld } from "@/services/world";
 
-import OykAppSidebarNavItem from "./NavItem";
+import OykCoreNavbarNavItem from "./NavItem";
 
-export default function AppSidebarFooter() {
+export default function CoreNavbarFooter() {
   const { isAuth, isDev } = useAuth();
   const { t } = useTranslation();
   const { currentUniverse } = useWorld();
 
   return (
-    <footer className="oyk-app-sidebar-footer">
-      <nav className="oyk-app-sidebar-nav">
-        <ul className="oyk-app-sidebar-nav-list">
-          {/*isDev ? <OykAppSidebarNavItem icon={Component} text={t("Components")} href="dev-components" /> : null*/}
+    <footer className="oyk-core-navbar-footer">
+      <nav className="oyk-core-navbar-nav">
+        <ul className="oyk-core-navbar-nav-list">
+          {/*isDev ? <OykCoreNavbarNavItem icon={Component} text={t("Components")} href="dev-components" /> : null*/}
           {isAuth && currentUniverse && currentUniverse.role === 1 ? (
-            <OykAppSidebarNavItem
+            <OykCoreNavbarNavItem
               icon={Orbit}
               text={t("Admin")}
               href="universe-admin"
@@ -24,7 +24,7 @@ export default function AppSidebarFooter() {
               prefix="universe-admin"
             />
           ) : null}
-          {isAuth ? <OykAppSidebarNavItem icon={Settings} text={t("Settings")} href="settings" /> : null}
+          {isAuth ? <OykCoreNavbarNavItem icon={Settings} text={t("Settings")} href="settings" /> : null}
         </ul>
       </nav>
     </footer>

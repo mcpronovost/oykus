@@ -2,16 +2,16 @@ import { BookOpen, Scale, Users } from "lucide-react";
 import { useTranslation } from "@/services/translation";
 import { useWorld } from "@/services/world";
 
-import OykAppSidebarNavItem from "./NavItem";
+import OykCoreNavbarNavItem from "./NavItem";
 
-export default function AppSidebarMenuUniverse() {
+export default function CoreNavbarMenuUniverse() {
   const { t } = useTranslation();
   const { currentUniverse } = useWorld();
 
   return (
-    <ul className="oyk-app-sidebar-nav-list">
+    <ul className="oyk-core-navbar-nav-list">
       {!currentUniverse.is_default && (
-        <OykAppSidebarNavItem
+        <OykCoreNavbarNavItem
           icon={Scale}
           text={t("Rulebooks")}
           href="rulebooks"
@@ -20,7 +20,7 @@ export default function AppSidebarMenuUniverse() {
         />
       )}
       {!currentUniverse.is_default && (
-        <OykAppSidebarNavItem
+        <OykCoreNavbarNavItem
           icon={BookOpen}
           text={t("Context")}
           href="context"
@@ -28,7 +28,7 @@ export default function AppSidebarMenuUniverse() {
           disabled
         />
       )}
-      <OykAppSidebarNavItem
+      <OykCoreNavbarNavItem
         icon={Users}
         text={t("Community")}
         href={currentUniverse.is_default ? "community" : "universe-community"}

@@ -7,7 +7,7 @@ import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import { OykAvatar, OykButton, OykDropdown, OykLink } from "@/components/ui";
 
-export default function AppHeaderNotifications() {
+export default function CoreTopbarNotifications() {
   const { isAuth } = useAuth();
   const { notifications } = useNotifications();
   const { n } = useRouter();
@@ -18,34 +18,34 @@ export default function AppHeaderNotifications() {
   if (!isAuth) return null;
 
   return (
-    <section className="oyk-app-header-notifications">
-      <div className="oyk-app-header-notifications-group">
+    <section className="oyk-core-topbar-notifications">
+      <div className="oyk-core-topbar-notifications-group">
         <OykButton
           plain
           icon={Bell}
           iconSize={18}
           badgeDot={notifications?.alerts}
-          badgeBorderColor="var(--oyk-app-header-bg)"
+          badgeBorderColor="var(--oyk-core-topbar-bg)"
           onClick={() => (notifications?.alerts ? n("alerts-unread") : n("alerts"))}
         />
       </div>
-      <div className="oyk-app-header-notifications-group">
+      <div className="oyk-core-topbar-notifications-group">
         <OykButton
           plain
           icon={Smile}
           iconSize={18}
           badgeDot={notifications?.friends}
-          badgeBorderColor="var(--oyk-app-header-bg)"
+          badgeBorderColor="var(--oyk-core-topbar-bg)"
           onClick={() => (notifications?.friends ? n("friends-requests") : n("friends"))}
         />
       </div>
-      <div className="oyk-app-header-notifications-group">
+      <div className="oyk-core-topbar-notifications-group">
         <OykButton
           plain
           icon={Mail}
           iconSize={18}
           badgeDot={notifications?.messages}
-          badgeBorderColor="var(--oyk-app-header-bg)"
+          badgeBorderColor="var(--oyk-core-topbar-bg)"
           disabled
         />
       </div>

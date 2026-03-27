@@ -7,7 +7,7 @@ import { useTranslation } from "@/services/translation";
 
 import { OykAvatar, OykDropdown } from "@/components/ui";
 
-export default function AppHeaderUser() {
+export default function CoreTopbarUser() {
   const { currentUser, setUser, setRat } = useAuth();
   const { n } = useRouter();
   const { t } = useTranslation();
@@ -23,17 +23,17 @@ export default function AppHeaderUser() {
   };
 
   return (
-    <section className="oyk-app-header-user">
+    <section className="oyk-core-topbar-user">
       <OykDropdown
         toggle={
-          <button className="oyk-app-header-user-button">
-            <span className="oyk-app-header-user-button-name">{currentUser.name}</span>
+          <button className="oyk-core-topbar-user-button">
+            <span className="oyk-core-topbar-user-button-name">{currentUser.name}</span>
             <OykAvatar
               size={36}
               src={currentUser.avatar}
               name={currentUser.name}
               abbr={currentUser.abbr}
-              borderColor="var(--oyk-app-header-bg)"
+              borderColor="var(--oyk-core-topbar-bg)"
             />
           </button>
         }
@@ -72,10 +72,10 @@ export default function AppHeaderUser() {
             onClick: handleLogout,
           },
         ]}
-        bgColor="var(--oyk-app-header-bg)"
-        fgColor="var(--oyk-app-header-fg)"
-        bgSubtleColor="var(--oyk-app-header-subtle-bg)"
-        fgSubtleColor="var(--oyk-app-header-subtle-fg)"
+        bgColor="var(--oyk-core-topbar-bg)"
+        fgColor="var(--oyk-core-topbar-fg)"
+        bgSubtleColor="var(--oyk-core-topbar-subtle-bg)"
+        fgSubtleColor="var(--oyk-core-topbar-subtle-fg)"
       />
     </section>
   );

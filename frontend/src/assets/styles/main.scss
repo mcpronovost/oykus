@@ -4,9 +4,10 @@
 @use "./base/core" as *;
 
 // Core Layout
-@use "./core/app-header" as core-layout-app-header;
-@use "./core/app-sidebar" as core-layout-app-sidebar;
-@use "./core/app-footer" as core-layout-app-footer;
+@use "./core/core-topbar" as core-layout-core-topbar;
+@use "./core/core-navbar" as core-layout-core-navbar;
+@use "./core/core-gamebar" as core-layout-core-gamebar;
+@use "./core/core-footer" as core-layout-core-footer;
 @use "./core/app-loading" as core-layout-app-loading;
 @use "./core/app-notfound" as core-layout-app-notfound;
 
