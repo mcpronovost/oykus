@@ -86,12 +86,17 @@ class ModuleService {
 
     if (count($modules) !== count($this->allowedModules)) {
       foreach ($this->allowedModules as $m => $enabled) {
-        $qry = $this->pdo->prepare("
-          INSERT INTO world_modules (universe_id, label, is_disabled, settings)
-          VALUES (?, ?, not ?, ?)
-          ON DUPLICATE KEY UPDATE label = label
-        ");
-        $qry->execute([$universeId, $m, FALSE, "{}"]);
+        try {
+          $qry = $this->pdo->prepare("
+            INSERT INTO world_modules (universe_id, label, is_disabled, settings)
+            VALUES (?, ?, not ?, ?)
+            ON DUPLICATE KEY UPDATE label = ?
+          ");
+          $qry->execute([$universeId, $m, 0, "{}", $m]);
+        }
+        catch (Exception $e) {
+          throw new QueryException("Module creation failed" . $e->getMessage());
+        }
       }
 
       try {
