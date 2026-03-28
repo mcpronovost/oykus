@@ -15,12 +15,12 @@
     "translations": "node src/services/translation/check-translations.js --languages=fr --locales=./src/services/translation/locales --src=./src --extensions=jsx,tsx"
   },
   "dependencies": {
-    "@icons-pack/react-simple-icons": "^13.12.0",
-    "lucide-react": "^0.562.0",
-    "react": "^19.2.3",
+    "@icons-pack/react-simple-icons": "^13.13.0",
+    "lucide-react": "^1.7.0",
+    "react": "^19.2.4",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
-    "react-dom": "^19.2.3"
+    "react-dom": "^19.2.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
