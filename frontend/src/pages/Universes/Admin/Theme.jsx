@@ -119,10 +119,10 @@ export default function UniverseAdminTheme() {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, checked } = e.target;
     setThemeForm((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: e.target.type === "checkbox" ? checked : value,
     }));
 
     let cssValue = name === "radius" ? `${value}px` : value;
