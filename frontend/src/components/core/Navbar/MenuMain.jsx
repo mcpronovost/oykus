@@ -15,7 +15,7 @@ export default function CoreNavbarMenuMain() {
     <ul className="oyk-core-navbar-nav-list">
       <OykCoreNavbarNavItem
         icon={isAuth ? LayoutDashboard : House}
-        text={isAuth ? t("Dashboard") : t("Home")}
+        text={t("Home")}
         href={!currentUniverse || currentUniverse.is_default ? "dashboard" : "universe"}
         params={{ universeSlug: currentUniverse?.slug }}
       />

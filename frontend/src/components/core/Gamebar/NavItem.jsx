@@ -14,10 +14,13 @@ export default function NavItem({
   sideChip,
   sideChipColor = "default",
   disabled = false,
+  unactivable = false,
 }) {
   const { route } = useRouter();
 
   const isActive = useMemo(() => {
+    if (unactivable) return false;
+
     if (["community", "universe"].includes(prefix)) {
       return route?.name === prefix;
     }
@@ -29,24 +32,24 @@ export default function NavItem({
   }
 
   return (
-    <li className={`oyk-core-navbar-nav-item ${isActive ? "oyk-active" : ""}`}>
+    <li className={`oyk-core-gamebar-nav-item ${isActive ? "oyk-active" : ""}`}>
       <OykLink
         routeName={href}
         params={params}
-        className={`oyk-core-navbar-nav-item-link ${disabled ? "disabled" : ""}`}
+        className={`oyk-core-gamebar-nav-item-link ${disabled ? "disabled" : ""}`}
         disabled={disabled || isActive}
       >
-        <span className="oyk-core-navbar-nav-item-link-icon">
+        <span className="oyk-core-gamebar-nav-item-link-icon">
           <IconComponent size={18} />
         </span>
-        <span className="oyk-core-navbar-nav-item-link-text">{text}</span>
+        <span className="oyk-core-gamebar-nav-item-link-text">{text}</span>
         {SideIconComponent && (
-          <span className="oyk-core-navbar-nav-item-link-side-icon">
+          <span className="oyk-core-gamebar-nav-item-link-side-icon">
             <SideIconComponent size={16} color={sideIconColor} />
           </span>
         )}
         {sideChip && (
-          <span className="oyk-core-navbar-nav-item-link-side-chip">
+          <span className="oyk-core-gamebar-nav-item-link-side-chip">
             <OykChip color={sideChipColor}>{sideChip}</OykChip>
           </span>
         )}

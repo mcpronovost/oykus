@@ -8,12 +8,11 @@ import OykCoreNavbarFooter from "./Footer";
 import OykCoreNavbarUser from "./User";
 import OykCoreNavbarMenuMain from "./MenuMain";
 import OykCoreNavbarMenuUniverse from "./MenuUniverse";
-import OykCoreNavbarMenuCharacter from "./MenuCharacter";
 
-export default function AppNavbar({ isGameMode }) {
+export default function OykCoreNavbar({ isGameMode }) {
   const { isAuth } = useAuth();
   const { storeCoreNavbarOpen } = useStore();
-  const { currentUniverse, currentCharacter } = useWorld();
+  const { currentUniverse } = useWorld();
 
   return (
     <aside className={`oyk-core-navbar ${storeCoreNavbarOpen && !isGameMode ? "open" : ""}`}>
@@ -23,7 +22,6 @@ export default function AppNavbar({ isGameMode }) {
           <nav className="oyk-core-navbar-nav">
             <OykCoreNavbarMenuMain />
             {isAuth && currentUniverse && <OykCoreNavbarMenuUniverse />}
-            {isAuth && currentUniverse && currentCharacter && <OykCoreNavbarMenuCharacter />}
           </nav>
         </section>
         <OykCoreNavbarFooter />

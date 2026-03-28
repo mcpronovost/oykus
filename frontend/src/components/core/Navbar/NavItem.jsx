@@ -14,11 +14,14 @@ export default function NavItem({
   sideChip,
   sideChipColor = "default",
   disabled = false,
+  unactivable = false,
 }) {
   const { route } = useRouter();
 
   const isActive = useMemo(() => {
-    if (["community", "universe"].includes(prefix)) {
+    if (unactivable) return false;
+
+    if (["community", "universe", "universe-community"].includes(prefix)) {
       return route?.name === prefix;
     }
     return route?.name.startsWith(prefix);
