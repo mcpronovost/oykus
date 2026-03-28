@@ -16,29 +16,31 @@ export default function OykCoreGamebar() {
   const { t } = useTranslation();
   const { currentUniverse, currentCharacter } = useWorld();
 
-  if (!currentCharacter) return null;
-
   return (
     <aside className={`oyk-core-gamebar ${storeCoreGamebarOpen ? "open" : ""}`}>
       <OykScrollbar height="100%" className="oyk-core-gamebar-scrollbar">
-        <OykCoreGamebarCharacter />
-        <section className="oyk-core-navbar-menu">
-          <nav className="oyk-core-navbar-nav">
-            <ul className="oyk-core-navbar-nav-list">
-              {currentCharacter && (
-                <OykCoreNavbarNavItem
-                  icon={CircleUser}
-                  text={t("Profile")}
-                  href="universe-community-profile"
-                  params={{ universeSlug: currentUniverse.slug, characterSlug: currentCharacter.slug }}
-                  unactivable
-                />
-              )}
-              <OykCoreNavbarNavItem icon={Backpack} text={t("Inventory")} href="inventory" />
-              <OykCoreNavbarNavItem icon={Flame} text={t("Capacities")} href="capacities" />
-            </ul>
-          </nav>
-        </section>
+        {currentCharacter ? (
+          <>
+            <OykCoreGamebarCharacter />
+            <section className="oyk-core-navbar-menu">
+              <nav className="oyk-core-navbar-nav">
+                <ul className="oyk-core-navbar-nav-list">
+                  {currentCharacter && (
+                    <OykCoreNavbarNavItem
+                      icon={CircleUser}
+                      text={t("Profile")}
+                      href="universe-community-profile"
+                      params={{ universeSlug: currentUniverse.slug, characterSlug: currentCharacter.slug }}
+                      unactivable
+                    />
+                  )}
+                  <OykCoreNavbarNavItem icon={Backpack} text={t("Inventory")} href="inventory" />
+                  <OykCoreNavbarNavItem icon={Flame} text={t("Capacities")} href="capacities" />
+                </ul>
+              </nav>
+            </section>
+          </>
+        ) : null}
       </OykScrollbar>
     </aside>
   );
