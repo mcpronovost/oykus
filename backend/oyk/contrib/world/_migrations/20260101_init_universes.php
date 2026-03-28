@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS world_universes (
     `is_slug_auto` tinyint(1) NOT NULL DEFAULT 1,
     `abbr` varchar(3) NOT NULL,
     `is_abbr_auto` tinyint(1) NOT NULL DEFAULT 1,
+    `tagline` varchar (255) NULL,
 
     `logo` varchar(255),
     `cover` varchar(255),
