@@ -60,7 +60,9 @@ function Layout() {
     () =>
       currentUniverse &&
       !currentUniverse.is_default &&
-      route.name.startsWith("universe-game"),
+      route.name !== "universe" &&
+      !route.name.startsWith("universe-admin") &&
+      !route.name.startsWith("settings"),
     [currentUniverse, route.name],
   );
 
