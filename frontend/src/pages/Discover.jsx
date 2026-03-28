@@ -70,7 +70,7 @@ export default function Discover() {
           <OykGridRow wrap>
             {universes.map((u, index) => (
               <OykGridCol key={index} col="25" md="50" sm="100">
-                <OykCard nop fullCenter clickable onClick={() => handleUniverseClick(u.slug)}>
+                <OykCard nop fullCenter alignSpace clickable onClick={() => handleUniverseClick(u.slug)}>
                   <header>
                     <OykBanner
                       avatarSrc={u.logo}
@@ -84,6 +84,7 @@ export default function Discover() {
                       isPrivate={false}
                     />
                     <h2>{u.name}</h2>
+                    <p style={{fontSize: "0.8rem", lineHeight: "1.2", opacity: "0.6", padding: "0 16px"}}>{u.tagline}</p>
                     <p>&nbsp;</p>
                   </header>
                 </OykCard>
