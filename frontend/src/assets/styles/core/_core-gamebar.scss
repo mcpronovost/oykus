@@ -1,5 +1,6 @@
 .oyk-core-gamebar {
-  background: var(--oyk-core-gamebar-bg);
+  // background: var(--oyk-core-gamebar-bg);
+  background: linear-gradient(-45deg, color-mix(in srgb, var(--oyk-core-gamebar-bg) 50%, var(--oyk-core-bg)), var(--oyk-core-gamebar-bg) 30%);
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
   color: var(--oyk-core-gamebar-fg, #FFFFFF);
   overflow: hidden;
@@ -18,7 +19,7 @@
       padding-left: 12px;
     }
 
-    .oyk-core-navbar-nav-item {
+    .oyk-core-gamebar-nav-item {
       &-link {
         gap: 8px;
 
