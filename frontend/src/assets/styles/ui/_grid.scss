@@ -12,6 +12,10 @@
     padding: 0 8px;
   }
 
+  &-full {
+    max-width: none;
+  }
+
   &-row {
     display: flex;
     flex-direction: row;

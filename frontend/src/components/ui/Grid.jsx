@@ -1,8 +1,8 @@
 import OykCard from "./Card";
 
-export default function OykGrid({ children, className, ...props }) {
+export default function OykGrid({ full = false, children, className, ...props }) {
   return (
-    <section className={`oyk-grid ${className ? className : ""}`} {...props}>
+    <section className={`oyk-grid ${full ? "oyk-grid-full" : ""} ${className ? className : ""}`} {...props}>
       {children}
     </section>
   );
