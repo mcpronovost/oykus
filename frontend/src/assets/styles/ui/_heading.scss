@@ -17,6 +17,10 @@
     padding: 0;
   }
 
+  &-full {
+    max-width: none;
+  }
+
   &-wrapper {
     display: flex;
     flex-direction: row;

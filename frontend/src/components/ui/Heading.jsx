@@ -9,12 +9,13 @@ export default function OykHeading({
   showBreadcrumbs,
   nop,
   tag: Heading = "h1",
+  full = false,
   className,
   children,
 }) {
   return (
     <header
-      className={["oyk-heading", nop ? "oyk-heading-nop" : "", subtitle ? "oyk-subtitle" : "", className]
+      className={["oyk-heading", nop ? "oyk-heading-nop" : "", subtitle ? "oyk-subtitle" : "", full ? "oyk-heading-full" : "", className]
         .filter(Boolean)
         .join(" ")}
     >
