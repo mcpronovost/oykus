@@ -18,7 +18,9 @@ export function OykGridRow({ wrap, children, className, ...props }) {
 
 export function OykGridCol({
   col = "100",
-  md = "100",
+  xl = col,
+  lg = xl,
+  md = lg,
   sm = "100",
   order = 0,
   orderMd = 0,
@@ -30,7 +32,7 @@ export function OykGridCol({
 }) {
   return (
     <div
-      className={`oyk-grid-col oyk-col-${col} oyk-col-md-${md} oyk-col-sm-${sm} oyk-order-${order} oyk-order-md-${orderMd} oyk-order-sm-${orderSm} ${grow ? "oyk-grow" : ""} ${className ? className : ""}`}
+      className={`oyk-grid-col oyk-col-${col} oyk-col-xl-${xl} oyk-col-lg-${lg} oyk-col-md-${md} oyk-col-sm-${sm} oyk-order-${order} oyk-order-md-${orderMd} oyk-order-sm-${orderSm} ${grow ? "oyk-grow" : ""} ${className ? className : ""}`}
       {...props}
     >
       {children}
@@ -48,8 +50,8 @@ export function OykGridNav({ children, className, ...props }) {
 
 export function OykGridMain({ children, className, ...props }) {
   return (
-    <aside className={`oyk-grid-row-main ${className ? className : ""}`} {...props}>
+    <div className={`oyk-grid-row-main ${className ? className : ""}`} {...props}>
       {children}
-    </aside>
+    </div>
   );
 }
