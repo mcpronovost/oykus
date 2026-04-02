@@ -26,13 +26,11 @@ export default function OykBanner({
   coverSrc,
   coverHeight = 100,
   coverRadius = "var(--oyk-radius)",
-  className
+  coverFilter,
+  className,
 }) {
   return (
-    <div
-      className={`oyk-banner ${className ? className : ""}`}
-      style={{ height: `${height}px` }}
-    >
+    <div className={`oyk-banner ${className ? className : ""}`} style={{ height: `${height}px` }}>
       <div
         className="oyk-banner-cover"
         style={{
@@ -46,10 +44,19 @@ export default function OykBanner({
           style={{
             backgroundImage: coverSrc
               ? `url(${
-                  (!coverSrc.startsWith("http") && !coverSrc.startsWith("blob") && !coverSrc.startsWith("data")) ? `${DOMAIN}${coverSrc}` : coverSrc
+                  !coverSrc.startsWith("http") && !coverSrc.startsWith("blob") && !coverSrc.startsWith("data")
+                    ? `${DOMAIN}${coverSrc}`
+                    : coverSrc
                 })`
               : "none",
             height: `${coverHeight}px`,
+            ...(coverFilter === "author"
+              ? {
+                  opacity: "0.4",
+                  transform: "scale(1.1)",
+                  filter: "blur(4px)",
+                }
+              : {}),
           }}
         ></div>
       </div>
