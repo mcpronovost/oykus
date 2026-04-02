@@ -21,7 +21,7 @@ export default function NavItem({
   const isActive = useMemo(() => {
     if (unactivable) return false;
 
-    if (["community", "universe", "universe-community"].includes(prefix)) {
+    if (["community", "universe", "universe-community", "universe-game"].includes(prefix)) {
       return route?.name === prefix;
     }
     return route?.name.startsWith(prefix);

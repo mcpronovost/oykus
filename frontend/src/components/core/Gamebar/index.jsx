@@ -1,4 +1,4 @@
-import { Backpack, CircleUser, Flame } from "lucide-react";
+import { Backpack, Flame, Handshake, SquareUserRound, Wallet } from "lucide-react";
 
 import { useAuth } from "@/services/auth";
 import { useStore } from "@/services/store";
@@ -27,7 +27,7 @@ export default function OykCoreGamebar() {
                 <ul className="oyk-core-navbar-nav-list">
                   {currentCharacter && (
                     <OykCoreNavbarNavItem
-                      icon={CircleUser}
+                      icon={SquareUserRound}
                       text={t("Profile")}
                       href="universe-community-profile"
                       params={{ universeSlug: currentUniverse.slug, characterSlug: currentCharacter.slug }}
@@ -36,6 +36,20 @@ export default function OykCoreGamebar() {
                   )}
                   <OykCoreNavbarNavItem icon={Backpack} text={t("Inventory")} href="inventory" />
                   <OykCoreNavbarNavItem icon={Flame} text={t("Capacities")} href="capacities" />
+                </ul>
+                <ul className="oyk-core-navbar-nav-list">
+                  <OykCoreNavbarNavItem
+                    icon={Wallet}
+                    text={t("Vos actifs")}
+                    href="universe-game-economy-assets"
+                    params={{ universeSlug: currentUniverse.slug, characterSlug: currentCharacter.slug }}
+                  />
+                  <OykCoreNavbarNavItem
+                    icon={Handshake}
+                    text={t("Vos passifs")}
+                    href="universe-game-economy-liabilities"
+                    params={{ universeSlug: currentUniverse.slug, characterSlug: currentCharacter.slug }}
+                  />
                 </ul>
               </nav>
             </section>

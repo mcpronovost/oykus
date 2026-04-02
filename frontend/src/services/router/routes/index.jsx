@@ -48,6 +48,14 @@ export const ROUTES = [
     },
   },
   {
+    name: "create-world",
+    component: React.lazy(() => import("../../../pages/CreateWorld")),
+    paths: {
+      fr: "creer-un-monde",
+      en: "create-a-world",
+    },
+  },
+  {
     name: "privacy-policy",
     component: React.lazy(() => import("../../../pages/PrivacyPolicy")),
     paths: {

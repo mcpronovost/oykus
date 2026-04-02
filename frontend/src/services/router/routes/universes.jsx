@@ -12,12 +12,20 @@ export const UNIVERSES_ROUTES = [
     children: [
       {
         name: "universe",
-        component: React.lazy(() => import("../../../pages/Universes/Dashboard")),
+        component: React.lazy(() => import("../../../pages/Universes/Game")),
         paths: {
           fr: "{universeSlug}",
           en: "{universeSlug}",
         },
         children: [
+          {
+            name: "universe-dashboard",
+            component: React.lazy(() => import("../../../pages/Universes/Dashboard")),
+            paths: {
+              fr: "tableau-de-bord",
+              en: "dashboard",
+            },
+          },
           {
             name: "universe-community",
             component: React.lazy(() => import("../../../pages/Universes/Community")),
@@ -47,6 +55,29 @@ export const UNIVERSES_ROUTES = [
               fr: "Jeu",
               en: "Game",
             },
+            children: [
+              {
+                name: "universe-game-economy",
+                component: React.lazy(() => import("../../../pages/Universes/Game")),
+                paths: {
+                  fr: "economie",
+                  en: "economy",
+                },
+                children: [
+                  {
+                    name: "universe-game-economy-assets",
+                    component: React.lazy(() => import("../../../pages/Universes/Game/Economy/Assets")),
+                    paths: {
+                      fr: "passifs",
+                      en: "assets",
+                    },
+                    params: {
+                      section: "assets"
+                    }
+                  }
+                ],
+              }
+            ],
           },
           {
             name: "universe-blog",

@@ -1,4 +1,4 @@
-import { CircleUser, Contact, LogOut, Orbit, Settings } from "lucide-react";
+import { CircleUser, LogOut, Orbit, SquareUserRound, Settings } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
@@ -54,7 +54,7 @@ export default function CoreTopbarUser() {
           },
           {
             label: t("Your characters"),
-            icon: <Contact size={18} />,
+            icon: <SquareUserRound size={18} />,
             disabled: true,
             onClick: () => {},
           },

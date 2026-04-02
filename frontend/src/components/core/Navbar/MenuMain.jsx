@@ -1,4 +1,4 @@
-import { Compass, House, LayoutDashboard, Earth } from "lucide-react";
+import { Compass, House, LayoutDashboard, Earth, Orbit } from "lucide-react";
 
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
@@ -13,14 +13,21 @@ export default function CoreNavbarMenuMain() {
 
   return (
     <ul className="oyk-core-navbar-nav-list">
-      <OykCoreNavbarNavItem
-        icon={isAuth ? LayoutDashboard : House}
-        text={t("Home")}
-        href={!currentUniverse || currentUniverse.is_default ? "dashboard" : "universe"}
-        params={{ universeSlug: currentUniverse?.slug }}
-      />
+      {!currentUniverse || currentUniverse.is_default ? (
+        <OykCoreNavbarNavItem icon={House} text={t("Home")} href={"home"} />
+      ) : isAuth && currentUniverse.role === 1 ? (
+        <OykCoreNavbarNavItem
+          icon={LayoutDashboard}
+          text={t("Dashboard")}
+          href={"universe-dashboard"}
+          params={{ universeSlug: currentUniverse.slug }}
+        />
+      ) : null}
       {!isAuth || !currentUniverse || currentUniverse.is_default ? (
         <OykCoreNavbarNavItem icon={Compass} text={t("Discover")} href="discover" />
+      ) : null}
+      {currentUniverse?.is_default ? (
+        <OykCoreNavbarNavItem icon={Orbit} text={t("Create a World")} href="create-world" />
       ) : null}
       {currentUniverse && !currentUniverse.is_default && currentUniverse.modules?.game?.active ? (
         <OykCoreNavbarNavItem
@@ -28,6 +35,7 @@ export default function CoreNavbarMenuMain() {
           text={currentUniverse.modules.game.settings.display_name || t("Game")}
           href="universe-game"
           params={{ universeSlug: currentUniverse.slug }}
+          prefix="universe-game"
         />
       ) : null}
     </ul>

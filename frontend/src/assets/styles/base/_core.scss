@@ -69,13 +69,13 @@ body {
   height: calc(100vh - var(--oyk-core-topbar-height));
 }
 
-#oyk-sidebar {
+#oyk-core-sidebar {
   background: var(--oyk-core-navbar-bg);
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
   color: var(--oyk-core-navbar-fg);
   overflow: hidden;
   display: flex;
-  flex: 0 0 var(--oyk-core-navbar-width);
+  flex: 0 0 var(--oyk-core-sidebar-width);
   flex-direction: column;
   justify-content: space-between;
   transition: flex-basis 0.3s;

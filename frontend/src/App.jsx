@@ -10,6 +10,7 @@ import Providers from "@/components/Providers";
 import OykCoreTopbar from "@/components/core/Topbar";
 import OykCoreNavbar from "@/components/core/Navbar";
 import OykCoreGamebar from "@/components/core/Gamebar";
+import OykCoreSidebar from "@/components/core/Sidebar";
 import OykCoreFooter from "@/components/core/Footer";
 import OykAppLoading from "@/components/core/AppLoading";
 import OykAppNotAuthorized from "@/components/core/AppNotAuthorized";
@@ -26,7 +27,7 @@ function MainLayout() {
     } else if (!currentUniverse || (currentUniverse.slug !== "oykus" && route?.name === "home")) {
       changeUniverse("oykus");
     }
-  }, [route]);
+  }, [route, params]);
 
   return (
     <main id="oyk-main">
@@ -60,9 +61,10 @@ function Layout() {
     () =>
       currentUniverse &&
       !currentUniverse.is_default &&
-      route.name !== "universe" &&
-      !route.name.startsWith("universe-admin") &&
-      !route.name.startsWith("settings"),
+      (route.name === "universe" || route.name.startsWith("universe-game")),
+      // route.name !== "universe" &&
+      // !route.name.startsWith("universe-admin") &&
+      // !route.name.startsWith("settings"),
     [currentUniverse, route.name],
   );
 
@@ -73,9 +75,7 @@ function Layout() {
         <OykCoreNavbar isGameMode={isGameMode} />
         {isGameMode ? <OykCoreGamebar isGameMode={isGameMode} /> : null}
         <MainLayout />
-        {/*<aside id="oyk-sidebar">
-          sidebar
-        </aside>*/}
+        <OykCoreSidebar isGameMode={isGameMode} />
       </div>
     </div>
   );
