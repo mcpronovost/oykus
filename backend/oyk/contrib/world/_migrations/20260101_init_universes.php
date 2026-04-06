@@ -9,8 +9,7 @@ global $pdo;
 #   5 = VISITORS
 #   6 = PUBLIC
 
-$sql = "
-CREATE TABLE IF NOT EXISTS world_universes (
+$pdo->exec("CREATE TABLE IF NOT EXISTS world_universes (
     `id` int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
     `name` varchar(120) NOT NULL UNIQUE,
@@ -39,8 +38,6 @@ CREATE TABLE IF NOT EXISTS world_universes (
         FOREIGN KEY (owner_id) REFERENCES auth_users(id)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
-";
-
-$pdo->exec($sql);
+");
 
 

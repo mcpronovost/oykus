@@ -1,8 +1,7 @@
 <?php
 global $pdo;
 
-$pdo->exec("
-CREATE TABLE IF NOT EXISTS world_charactersheets (
+$pdo->exec("CREATE TABLE IF NOT EXISTS world_charactersheets (
     `id` int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `character_id` int UNSIGNED NOT NULL UNIQUE,
 
@@ -22,5 +21,4 @@ CREATE TABLE IF NOT EXISTS world_charactersheets (
     CONSTRAINT fk_wcs_validator
         FOREIGN KEY (validated_by) REFERENCES auth_users(id)
         ON DELETE SET NULL
-) ENGINE=InnoDB;
-");
+) ENGINE=InnoDB;");

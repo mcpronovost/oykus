@@ -1,8 +1,7 @@
 <?php
 global $pdo;
 
-$sql = "
-CREATE TABLE IF NOT EXISTS world_themes (
+$pdo->exec("CREATE TABLE IF NOT EXISTS world_themes (
     `id` int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `universe_id` int UNSIGNED NOT NULL,
 
@@ -24,7 +23,4 @@ CREATE TABLE IF NOT EXISTS world_themes (
     CONSTRAINT fk_wt_universe
         FOREIGN KEY (universe_id) REFERENCES world_universes(id)
         ON DELETE CASCADE
-) ENGINE=InnoDB;
-";
-
-$pdo->exec($sql);
+) ENGINE=InnoDB;");

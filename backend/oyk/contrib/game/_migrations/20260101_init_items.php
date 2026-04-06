@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS game_items_categories (
 ");
 
 $pdo->exec("
-CREATE TABLE IF NOT EXISTS game_items (
+CREATE TABLE IF NOT EXISTS game_items_core (
     `id` int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `universe_id` int UNSIGNED NOT NULL,
     `category_id` int UNSIGNED,
@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS game_items (
     `name` varchar(120) NOT NULL,
     `description` text,
     `rarity` ENUM('junk','poor','common','uncommon','rare','epic','legendary','mythic','unique'),
+    `unit` varchar(32),
     `weight` decimal(12,4) NOT NULL DEFAULT 0.0000,
     `stack` int UNSIGNED NOT NULL DEFAULT 1,
     `slot` varchar(64),
@@ -41,18 +42,19 @@ CREATE TABLE IF NOT EXISTS game_items (
 ");
 
 $pdo->exec("
-CREATE TABLE IF NOT EXISTS game_items_characters (
+CREATE TABLE IF NOT EXISTS game_items (
     `id` int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    `character_id` int UNSIGNED NOT NULL,
-    `item_id` int UNSIGNED NOT NULL,
+    `core_id` int UNSIGNED NOT NULL,
+
+    `owner_type` ENUM('character','operation','production','service','storage','transit') NOT NULL,
+    `owner_id` int UNSIGNED NOT NULL,
     
     `quantity` decimal(12,4) NOT NULL DEFAULT 1.0000,
-    `durability` int UNSIGNED DEFAULT NULL,
+    `durability` tinyint UNSIGNED DEFAULT NULL,
     `slot` int UNSIGNED DEFAULT NULL,
 
     `is_equiped` tinyint(1) NOT NULL DEFAULT 0,
 
-    FOREIGN KEY (character_id) REFERENCES world_characters(id) ON DELETE CASCADE,
-    FOREIGN KEY (item_id) REFERENCES game_items(id) ON DELETE CASCADE
+    FOREIGN KEY (core_id) REFERENCES game_items_core(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 ");

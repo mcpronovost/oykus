@@ -4,8 +4,7 @@ global $pdo;
 // is_active : user activate this module
 // is_disabled : dev disable this module
 
-$pdo->exec("
-CREATE TABLE IF NOT EXISTS world_modules (
+$pdo->exec("CREATE TABLE IF NOT EXISTS world_modules (
     `id` int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
     `universe_id` int UNSIGNED NOT NULL,
@@ -23,5 +22,4 @@ CREATE TABLE IF NOT EXISTS world_modules (
     CONSTRAINT fk_wm_universe
         FOREIGN KEY (universe_id) REFERENCES world_universes(id)
         ON DELETE CASCADE
-) ENGINE=InnoDB;
-");
+) ENGINE=InnoDB;");
