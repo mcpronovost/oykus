@@ -11,6 +11,15 @@ export const DEV_ROUTES = [
     },
     children: [
       {
+        name: "dev-quests",
+        component: React.lazy(() => import("../../../pages/Dev/Quests")),
+        require_dev: true,
+        paths: {
+          fr: "quetes",
+          en: "quests",
+        },
+      },
+      {
         name: "dev-components",
         component: React.lazy(() => import("../../../pages/Dev/Components")),
         require_dev: true,
