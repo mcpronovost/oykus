@@ -123,6 +123,18 @@ export const UNIVERSES_ADMIN_ROUTES = [
           section: "stylesheet",
         },
       },
+      {
+        name: "universe-admin-geography",
+        component: React.lazy(() => import("../../../pages/Universes/Admin")),
+        require_auth: true,
+        paths: {
+          fr: "geographie",
+          en: "geography",
+        },
+        params: {
+          section: "geography",
+        },
+      },
     ],
   },
 ];

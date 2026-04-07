@@ -26,3 +26,7 @@ Router::post("{$api}/universes/{universeSlug}/theme/edit", "{$view}universes/the
 Router::get("{$api}/universes/{universeSlug}/community", "{$view}characters/community.php");
 
 Router::get("{$api}/universes/{universeSlug}/community/{characterSlug}", "{$view}characters/profile.php");
+
+Router::get("{$api}/universes/{universeSlug}/geo/list", "{$view}geo/list.php");
+
+Router::post("{$api}/universes/{universeSlug}/geo/list/edit", "{$view}geo/list_edit.php");

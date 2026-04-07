@@ -102,7 +102,7 @@ export const UNIVERSES_ROUTES = [
             ],
           },
           {
-            name: "planner",
+            name: "universe-planner",
             component: React.lazy(() => import("../../../pages/Universes/Planner")),
             paths: {
               fr: "planificateur",

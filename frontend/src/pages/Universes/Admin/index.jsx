@@ -2,6 +2,7 @@ import "@/assets/styles/page/_universes-admin.scss";
 import {
   CircleFadingArrowUp,
   Construction,
+  Earth,
   Eye,
   ListTodo,
   MessagesSquare,
@@ -36,6 +37,7 @@ import OykUniverseAdminModuleProgress from "./ModuleProgress";
 import OykUniverseAdminModuleProgressTitles from "./ModuleProgressTitles";
 import OykUniverseAdminTheme from "./Theme";
 import OykUniverseAdminThemeStylesheet from "./ThemeStylesheet";
+import OykUniverseAdminGeography from "./Geography";
 
 export default function UniverseAdmin() {
   const { isAuth } = useAuth();
@@ -76,6 +78,19 @@ export default function UniverseAdmin() {
         {
           name: t("Stylesheet"),
           routeName: "universe-admin-stylesheet",
+          params: { universeSlug: params?.universeSlug },
+        },
+      ],
+    },
+    {
+      id: "geography",
+      title: t("Geography"),
+      description: t("Organize world structure and manage locations"),
+      Icon: Earth,
+      links: [
+        {
+          name: t("General"),
+          routeName: "universe-admin-geography",
           params: { universeSlug: params?.universeSlug },
         },
       ],
@@ -206,6 +221,8 @@ export default function UniverseAdmin() {
               <OykUniverseAdminTheme />
             ) : params?.section === "stylesheet" ? (
               <OykUniverseAdminThemeStylesheet />
+            ) : params?.section === "geography" ? (
+              <OykUniverseAdminGeography />
             ) : (
               <OykCard>
                 <OykFeedback
