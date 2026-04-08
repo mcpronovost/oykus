@@ -255,6 +255,49 @@ class GeoService {
     return $fields;
   }
 
+  public function getWorldList(int $universeId): array {
+    try {
+      $qry = $this->pdo->prepare("SELECT
+          z.id,
+          z.name,
+          z.slug,
+          z.visibility,
+          z.position,
+
+          COALESCE((
+            SELECT JSON_ARRAYAGG(
+              JSON_OBJECT(
+                'id', s.id,
+                'name', s.name,
+                'slug', s.slug,
+                'position', s.position,
+                'col', s.col
+              )
+            )
+            FROM world_geo_sectors s
+            WHERE s.zone_id = z.id
+          ), JSON_ARRAY()) AS sectors
+
+        FROM world_geo_zones z
+        WHERE z.universe_id = ?
+
+        ORDER BY position ASC
+      ");
+
+      $qry->execute([$universeId]);
+
+      $rows = array_map(function ($r) {
+        $r["sectors"] = json_decode($r["sectors"], TRUE);
+        return $r;
+      }, $qry->fetchAll());
+    }
+    catch (Exception $e) {
+      throw new NotFoundException("Geography not found" . $e->getMessage());
+    }
+
+    return $rows ?: [];
+  }
+
   public function getGeoList(int $universeId): array {
     try {
       $qry = $this->pdo->prepare("SELECT

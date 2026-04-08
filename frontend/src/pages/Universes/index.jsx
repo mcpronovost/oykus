@@ -10,7 +10,7 @@ import { useWorld } from "@/services/world";
 import { OykCard, OykFeedback, OykGrid, OykGridRow, OykGridCol, OykHeading } from "@/components/ui";
 import { OykWIO } from "@/components/common";
 
-export default function Universe() {
+export default function OykUniverse() {
   const { params } = useRouter();
   const { t } = useTranslation();
   const { currentUniverse, changeUniverse } = useWorld();

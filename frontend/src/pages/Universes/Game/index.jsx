@@ -1,35 +1,69 @@
 // import "@/assets/styles/modules/_collections.scss";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
+import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import { useWorld } from "@/services/world";
 
 import AppNotAuthorized from "@/components/core/AppNotAuthorized";
-import { OykAvatar, OykBanner, OykCard, OykGrid, OykGridRow, OykGridCol, OykHeading, OykLink } from "@/components/ui";
+import {
+  OykAvatar,
+  OykBanner,
+  OykCard,
+  OykFeedback,
+  OykGrid,
+  OykGridRow,
+  OykGridCol,
+  OykHeading,
+  OykLink,
+  OykLoading,
+} from "@/components/ui";
 
 export default function OykUniverseGame() {
   const { isAuth, currentUser } = useAuth();
-  const { routeTitle } = useRouter();
+  const { params, routeTitle } = useRouter();
   const { t } = useTranslation();
   const { currentUniverse } = useWorld();
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(null);
+  const [geo, setGeo] = useState([]);
 
   const testTopics = [1, 2, 3, 4, 5];
   const testTopicsModulo = testTopics.length % 4;
   const testMessages = [1, 2, 3, 4, 5];
+
+  const fetchGameData = async (signal) => {
+    setIsLoading(true);
+    setHasError(null);
+    try {
+      const r = await api.get(`/game/u/${params.universeSlug}/`, signal ? { signal } : {});
+      if (!r.ok || !r.geo) throw r;
+      setGeo(r.geo);
+    } catch (e) {
+      if (e?.name === "AbortError") return;
+      setHasError(t(e?.error) || t("An error occurred"));
+    } finally {
+      if (!signal || !signal.aborted) {
+        setIsLoading(false);
+      }
+    }
+  };
 
   useEffect(() => {
     if (!currentUniverse || (currentUniverse && !currentUniverse.modules?.game?.active)) return;
     const controller = new AbortController();
 
     routeTitle(currentUniverse.modules.game.settings.display_name || t("Game"));
+    fetchGameData();
 
     return () => {
       controller.abort();
       routeTitle();
     };
-  }, []);
+  }, [params]);
 
   if (!currentUniverse || (currentUniverse && !currentUniverse.modules?.game?.active)) {
     return <AppNotAuthorized />;
@@ -50,41 +84,45 @@ export default function OykUniverseGame() {
         </h1>
         {currentUniverse.tagline && <p>{currentUniverse.tagline}</p>}
       </header>
-      <section className="oyk-game-sections">
-        <OykHeading title="Sections" />
-        <OykGrid>
-          <OykGridRow wrap>
-            <OykGridCol col="50">
-              <OykCard fullCenter alignSpace nop>
-                <header>
-                  <OykBanner height={100} showAvatar={false} coverSrc={currentUser.cover} />
-                  <h3 style={{ padding: "8px 16px 0" }}>
-                    <OykLink block>Layuan</OykLink>
-                  </h3>
-                  <p>Lorem ipsum dolor sit amet.</p>
-                </header>
-              </OykCard>
-            </OykGridCol>
-            <OykGridCol col="50">
-              <OykCard fullCenter alignSpace nop>
-                <header>
-                  <OykBanner height={100} showAvatar={false} coverSrc={currentUser.avatar} />
-                  <h3 style={{ padding: "8px" }}>
-                    <OykLink block>Espace Tuan</OykLink>
-                  </h3>
-                </header>
-              </OykCard>
-            </OykGridCol>
-            <OykGridCol col="25">
-              <OykCard fullCenter>ddd</OykCard>
-            </OykGridCol>
-            <OykGridCol col="25">
-              <OykCard fullCenter>eee</OykCard>
-            </OykGridCol>
-          </OykGridRow>
-        </OykGrid>
-      </section>
-      <section className="oyk-game-topics">
+      {!hasError && isLoading ? (
+        <OykLoading />
+      ) : (
+        <>
+          {geo?.length > 0 ? (
+            <section className="oyk-game-zones">
+              {geo.map((zone) => (
+                <article key={zone.id}>
+                  <OykHeading title={zone.name} />
+                  <OykGrid>
+                    {zone.sectors?.length > 0 ? (
+                      <OykGridRow wrap>
+                        {zone.sectors.map((sector) => (
+                          <OykGridCol key={sector.id} col={sector.col}>
+                            <OykCard fullCenter alignSpace nop>
+                              <header>
+                                {sector.cover && <OykBanner height={100} showAvatar={false} coverSrc={sector.cover} />}
+                                <h3 style={{ padding: "8px 16px 0" }}>
+                                  <OykLink block>{sector.name}</OykLink>
+                                </h3>
+                                {sector.description && <p>{sector.description}</p>}
+                              </header>
+                            </OykCard>
+                          </OykGridCol>
+                        ))}
+                      </OykGridRow>
+                    ) : null}
+                  </OykGrid>
+                </article>
+              ))}
+            </section>
+          ) : (
+            <OykGrid>
+              <OykFeedback title={t("The world is empty")} ghost />
+            </OykGrid>
+          )}
+        </>
+      )}
+      {/*<section className="oyk-game-topics">
         <OykHeading title="Topics" />
         <OykGrid>
           <OykGridRow wrap>
@@ -166,7 +204,7 @@ export default function OykUniverseGame() {
             ))}
           </OykGridRow>
         </OykGrid>
-      </section>
+      </section>*/}
     </section>
   );
 }

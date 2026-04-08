@@ -19,7 +19,7 @@ import OykAppNotFound from "@/components/core/AppNotFound";
 function MainLayout() {
   const { isLoadingAuth, isAuth, isDev } = useAuth();
   const { route, params } = useRouter();
-  const { currentUniverse, changeUniverse } = useWorld();
+  const { isLoadingWorld, currentUniverse, changeUniverse } = useWorld();
 
   useEffect(() => {
     if (params?.universeSlug && currentUniverse && params?.universeSlug !== currentUniverse.slug) {
@@ -31,7 +31,7 @@ function MainLayout() {
 
   return (
     <main id="oyk-main">
-      {route && route.component && !isLoadingAuth ? (
+      {route && route.component && !isLoadingAuth && !isLoadingWorld ? (
         <Suspense fallback={<OykAppLoading />}>
           <OykScrollbar isMainScroll height={"100%"}>
             <>
@@ -44,7 +44,7 @@ function MainLayout() {
             </>
           </OykScrollbar>
         </Suspense>
-      ) : isLoadingAuth ? (
+      ) : isLoadingAuth || isLoadingWorld ? (
         <OykAppLoading />
       ) : (
         <OykAppNotFound />
