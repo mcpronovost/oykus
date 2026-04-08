@@ -11,15 +11,15 @@ $context = $universeService->getContext($universeSlug, $authUserId);
 $universeId = $context["id"];
 
 // Validate
-$fields = $geoService->validateListData($_POST);
+$fields = $geoService->validateSectorData($_POST);
 
 // Check permissions
-if (!$geoService->userCanEditGeoList($universeId, $authUserId)) {
-  throw new AuthorizationException("You cannot edit geography");
+if (!$geoService->userCanEditSector($universeId, $authUserId)) {
+  throw new AuthorizationException("You cannot edit geographic sector");
 }
 
 // Update
-$geoService->updateGeoList($universeId, $fields);
+$geoService->updateSector($universeId, $sectorId, $fields);
 
 Response::json([
   "ok" => TRUE

@@ -1,11 +1,13 @@
 import { Fragment, useCallback, useMemo, useState } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { ChevronDown, ChevronRight, GripHorizontal, Pencil, Plus } from "lucide-react";
+import { ChevronDown, ChevronRight, GripHorizontal, Lock, Pencil, Plus } from "lucide-react";
 
 import { useTranslation } from "@/services/translation";
 
-import { OykButton, OykCard } from "@/components/ui";
+import { OykButton, OykCard, OykChip } from "@/components/ui";
+import OykModalSectorCreate from "./modals/SectorCreate";
+import OykModalSectorEdit from "./modals/SectorEdit";
 
 const ITEM_TYPE = "geo-node";
 
@@ -14,7 +16,7 @@ const PARENT_TYPE = {
   division: "sector",
 };
 
-export default function OykGeoTree({ items = [], setItems = () => {} }) {
+export default function OykGeoTree({ items = [], setItems = () => {}, updateItems = () => {} }) {
   /**
    * Move a dragged node to a new parent at a given position.
    * All position values are re-packed so there are no gaps.
@@ -73,7 +75,13 @@ export default function OykGeoTree({ items = [], setItems = () => {} }) {
         <OykGeoTreeDropline parentUid={null} position={0} moveNode={moveNode} items={items} />
         {roots.map((item, index) => (
           <Fragment key={item.uid}>
-            <OykGeoTreeNode item={item} childrenMap={childrenMap} moveNode={moveNode} items={items} />
+            <OykGeoTreeNode
+              item={item}
+              childrenMap={childrenMap}
+              moveNode={moveNode}
+              items={items}
+              updateItems={updateItems}
+            />
             <OykGeoTreeDropline parentUid={null} position={index + 1} moveNode={moveNode} items={items} />
           </Fragment>
         ))}
@@ -82,10 +90,12 @@ export default function OykGeoTree({ items = [], setItems = () => {} }) {
   );
 }
 
-function OykGeoTreeNode({ item, childrenMap, moveNode, items, depth = 0 }) {
+function OykGeoTreeNode({ item, childrenMap, moveNode, items, depth = 0, updateItems = () => {} }) {
   const { t } = useTranslation();
 
   const [isOpen, setIsOpen] = useState(true);
+  const [isModalSectorCreateOpen, setIsModalSectorCreateOpen] = useState(false);
+  const [isModalSectorEditOpen, setIsModalSectorEditOpen] = useState(false);
 
   const children = childrenMap.get(item.uid) ?? [];
 
@@ -117,78 +127,124 @@ function OykGeoTreeNode({ item, childrenMap, moveNode, items, depth = 0 }) {
     [item.uid, item.type, children.length, moveNode],
   );
 
+  const handleCloseModal = (updated) => {
+    setIsModalSectorCreateOpen(false);
+    setIsModalSectorEditOpen(false);
+    if (updated) {
+      updateItems();
+    }
+  };
+
   return (
-    <div style={{ marginLeft: depth * 24 }}>
-      <OykCard
-        ref={dropRef}
-        nop
-        style={{
-          border: isOver && canDrop ? "2px dashed var(--oyk-c-primary)" : "2px solid transparent",
-          opacity: isDragging ? 0.4 : 1,
-          transition: "border-color 0.15s ease, opacity 0.15s ease",
-        }}
-      >
-        <div
-          ref={dragRef}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-            padding: "8px",
-          }}
-        >
-          <GripHorizontal size={16} style={{ color: "var(--oyk-card-fg)", flexShrink: 0, cursor: "grab" }} />
-
-          {children.length > 0 && (
-            <button
-              type="button"
-              onClick={() => setIsOpen((v) => !v)}
-              style={{
-                background: "transparent",
-                border: "none",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                padding: 0,
-                color: "var(--oyk-card-fg)",
-              }}
-              aria-label={isOpen ? t("Réduire") : t("Développer")}
-            >
-              {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
-            </button>
-          )}
-
-          <span style={{ marginLeft: 6, flex: 1 }}>{item.name}</span>
-
-          <OykButton small plain icon={Pencil} />
-          {item.type === "zone" && (<OykButton small plain icon={Plus} />)}
-          {item.type === "sector" && (<OykButton small plain icon={Plus} disabled />)}
-        </div>
-      </OykCard>
-
-      {isOpen && children.length > 0 && (
-        <div
-          style={{
-            borderLeft: "1px dashed var(--oyk-core-divider)",
-            marginLeft: 17,
-          }}
-        >
-          <OykGeoTreeDropline parentUid={item.uid} position={0} moveNode={moveNode} items={items} />
-          {children.map((child, index) => (
-            <Fragment key={child.uid}>
-              <OykGeoTreeNode
-                item={child}
-                childrenMap={childrenMap}
-                moveNode={moveNode}
-                items={items}
-                depth={depth + 1}
-              />
-              <OykGeoTreeDropline parentUid={item.uid} position={index + 1} moveNode={moveNode} items={items} />
-            </Fragment>
-          ))}
-        </div>
+    <>
+      {item.type === "zone" && (
+        <OykModalSectorCreate
+          isOpen={isModalSectorCreateOpen}
+          onClose={handleCloseModal}
+          zoneId={item.id}
+          position={children.length}
+        />
       )}
-    </div>
+      {item.type === "sector" && (
+        <OykModalSectorEdit
+          isOpen={isModalSectorEditOpen}
+          onClose={handleCloseModal}
+          sector={item}
+          zoneId={item.parentId}
+        />
+      )}
+      <div style={{ marginLeft: depth * 24 }}>
+        <OykCard
+          ref={dropRef}
+          nop
+          style={{
+            border: isOver && canDrop ? "2px dashed var(--oyk-c-primary)" : "2px solid transparent",
+            opacity: isDragging ? 0.4 : 1,
+            transition: "border-color 0.15s ease, opacity 0.15s ease",
+          }}
+        >
+          <div
+            ref={dragRef}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              padding: "8px",
+            }}
+          >
+            <GripHorizontal size={16} style={{ color: "var(--oyk-card-fg)", flexShrink: 0, cursor: "grab" }} />
+
+            {children.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setIsOpen((v) => !v)}
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  padding: 0,
+                  color: "var(--oyk-card-fg)",
+                }}
+                aria-label={isOpen ? t("Réduire") : t("Développer")}
+              >
+                {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+              </button>
+            )}
+
+            <div
+              style={{ display: "flex", flex: 1, flexDirection: "row", alignItems: "center", gap: 8, marginLeft: 6 }}
+            >
+              <span>{item.name}</span>
+              {item.is_locked ? (
+                <span
+                  style={{
+                    backgroundColor: "var(--oyk-card-subtle-bg)",
+                    borderRadius: "var(--oyk-radius)",
+                    padding: "0 6px",
+                  }}
+                >
+                  <Lock size={13} />
+                </span>
+              ) : null}
+            </div>
+
+            {item.type === "sector" && (
+              <OykButton small plain icon={Pencil} onClick={() => setIsModalSectorEditOpen(true)} />
+            )}
+            {item.type === "zone" && (
+              <OykButton small plain icon={Plus} onClick={() => setIsModalSectorCreateOpen(true)} />
+            )}
+            {item.type === "sector" && <OykButton small plain icon={Plus} disabled />}
+          </div>
+        </OykCard>
+
+        {isOpen && children.length > 0 && (
+          <div
+            style={{
+              borderLeft: "1px dashed var(--oyk-core-divider)",
+              marginLeft: 17,
+            }}
+          >
+            <OykGeoTreeDropline parentUid={item.uid} position={0} moveNode={moveNode} items={items} />
+            {children.map((child, index) => (
+              <Fragment key={child.uid}>
+                <OykGeoTreeNode
+                  item={child}
+                  childrenMap={childrenMap}
+                  moveNode={moveNode}
+                  items={items}
+                  depth={depth + 1}
+                  updateItems={updateItems}
+                />
+                <OykGeoTreeDropline parentUid={item.uid} position={index + 1} moveNode={moveNode} items={items} />
+              </Fragment>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 

@@ -12,17 +12,19 @@ import OykGeoTree from "./GeoTree";
 export default function OykUniverseAdminGeography() {
   const { routeTitle } = useRouter();
   const { t } = useTranslation();
-  const { currentUniverse, getUniverses } = useWorld();
+  const { currentUniverse } = useWorld();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [hasError, setHasError] = useState(null);
+  const [hasErrorSubmit, setHasErrorSubmit] = useState(null);
   const [initGeo, setInitGeo] = useState([]);
   const [geo, setGeo] = useState([]);
 
   const fetchGeoData = async (signal) => {
     setIsLoading(true);
     setHasError(null);
+    setHasErrorSubmit(null);
     try {
       const r = await api.get(`/world/universes/${currentUniverse.slug}/geo/list/`, signal ? { signal } : {});
       if (!r.ok || !r.geo) throw r;
@@ -40,15 +42,20 @@ export default function OykUniverseAdminGeography() {
 
   const postSubmit = async () => {
     setIsLoadingSubmit(true);
-    setHasError(null);
+    setHasErrorSubmit(null);
     try {
       const formData = new FormData();
-      formData.append("items", JSON.stringify(geo));
-      const r = await api.post(`/world/universes/${currentUniverse.slug}/geo/list/edit/`, formData);
+      formData.append("items", JSON.stringify(geo.map((g) => ({
+        id: g.id,
+        parentUid: g.parentUid,
+        type: g.type,
+        position: g.position,
+      }))));
+      const r = await api.post(`/world/universes/${currentUniverse.slug}/geo/list/ediat/`, formData);
       if (!r?.ok) throw r;
       setInitGeo(geo);
     } catch (e) {
-      setHasError(t(e?.error) || t("An error occurred"));
+      setHasErrorSubmit(t(e?.error) || t("An error occurred"));
     } finally {
       setIsLoadingSubmit(false);
     }
@@ -85,13 +92,14 @@ export default function OykUniverseAdminGeography() {
           ) : null
         }
       />
+      {hasErrorSubmit && (<OykFeedback title={hasErrorSubmit || t("An error occurred")} variant="danger" ghost />)}
       {hasError ? (
         <OykFeedback title={hasError || t("An error occurred")} variant="danger" ghost />
       ) : isLoading ? (
         <OykLoading />
       ) : (
         <section className="oyk-universe-admin-geography" style={isLoadingSubmit ? { pointerEvents: "none", opacity: 0.5 } : {}}>
-          {geo.length > 0 ? <OykGeoTree items={geo} setItems={setGeo} /> : (
+          {geo.length > 0 ? <OykGeoTree items={geo} setItems={setGeo} updateItems={fetchGeoData} /> : (
             <OykFeedback title={t("The world is empty")} message={t("Start by creating your first geographic zone")} icon={Frown} ghost>
               <OykButton color="primary" onClick={() => {}}>
                 {t("Create a new zone")}

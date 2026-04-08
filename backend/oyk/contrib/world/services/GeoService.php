@@ -1,5 +1,7 @@
 <?php
 
+require OYK . "/core/utils/formatters.php";
+
 class GeoService {
   public function __construct(private PDO $pdo) {
   }
@@ -23,7 +25,45 @@ class GeoService {
     return (bool) $qry->fetchColumn();
   }
 
-  public function validateData(array $data): array {
+  public function userCanCreateGeoSector(int $universeId, int $userId): bool {
+    if (!$universeId || $universeId <= 0) {
+      throw new NotFoundException("Universe not found");
+    }
+    if (!$userId || $userId <= 0) {
+      throw new NotFoundException("User not found");
+    }
+
+    $qry = $this->pdo->prepare("
+      SELECT EXISTS (
+        SELECT 1
+        FROM world_universes u
+        WHERE u.id = ? AND u.owner_id = ?
+      )
+    ");
+    $qry->execute([$universeId, $userId]);
+    return (bool) $qry->fetchColumn();
+  }
+
+  public function userCanEditSector(int $universeId, int $userId): bool {
+    if (!$universeId || $universeId <= 0) {
+      throw new NotFoundException("Universe not found");
+    }
+    if (!$userId || $userId <= 0) {
+      throw new NotFoundException("User not found");
+    }
+
+    $qry = $this->pdo->prepare("
+      SELECT EXISTS (
+        SELECT 1
+        FROM world_universes u
+        WHERE u.id = ? AND u.owner_id = ?
+      )
+    ");
+    $qry->execute([$universeId, $userId]);
+    return (bool) $qry->fetchColumn();
+  }
+
+  public function validateListData(array $data): array {
     if (!array_key_exists("items", $data)) {
       throw new ValidationException("Missing items");
     }
@@ -120,7 +160,102 @@ class GeoService {
     return $validated;
   }
 
-  public function getGeoList($universeId) {
+  public function validateSectorData(array $data): array {
+    if (is_object($data)) {
+      $data = (array) $data;
+    }
+
+    if (!is_array($data)) {
+      throw new ValidationException("Invalid sector data");
+    }
+
+    // Zone Id
+    if (!array_key_exists("zone_id", $data)) {
+      throw new ValidationException("Invalid Zone Id");
+    }
+    $zone_id = filter_var($data["zone_id"], FILTER_VALIDATE_INT, [
+      "options" => [
+        "min_range" => 1,
+      ]
+    ]);
+    if ($zone_id === FALSE) {
+      throw new ValidationException("Invalid Zone ID");
+    }
+
+    // NAME
+    if (!array_key_exists("name", $data) || !is_string($data["name"]) || trim($data["name"]) === "") {
+      throw new ValidationException("Invalid name");
+    }
+    $name = trim($data["name"]);
+    $slug = get_slug($this->pdo, $name, "world_geo_sectors");
+
+    // DESCRIPTION
+    if (!array_key_exists("description", $data) || !is_string($data["description"])) {
+      throw new ValidationException("Invalid description");
+    }
+    $description = trim($data["description"]);
+
+    // VISIBILITY
+    if (!array_key_exists("visibility", $data)) {
+      throw new ValidationException("Invalid visibility");
+    }
+    $visibility = filter_var($data["visibility"], FILTER_VALIDATE_INT, [
+      "options" => [
+        "min_range" => 1,
+        "max_range" => 6,
+      ]
+    ]);
+    if ($visibility === FALSE) {
+      throw new ValidationException("Invalid visibility");
+    }
+
+    // POSITION
+    if (!array_key_exists("position", $data)) {
+      throw new ValidationException("Invalid position");
+    }
+    $position = filter_var($data["position"], FILTER_VALIDATE_INT, [
+      "options" => [
+        "min_range" => 0,
+      ]
+    ]);
+    if ($position === FALSE) {
+      throw new ValidationException("Invalid position");
+    }
+
+    // COLUMN WIDTH
+    if (!array_key_exists("col", $data)) {
+      throw new ValidationException("Invalid column width");
+    }
+    $col = filter_var($data["col"], FILTER_VALIDATE_INT, [
+      "options" => [
+        "min_range" => 1,
+        "max_range" => 100,
+      ]
+    ]);
+    if ($col === FALSE) {
+      throw new ValidationException("Invalid column width");
+    }
+
+    // LOCKED
+    if (array_key_exists("is_locked", $data)) {
+      $is_locked = $data["is_locked"] == "true" ? 1 : 0;
+    }
+
+    $fields = [
+      "zone_id" => (int) $zone_id,
+      "name" => $name,
+      "slug" => $slug,
+      "description" => $description,
+      "visibility" => (int) $visibility,
+      "position" => (int) $position,
+      "col" => (int) $col,
+      "is_locked" => (int) $is_locked,
+    ];
+
+    return $fields;
+  }
+
+  public function getGeoList(int $universeId): array {
     try {
       $qry = $this->pdo->prepare("SELECT
           z.id,
@@ -129,7 +264,11 @@ class GeoService {
           NULL AS parentId,
           NULL AS parentUid,
           z.name,
+          z.slug,
+          z.visibility,
           z.position,
+          0 AS col,
+          0 AS is_locked,
           1 AS sort_order
         FROM world_geo_zones z
         WHERE z.universe_id = ?
@@ -143,7 +282,11 @@ class GeoService {
           s.zone_id AS parentId,
           CONCAT('zone:', s.zone_id) AS parentUid,
           s.name,
+          s.slug,
+          s.visibility,
           s.position,
+          s.col,
+          s.is_locked,
           2 AS sort_order
         FROM world_geo_sectors s
         WHERE s.universe_id = ?
@@ -157,7 +300,11 @@ class GeoService {
           d.sector_id AS parentId,
           CONCAT('sector:', d.sector_id) AS parentUid,
           d.name,
+          d.slug,
+          d.visibility,
           d.position,
+          d.col,
+          d.is_locked,
           3 AS sort_order
         FROM world_geo_divisions d
         WHERE d.universe_id = ?
@@ -175,7 +322,7 @@ class GeoService {
     return $rows ?: [];
   }
 
-  public function updateGeoList($universeId, $items) {
+  public function updateGeoList(int $universeId, array $items): void {
     $stmt = $this->pdo->prepare("
       UPDATE world_geo_zones SET position = :position WHERE id = :id AND universe_id = :universe_id
     ");
@@ -216,6 +363,55 @@ class GeoService {
     catch (Exception $e) {
       $this->pdo->rollBack();
       throw new QueryException("Geo update failed" . $e->getMessage());
+    }
+  }
+
+  public function createSector(int $universeId, array $fields): void {
+    try {
+      $sql = "
+        INSERT INTO world_geo_sectors (universe_id, zone_id, name, slug, description, visibility, position, col, is_locked)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ";
+
+      $qry = $this->pdo->prepare($sql);
+      $qry->execute([
+        $universeId,
+        $fields["zone_id"],
+        $fields["name"],
+        $fields["slug"],
+        $fields["description"],
+        $fields["visibility"],
+        $fields["position"],
+        $fields["col"],
+        $fields["is_locked"],
+      ]);
+    }
+    catch (Exception $e) {
+      throw new QueryException("Geographic sector creation failed");
+    }
+  }
+
+  public function updateSector(int $universeId, int $sectorId, array $fields): void {
+    try {
+      $qry = $this->pdo->prepare("UPDATE world_geo_sectors
+        SET name = :name, slug = :slug, description = :description, visibility = :visibility, position = :position, col = :col, is_locked = :is_locked
+        WHERE id = :id AND universe_id = :universe_id
+      ");
+      $qry->execute([
+        ":name" => $fields["name"],
+        ":slug" => $fields["slug"],
+        ":description" => $fields["description"],
+        ":visibility" => $fields["visibility"],
+        ":position" => $fields["position"],
+        ":col" => $fields["col"],
+        ":is_locked" => $fields["is_locked"],
+        ":id" => $sectorId,
+        ":universe_id" => $universeId,
+      ]);
+    }
+    catch (Exception $e) {
+      $this->pdo->rollBack();
+      throw new QueryException("Sector update failed" . $e->getMessage());
     }
   }
 }
