@@ -18,7 +18,7 @@ export default function OykBlogPost() {
     <section className="oyk-breadcrumbs">
       <ul className="oyk-breadcrumbs-list">
         {crumbs.map((b, index) => {
-          if (index === crumbs.length - 1 || b.path === "-") return null;
+          if (index === crumbs.length - 1 || b.path === "-" || b.name === "universe-game") return null;
           return (
             <li key={index} className="oyk-breadcrumbs-list-item">
               {b.path.endsWith("/{universeSlug}") ? (
@@ -32,7 +32,7 @@ export default function OykBlogPost() {
                 <>
                   <ChevronRight size={14} />{" "}
                   <OykLink routeName={b.name} params={params} colorHover="primary">
-                    {currentUniverse ?? b.name === "blog" ? currentUniverse?.modules?.blog?.settings?.display_name || b.label : b.label}
+                    {currentUniverse && b.name === "blog" ? currentUniverse?.modules?.blog?.settings?.display_name || b.label : b.label}
                   </OykLink>
                 </>
               )}
