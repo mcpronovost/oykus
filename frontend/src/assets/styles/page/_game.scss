@@ -14,11 +14,81 @@
     font-size: 5rem;
     font-weight: 400;
     line-height: 1.2;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 32px;
+    margin: 0 auto;
 
     a {
         display: block;
         width: 100%;
         height: 100%;
+    }
+  }
+}
+
+.oyk-game-zone {
+  &-sectors {
+    &-card {
+      min-height: 64px;
+
+      &-header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+
+        &-title {
+          display: flex;
+          flex: 1 1 auto;
+          flex-direction: column;
+          justify-content: center;
+
+          &-link {
+            padding: 8px 16px;
+
+            &:hover {
+              opacity: 0.5;
+            }
+          }
+        }
+      }
+
+      &-footer {
+        display: block;
+
+        &-last {
+          font-size: 0.8rem;
+          line-height: 1.2;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          padding: 0 16px 8px;
+
+          &-title {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+            opacity: 0.6;
+          }
+
+          &-date {
+            white-space: nowrap;
+          }
+
+          &-author {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+            flex: 0 1 auto;
+          }
+        }
+      }
     }
   }
 }

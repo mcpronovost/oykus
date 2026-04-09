@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . "/../../../core/utils/formatters.php";
+require_once __DIR__ . "/../../../core/utils/formatters.php";
 
 global $pdo;
 

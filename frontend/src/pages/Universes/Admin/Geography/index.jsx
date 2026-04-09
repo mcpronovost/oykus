@@ -8,6 +8,7 @@ import { useWorld } from "@/services/world";
 
 import { OykButton, OykFeedback, OykHeading, OykLoading } from "@/components/ui";
 import OykGeoTree from "./GeoTree";
+import OykModalZoneCreate from "./modals/ZoneCreate";
 
 export default function OykUniverseAdminGeography() {
   const { routeTitle } = useRouter();
@@ -20,6 +21,7 @@ export default function OykUniverseAdminGeography() {
   const [hasErrorSubmit, setHasErrorSubmit] = useState(null);
   const [initGeo, setInitGeo] = useState([]);
   const [geo, setGeo] = useState([]);
+  const [isModalZoneCreateOpen, setIsModalZoneCreateOpen] = useState(false);
 
   const fetchGeoData = async (signal) => {
     setIsLoading(true);
@@ -45,19 +47,31 @@ export default function OykUniverseAdminGeography() {
     setHasErrorSubmit(null);
     try {
       const formData = new FormData();
-      formData.append("items", JSON.stringify(geo.map((g) => ({
-        id: g.id,
-        parentUid: g.parentUid,
-        type: g.type,
-        position: g.position,
-      }))));
-      const r = await api.post(`/world/universes/${currentUniverse.slug}/geo/list/ediat/`, formData);
+      formData.append(
+        "items",
+        JSON.stringify(
+          geo.map((g) => ({
+            id: g.id,
+            parentUid: g.parentUid,
+            type: g.type,
+            position: g.position,
+          })),
+        ),
+      );
+      const r = await api.post(`/world/universes/${currentUniverse.slug}/geo/list/edit/`, formData);
       if (!r?.ok) throw r;
       setInitGeo(geo);
     } catch (e) {
       setHasErrorSubmit(t(e?.error) || t("An error occurred"));
     } finally {
       setIsLoadingSubmit(false);
+    }
+  };
+
+  const handleCloseModal = (updated) => {
+    setIsModalZoneCreateOpen(false);
+    if (updated) {
+      fetchGeoData();
     }
   };
 
@@ -76,6 +90,11 @@ export default function OykUniverseAdminGeography() {
 
   return (
     <section className="oyk-universes-admin">
+      <OykModalZoneCreate
+        isOpen={isModalZoneCreateOpen}
+        onClose={handleCloseModal}
+        position={0}
+      />
       <OykHeading
         subtitle
         tag="h2"
@@ -92,16 +111,26 @@ export default function OykUniverseAdminGeography() {
           ) : null
         }
       />
-      {hasErrorSubmit && (<OykFeedback title={hasErrorSubmit || t("An error occurred")} variant="danger" ghost />)}
+      {hasErrorSubmit && <OykFeedback title={hasErrorSubmit || t("An error occurred")} variant="danger" ghost />}
       {hasError ? (
         <OykFeedback title={hasError || t("An error occurred")} variant="danger" ghost />
       ) : isLoading ? (
         <OykLoading />
       ) : (
-        <section className="oyk-universe-admin-geography" style={isLoadingSubmit ? { pointerEvents: "none", opacity: 0.5 } : {}}>
-          {geo.length > 0 ? <OykGeoTree items={geo} setItems={setGeo} updateItems={fetchGeoData} /> : (
-            <OykFeedback title={t("The world is empty")} message={t("Start by creating your first geographic zone")} icon={Frown} ghost>
-              <OykButton color="primary" onClick={() => {}}>
+        <section
+          className="oyk-universe-admin-geography"
+          style={isLoadingSubmit ? { pointerEvents: "none", opacity: 0.5 } : {}}
+        >
+          {geo.length > 0 ? (
+            <OykGeoTree items={geo} setItems={setGeo} updateItems={fetchGeoData} />
+          ) : (
+            <OykFeedback
+              title={t("The world is empty")}
+              message={t("Start by creating your first geographic zone")}
+              icon={Frown}
+              ghost
+            >
+              <OykButton color="primary" onClick={() => setIsModalZoneCreateOpen(true)}>
                 {t("Create a new zone")}
               </OykButton>
             </OykFeedback>

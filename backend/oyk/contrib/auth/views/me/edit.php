@@ -1,7 +1,7 @@
 <?php
 
-require OYK . "/core/utils/uploaders.php";
-require OYK . "/core/utils/formatters.php";
+require_once OYK . "/core/utils/uploaders.php";
+require_once OYK . "/core/utils/formatters.php";
 
 global $pdo;
 $authUserId = require_rat();

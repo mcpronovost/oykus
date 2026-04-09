@@ -1,3 +1,4 @@
+import { OykLink } from "@/components/ui";
 import { OykBreadcrumbs } from "@/components/common";
 
 export default function OykHeading({
@@ -7,6 +8,7 @@ export default function OykHeading({
   actions,
   subtitle,
   showBreadcrumbs,
+  titleLink,
   nop,
   tag: Heading = "h1",
   full = false,
@@ -22,7 +24,11 @@ export default function OykHeading({
       <div className="oyk-heading-wrapper">
         <div className={`oyk-heading-content ${subtitle ? "oyk-subtitle" : ""}`}>
           {title ? (
-            <Heading className={`oyk-heading-content-${subtitle ? "subtitle" : "title"}`}>{title}</Heading>
+            <Heading className={`oyk-heading-content-${subtitle ? "subtitle" : "title"}`}>
+              {titleLink ? (
+                <OykLink routeName={titleLink.routeName} params={titleLink.params}>{title}</OykLink>
+              ) : title}
+            </Heading>
           ) : null}
           {description ? <p className="oyk-heading-content-description">{description}</p> : null}
           {prepend ? prepend : null}

@@ -1,4 +1,5 @@
 import React from "react";
+import { UNIVERSES_GAME_ROUTES } from "./universes_game";
 import { UNIVERSES_ADMIN_ROUTES } from "./universes_admin";
 
 export const UNIVERSES_ROUTES = [
@@ -44,41 +45,7 @@ export const UNIVERSES_ROUTES = [
               },
             ],
           },
-          {
-            name: "universe-game",
-            component: React.lazy(() => import("../../../pages/Universes/Game")),
-            paths: {
-              fr: "jeu",
-              en: "game",
-            },
-            labels: {
-              fr: "Jeu",
-              en: "Game",
-            },
-            children: [
-              {
-                name: "universe-game-economy",
-                component: React.lazy(() => import("../../../pages/Universes/Game")),
-                paths: {
-                  fr: "economie",
-                  en: "economy",
-                },
-                children: [
-                  {
-                    name: "universe-game-economy-assets",
-                    component: React.lazy(() => import("../../../pages/Universes/Game/Economy/Assets")),
-                    paths: {
-                      fr: "passifs",
-                      en: "assets",
-                    },
-                    params: {
-                      section: "assets"
-                    }
-                  }
-                ],
-              }
-            ],
-          },
+          ...UNIVERSES_GAME_ROUTES,
           {
             name: "universe-blog",
             component: React.lazy(() => import("../../../pages/Universes/Blog")),

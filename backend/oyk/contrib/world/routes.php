@@ -39,6 +39,8 @@ Router::get("{$api}/universes/{universeSlug}/geo/list", "{$view}geo/list.php");
 
 Router::post("{$api}/universes/{universeSlug}/geo/list/edit", "{$view}geo/list_edit.php");
 
+Router::post("{$api}/universes/{universeSlug}/geo/zones/create", "{$view}geo/zones_create.php");
+
 Router::post("{$api}/universes/{universeSlug}/geo/sectors/create", "{$view}geo/sectors_create.php");
 
 Router::post("{$api}/universes/{universeSlug}/geo/sectors/{sectorId}/edit", "{$view}geo/sectors_edit.php");

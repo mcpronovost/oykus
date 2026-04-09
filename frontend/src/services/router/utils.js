@@ -18,7 +18,7 @@ const findRouteRecursive = (routes, pathSegments, pathlang) => {
   for (const route of routes) {
     const routePath = route.paths[pathlang];
     if (routePath === undefined) continue;
-    
+
     // Handle empty path (root route)
     if (routePath === "") {
       if (pathSegments.length === 0) {
@@ -26,56 +26,65 @@ const findRouteRecursive = (routes, pathSegments, pathlang) => {
       }
       continue;
     }
-    
+
     const routeSegments = routePath.split("/");
-    
-    // Check if this route matches the beginning of the path
+
     if (pathSegments.length >= routeSegments.length) {
       const matchingSegments = pathSegments.slice(0, routeSegments.length);
       const remainingSegments = pathSegments.slice(routeSegments.length);
-      
-      // Check if the route segments match (including dynamic segments)
+
       let matches = true;
       const params = {};
-      
+
       for (let i = 0; i < routeSegments.length; i++) {
         const routeSegment = routeSegments[i];
         const actualSegment = matchingSegments[i];
-        
-        // If it's a dynamic segment (wrapped in {})
-        if (routeSegment.startsWith("{") && routeSegment.endsWith("}")) {
-          // Extract parameter name and value
-          const paramName = routeSegment.slice(1, -1); // Remove { and }
-          params[paramName] = actualSegment;
-          continue; // Dynamic segment matches anything
-        }
-        
-        // Static segments must match exactly
-        if (routeSegment !== actualSegment) {
-          matches = false;
-          break;
+
+        // Build a regex from the route segment, replacing {paramName} with named capture groups
+        const paramNames = [];
+        const regexStr = routeSegment.replace(/\{(\w+)\}/g, (_, name) => {
+          paramNames.push(name);
+          return "([^/]+)"; // Match anything except a slash
+        });
+
+        if (paramNames.length > 0) {
+          // Dynamic segment — test with regex and extract named params
+          const regex = new RegExp(`^${regexStr}$`);
+          const match = actualSegment.match(regex);
+
+          if (!match) {
+            matches = false;
+            break;
+          }
+
+          paramNames.forEach((name, idx) => {
+            params[name] = match[idx + 1];
+          });
+        } else {
+          // Static segment — must match exactly
+          if (routeSegment !== actualSegment) {
+            matches = false;
+            break;
+          }
         }
       }
-      
+
       if (matches) {
-        // If we have children and more path segments, search in children
         if (route.children && remainingSegments.length > 0) {
           const childResult = findRouteRecursive(route.children, remainingSegments, pathlang);
           if (childResult) {
-            // Merge parent and child parameters
             return {
               route: childResult.route,
-              params: { ...params, ...childResult.params, ...childResult.route.params }
+              params: { ...params, ...childResult.params, ...childResult.route.params },
             };
           }
         }
-        
-        // If no children or no more segments, return this route with params
-        return { route, params: { ...route.params, ...params} };
+
+        return { route, params: { ...route.params, ...params } };
       }
     }
   }
-  
+
   return null;
 };
 

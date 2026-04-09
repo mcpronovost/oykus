@@ -6,13 +6,13 @@ import { useWorld } from "@/services/world";
 
 import { OykButton, OykForm, OykFormField, OykFormMessage, OykModal } from "@/components/ui";
 
-export default function OykModalSectorEdit({ isOpen, onClose, zoneId, sector }) {
+export default function OykModalZoneCreate({ isOpen, onClose, position }) {
   const { t } = useTranslation();
   const { currentUniverse } = useWorld();
 
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(null);
-  const [editForm, setEditForm] = useState({});
+  const [createForm, setCreateForm] = useState({});
 
   const postSubmit = async () => {
     if (isLoading) return;
@@ -21,10 +21,10 @@ export default function OykModalSectorEdit({ isOpen, onClose, zoneId, sector }) 
     setHasError(null);
     try {
       const formData = new FormData();
-      for (const [key, value] of Object.entries(editForm)) {
+      for (const [key, value] of Object.entries(createForm)) {
         formData.append(key, value);
       }
-      const r = await api.post(`/world/universes/${currentUniverse.slug}/geo/sectors/${sector.id}/edit/`, formData);
+      const r = await api.post(`/world/universes/${currentUniverse.slug}/geo/zones/create/`, formData);
       if (!r.ok) throw r;
       onClose(true);
     } catch (e) {
@@ -38,7 +38,7 @@ export default function OykModalSectorEdit({ isOpen, onClose, zoneId, sector }) 
 
   const handleChange = (e) => {
     const { name, value, checked } = e.target;
-    setEditForm((prev) => ({
+    setCreateForm((prev) => ({
       ...prev,
       [name]: e.target.type === "checkbox" ? checked : value,
     }));
@@ -56,57 +56,26 @@ export default function OykModalSectorEdit({ isOpen, onClose, zoneId, sector }) 
   };
 
   useEffect(() => {
-    setEditForm({
-      zone_id: zoneId,
-      name: sector.name,
-      description: sector.description || "",
-      visibility: `${sector.visibility}`,
-      position: sector.position,
-      col: `${sector.col}`,
-      is_locked: sector.is_locked,
+    setCreateForm({
+      name: "",
+      description: "",
+      visibility: "6",
+      position: position,
     });
     setIsLoading(false);
     setHasError(null);
   }, [isOpen]);
 
   return (
-    <OykModal title={t("Edit sector")} isOpen={isOpen} onClose={onClose}>
+    <OykModal title={t("Create a new sector")} isOpen={isOpen} onClose={onClose}>
       <OykForm onSubmit={postSubmit} isLoading={isLoading}>
         <OykFormField
           label={t("Name")}
           name="name"
           type="text"
-          defaultValue={editForm.name}
+          defaultValue={createForm.name}
           onChange={handleChange}
           required
-        />
-        <OykFormField
-          label={t("Description")}
-          name="description"
-          type="textarea"
-          defaultValue={editForm.description}
-          onChange={handleChange}
-        />
-        <OykFormField
-          label={t("Column Width")}
-          name="col"
-          type="radio"
-          defaultValue={editForm.col}
-          options={[
-            { label: "25%", value: "25" },
-            { label: "33%", value: "33" },
-            { label: "50%", value: "50" },
-            { label: "75%", value: "75" },
-            { label: "100%", value: "100" },
-          ]}
-          onChange={handleChange}
-        />
-        <OykFormField
-          label={t("Locked")}
-          name="is_locked"
-          type="checkbox"
-          defaultValue={editForm.is_locked}
-          onChange={handleChange}
         />
         {hasError?.message && <OykFormMessage hasError={hasError.message} />}
         <div className="oyk-form-actions">

@@ -1,4 +1,3 @@
-// import "@/assets/styles/modules/_collections.scss";
 import { useEffect, useState } from "react";
 
 import { api } from "@/services/api";
@@ -20,10 +19,11 @@ import {
   OykLink,
   OykLoading,
 } from "@/components/ui";
+import OykUniverseGameZoneSectorCard from "./World/ZoneSectorCard";
 
 export default function OykUniverseGame() {
   const { isAuth, currentUser } = useAuth();
-  const { params, routeTitle } = useRouter();
+  const { route, params, routeTitle } = useRouter();
   const { t } = useTranslation();
   const { currentUniverse } = useWorld();
 
@@ -86,31 +86,34 @@ export default function OykUniverseGame() {
       </header>
       {!hasError && isLoading ? (
         <OykLoading />
-      ) : (
+      ) : !hasError ? (
         <>
           {geo?.length > 0 ? (
             <section className="oyk-game-zones">
               {geo.map((zone) => (
-                <article key={zone.id}>
-                  <OykHeading title={zone.name} />
+                <article key={zone.id} className="oyk-game-zone">
+                  <OykHeading
+                    title={zone.name}
+                    titleLink={{
+                      routeName: "universe-game-zone",
+                      params: {
+                        universeSlug: currentUniverse.slug,
+                        zoneId: zone.id,
+                      },
+                    }}
+                  />
                   <OykGrid>
                     {zone.sectors?.length > 0 ? (
-                      <OykGridRow wrap>
+                      <OykGridRow wrap className="oyk-game-zone-sectors">
                         {zone.sectors.map((sector) => (
                           <OykGridCol key={sector.id} col={sector.col}>
-                            <OykCard fullCenter alignSpace nop>
-                              <header>
-                                {sector.cover && <OykBanner height={100} showAvatar={false} coverSrc={sector.cover} />}
-                                <h3 style={{ padding: "8px 16px 0" }}>
-                                  <OykLink block>{sector.name}</OykLink>
-                                </h3>
-                                {sector.description && <p>{sector.description}</p>}
-                              </header>
-                            </OykCard>
+                            <OykUniverseGameZoneSectorCard universe={currentUniverse} zone={zone} sector={sector} />
                           </OykGridCol>
                         ))}
                       </OykGridRow>
-                    ) : null}
+                    ) : (
+                      <OykFeedback title={t("This zone is empty")} showIcon={false} ghost />
+                    )}
                   </OykGrid>
                 </article>
               ))}
@@ -121,6 +124,10 @@ export default function OykUniverseGame() {
             </OykGrid>
           )}
         </>
+      ) : (
+        <OykGrid>
+          <OykFeedback title={hasError || t("An error occurred")} />
+        </OykGrid>
       )}
       {/*<section className="oyk-game-topics">
         <OykHeading title="Topics" />

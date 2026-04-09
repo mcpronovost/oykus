@@ -6,6 +6,7 @@ import { ChevronDown, ChevronRight, GripHorizontal, Lock, Pencil, Plus } from "l
 import { useTranslation } from "@/services/translation";
 
 import { OykButton, OykCard, OykChip } from "@/components/ui";
+import OykModalZoneCreate from "./modals/ZoneCreate";
 import OykModalSectorCreate from "./modals/SectorCreate";
 import OykModalSectorEdit from "./modals/SectorEdit";
 
@@ -17,6 +18,9 @@ const PARENT_TYPE = {
 };
 
 export default function OykGeoTree({ items = [], setItems = () => {}, updateItems = () => {} }) {
+  const { t } = useTranslation();
+
+  const [isModalZoneCreateOpen, setIsModalZoneCreateOpen] = useState(false);
   /**
    * Move a dragged node to a new parent at a given position.
    * All position values are re-packed so there are no gaps.
@@ -69,9 +73,21 @@ export default function OykGeoTree({ items = [], setItems = () => {}, updateItem
 
   const roots = childrenMap.get(null) ?? [];
 
+  const handleCloseModal = (updated) => {
+    setIsModalZoneCreateOpen(false);
+    if (updated) {
+      updateItems();
+    }
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <OykModalZoneCreate
+          isOpen={isModalZoneCreateOpen}
+          onClose={handleCloseModal}
+          position={roots.length}
+        />
         <OykGeoTreeDropline parentUid={null} position={0} moveNode={moveNode} items={items} />
         {roots.map((item, index) => (
           <Fragment key={item.uid}>
@@ -83,6 +99,9 @@ export default function OykGeoTree({ items = [], setItems = () => {}, updateItem
               updateItems={updateItems}
             />
             <OykGeoTreeDropline parentUid={null} position={index + 1} moveNode={moveNode} items={items} />
+            {roots.length - 1 === index ? (
+              <OykButton color="default" onClick={() => setIsModalZoneCreateOpen(true)}>{t("Create a new zone")}</OykButton>
+            ) : null}
           </Fragment>
         ))}
       </div>
