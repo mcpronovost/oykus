@@ -8,6 +8,10 @@
   position: relative;
   padding: 16px;
 
+  hr {
+    background-color: var(--oyk-card-divider);
+  }
+
   &-nop {
     padding: 0;
   }
