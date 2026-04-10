@@ -9,10 +9,12 @@ $geoService = new GeoService($pdo);
 // Universe context
 $context = $universeService->getContext($universeSlug, $authUserId);
 $universeId = $context["id"];
+$universePlan = $context["plan"];
 
 $geo = $geoService->getGeoList($universeId);
 
 Response::json([
   "ok" => TRUE,
-  "geo" => $geo
+  "geo" => $geo,
+  "plan" => $universePlan
 ]);

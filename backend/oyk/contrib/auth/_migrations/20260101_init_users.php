@@ -27,6 +27,8 @@ CREATE TABLE IF NOT EXISTS auth_users (
     `meta_website` varchar(255) NULL,
     `meta_socials` JSON NULL,
 
+    `plan` ENUM('free', 'explorer', 'pioneer') NOT NULL DEFAULT 'free',
+
     `is_active` tinyint(1) NOT NULL DEFAULT '1',
     `is_dev` tinyint(1) NOT NULL DEFAULT '0',
     `is_banned` tinyint(1) NOT NULL DEFAULT '0',

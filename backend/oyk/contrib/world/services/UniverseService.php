@@ -8,7 +8,7 @@ class UniverseService {
     // Default universe if no context
     if (!$slug) {
       $qry = $this->pdo->prepare("
-          SELECT id, is_default
+          SELECT id, is_default, plan
           FROM world_universes
           WHERE is_active = 1 AND is_default = 1
           LIMIT 1
@@ -17,7 +17,7 @@ class UniverseService {
     }
     else {
       $qry = $this->pdo->prepare("
-          SELECT wu.id, wu.is_default
+          SELECT wu.id, wu.is_default, wu.plan
           FROM world_universes wu
           LEFT JOIN world_roles wr ON wr.universe_id = wu.id AND wr.user_id = COALESCE(?, -1)
           WHERE wu.is_active = 1 AND wu.slug = ? AND wu.visibility >= CASE
@@ -36,7 +36,8 @@ class UniverseService {
 
     return [
       "id" => (int) $universe["id"],
-      "isDefault" => (bool) $universe["is_default"]
+      "isDefault" => (bool) $universe["is_default"],
+      "plan" => $universe["plan"]
     ];
   }
 

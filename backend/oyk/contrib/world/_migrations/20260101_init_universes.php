@@ -29,6 +29,8 @@ $pdo->exec("CREATE TABLE IF NOT EXISTS world_universes (
     
     `visibility` tinyint NOT NULL DEFAULT 1,
 
+    `plan` ENUM('free', 'frontier', 'dominion') NOT NULL DEFAULT 'free',
+
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 

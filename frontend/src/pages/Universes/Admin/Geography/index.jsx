@@ -19,6 +19,7 @@ export default function OykUniverseAdminGeography() {
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [hasError, setHasError] = useState(null);
   const [hasErrorSubmit, setHasErrorSubmit] = useState(null);
+  const [universePlan, setUniversePlan] = useState("free");
   const [initGeo, setInitGeo] = useState([]);
   const [geo, setGeo] = useState([]);
   const [isModalZoneCreateOpen, setIsModalZoneCreateOpen] = useState(false);
@@ -32,6 +33,7 @@ export default function OykUniverseAdminGeography() {
       if (!r.ok || !r.geo) throw r;
       setGeo(r.geo);
       setInitGeo(r.geo);
+      setUniversePlan(r.plan);
     } catch (e) {
       if (e?.name === "AbortError") return;
       setHasError(t(e?.error) || t("An error occurred"));
@@ -122,7 +124,7 @@ export default function OykUniverseAdminGeography() {
           style={isLoadingSubmit ? { pointerEvents: "none", opacity: 0.5 } : {}}
         >
           {geo.length > 0 ? (
-            <OykGeoTree items={geo} setItems={setGeo} updateItems={fetchGeoData} />
+            <OykGeoTree items={geo} setItems={setGeo} updateItems={fetchGeoData} universePlan={universePlan} />
           ) : (
             <OykFeedback
               title={t("The world is empty")}

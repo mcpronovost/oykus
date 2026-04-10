@@ -7,8 +7,11 @@ import { useTranslation } from "@/services/translation";
 
 import { OykButton, OykCard, OykChip } from "@/components/ui";
 import OykModalZoneCreate from "./modals/ZoneCreate";
+import OykModalZoneEdit from "./modals/ZoneEdit";
 import OykModalSectorCreate from "./modals/SectorCreate";
 import OykModalSectorEdit from "./modals/SectorEdit";
+import OykModalDivisionCreate from "./modals/DivisionCreate";
+import OykModalDivisionEdit from "./modals/DivisionEdit";
 
 const ITEM_TYPE = "geo-node";
 
@@ -17,7 +20,7 @@ const PARENT_TYPE = {
   division: "sector",
 };
 
-export default function OykGeoTree({ items = [], setItems = () => {}, updateItems = () => {} }) {
+export default function OykGeoTree({ items = [], setItems = () => {}, updateItems = () => {}, universePlan = "free" }) {
   const { t } = useTranslation();
 
   const [isModalZoneCreateOpen, setIsModalZoneCreateOpen] = useState(false);
@@ -83,11 +86,7 @@ export default function OykGeoTree({ items = [], setItems = () => {}, updateItem
   return (
     <DndProvider backend={HTML5Backend}>
       <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-        <OykModalZoneCreate
-          isOpen={isModalZoneCreateOpen}
-          onClose={handleCloseModal}
-          position={roots.length}
-        />
+        <OykModalZoneCreate isOpen={isModalZoneCreateOpen} onClose={handleCloseModal} position={roots.length} />
         <OykGeoTreeDropline parentUid={null} position={0} moveNode={moveNode} items={items} />
         {roots.map((item, index) => (
           <Fragment key={item.uid}>
@@ -97,10 +96,13 @@ export default function OykGeoTree({ items = [], setItems = () => {}, updateItem
               moveNode={moveNode}
               items={items}
               updateItems={updateItems}
+              universePlan={universePlan}
             />
             <OykGeoTreeDropline parentUid={null} position={index + 1} moveNode={moveNode} items={items} />
             {roots.length - 1 === index ? (
-              <OykButton color="default" onClick={() => setIsModalZoneCreateOpen(true)}>{t("Create a new zone")}</OykButton>
+              <OykButton color="default" onClick={() => setIsModalZoneCreateOpen(true)}>
+                {t("Create a new zone")}
+              </OykButton>
             ) : null}
           </Fragment>
         ))}
@@ -109,12 +111,23 @@ export default function OykGeoTree({ items = [], setItems = () => {}, updateItem
   );
 }
 
-function OykGeoTreeNode({ item, childrenMap, moveNode, items, depth = 0, updateItems = () => {} }) {
+function OykGeoTreeNode({
+  item,
+  childrenMap,
+  moveNode,
+  items,
+  depth = 0,
+  updateItems = () => {},
+  universePlan = "free",
+}) {
   const { t } = useTranslation();
 
   const [isOpen, setIsOpen] = useState(true);
+  const [isModalZoneEditOpen, setIsModalZoneEditOpen] = useState(false);
   const [isModalSectorCreateOpen, setIsModalSectorCreateOpen] = useState(false);
   const [isModalSectorEditOpen, setIsModalSectorEditOpen] = useState(false);
+  const [isModalDivisionCreateOpen, setIsModalDivisionCreateOpen] = useState(false);
+  const [isModalDivisionEditOpen, setIsModalDivisionEditOpen] = useState(false);
 
   const children = childrenMap.get(item.uid) ?? [];
 
@@ -147,8 +160,11 @@ function OykGeoTreeNode({ item, childrenMap, moveNode, items, depth = 0, updateI
   );
 
   const handleCloseModal = (updated) => {
+    setIsModalZoneEditOpen(false);
     setIsModalSectorCreateOpen(false);
     setIsModalSectorEditOpen(false);
+    setIsModalDivisionCreateOpen(false);
+    setIsModalDivisionEditOpen(false);
     if (updated) {
       updateItems();
     }
@@ -157,20 +173,41 @@ function OykGeoTreeNode({ item, childrenMap, moveNode, items, depth = 0, updateI
   return (
     <>
       {item.type === "zone" && (
-        <OykModalSectorCreate
-          isOpen={isModalSectorCreateOpen}
-          onClose={handleCloseModal}
-          zoneId={item.id}
-          position={children.length}
-        />
+        <>
+          <OykModalZoneEdit isOpen={isModalZoneEditOpen} onClose={handleCloseModal} zone={item} />
+          <OykModalSectorCreate
+            isOpen={isModalSectorCreateOpen}
+            onClose={handleCloseModal}
+            zoneId={item.id}
+            position={children.length}
+          />
+        </>
       )}
       {item.type === "sector" && (
-        <OykModalSectorEdit
-          isOpen={isModalSectorEditOpen}
-          onClose={handleCloseModal}
-          sector={item}
-          zoneId={item.parentId}
-        />
+        <>
+          <OykModalSectorEdit
+            isOpen={isModalSectorEditOpen}
+            onClose={handleCloseModal}
+            sector={item}
+            zoneId={item.parentId}
+          />
+          <OykModalDivisionCreate
+            isOpen={isModalDivisionCreateOpen}
+            onClose={handleCloseModal}
+            sectorId={item.id}
+            position={children.length}
+          />
+        </>
+      )}
+      {item.type === "division" && (
+        <>
+          <OykModalDivisionEdit
+            isOpen={isModalDivisionEditOpen}
+            onClose={handleCloseModal}
+            division={item}
+            sectorId={item.parentId}
+          />
+        </>
       )}
       <div style={{ marginLeft: depth * 24 }}>
         <OykCard
@@ -229,13 +266,27 @@ function OykGeoTreeNode({ item, childrenMap, moveNode, items, depth = 0, updateI
               ) : null}
             </div>
 
-            {item.type === "sector" && (
-              <OykButton small plain icon={Pencil} onClick={() => setIsModalSectorEditOpen(true)} />
-            )}
             {item.type === "zone" && (
-              <OykButton small plain icon={Plus} onClick={() => setIsModalSectorCreateOpen(true)} />
+              <>
+                <OykButton small plain icon={Pencil} onClick={() => setIsModalZoneEditOpen(true)} />
+                <OykButton small plain icon={Plus} onClick={() => setIsModalSectorCreateOpen(true)} />
+              </>
             )}
-            {item.type === "sector" && <OykButton small plain icon={Plus} disabled />}
+            {item.type === "sector" && (
+              <>
+                <OykButton small plain icon={Pencil} onClick={() => setIsModalSectorEditOpen(true)} />
+                {["frontier", "dominion"].includes(universePlan) ? (
+                  <OykButton small plain icon={Plus} onClick={() => setIsModalDivisionCreateOpen(true)} />
+                ) : (
+                  <OykButton small plain icon={Plus} disabled />
+                )}
+              </>
+            )}
+            {item.type === "division" && (
+              <>
+                <OykButton small plain icon={Pencil} onClick={() => setIsModalDivisionEditOpen(true)} />
+              </>
+            )}
           </div>
         </OykCard>
 
@@ -256,6 +307,7 @@ function OykGeoTreeNode({ item, childrenMap, moveNode, items, depth = 0, updateI
                   items={items}
                   depth={depth + 1}
                   updateItems={updateItems}
+                  universePlan={universePlan}
                 />
                 <OykGeoTreeDropline parentUid={item.uid} position={index + 1} moveNode={moveNode} items={items} />
               </Fragment>
