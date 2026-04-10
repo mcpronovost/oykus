@@ -33,9 +33,9 @@ export default function CoreNavbarMenuMain() {
         <OykCoreNavbarNavItem
           icon={Earth}
           text={currentUniverse.modules.game.settings.display_name || t("Game")}
-          href="universe-game"
+          href="universe"
           params={{ universeSlug: currentUniverse.slug }}
-          prefix="universe-game"
+          prefix="universe"
         />
       ) : null}
     </ul>

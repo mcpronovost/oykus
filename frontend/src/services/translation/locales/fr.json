@@ -300,12 +300,17 @@
   "Someone": "Quelqu'un",
   "See and manage your alerts": "Voir et gérer vos alertes",
   "Your Assets": "Vos actifs",
-  "Manage your operations, productions, and logistical capacities": "Gérez vos exploitations, vos productions et vos capacités logistiques.",
+  "Manage your exploitations, productions, and logistical capacities": "Gérez vos exploitations, vos productions et vos capacités logistiques.",
   "Geography": "Géographie",
   "Organize world structure and manage locations": "Organiser la structure du monde et gérer les lieux",
   "The world is empty": "Le monde est vide",
   "Start by creating your first geographic zone": "Commencez en créant votre première zone géographique.",
   "Create a new zone": "Créer une nouvelle zone",
   "Create a new sector": "Créer un nouveau secteur",
-  "Create a new division": "Créer une nouvelle division"
+  "Create a new division": "Créer une nouvelle division",
+  "This place is empty": "Cet endroit est vide",
+  "Silence fills these halls": "Le silence règne en ces lieux",
+  "Will you be the first to break the stillness": "Serez-vous le premier à briser le calme ?",
+  "Open a new chapter": "Ouvrir un nouveau chapitre",
+  "New chapter": "Nouveau chapitre"
 }

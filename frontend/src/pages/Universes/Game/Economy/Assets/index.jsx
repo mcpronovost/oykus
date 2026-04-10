@@ -31,7 +31,7 @@ export default function OykUniverseGameEconomyAssets() {
     {
       id: "assets",
       title: t("Your Assets"),
-      description: t("Manage your operations, productions, and logistical capacities"),
+      description: t("Manage your exploitations, productions, and logistical capacities"),
       Icon: Wallet,
       links: [
         {
@@ -41,7 +41,7 @@ export default function OykUniverseGameEconomyAssets() {
         },
         {
           name: t("Exploitations"),
-          routeName: "universe-game-economy-assets-operations",
+          routeName: "universe-game-economy-assets-exploitations",
           params: { universeSlug: params?.universeSlug },
         },
         {
@@ -72,7 +72,7 @@ export default function OykUniverseGameEconomyAssets() {
     },
   ];
 
-  const operations = [
+  const exploitations = [
     {
       id: 1,
       name: "Mine du domaine Kur",
@@ -128,7 +128,7 @@ export default function OykUniverseGameEconomyAssets() {
           <OykGridMain>
             <section>
               <OykGridRow wrap>
-                {operations.map((item) => (
+                {exploitations.map((item) => (
                   <OykGridCol col="33" xl="50" lg="100">
                     <OykCard>
                       <h3>{item.name}</h3>

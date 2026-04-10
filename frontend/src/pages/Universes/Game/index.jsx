@@ -19,7 +19,7 @@ import {
   OykLink,
   OykLoading,
 } from "@/components/ui";
-import OykUniverseGameZoneSectorCard from "./World/ZoneSectorCard";
+import OykUniverseGameSectorCard from "./World/SectorCard";
 
 export default function OykUniverseGame() {
   const { isAuth, currentUser } = useAuth();
@@ -107,7 +107,7 @@ export default function OykUniverseGame() {
                       <OykGridRow wrap className="oyk-game-zone-sectors">
                         {zone.sectors.map((sector) => (
                           <OykGridCol key={sector.id} col={sector.col}>
-                            <OykUniverseGameZoneSectorCard universe={currentUniverse} zone={zone} sector={sector} />
+                            <OykUniverseGameSectorCard universe={currentUniverse} zone={zone} sector={sector} />
                           </OykGridCol>
                         ))}
                       </OykGridRow>

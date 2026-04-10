@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Frown } from "lucide-react";
+import { Anvil, Barrel, Frown, Handshake, Pickaxe } from "lucide-react";
 
 import { api } from "@/services/api";
 import { useAuth } from "@/services/auth";
@@ -11,6 +11,7 @@ import AppNotAuthorized from "@/components/core/AppNotAuthorized";
 import {
   OykAvatar,
   OykBanner,
+  OykButton,
   OykCard,
   OykFeedback,
   OykGrid,
@@ -77,66 +78,109 @@ export default function OykUniverseGame() {
       ) : !hasError ? (
         <>
           <article className="oyk-game-sector">
-            <OykHeading title={sector.name} description={sector.description} showBreadcrumbs />
-            {sector.divisions?.length > 0 ? (
-              <OykGrid>
+            <OykHeading
+              title={sector.name}
+              description={sector.description}
+              showBreadcrumbs
+              actions={
+                <>
+                  <OykButton icon={Pickaxe} outline>{t("Exploitations")}</OykButton>
+                  <OykButton icon={Anvil} outline>{t("Productions")}</OykButton>
+                  <OykButton icon={Handshake} outline>{t("Services")}</OykButton>
+                  <OykButton icon={Barrel} outline>{t("Storages")}</OykButton>
+                </>
+              }
+            />
+            <OykGrid>
+              {sector.divisions?.length > 0 ? (
                 <OykGridRow wrap className="oyk-game-zone-sectors">
                   {sector.divisions.map((division) => (
                     <OykGridCol key={division.id} col={division.col}>
-                      <OykUniverseGameSectorCard universe={currentUniverse} zone={{ id: sector.zone_id }} sector={sector} division={division} />
+                      <OykUniverseGameSectorCard
+                        universe={currentUniverse}
+                        zone={{ id: sector.zone_id }}
+                        sector={sector}
+                        division={division}
+                      />
                     </OykGridCol>
                   ))}
                 </OykGridRow>
-              </OykGrid>
-            ) : null}
-            <OykGrid>
-              {sector.chapters?.length > 0 ? (
-                <OykGridRow wrap>
-                  {sector.chapters?.map((t, index) => (
-                    <OykGridCol
-                      col={
-                        chaptersModulo === 3 && index < 3
-                          ? "33"
-                          : chaptersModulo === 2 && index < 2
-                            ? "50"
-                            : chaptersModulo === 1 && index < 1
-                              ? "100"
-                              : "25"
-                      }
-                      md={(chaptersModulo === 1 || chaptersModulo === 3) && index < 1 ? "100" : "50"}
-                    >
-                      <OykCard fullCenter alignSpace nop>
-                        <header>
-                          <OykBanner
-                            height={104}
-                            avatarSrc={currentUser.avatar}
-                            avatarSize={100}
-                            avatarBorderSize={8}
-                            avatarTop={-10}
-                            coverSrc={index === 1 ? currentUser.cover : currentUser.avatar}
-                            coverHeight={82}
-                            coverFilter="author"
-                          />
-                          <small style={{ opacity: 0.6 }}>3 novembre 1989</small>
-                        </header>
-                        <h3
-                          style={{
-                            fontSize: "1rem",
-                            fontWeight: "600",
-                            lineHeight: "1.2",
-                            padding: "8px",
-                          }}
+              ) : null}
+              <hr />
+              <OykGridRow>
+                <OykGridCol col="75">
+                  {sector.chapters?.length > 0 ? (
+                    <OykGridRow wrap>
+                      {sector.chapters?.map((t, index) => (
+                        <OykGridCol
+                          col={
+                            chaptersModulo === 3 && index < 3
+                              ? "33"
+                              : chaptersModulo === 2 && index < 2
+                                ? "50"
+                                : chaptersModulo === 1 && index < 1
+                                  ? "100"
+                                  : "25"
+                          }
+                          md={(chaptersModulo === 1 || chaptersModulo === 3) && index < 1 ? "100" : "50"}
                         >
-                          {index === 1 ? "Le succès est doux mais il a, d'ordinaire, une odeur de sueur" : "AAA"}
-                        </h3>
-                        <footer>(footer)</footer>
+                          <OykCard fullCenter alignSpace nop>
+                            <header>
+                              <OykBanner
+                                height={104}
+                                avatarSrc={currentUser.avatar}
+                                avatarSize={100}
+                                avatarBorderSize={8}
+                                avatarTop={-10}
+                                coverSrc={index === 1 ? currentUser.cover : currentUser.avatar}
+                                coverHeight={82}
+                                coverFilter="author"
+                              />
+                              <small style={{ opacity: 0.6 }}>3 novembre 1989</small>
+                            </header>
+                            <h3
+                              style={{
+                                fontSize: "1rem",
+                                fontWeight: "600",
+                                lineHeight: "1.2",
+                                padding: "8px",
+                              }}
+                            >
+                              {index === 1 ? "Le succès est doux mais il a, d'ordinaire, une odeur de sueur" : "AAA"}
+                            </h3>
+                            <footer>(footer)</footer>
+                          </OykCard>
+                        </OykGridCol>
+                      ))}
+                    </OykGridRow>
+                  ) : (
+                    <OykFeedback
+                      title={t("Silence fills these halls")}
+                      message={t("Will you be the first to break the stillness")}
+                      showIcon={false}
+                      ghost
+                    >
+                      <OykButton color="primary">{t("Open a new chapter")}</OykButton>
+                    </OykFeedback>
+                  )}
+                </OykGridCol>
+                <OykGridCol col="25">
+                  <OykGridRow wrap>
+                    <OykGridCol>
+                      <OykButton color="primary" block style={{ padding: "16px" }}>
+                        {t("New chapter")}
+                      </OykButton>
+                    </OykGridCol>
+                    <OykGridCol>
+                      <OykCard>
+                        <OykButton block small outline>
+                          {t("See all quests")}
+                        </OykButton>
                       </OykCard>
                     </OykGridCol>
-                  ))}
-                </OykGridRow>
-              ) : (
-                <OykFeedback title={t("This sector is empty")} showIcon={false} ghost />
-              )}
+                  </OykGridRow>
+                </OykGridCol>
+              </OykGridRow>
             </OykGrid>
           </article>
         </>

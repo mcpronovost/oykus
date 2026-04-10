@@ -1,7 +1,7 @@
 <?php
 global $pdo;
 
-$pdo->exec("CREATE TABLE IF NOT EXISTS game_economy_operations_core (
+$pdo->exec("CREATE TABLE IF NOT EXISTS game_economy_exploitations_core (
     `id` int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `universe_id` int UNSIGNED NOT NULL,
     
@@ -24,7 +24,7 @@ $pdo->exec("CREATE TABLE IF NOT EXISTS game_economy_operations_core (
     FOREIGN KEY (salary_currency_id) REFERENCES game_currencies(id) ON DELETE RESTRICT
 ) ENGINE=InnoDB;");
 
-$pdo->exec("CREATE TABLE IF NOT EXISTS game_economy_operations (
+$pdo->exec("CREATE TABLE IF NOT EXISTS game_economy_exploitations (
     `id` int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `character_id` int UNSIGNED NOT NULL,
     `core_id` int UNSIGNED NOT NULL,
@@ -53,5 +53,5 @@ $pdo->exec("CREATE TABLE IF NOT EXISTS game_economy_operations (
     INDEX `idx_location` (`location_type`, `location_id`),
 
     FOREIGN KEY (character_id) REFERENCES world_characters(id) ON DELETE CASCADE,
-    FOREIGN KEY (core_id) REFERENCES game_economy_operations_core(id) ON DELETE CASCADE
+    FOREIGN KEY (core_id) REFERENCES game_economy_exploitations_core(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;");

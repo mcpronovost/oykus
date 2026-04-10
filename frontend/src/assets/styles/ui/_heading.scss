@@ -31,7 +31,8 @@
   }
 
   &-content {
-    flex: 1;
+    flex: 1 1 auto;
+    min-width: 30%;
 
     &::after {
       content: "";
@@ -88,7 +89,9 @@
   &-actions {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
+    justify-content: flex-end;
     gap: 16px;
   }
 

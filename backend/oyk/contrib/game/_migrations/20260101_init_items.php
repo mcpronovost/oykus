@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS game_items (
     `id` int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `core_id` int UNSIGNED NOT NULL,
 
-    `owner_type` ENUM('character','operation','production','service','storage','transit') NOT NULL,
+    `owner_type` ENUM('character','exploitation','production','service','storage','transit') NOT NULL,
     `owner_id` int UNSIGNED NOT NULL,
     
     `quantity` decimal(12,4) NOT NULL DEFAULT 1.0000,
