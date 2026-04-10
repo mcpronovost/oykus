@@ -575,10 +575,27 @@ class GeoService {
     try {
       $qry = $this->pdo->prepare("SELECT
           s.id,
+          s.zone_id,
           s.name,
           s.slug,
           s.description,
-          s.visibility
+          s.visibility,
+
+          COALESCE((
+            SELECT JSON_ARRAYAGG(
+              JSON_OBJECT(
+                'id', d.id,
+                'name', d.name,
+                'slug', d.slug,
+                'description', d.description,
+                'cover', d.cover,
+                'position', d.position,
+                'col', d.col
+              )
+            )
+            FROM world_geo_divisions d
+            WHERE d.sector_id = s.id
+          ), JSON_ARRAY()) AS divisions
 
         FROM world_geo_sectors s
         WHERE s.universe_id = ? AND s.id = ?
@@ -587,11 +604,7 @@ class GeoService {
       $qry->execute([$universeId, $sectorId]);
 
       $row = $qry->fetch();
-
-      /*$rows = array_map(function ($r) {
-        $r["sectors"] = json_decode($r["sectors"], TRUE);
-        return $r;
-      }, $qry->fetch());*/
+      $row["divisions"] = json_decode($row["divisions"], TRUE);
     }
     catch (Exception $e) {
       throw new NotFoundException("Geographic sector not found" . $e->getMessage());

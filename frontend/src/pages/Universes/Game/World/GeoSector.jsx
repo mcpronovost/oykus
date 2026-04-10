@@ -21,6 +21,7 @@ import {
   OykLoading,
 } from "@/components/ui";
 import { OykGameHeader } from "@/components/common";
+import OykUniverseGameSectorCard from "./SectorCard";
 
 export default function OykUniverseGame() {
   const { isAuth, currentUser } = useAuth();
@@ -39,6 +40,7 @@ export default function OykUniverseGame() {
     try {
       const r = await api.get(`/game/u/${params.universeSlug}/sectors/${params.sectorId}/`, signal ? { signal } : {});
       if (!r.ok || !r.sector) throw r;
+      routeTitle(r.sector.name);
       setSector(r.sector);
       if (r.sector.chapters) setChaptersModulo(r.sector.chapters.length % 4);
     } catch (e) {
@@ -55,8 +57,7 @@ export default function OykUniverseGame() {
     if (!currentUniverse || (currentUniverse && !currentUniverse.modules?.game?.active)) return;
     const controller = new AbortController();
 
-    routeTitle(currentUniverse.modules.game.settings.display_name || t("Game"));
-    fetchSectorData();
+    fetchSectorData(controller.signal);
 
     return () => {
       controller.abort();
@@ -77,6 +78,17 @@ export default function OykUniverseGame() {
         <>
           <article className="oyk-game-sector">
             <OykHeading title={sector.name} description={sector.description} showBreadcrumbs />
+            {sector.divisions?.length > 0 ? (
+              <OykGrid>
+                <OykGridRow wrap className="oyk-game-zone-sectors">
+                  {sector.divisions.map((division) => (
+                    <OykGridCol key={division.id} col={division.col}>
+                      <OykUniverseGameSectorCard universe={currentUniverse} zone={{ id: sector.zone_id }} sector={sector} division={division} />
+                    </OykGridCol>
+                  ))}
+                </OykGridRow>
+              </OykGrid>
+            ) : null}
             <OykGrid>
               {sector.chapters?.length > 0 ? (
                 <OykGridRow wrap>

@@ -28,6 +28,16 @@ export const UNIVERSES_GAME_ROUTES = [
               fr: "s{sectorId}",
               en: "s{sectorId}",
             },
+            children: [
+              {
+                name: "universe-game-division",
+                component: React.lazy(() => import("../../../pages/Universes/Game/World/GeoSector")),
+                paths: {
+                  fr: "d{divisionId}",
+                  en: "d{divisionId}",
+                },
+              },
+            ],
           },
         ]
       },

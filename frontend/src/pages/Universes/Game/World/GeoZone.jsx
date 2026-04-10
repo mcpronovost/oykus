@@ -21,7 +21,7 @@ import {
   OykLoading,
 } from "@/components/ui";
 import { OykGameHeader } from "@/components/common";
-import OykUniverseGameZoneSectorCard from "./ZoneSectorCard";
+import OykUniverseGameSectorCard from "./SectorCard";
 
 export default function OykUniverseGameZone() {
   const { isAuth, currentUser } = useAuth();
@@ -39,6 +39,7 @@ export default function OykUniverseGameZone() {
     try {
       const r = await api.get(`/game/u/${params.universeSlug}/zones/${params.zoneId}/`, signal ? { signal } : {});
       if (!r.ok || !r.zone) throw r;
+      routeTitle(r.zone.name);
       setZone(r.zone);
     } catch (e) {
       if (e?.name === "AbortError") return;
@@ -54,8 +55,7 @@ export default function OykUniverseGameZone() {
     if (!currentUniverse || (currentUniverse && !currentUniverse.modules?.game?.active)) return;
     const controller = new AbortController();
 
-    routeTitle(currentUniverse.modules.game.settings.display_name || t("Game"));
-    fetchZoneData();
+    fetchZoneData(controller.signal);
 
     return () => {
       controller.abort();
@@ -81,7 +81,7 @@ export default function OykUniverseGameZone() {
                 <OykGridRow wrap className="oyk-game-zone-sectors">
                   {zone.sectors.map((sector) => (
                     <OykGridCol key={sector.id} col={sector.col}>
-                      <OykUniverseGameZoneSectorCard universe={currentUniverse} zone={zone} sector={sector} />
+                      <OykUniverseGameSectorCard universe={currentUniverse} zone={zone} sector={sector} />
                     </OykGridCol>
                   ))}
                 </OykGridRow>
