@@ -2,7 +2,7 @@
   width: 100%;
   max-width: 1200px;
   padding: 0 32px;
-  margin: 32px auto;
+  margin: 16px auto;
 
   @media (max-width: 1023px) {
     padding: 0 16px;
@@ -22,7 +22,7 @@
     flex-wrap: nowrap;
     gap: 0;
     width: calc(100% + 16px);
-    margin: -8px;
+    margin: 0 -8px;
 
     &-wrap {
       flex-wrap: wrap;
