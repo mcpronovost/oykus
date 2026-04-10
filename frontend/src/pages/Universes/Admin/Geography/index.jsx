@@ -116,12 +116,12 @@ export default function OykUniverseAdminGeography() {
       {hasErrorSubmit && <OykFeedback title={hasErrorSubmit || t("An error occurred")} variant="danger" ghost />}
       {hasError ? (
         <OykFeedback title={hasError || t("An error occurred")} variant="danger" ghost />
-      ) : isLoading ? (
+      ) : ((!geo || geo.length <= 0) && isLoading) ? (
         <OykLoading />
       ) : (
         <section
           className="oyk-universe-admin-geography"
-          style={isLoadingSubmit ? { pointerEvents: "none", opacity: 0.5 } : {}}
+          style={isLoading || isLoadingSubmit ? { pointerEvents: "none", opacity: 0.5 } : {}}
         >
           {geo.length > 0 ? (
             <OykGeoTree items={geo} setItems={setGeo} updateItems={fetchGeoData} universePlan={universePlan} />
