@@ -1,0 +1,65 @@
+services:
+  postgres:
+    container_name: oykus-db
+    image: postgres:18-alpine
+    env_file: .env
+    networks:
+      - oykus-network
+    volumes:
+      - postgres-data:/var/lib/postgresql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    container_name: oykus-backend
+    image: oykus-backend:development
+    build:
+      context: ./backend
+      target: development
+    env_file: .env
+    networks:
+      - oykus-network
+    volumes:
+      - ./backend:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    container_name: oykus-frontend
+    image: oykus-frontend:development
+    build:
+      context: ./frontend
+      target: development
+    env_file: .env
+    networks:
+      - oykus-network
+    volumes:
+      - ./frontend:/app
+    depends_on:
+      - backend
+
+  nginx:
+    container_name: oykus-nginx
+    image: nginx:alpine
+    networks:
+      - oykus-network
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+      - frontend
+
+volumes:
+  postgres-data:
+
+networks:
+  oykus-network:
+    name: oykus-network
