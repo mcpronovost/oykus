@@ -4,8 +4,6 @@ type OykProvidersProps = {
   children: ReactNode;
 };
 
-function OykProviders({ children }: OykProvidersProps) {
+export default function OykProviders({ children }: OykProvidersProps) {
   return children;
 }
-
-export { OykProviders };
