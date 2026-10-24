@@ -90,7 +90,7 @@ Client configuration uses names that start with `VITE_` in `.env`. During local 
 Lint the frontend:
 
 ```
-docker compose exec frontend npm run lint
+docker compose exec oykus-frontend npm run lint
 ```
 
 ## Production
