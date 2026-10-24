@@ -1,8 +1,8 @@
 :root {
-  --oyk-core-bg: #1f1f1f;
-  --oyk-core-fg: #c4c4c4;
+  --oyk-core-bg: #242424;
+  --oyk-core-fg: #C4C4C4;
 
-  --oyk-card-bg: #181818;
-  --oyk-card-fg: #c4c4c4;
-  --oyk-card-divider: #2b2b2b;
+  --oyk-card-bg: #1B1B1B;
+  --oyk-card-fg: #ABABAB;
+  --oyk-card-divider: #292929;
 }

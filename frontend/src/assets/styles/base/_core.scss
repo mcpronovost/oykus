@@ -27,10 +27,10 @@ body {
 }
 
 .oyk-core-nav {
-  background-color: #1b1b1b;
-  border-right: 1px solid #212121;
+  background-color: var(--oyk-card-bg);
+  border-right: 1px solid var(--oyk-card-divider);
   box-shadow: 8px 0 16px 0 rgba(0, 0, 0, 0.2);
-  color: var(--oyk-core-fg);
+  color: var(--oyk-card-fg);
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -42,15 +42,15 @@ body {
 
 .oyk-core-main {
   flex: 1;
-  background-color: #252525;
+  background-color: var(--oyk-core-bg);
   color: var(--oyk-core-fg);
   display: block;
 
   &-header {
-    background-color: #1b1b1b;
-    border-bottom: 1px solid #212121;
+    background-color: var(--oyk-card-bg);
+    border-bottom: 1px solid var(--oyk-card-divider);
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-    color: var(--oyk-core-fg);
+    color: var(--oyk-card-fg);
     display: block;
     padding: 64px 32px;
   }
