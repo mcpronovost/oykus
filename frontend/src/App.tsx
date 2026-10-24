@@ -1,6 +1,9 @@
-import { OykCard } from "./components/ui";
+import { useTranslation } from "@/services/translation";
+import { OykCard } from "@/components/ui";
 
 export default function OykApp() {
+  const { t } = useTranslation();
+
   return (
     <div className="oyk-core">
       <nav className="oyk-core-nav">
@@ -8,7 +11,7 @@ export default function OykApp() {
         <span>bbb</span>
       </nav>
       <main className="oyk-core-main">
-        <header className="oyk-core-main-header">Hello World!</header>
+        <header className="oyk-core-main-header">{t("hello")}</header>
         <div className="oyk-tracker">
           <div className="oyk-tracker-kanban">
             <section className="oyk-tracker-kanban-status">
