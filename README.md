@@ -1,8 +1,27 @@
-# Oykus
+![Oykus](.github/assets/banner.jpg "Oykus")
 
-Oykus is a project manager and planner. Plugins are opt-in for writers, authors, storytellers, game masters, and game developers. Planned plugins include kanban, blog, forum, tickets, awards, and collections. This repository is the local and production stack. Plugins are not implemented yet.
+<p align="center">
+  <br/>
+  <a href="https://github.com/mcpronovost/oykus">Oykus</a> &mdash; where every player is both author and adventurer
+  <br/><br/>
+</p>
 
-The GitHub repository name is `oykus`.
+<div align="center">
+
+[![Version](https://img.shields.io/badge/Version-0.4.0-blue.svg)](./CHANGELOG.md)
+[![License](https://img.shields.io/badge/License-BSD--3--Clause-red.svg)](./LICENSE)
+[![made in Québec](https://img.shields.io/badge/Créé%20au-Québec-003399)](#)
+
+</div>
+
+Oykus is an **experimental RPG project** blending story-creation, planning and management, with gameplay — letting players shape narratives while they play.
+
+- **Backend:** Express / Prisma
+- **Frontend:** Vite / React
+
+> _This project is a work in progress!_
+
+---
 
 ## Layout
 
