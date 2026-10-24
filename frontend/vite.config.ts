@@ -9,6 +9,11 @@ export default defineConfig({
       presets: [reactCompilerPreset()],
     }),
   ],
+  resolve: {
+    alias: {
+      "@": new URL("./src", import.meta.url).pathname,
+    },
+  },
   server: {
     host: "0.0.0.0",
     port: 5173,
@@ -18,6 +23,13 @@ export default defineConfig({
     },
     hmr: {
       clientPort: 8080,
+    },
+    proxy: {
+      "/api": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
     },
   },
 });
