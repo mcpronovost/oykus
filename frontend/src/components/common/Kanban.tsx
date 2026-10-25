@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { IconMessages } from "@tabler/icons-react";
-import { OykCard, OykChip, OykDivider, OykProgressBar } from "@/components/ui";
+import { IconDotsVertical, IconMessages, IconSquareFilled } from "@tabler/icons-react";
+import { OykButton, OykCard, OykChip, OykDivider, OykProgressBar } from "@/components/ui";
 
 const TEST_DATA = [
   {
@@ -78,9 +78,18 @@ const OykKanban = () => {
       {statuses.map((status) => (
         <section key={status} className="oyk-kanban-status">
           <header className="oyk-kanban-status-header">
-            <h2 className="oyk-kanban-status-header-title">
-              {status} ({tasks.filter((task) => task.status === status).length})
-            </h2>
+            <div className="oyk-kanban-status-header-content">
+              <IconSquareFilled size={12} />
+              <h2 className="oyk-kanban-status-header-content-title">
+                {status}
+              </h2>
+              <div className="oyk-kanban-status-header-content-count">
+                ({tasks.filter((task) => task.status === status).length})
+              </div>
+            </div>
+            <div className="oyk-kanban-status-header-actions">
+              <OykButton icon={IconDotsVertical} />
+            </div>
           </header>
           <ol className="oyk-kanban-status-list">
             {tasks

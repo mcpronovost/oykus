@@ -2,9 +2,11 @@ import { oykClass } from "@/utils/formatters";
 
 interface OykChipProps {
   children: React.ReactNode;
-  variant?: "default" | "pill";
+  variant?: "default" | "pill" | "outline" | "ghost";
   color?: "default" | "accent";
+  customColor?: string;
   size?: "sm" | "md" | "lg";
+  clickable?: boolean;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -13,7 +15,9 @@ export default function OykChip({
   children,
   variant = "default",
   color = "default",
+  customColor,
   size = "md",
+  clickable = false,
   className,
   style,
 }: OykChipProps) {
@@ -24,11 +28,16 @@ export default function OykChip({
         `oyk-chip-variant--${variant}`,
         `oyk-chip-size--${size}`,
         `oyk-chip-color--${color}`,
+        clickable && "oyk-chip-clickable",
         className,
       )}
-      style={style}
+      style={{
+        ...style,
+        ...(customColor && { color: customColor }),
+      }}
     >
-      {children}
+      <div className="oyk-chip-bg" />
+      <div className="oyk-chip-content">{children}</div>
     </div>
   );
 }

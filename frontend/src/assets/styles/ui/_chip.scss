@@ -1,20 +1,88 @@
 .oyk-chip {
-  background-color: var(--oyk-c-accent-faint);
-  border-radius: 4px;
-  color: var(--oyk-c-accent);
+  background: transparent;
+  border-radius: 6px;
+  color: var(--oyk-card-fg);
   font-size: 0.75rem;
   font-weight: 500;
   line-height: 1;
   white-space: nowrap;
+  overflow: hidden;
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 0.75rem;
-  padding: 4px 8px;
+  user-select: none;
+
+  &-content {
+    border-radius: 6px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0.75rem;
+    z-index: 1;
+    padding: 4px 8px;
+  }
+
+  &-clickable {
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+
+      &:active {
+        opacity: 0.6;
+      }
+    }
+  }
 
   &-variant {
     &--pill {
       border-radius: 9999px;
     }
+
+    &--outline {
+      &::before {
+        content: "";
+        border: 1px solid currentColor;
+        border-radius: 6px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 0.5;
+      }
+    }
+
+    &--ghost {
+      &::before {
+        content: "";
+        border: 1px dashed currentColor;
+        border-radius: 6px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 0.5;
+      }
+    }
+  }
+
+  &-color {
+    &--accent {
+      color: var(--oyk-c-accent);
+    }
+  }
+
+  &-bg {
+    background-color: currentColor;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.14;
   }
 }

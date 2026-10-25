@@ -1,3 +1,4 @@
+export { OykButton } from "./Button";
 export { default as OykCard } from "./Card";
 export { default as OykChip } from "./Chip";
 export { default as OykDivider } from "./Divider";
