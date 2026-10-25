@@ -1,0 +1,21 @@
+.oyk-divider {
+  background: var(--oyk-card-divider);
+  border: none;
+  border-radius: 9999px;
+  height: 2px;
+  padding: 0;
+  margin: 16px 0;
+
+  &-variant {
+    &--default {
+      background: var(--oyk-card-divider);
+    }
+    &--subtle {
+      background: var(--oyk-card-bg-subtle);
+    }
+  }
+
+  &-nop {
+    margin: 0;
+  }
+}

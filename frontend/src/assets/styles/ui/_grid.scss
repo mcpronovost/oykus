@@ -1,0 +1,45 @@
+$oyk-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+);
+
+.oyk-grid {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  max-width: 1472px;
+  padding: 0 16px;
+  margin: 0 auto;
+
+  &-row {
+    display: grid;
+    grid-template-columns: repeat(24, minmax(0, 1fr));
+    gap: 16px;
+    margin: 16px 0;
+  }
+
+  &-col {
+    box-sizing: border-box;
+    grid-column: span 24;
+    grid-column-start: auto;
+  }
+
+  @for $i from 1 through 24 {
+    .oyk-grid-col-size--#{$i} {
+      grid-column-end: span $i;
+    }
+  }
+
+  @each $bp, $width in $oyk-breakpoints {
+    @container oyk-main (min-width: #{$width}) {
+      @for $i from 1 through 24 {
+        .oyk-grid-col-size--#{$bp}-#{$i} {
+          grid-column-end: span $i;
+        }
+      }
+    }
+  }
+}

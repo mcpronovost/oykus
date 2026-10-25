@@ -1,8 +1,22 @@
 :root {
+  --oyk-c-s: 50%;
+  --oyk-c-l: 50%;
+
+  --oyk-h-accent: 48;
+  --oyk-c-accent: hsl(var(--oyk-h-accent), var(--oyk-c-s), var(--oyk-c-l));
+  --oyk-c-accent-hover: hsl(var(--oyk-h-accent), calc(var(--oyk-c-s) + 10%), calc(var(--oyk-c-l) + 10%));
+  --oyk-c-accent-subtle: hsl(var(--oyk-h-accent), calc(var(--oyk-c-s) - 10%), calc(var(--oyk-c-l) - 10%));
+  --oyk-c-accent-muted: hsl(var(--oyk-h-accent), calc(var(--oyk-c-s) - 20%), calc(var(--oyk-c-l) - 25%));
+  --oyk-c-accent-faint: hsl(var(--oyk-h-accent), calc(var(--oyk-c-s) - 30%), calc(var(--oyk-c-l) - 35%));
+
   --oyk-core-bg: #242424;
   --oyk-core-fg: #C4C4C4;
 
   --oyk-card-bg: #1B1B1B;
+  --oyk-card-bg-subtle: #202020;
   --oyk-card-fg: #ABABAB;
+  --oyk-card-fg-subtle: #7A7A7A;
+  --oyk-card-fg-muted: #5A5A5A;
+  --oyk-card-fg-faint: #3A3A3A;
   --oyk-card-divider: #292929;
 }

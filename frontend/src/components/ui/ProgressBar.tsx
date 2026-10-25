@@ -5,7 +5,7 @@ interface OykProgressBarProps {
 export default function OykProgressBar({ progress }: OykProgressBarProps) {
   return (
     <div className="oyk-progress-bar">
-      <div className="oyk-progress-bar-fill" style={{ width: `${progress * 100}%` }}></div>
+      <div className="oyk-progress-bar-fill" style={{ width: `${progress}%` }}></div>
     </div>
   );
 }

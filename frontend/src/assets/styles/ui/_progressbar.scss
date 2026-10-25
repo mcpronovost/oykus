@@ -1,0 +1,18 @@
+.oyk-progress-bar {
+  background-color: var(--oyk-card-bg-subtle);
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  height: 4px;
+  width: 100%;
+
+  &-fill {
+    background-color: var(--oyk-c-accent-subtle);
+    background: linear-gradient(to right, var(--oyk-c-accent-subtle), var(--oyk-c-accent));
+    border-radius: 4px;
+    height: 100%;
+  }
+}

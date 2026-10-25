@@ -5,6 +5,10 @@
 
 // UI
 @use "./ui/card" as ui-card;
+@use "./ui/chip" as ui-chip;
+@use "./ui/divider" as ui-divider;
+@use "./ui/grid" as ui-grid;
+@use "./ui/progressbar" as ui-progressbar;
 
 // Common
 @use "./common/kanban" as common-kanban;
