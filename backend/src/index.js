@@ -1,23 +1,36 @@
-import express from "express";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../prisma/db/client.ts";
-
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL,
-});
-const prisma = new PrismaClient({ adapter });
-const app = express();
-
-app.get("/api/health", async (req, res) => {
-  await prisma.$queryRaw`SELECT 1`;
-  res.json({ ok: true });
-});
-
-app.use((error, req, res, next) => {
-  void next;
-  res.status(500).json({ ok: false });
-});
+import { createApp } from "./app.js";
+import { prisma } from "./shared/prisma.js";
 
 const port = Number(process.env.PORT ?? 3000);
+const server = createApp().listen(port, "0.0.0.0");
 
-app.listen(port, "0.0.0.0");
+server.on("error", (error) => {
+  console.error(error);
+  process.exit(1);
+});
+
+let shuttingDown = false;
+
+function shutdown() {
+  if (shuttingDown) {
+    return;
+  }
+  shuttingDown = true;
+
+  // Force exit if connections refuse to close
+  setTimeout(() => process.exit(1), 10_000).unref();
+
+  server.close(() => {
+    prisma.$disconnect().then(
+      () => process.exit(0),
+      (error) => {
+        console.error(error);
+        process.exit(1);
+      },
+    );
+  });
+  server.closeIdleConnections();
+}
+
+process.on("SIGTERM", shutdown);
+process.on("SIGINT", shutdown);
