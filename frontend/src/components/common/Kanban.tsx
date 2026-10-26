@@ -1,90 +1,64 @@
-import { useEffect, useState } from "react";
-import { IconDotsVertical, IconMessages, IconSquareFilled } from "@tabler/icons-react";
-import { OykButton, OykCard, OykChip, OykDivider, OykProgressBar } from "@/components/ui";
+import { useState } from "react";
+import { IconDotsVertical, IconSquareFilled } from "@tabler/icons-react";
+import { OykButton, OykCard, OykChip, OykProgressBar } from "@/components/ui";
 
 const TEST_DATA = [
   {
     id: 1,
-    title: "Task 1",
-    description:
-      "Design unique concept ideas through sketching and brainstorming sessions",
-    status: "To Do",
-    dueDate: "2026-01-01",
-    assignees: ["John Doe", "Jane Doe"],
-    tags: [
-      "Tag 1",
-      "Tag 2",
-      "Tag 3",
-      "Tag 4",
-      "Tag 5",
-      "Tag 6",
-      "Tag 7",
-      "Tag 8",
-      "Tag 9",
-      "Tag 10",
+    title: "To Do",
+    tasks: [
+      {
+        id: 1,
+        title: "Task 1",
+        description: "Description 1",
+        dueDate: "2026-01-01",
+        tags: ["tag1", "tag2"],
+      },
     ],
   },
   {
     id: 2,
-    title: "Task 2",
-    description: "",
-    status: "In Progress",
-    dueDate: "2026-10-23",
-    assignees: ["John Doe", "Jane Doe"],
-    tags: ["Tag 1", "Tag 2"],
+    title: "In Progress",
+    tasks: [
+      {
+        id: 2,
+        title: "Task 2",
+        description: "",
+        dueDate: "2026-01-02",
+        tags: [],
+      },
+    ],
   },
   {
     id: 3,
-    title: "Zmiana zupa wysoki",
-    description:
-      "Lotnisko niebo dzisiaj, nowy zmęczony ono podróżować, między chodzić gotować gorący. Zmiana zupa wysoki — nic talerz sprzedawać biuro, nigdy zdjęcie, przyjazny pogoda.",
-    status: "Done",
-    assignees: ["John Doe", "Jane Doe"],
-    tags: [],
-  },
-  {
-    id: 4,
-    title: "Task 4",
-    description:
-      "Refine the 3D model to ensure it is visually appealing and meets the brand's visual style.",
-    status: "To Do",
-    assignees: ["John Doe", "Jane Doe"],
-    tags: [
-      "Tag 1",
-      "Tag 2",
-      "Tag 3",
-      "Tag 4",
-      "Tag 5",
-      "Tag 6",
-      "Tag 7",
-      "Tag 8",
-      "Tag 9",
-      "Tag 10",
+    title: "Done",
+    tasks: [
+      {
+        id: 3,
+        title: "Task 3",
+        description: "Description 3",
+        dueDate: "2026-01-03",
+        tags: ["tag3"],
+      },
     ],
   },
 ];
 
 const OykKanban = () => {
-  const [tasks, setTasks] = useState(TEST_DATA);
-  const [statuses, setStatuses] = useState<string[]>([]);
-
-  useEffect(() => {
-    const statuses = tasks.map((task) => task.status);
-    setStatuses(Array.from(new Set(statuses)));
-  }, [tasks]);
+  const [statuses, setStatuses] = useState(TEST_DATA);
 
   return (
     <div className="oyk-kanban">
       {statuses.map((status) => (
-        <section key={status} className="oyk-kanban-status">
+        <section key={status.id} className="oyk-kanban-status">
           <header className="oyk-kanban-status-header">
             <div className="oyk-kanban-status-header-content">
               <IconSquareFilled size={12} />
               <h2 className="oyk-kanban-status-header-content-title">
-                {status}
+                {status.title}
               </h2>
               <div className="oyk-kanban-status-header-content-count">
-                ({tasks.filter((task) => task.status === status).length})
+                ({status.tasks.length})
               </div>
             </div>
             <div className="oyk-kanban-status-header-actions">
@@ -92,8 +66,7 @@ const OykKanban = () => {
             </div>
           </header>
           <ol className="oyk-kanban-status-list">
-            {tasks
-              .filter((task) => task.status === status)
+            {status.tasks
               .map((task) => (
                 <li key={task.id} className="oyk-kanban-status-list-item">
                   <OykCard>
