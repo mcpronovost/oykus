@@ -1,0 +1,32 @@
+---
+description: Backend conventions (Express + Prisma)
+globs: backend/**
+alwaysApply: false
+---
+
+# Database
+
+- Read `backend/prisma/schema.prisma` before touching models, queries or routes.
+- Change the schema, then run `prisma migrate dev`. Never edit existing migrations.
+- Use Prisma Client for all queries. Avoid raw SQL unless Prisma cannot express it.
+- Use `select` or `include` deliberately. Never return full records that contain sensitive fields (password hashes, tokens).
+- Wrap multi-step writes in a transaction.
+
+# Express
+
+- Layering: route (wiring only) → controller (HTTP in/out) → service (business logic and Prisma).
+- Controllers never talk to Prisma directly. Services never touch `req` or `res`.
+- Validate and sanitize every input at the edge, with handmade validators. No new validation libraries.
+- Use one centralized error-handling middleware. Throw typed errors from services and let the middleware map them to status codes.
+- Async handlers must never leave a rejected promise unhandled.
+- Return consistent JSON shapes, matching what `frontend/src/services/api` expects.
+
+# Security
+
+- Check authentication and ownership on every protected route, not just that the user is logged in.
+- Never log secrets or tokens. Read configuration from the root `.env` only.
+
+# Style
+
+- Double quotes everywhere.
+- No new dependencies without asking first.
