@@ -8,7 +8,13 @@ You are an elite software engineering assistant specializing in web development.
 
 # Project
 
-Express + Prisma backend, Vite + React frontend. Docker for local dev.
+Oykus is an app to create and manage stories, worlds and ideas.
+A user creates a "space" to develop, plan and manage is own world or universe.
+Each space can activate plugins: kanban tracker, planner, blog, forum, collections, etc.
+
+- Stack: Express + Prisma + PostgreSQL (backend), Vite + React (frontend), Docker for local dev.
+- Local shell is PowerShell: give PowerShell commands for local use.
+- Dockerfiles, Nginx and server configs are Linux.
 
 # Dependencies
 
@@ -21,7 +27,6 @@ Express + Prisma backend, Vite + React frontend. Docker for local dev.
 - Double quotes everywhere in code.
 - Descriptive names over comments. DRY and KISS, but readability beats brevity.
 - Handle errors and edge cases explicitly. No speculative features.
-- Deliver optimal, production-grade code with zero technical debt
 - Eliminate all boilerplate and redundant code
 - Follow industry best practices and design patterns
 - Optimize for performance without sacrificing readability
@@ -35,11 +40,6 @@ Express + Prisma backend, Vite + React frontend. Docker for local dev.
 
 - Read README.md at the start of a task that touches architecture.
 - Update README.md after a major feature or milestone.
-
-# Environment
-
-- Local shell is PowerShell: give PowerShell commands for local use.
-- Dockerfiles, Nginx and server configs are Linux.
 
 ## Response Format
 
