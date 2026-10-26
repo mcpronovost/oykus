@@ -1,13 +1,13 @@
 import type { IconProps as TablerIconProps } from "@tabler/icons-react";
 
 interface OykButtonProps {
+  label?: string;
   icon?: React.ComponentType<TablerIconProps>;
   disabled?: boolean;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  children?: React.ReactNode;
 }
 
-export const OykButton = ({ icon: Icon, disabled, onClick, children }: OykButtonProps) => {
+export const OykButton = ({ label, icon: Icon, disabled, onClick }: OykButtonProps) => {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (disabled) return;
     onClick?.(event);
@@ -15,8 +15,11 @@ export const OykButton = ({ icon: Icon, disabled, onClick, children }: OykButton
 
   return (
     <button className="oyk-button" disabled={disabled} onClick={handleClick}>
-      {Icon && <Icon size={16} />}
-      {children && <span className="oyk-button-content">{children}</span>}
+      <div className="oyk-button-bg" />
+      <div className="oyk-button-content">
+        {Icon && <Icon size={16} />}
+        {label && <span className="oyk-button-content-label">{label}</span>}
+      </div>
     </button>
   );
 };

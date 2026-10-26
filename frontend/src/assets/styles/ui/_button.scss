@@ -1,0 +1,41 @@
+.oyk-button {
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  display: block;
+
+  &-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    opacity: 0.12;
+  }
+
+  &-content {
+    border-radius: 6px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 0.75rem;
+    z-index: 1;
+    padding: 4px;
+  }
+
+  &:not(:disabled):hover {
+    cursor: pointer;
+    opacity: 0.8;
+
+    .oyk-button-bg {
+      background-color: currentColor;
+    }
+
+    &:active {
+      opacity: 0.6;
+    }
+  }
+}
