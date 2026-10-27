@@ -38,7 +38,6 @@ export default function Home() {
             <div className="oyk-home-hero-panel-block oyk-home-hero-panel-block--a" />
             <div className="oyk-home-hero-panel-block oyk-home-hero-panel-block--b" />
             <div className="oyk-home-hero-panel-block oyk-home-hero-panel-block--c" />
-            <div className="oyk-home-hero-panel-rule" />
           </div>
         </div>
       </section>

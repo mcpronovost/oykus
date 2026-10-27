@@ -146,43 +146,33 @@
 
       &-block {
         position: absolute;
+        aspect-ratio: 1;
+        border-radius: 50%;
         border: 1px solid var(--oyk-card-divider);
         background-color: var(--oyk-card-bg-subtle);
 
         &--a {
-          top: 8%;
-          left: 8%;
-          width: 58%;
-          height: 42%;
+          top: 4%;
+          left: 6%;
+          width: 62%;
           border-color: var(--oyk-c-accent-faint);
           background: linear-gradient(160deg, var(--oyk-card-bg-subtle) 0%, #181818 100%);
         }
 
         &--b {
-          top: 38%;
-          right: 6%;
-          width: 44%;
-          height: 36%;
+          top: 36%;
+          right: 4%;
+          width: 42%;
           border-color: var(--oyk-core-divider);
         }
 
         &--c {
-          bottom: 6%;
-          left: 18%;
-          width: 52%;
-          height: 28%;
+          bottom: 2%;
+          left: 22%;
+          width: 36%;
           border-color: var(--oyk-c-accent-muted);
           background-color: transparent;
         }
-      }
-
-      &-rule {
-        position: absolute;
-        top: 0;
-        right: 12%;
-        width: 2px;
-        height: 100%;
-        background: linear-gradient(180deg, transparent 0%, var(--oyk-c-accent) 35%, var(--oyk-c-accent-muted) 70%, transparent 100%);
       }
     }
   }
