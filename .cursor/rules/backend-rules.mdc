@@ -9,7 +9,6 @@ alwaysApply: false
 - Structure of `backend/src`:
   - `core/<feature>/`: non-plugin features (auth, users, spaces), each with its own routes, controller and service.
   - `plugins/<plugin>/`: one self-contained folder per plugin, with its own routes, controller and service.
-  - `plugins/index.js`: the registry that mounts every plugin's routes behind the "plugin activated on this space" middleware.
   - `shared/`: infrastructure with no routes (middleware, errors, validators, config, Prisma client).
 - Dependency direction: plugins → core → shared. Core never imports from plugins. Plugins never import from each other.
 - File naming: `<feature>.routes.js`, `<feature>.controller.js`, `<feature>.service.js`.
