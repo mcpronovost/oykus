@@ -16,7 +16,20 @@
   "home.cta.subline": "Start building your first space — free to try.",
   "home.cta.login": "Log in",
   "home.cta.register": "Create account",
+  "home.footer.phrase": "Build the world. Then get lost in it.",
   "home.footer.brand": "Oykus",
+  "home.footer.blurb": "An experimental playground for storytellers who play — and players who write.",
   "home.footer.tagline": "Where every player is both author and adventurer.",
-  "home.footer.rights": "All rights reserved."
+  "home.footer.rights": "All rights reserved.",
+  "home.footer.menus.product.title": "Product",
+  "home.footer.menus.product.spaces": "Spaces",
+  "home.footer.menus.product.plugins": "Plugins",
+  "home.footer.menus.product.stories": "Stories",
+  "home.footer.menus.explore.title": "Explore",
+  "home.footer.menus.explore.guides": "Guides",
+  "home.footer.menus.explore.changelog": "Changelog",
+  "home.footer.menus.explore.community": "Community",
+  "home.footer.menus.account.title": "Account",
+  "home.footer.menus.account.login": "Log in",
+  "home.footer.menus.account.register": "Create account"
 }

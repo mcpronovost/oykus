@@ -9,6 +9,12 @@ const FEATURES = [
   { key: "stories", icon: IconBooks },
 ] as const;
 
+const FOOTER_MENUS = [
+  { key: "product", items: ["spaces", "plugins", "stories"] },
+  { key: "explore", items: ["guides", "changelog", "community"] },
+  { key: "account", items: ["login", "register"] },
+] as const;
+
 export default function Home() {
   const { t } = useTranslation();
   const year = new Date().getFullYear();
@@ -74,11 +80,38 @@ export default function Home() {
 
       <footer className="oyk-home-footer">
         <div className="oyk-home-footer-inner">
-          <p className="oyk-home-footer-brand">{t("home.footer.brand")}</p>
-          <p className="oyk-home-footer-tagline">{t("home.footer.tagline")}</p>
-          <p className="oyk-home-footer-rights">
-            © {year} {t("home.footer.brand")}. {t("home.footer.rights")}
-          </p>
+          <p className="oyk-home-footer-phrase">{t("home.footer.phrase")}</p>
+
+          <div className="oyk-home-footer-grid">
+            <div className="oyk-home-footer-brand-block">
+              <p className="oyk-home-footer-brand">{t("home.footer.brand")}</p>
+              <p className="oyk-home-footer-blurb">{t("home.footer.blurb")}</p>
+            </div>
+
+            {FOOTER_MENUS.map(({ key, items }) => (
+              <nav key={key} className="oyk-home-footer-menu" aria-labelledby={`oyk-home-footer-${key}`}>
+                <p id={`oyk-home-footer-${key}`} className="oyk-home-footer-menu-title">
+                  {t(`home.footer.menus.${key}.title`)}
+                </p>
+                <ul className="oyk-home-footer-menu-list">
+                  {items.map((item) => (
+                    <li key={item}>
+                      <button type="button" className="oyk-home-footer-link">
+                        {t(`home.footer.menus.${key}.${item}`)}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ))}
+          </div>
+
+          <div className="oyk-home-footer-bottom">
+            <p className="oyk-home-footer-tagline">{t("home.footer.tagline")}</p>
+            <p className="oyk-home-footer-rights">
+              © {year} {t("home.footer.brand")}. {t("home.footer.rights")}
+            </p>
+          </div>
         </div>
       </footer>
     </div>

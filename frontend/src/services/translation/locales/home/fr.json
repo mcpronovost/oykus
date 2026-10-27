@@ -16,7 +16,20 @@
   "home.cta.subline": "Créez votre premier espace — essayez gratuitement.",
   "home.cta.login": "Connexion",
   "home.cta.register": "Créer un compte",
+  "home.footer.phrase": "Construisez le monde. Puis perdez-vous dedans.",
   "home.footer.brand": "Oykus",
+  "home.footer.blurb": "Un terrain de jeu expérimental pour les conteurs qui jouent — et les joueurs qui écrivent.",
   "home.footer.tagline": "Là où chaque joueur est à la fois auteur et aventurier.",
-  "home.footer.rights": "Tous droits réservés."
+  "home.footer.rights": "Tous droits réservés.",
+  "home.footer.menus.product.title": "Produit",
+  "home.footer.menus.product.spaces": "Espaces",
+  "home.footer.menus.product.plugins": "Plugins",
+  "home.footer.menus.product.stories": "Histoires",
+  "home.footer.menus.explore.title": "Explorer",
+  "home.footer.menus.explore.guides": "Guides",
+  "home.footer.menus.explore.changelog": "Journal",
+  "home.footer.menus.explore.community": "Communauté",
+  "home.footer.menus.account.title": "Compte",
+  "home.footer.menus.account.login": "Connexion",
+  "home.footer.menus.account.register": "Créer un compte"
 }

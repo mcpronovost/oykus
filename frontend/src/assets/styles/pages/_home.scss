@@ -319,28 +319,108 @@
   }
 
   &-footer {
-    padding: 2.5rem 1.5rem;
+    padding: 3.5rem 1.5rem 2rem;
     border-top: 1px solid var(--oyk-core-divider);
     background-color: var(--oyk-card-bg);
 
     &-inner {
-      max-width: 56rem;
+      max-width: 72rem;
       margin: 0 auto;
-      text-align: center;
+    }
+
+    &-phrase {
+      margin: 0 0 2.75rem;
+      max-width: 28rem;
+      font-family: "Quicksand", sans-serif;
+      font-size: clamp(1.35rem, 3vw, 1.75rem);
+      font-weight: 300;
+      line-height: 1.3;
+      color: #e8e8e8;
+    }
+
+    &-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-bottom: 2.75rem;
+
+      @media (min-width: 720px) {
+        grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 0.7fr));
+        gap: 2.5rem;
+      }
     }
 
     &-brand {
-      margin: 0 0 0.35rem;
+      margin: 0 0 0.65rem;
       font-family: "Quicksand", sans-serif;
-      font-size: 1.1rem;
-      font-weight: 400;
+      font-size: 1.15rem;
+      font-weight: 500;
       letter-spacing: 0.02em;
       color: #e0e0e0;
     }
 
-    &-tagline {
-      margin: 0 0 1.25rem;
+    &-blurb {
+      margin: 0;
+      max-width: 18rem;
       font-size: 0.9rem;
+      line-height: 1.55;
+      color: var(--oyk-core-fg-subtle);
+    }
+
+    &-menu-title {
+      margin: 0 0 0.85rem;
+      font-family: "Quicksand", sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--oyk-core-fg-muted);
+    }
+
+    &-menu-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    &-link {
+      display: inline;
+      padding: 0;
+      border: 0;
+      background: none;
+      font: inherit;
+      font-size: 0.95rem;
+      color: var(--oyk-core-fg);
+      text-align: left;
+      cursor: pointer;
+      transition: color 0.15s ease;
+
+      &:hover {
+        color: #f0f0f0;
+      }
+    }
+
+    &-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--oyk-card-divider);
+
+      @media (min-width: 720px) {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    &-tagline {
+      margin: 0;
+      font-size: 0.85rem;
+      font-style: italic;
       color: var(--oyk-core-fg-subtle);
     }
 
