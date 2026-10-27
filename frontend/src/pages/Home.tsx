@@ -16,16 +16,23 @@ export default function Home() {
   return (
     <div className="oyk-home">
       <section className="oyk-home-hero" aria-labelledby="oyk-home-hero-brand">
-        <div className="oyk-home-hero-atmosphere" aria-hidden="true" />
-        <div className="oyk-home-hero-inner">
-          <p id="oyk-home-hero-brand" className="oyk-home-hero-brand">
-            {t("home.hero.brand")}
-          </p>
-          <h1 className="oyk-home-hero-headline">{t("home.hero.headline")}</h1>
-          <p className="oyk-home-hero-subline">{t("home.hero.subline")}</p>
-          <div className="oyk-home-hero-actions">
-            <OykButton label={t("home.hero.login")} />
-            <OykButton label={t("home.hero.register")} />
+        <div className="oyk-home-hero-frame">
+          <div className="oyk-home-hero-copy">
+            <p id="oyk-home-hero-brand" className="oyk-home-hero-brand">
+              {t("home.hero.brand")}
+            </p>
+            <h1 className="oyk-home-hero-headline">{t("home.hero.headline")}</h1>
+            <p className="oyk-home-hero-subline">{t("home.hero.subline")}</p>
+            <div className="oyk-home-hero-actions">
+              <OykButton label={t("home.hero.login")} />
+              <OykButton label={t("home.hero.register")} />
+            </div>
+          </div>
+          <div className="oyk-home-hero-panel" aria-hidden="true">
+            <div className="oyk-home-hero-panel-block oyk-home-hero-panel-block--a" />
+            <div className="oyk-home-hero-panel-block oyk-home-hero-panel-block--b" />
+            <div className="oyk-home-hero-panel-block oyk-home-hero-panel-block--c" />
+            <div className="oyk-home-hero-panel-rule" />
           </div>
         </div>
       </section>
