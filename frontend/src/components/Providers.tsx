@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { AuthProvider } from "@/services/auth";
 import { RouterProvider, useRouter } from "@/services/router";
 import { TranslationProvider } from "@/services/translation";
 
@@ -15,7 +16,9 @@ function OykLocale({ children }: OykProvidersProps) {
 export default function OykProviders({ children }: OykProvidersProps) {
   return (
     <RouterProvider>
-      <OykLocale>{children}</OykLocale>
+      <AuthProvider>
+        <OykLocale>{children}</OykLocale>
+      </AuthProvider>
     </RouterProvider>
   );
 }
