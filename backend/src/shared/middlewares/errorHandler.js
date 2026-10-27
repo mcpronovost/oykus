@@ -1,4 +1,4 @@
-import { ApiError } from "../errors/index.js";
+import { OykError } from "../errors/index.js";
 
 function errorHandler(error, req, res, next) {
   if (res.headersSent) {
@@ -6,7 +6,7 @@ function errorHandler(error, req, res, next) {
     return;
   }
 
-  if (error instanceof ApiError) {
+  if (error instanceof OykError) {
     res.status(error.statusCode).json(error.toJSON());
     return;
   }
@@ -14,16 +14,15 @@ function errorHandler(error, req, res, next) {
   // Errors raised by Express itself (bad JSON, payload too large) carry a 4xx status
   const status = error.statusCode ?? error.status;
   if (status >= 400 && status < 500) {
-    res.status(status).json(new ApiError(error.message, status).toJSON());
+    res.status(status).json(new OykError(error.message, status).toJSON());
     return;
   }
 
   console.error(error);
 
-  const fallback = new ApiError(
+  const fallback = new OykError(
     "An unexpected error occurred",
     500,
-    "Internal server error",
   );
   res.status(fallback.statusCode).json(fallback.toJSON());
 }

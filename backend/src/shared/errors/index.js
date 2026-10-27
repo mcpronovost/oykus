@@ -1,4 +1,4 @@
-export class ApiError extends Error {
+export class OykError extends Error {
   constructor(message, statusCode = 500) {
     super(message);
     this.name = this.constructor.name;
@@ -10,31 +10,31 @@ export class ApiError extends Error {
   }
 }
 
-export class BadRequestError extends ApiError {
+export class BadRequestError extends OykError {
   constructor(message = "Bad request") {
     super(message, 400);
   }
 }
 
-export class UnauthorizedError extends ApiError {
+export class UnauthorizedError extends OykError {
   constructor(message = "Unauthorized") {
     super(message, 401);
   }
 }
 
-export class ForbiddenError extends ApiError {
+export class ForbiddenError extends OykError {
   constructor(message = "Forbidden") {
     super(message, 403);
   }
 }
 
-export class NotFoundError extends ApiError {
+export class NotFoundError extends OykError {
   constructor(message = "Not found") {
     super(message, 404);
   }
 }
 
-export class ConflictError extends ApiError {
+export class ConflictError extends OykError {
   constructor(message = "Conflict") {
     super(message, 409);
   }

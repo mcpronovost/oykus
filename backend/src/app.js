@@ -1,5 +1,5 @@
 import express from "express";
-import { prisma } from "./db/index.js";
+import { prisma } from "./shared/db";
 import errorHandler from "./shared/middlewares/errorHandler.js";
 
 export function createApp() {
