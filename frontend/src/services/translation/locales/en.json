@@ -1,3 +1,23 @@
 {
-  "hello": "Hello World!"
+  "hello": "Hello World!",
+  "home.hero.brand": "Oykus",
+  "home.hero.headline": "Shape worlds. Tell stories. Play them.",
+  "home.hero.subline": "Create spaces for your universes — plan, write, and manage every corner of the narrative.",
+  "home.hero.login": "Log in",
+  "home.hero.register": "Create account",
+  "home.features.title": "Everything your world needs",
+  "home.features.subline": "Activate the tools that fit your story — leave the rest aside.",
+  "home.features.spaces.title": "Spaces",
+  "home.features.spaces.body": "A dedicated home for each universe. Organize lore, characters, and plots in one place.",
+  "home.features.plugins.title": "Plugins",
+  "home.features.plugins.body": "Kanban trackers, planners, blogs, forums, collections — turn on what you need.",
+  "home.features.stories.title": "Stories",
+  "home.features.stories.body": "Draft, structure, and evolve narratives while you explore them as a player.",
+  "home.cta.title": "Ready to begin?",
+  "home.cta.subline": "Start building your first space — free to try.",
+  "home.cta.login": "Log in",
+  "home.cta.register": "Create account",
+  "home.footer.brand": "Oykus",
+  "home.footer.tagline": "Where every player is both author and adventurer.",
+  "home.footer.rights": "All rights reserved."
 }
