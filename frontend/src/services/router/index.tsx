@@ -7,6 +7,7 @@ import type {
   TypeRouterProviderProps,
 } from "./types";
 import { createContext, useContext, useEffect, useState } from "react";
+import { useAuth } from "@/services/auth";
 import { ROUTES } from "./routes";
 import { buildLocalizedPath, buildRoutePath, findRoute, getBreadcrumbs, getLangFromPath } from "./utils";
 
@@ -15,6 +16,7 @@ const RouterContext = createContext<TypeRouterContextValue | undefined>(undefine
 const initialRouteResult: TypeRouteResult | null = findRoute(
   window.location.pathname,
   getLangFromPath(window.location.pathname),
+  false,
 );
 
 const INITIAL_STATE: TypeRouterContextValue = {
@@ -31,10 +33,18 @@ const INITIAL_STATE: TypeRouterContextValue = {
 };
 
 export function RouterProvider({ children }: TypeRouterProviderProps) {
+  const { isAuth } = useAuth();
   const [history, setHistory] = useState<string[]>(INITIAL_STATE.history);
   const [lang, setLang] = useState<TypeLang>(INITIAL_STATE.lang);
   const [route, setRoute] = useState<TypeRoute | null>(INITIAL_STATE.route);
   const [params, setParams] = useState<TypeRouteParams>(INITIAL_STATE.params);
+
+  const applyRouteResult = (pathname: string, language: TypeLang, authenticated: boolean) => {
+    const routeResult: TypeRouteResult | null = findRoute(pathname, language, authenticated);
+    setLang(language);
+    setRoute(routeResult?.route || null);
+    setParams(routeResult?.params || {});
+  };
 
   const navigate = (name: string, routeParams: TypeRouteParams = {}, language: TypeLang = lang) => {
     const routePath = buildRoutePath(name, routeParams, language);
@@ -45,8 +55,7 @@ export function RouterProvider({ children }: TypeRouterProviderProps) {
         const nextPath = buildLocalizedPath(fallbackPath, language);
         window.history.pushState({}, "", nextPath);
         setHistory((current) => [...current, nextPath]);
-        setLang(language);
-        setRoute(fallbackRoute);
+        applyRouteResult(nextPath, language, isAuth);
       }
       return;
     }
@@ -54,10 +63,7 @@ export function RouterProvider({ children }: TypeRouterProviderProps) {
     const nextPath = buildLocalizedPath(routePath, language);
     window.history.pushState({}, "", nextPath);
     setHistory((current) => [...current, nextPath]);
-    setLang(language);
-    const routeResult: TypeRouteResult | null = findRoute(nextPath, language);
-    setRoute(routeResult?.route || null);
-    setParams(routeResult?.params || {});
+    applyRouteResult(nextPath, language, isAuth);
   };
 
   const refresh = () => {
@@ -79,17 +85,18 @@ export function RouterProvider({ children }: TypeRouterProviderProps) {
   }, [lang]);
 
   useEffect(() => {
+    applyRouteResult(window.location.pathname, getLangFromPath(window.location.pathname), isAuth);
+  }, [isAuth]);
+
+  useEffect(() => {
     const onPopState = () => {
       const newLang = getLangFromPath(window.location.pathname);
-      const routeResult: TypeRouteResult | null = findRoute(window.location.pathname, newLang);
-      setLang(newLang);
-      setRoute(routeResult?.route || null);
-      setParams(routeResult?.params || {});
+      applyRouteResult(window.location.pathname, newLang, isAuth);
       setHistory((h) => [...h, window.location.pathname]);
     };
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
-  }, []);
+  }, [isAuth]);
 
   return (
     <RouterContext.Provider value={{ route, params, lang, history, breads, n: navigate, routeTitle, refresh }}>

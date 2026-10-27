@@ -15,10 +15,10 @@ function OykLocale({ children }: OykProvidersProps) {
 
 export default function OykProviders({ children }: OykProvidersProps) {
   return (
-    <RouterProvider>
-      <AuthProvider>
+    <AuthProvider>
+      <RouterProvider>
         <OykLocale>{children}</OykLocale>
-      </AuthProvider>
-    </RouterProvider>
+      </RouterProvider>
+    </AuthProvider>
   );
 }

@@ -9,5 +9,15 @@ export const ROUTES: TypeRoute[] = [
       fr: "",
       en: "",
     },
+    auth: false,
+  },
+  {
+    name: "dashboard",
+    component: React.lazy(() => import("../../../pages/Dashboard")),
+    paths: {
+      fr: "",
+      en: "",
+    },
+    auth: true,
   },
 ];

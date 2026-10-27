@@ -28,9 +28,27 @@ export const getUniverseSlugFromPath = (pathname: string): string | null => {
   return match ? decodeURIComponent(match[1]) : null;
 };
 
+const matchesAuth = (route: TypeRoute, isAuth: boolean): boolean => {
+  if (route.auth === undefined) return true;
+  return route.auth === isAuth;
+};
+
+const pickRouteForAuth = (routes: TypeRoute[], isAuth: boolean): TypeRoute | undefined => {
+  const exact = routes.find((route) => matchesAuth(route, isAuth));
+  if (exact) return exact;
+  return routes.find((route) => route.auth === undefined);
+};
+
 // Recursive function to find route in nested structure
-const findRouteRecursive = (routes: TypeRoute[], pathSegments: string[], pathlang: TypeLang): TypeRouteResult | null => {
+const findRouteRecursive = (
+  routes: TypeRoute[],
+  pathSegments: string[],
+  pathlang: TypeLang,
+  isAuth: boolean,
+): TypeRouteResult | null => {
   for (const route of routes) {
+    if (!matchesAuth(route, isAuth)) continue;
+
     const routePath = route.paths[pathlang];
     if (routePath === undefined) continue;
 
@@ -86,7 +104,7 @@ const findRouteRecursive = (routes: TypeRoute[], pathSegments: string[], pathlan
 
       if (matches) {
         if (route.children && remainingSegments.length > 0) {
-          const childResult = findRouteRecursive(route.children, remainingSegments, pathlang);
+          const childResult = findRouteRecursive(route.children, remainingSegments, pathlang, isAuth);
           if (childResult) {
             return {
               route: childResult.route,
@@ -103,21 +121,22 @@ const findRouteRecursive = (routes: TypeRoute[], pathSegments: string[], pathlan
   return null;
 };
 
-export const findRoute = (pathname: string, pathlang: TypeLang): TypeRouteResult | null => {
+export const findRoute = (pathname: string, pathlang: TypeLang, isAuth = false): TypeRouteResult | null => {
   const match = matchLangPrefix(pathname);
   const path = (match && isSupportedLang(match.code) ? pathname.slice(match.prefix.length) : pathname).replace(/^\//, "");
   const pathSegments = path.split("/").filter((segment) => segment.length > 0);
 
   // Special case: if path is empty (root route), check for routes with empty paths first
   if (pathSegments.length === 0) {
-    const rootRoute = ROUTES.find((route: TypeRoute) => route.paths[pathlang] === "");
+    const rootRoutes = ROUTES.filter((route: TypeRoute) => route.paths[pathlang] === "");
+    const rootRoute = pickRouteForAuth(rootRoutes, isAuth);
     if (rootRoute) {
       const result: TypeRouteResult = { route: rootRoute, params: { ...rootRoute.params } };
       return result;
     }
   }
 
-  return findRouteRecursive(ROUTES, pathSegments, pathlang);
+  return findRouteRecursive(ROUTES, pathSegments, pathlang, isAuth);
 };
 
 // Helper function to build full path for a route including parent routes

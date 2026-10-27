@@ -9,6 +9,7 @@ export interface TypeRoute {
   paths: Partial<Record<TypeLang, string>>;
   labels?: Partial<Record<TypeLang, string>>;
   params?: TypeRouteParams;
+  auth?: boolean;
   children?: TypeRoute[];
 }
 
