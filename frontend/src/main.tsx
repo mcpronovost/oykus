@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 import { registerSW } from "virtual:pwa-register";
 
 import OykProviders from "@/components/Providers";
+import { OykCoreLoading } from "@/components/core";
 import { useRouter } from "@/services/router";
 
 registerSW({ immediate: true });
@@ -11,14 +12,10 @@ registerSW({ immediate: true });
 function OykApp() {
   const { route } = useRouter();
 
-  if (!route) {
-    return null;
-  }
-
   return (
     <div>
-      {route.component ? (
-        <Suspense fallback={<div>...</div>}>
+      {route?.component ? (
+        <Suspense fallback={<OykCoreLoading />}>
           {createElement(route.component)}
         </Suspense>
       ) : (

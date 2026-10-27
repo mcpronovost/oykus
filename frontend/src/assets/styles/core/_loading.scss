@@ -1,0 +1,38 @@
+.oyk-core-loading {
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  height: 2px;
+
+  &-bar {
+    background-color: var(--oyk-c-accent);
+    background: linear-gradient(to right, var(--oyk-c-accent-faint), var(--oyk-c-accent));
+    width: 100%;
+    height: 100%;
+    transition: width 0.2s ease-in-out;
+    animation:
+      oyk-core-loading-bar-animation 1s linear infinite,
+      oyk-core-loading-opacity-animation 1.5s ease-in-out infinite;
+
+    @keyframes oyk-core-loading-bar-animation {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    @keyframes oyk-core-loading-opacity-animation {
+      0% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.6;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  }
+}
