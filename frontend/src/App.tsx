@@ -7,6 +7,9 @@ export default function OykApp() {
 
   return (
     <div className="oyk-core">
+      <div className="oyk-titlebar" role="banner">
+        <span className="oyk-titlebar-brand">Oykus</span>
+      </div>
       <nav className="oyk-core-nav">
         <span>aaa</span>
         <span>bbb</span>
