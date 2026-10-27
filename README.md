@@ -25,44 +25,82 @@ Oykus is an **experimental RPG project** blending story-creation, planning and m
 
 ## Layout
 
-```
+```js
 oykus/
-  backend/                     # Express and Prisma, JavaScript
-  frontend/                    # Vite, React, and TypeScript
-  nginx/                       # reverse proxy
-  .env.example
-  docker-compose.yml           # local: docker compose up
-  docker-compose.prod.yml      # production images
+├── backend/                     // Express and Prisma, JavaScript
+├── frontend/                    // Vite, React, and TypeScript
+├── nginx/                       // reverse proxy
+├── .env.example
+├── docker-compose.prod.yml      // production images
+├── docker-compose.yml           // local: docker compose up
+└── README.md
+```
+
+`backend/src`:
+
+```js
+src/
+├── core/
+│   ├── auth/
+│   │   ├── auth.controllers.js
+│   │   ├── auth.routes.js
+│   │   └── auth.services.js
+│   ├── spaces/
+│   │   ├── spaces.controllers.js
+│   │   ├── spaces.routes.js
+│   │   └── spaces.services.js
+│   └── users/
+│       ├── users.controllers.js
+│       ├── users.routes.js
+│       └── users.services.js
+├── plugins/
+│   ├── blog/
+│   │   ├── blog.controllers.js
+│   │   ├── blog.routes.js
+│   │   └── blog.services.js
+│   └── tracker/
+│       ├── tracker.controllers.js
+│       ├── tracker.routes.js
+│       └── tracker.services.js
+├── shared/
+│   ├── db/
+│   │   └── index.js
+│   ├── errors/
+│   │   └── index.js
+│   └── middlewares/
+│       └── errorHandler.js
+├── app.js
+└── index.js
 ```
 
 `frontend/src`:
 
-```
+```js
 src/
-  assets/
-    img/
-    styles/
-      base/
-      common/
-      core/
-      ui/
-      main.scss
-  components/
-    common/                    # shared components, imported through index.js
-    core/                      # singular layout components: sidebar, header, main
-    ui/                        # interface components, imported through index.js
-    Providers.tsx
-    index.js
-  pages/
-  services/
-    api/
-    auth/
-    router/
-    store/
-    translation/
-  utils/                       # imported through index.js
-  App.tsx
-  main.tsx
+├── assets/
+│   ├── img/
+│   └── styles/
+│       ├── base/
+│       ├── common/
+│       ├── core/
+│       ├── ui/
+│       └── main.scss
+├── components/
+│   ├── common/                    // shared components, imported through index.js
+│   ├── core/                      // singular layout components: sidebar, header, main
+│   ├── ui/                        // interface components, imported through index.js
+│   ├── Providers.tsx
+│   └── index.js
+├── pages/
+├── services/
+│   ├── api/
+│   ├── auth/
+│   ├── router/
+│   ├── store/
+│   └── translation/
+├── utils/                       // imported through index.js
+├── App.tsx
+└── main.tsx
 ```
 
 There is no root `package.json`. Backend and frontend are separate npm projects. Docker Compose ties them together.
@@ -77,9 +115,9 @@ Docker Desktop on Windows or Mac is the only requirement. The same commands run 
 
 2. Start the local stack:
 
-   ```
-   docker compose up
-   ```
+```bash
+docker compose up
+```
 
 3. Open `http://localhost:8080`.
 
@@ -89,13 +127,13 @@ Client configuration uses names that start with `VITE_` in `.env`. During local 
 
 Lint the frontend:
 
-```
+```bash
 docker compose exec oykus-frontend npm run lint
 ```
 
 ## Production
 
-```
+```bash
 docker compose -f docker-compose.prod.yml up --build
 ```
 
