@@ -6,11 +6,11 @@ import { IconBooks, IconPuzzle, IconWorld } from "@tabler/icons-react";
 const FEATURES = [
   { key: "spaces", icon: IconWorld },
   { key: "plugins", icon: IconPuzzle },
-  { key: "stories", icon: IconBooks },
+  { key: "encyclopedia", icon: IconBooks },
 ] as const;
 
 const FOOTER_MENUS = [
-  { key: "product", items: ["spaces", "plugins", "stories"] },
+  { key: "product", items: ["spaces", "plugins", "encyclopedia"] },
   { key: "explore", items: ["guides", "changelog", "community"] },
   { key: "account", items: ["login", "register"] },
 ] as const;
