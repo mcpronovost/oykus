@@ -139,4 +139,4 @@ docker compose -f docker-compose.prod.yml up --build
 
 Nginx listens on port 80, serves the built frontend, and proxies `/api/` to the backend.
 
-User uploads (avatars, covers) live on a named Docker volume mounted at `/app/uploads` in the backend (read-write) and `/var/www/uploads` in Nginx (read-only). Nginx serves them at `/uploads/` with a one-year cache.
+User uploads (avatars, covers) are served by Nginx at `/uploads/` with a one-year cache. Locally, both the backend and Nginx use `backend/uploads` on the host. In production, a named Docker volume is mounted at `/app/uploads` in the backend (read-write) and `/var/www/uploads` in Nginx (read-only).
