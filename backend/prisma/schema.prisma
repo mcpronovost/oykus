@@ -1,11 +1,35 @@
 generator client {
-  provider               = "prisma-client"
-  output                 = "./db"
-  moduleFormat           = "esm"
-  generatedFileExtension = "ts"
-  importFileExtension    = "ts"
+  provider = "prisma-client"
+  output   = "./db"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  username  String   @unique
+  email     String   @unique
+  password  String
+  name      String
+  avatar    String?
+  cover     String?
+  spaces    Space[]
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@map("core_users")
+}
+
+model Space {
+  id          String   @id @default(uuid(7)) @db.Uuid
+  name        String
+  description String?
+  ownerId     String   @db.Uuid
+  owner       User     @relation(fields: [ownerId], references: [id])
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@map("core_spaces")
 }
