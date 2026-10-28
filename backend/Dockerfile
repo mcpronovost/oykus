@@ -27,7 +27,7 @@ COPY package.json prisma.config.js docker-entrypoint.sh ./
 COPY prisma ./prisma
 COPY --from=deps /app/prisma/db ./prisma/db
 COPY src ./src
-RUN chown -R node:node /app
+RUN mkdir -p /app/uploads && chown -R node:node /app
 USER node
 EXPOSE 3000
 CMD ["sh", "docker-entrypoint.sh"]
