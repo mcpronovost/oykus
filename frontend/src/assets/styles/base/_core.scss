@@ -26,44 +26,10 @@ body {
   overflow: hidden;
 }
 
-.oyk-titlebar {
-  display: none;
-}
-
-@media (display-mode: window-controls-overlay) {
-  .oyk-core {
-    padding-top: env(titlebar-area-height, 0px);
-  }
-
-  .oyk-titlebar {
-    position: fixed;
-    left: env(titlebar-area-x, 0);
-    top: env(titlebar-area-y, 0);
-    width: env(titlebar-area-width, 100%);
-    height: env(titlebar-area-height, 33px);
-    display: flex;
-    align-items: center;
-    padding: 0 12px;
-    background-color: var(--oyk-card-bg);
-    color: var(--oyk-card-fg);
-    border-bottom: 1px solid var(--oyk-card-divider);
-    z-index: 2;
-    app-region: drag;
-    -webkit-app-region: drag;
-    user-select: none;
-  }
-
-  .oyk-titlebar-brand {
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-}
-
 .oyk-core-nav {
   background-color: var(--oyk-card-bg);
   border-right: 1px solid var(--oyk-card-divider);
-  box-shadow: 8px 0 16px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2), 6px 0 12px 0 rgba(0, 0, 0, 0.1);
   color: var(--oyk-card-fg);
   display: flex;
   flex-direction: column;
@@ -71,6 +37,7 @@ body {
   align-items: center;
   justify-content: center;
   width: 64px;
+  height: 100%;
   z-index: 1;
 }
 
@@ -81,13 +48,4 @@ body {
   background-color: var(--oyk-core-bg);
   color: var(--oyk-core-fg);
   display: block;
-
-  &-header {
-    background-color: var(--oyk-card-bg);
-    border-bottom: 1px solid var(--oyk-card-divider);
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-    color: var(--oyk-card-fg);
-    display: block;
-    padding: 64px 32px;
-  }
 }

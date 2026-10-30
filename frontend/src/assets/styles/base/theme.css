@@ -9,18 +9,18 @@
   --oyk-c-accent-muted: hsl(var(--oyk-h-accent), calc(var(--oyk-c-s) - 20%), calc(var(--oyk-c-l) - 25%));
   --oyk-c-accent-faint: hsl(var(--oyk-h-accent), calc(var(--oyk-c-s) - 30%), calc(var(--oyk-c-l) - 35%));
 
-  --oyk-core-bg: #242424;
-  --oyk-core-fg: #C4C4C4;
+  --oyk-core-bg: #242526;
+  --oyk-core-fg: #929597;
   --oyk-core-fg-subtle: #7A7A7A;
   --oyk-core-fg-muted: #5A5A5A;
   --oyk-core-fg-faint: #3A3A3A;
-  --oyk-core-divider: #292929;
+  --oyk-core-divider: #262728;
 
-  --oyk-card-bg: #1B1B1B;
-  --oyk-card-bg-subtle: #202020;
-  --oyk-card-fg: #ABABAB;
+  --oyk-card-bg: #1E1F20;
+  --oyk-card-bg-subtle: #212223;
+  --oyk-card-fg: #929597;
   --oyk-card-fg-subtle: #7A7A7A;
   --oyk-card-fg-muted: #5A5A5A;
   --oyk-card-fg-faint: #3A3A3A;
-  --oyk-card-divider: #292929;
+  --oyk-card-divider: #262728;
 }
