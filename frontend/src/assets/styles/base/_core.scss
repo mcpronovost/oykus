@@ -18,9 +18,12 @@ body {
 }
 
 .oyk-core {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  grid-template-rows: 64px 1fr;
+  grid-template-areas:
+    "header header"
+    "nav main";
   width: 100vw;
   height: 100vh;
   overflow: hidden;
@@ -31,6 +34,7 @@ body {
   border-right: 1px solid var(--oyk-card-divider);
   box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2), 6px 0 12px 0 rgba(0, 0, 0, 0.1);
   color: var(--oyk-card-fg);
+  grid-area: nav;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -38,14 +42,14 @@ body {
   justify-content: center;
   width: 64px;
   height: 100%;
-  z-index: 1;
+  z-index: 9000;
 }
 
 .oyk-core-main {
-  container-name: oyk-main;
-  container-type: inline-size;
-  flex: 1;
   background-color: var(--oyk-core-bg);
   color: var(--oyk-core-fg);
+  container-name: oyk-main;
+  container-type: inline-size;
+  grid-area: main;
   display: block;
 }

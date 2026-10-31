@@ -2,25 +2,31 @@
   --oyk-c-s: 50%;
   --oyk-c-l: 50%;
 
-  --oyk-h-accent: 220;
+  --oyk-h-accent: 39; /*220; */ /* 196 */
   --oyk-c-accent: hsl(var(--oyk-h-accent), var(--oyk-c-s), var(--oyk-c-l));
   --oyk-c-accent-hover: hsl(var(--oyk-h-accent), calc(var(--oyk-c-s) + 10%), calc(var(--oyk-c-l) + 10%));
   --oyk-c-accent-subtle: hsl(var(--oyk-h-accent), calc(var(--oyk-c-s) - 10%), calc(var(--oyk-c-l) - 10%));
   --oyk-c-accent-muted: hsl(var(--oyk-h-accent), calc(var(--oyk-c-s) - 20%), calc(var(--oyk-c-l) - 25%));
   --oyk-c-accent-faint: hsl(var(--oyk-h-accent), calc(var(--oyk-c-s) - 30%), calc(var(--oyk-c-l) - 35%));
 
-  --oyk-core-bg: #242526;
+  --oyk-core-bg: #12151A;
   --oyk-core-fg: #929597;
   --oyk-core-fg-subtle: #7A7A7A;
   --oyk-core-fg-muted: #5A5A5A;
   --oyk-core-fg-faint: #3A3A3A;
-  --oyk-core-divider: #262728;
+  --oyk-core-divider: #13161B;
 
-  --oyk-card-bg: #1E1F20;
+  --oyk-core-header-bg: #080D11;
+  --oyk-core-header-fg: #ece8df;
+  --oyk-core-header-divider: #13161B;
+
+  --oyk-card-bg: #080D11;
   --oyk-card-bg-subtle: #212223;
   --oyk-card-fg: #929597;
   --oyk-card-fg-subtle: #7A7A7A;
   --oyk-card-fg-muted: #5A5A5A;
   --oyk-card-fg-faint: #3A3A3A;
-  --oyk-card-divider: #262728;
+  --oyk-card-divider: #13161B;
+
+  --oyk-radius: 16px;
 }
