@@ -9,7 +9,7 @@
   --oyk-c-accent-muted: hsl(var(--oyk-h-accent), calc(var(--oyk-c-s) - 20%), calc(var(--oyk-c-l) - 25%));
   --oyk-c-accent-faint: hsl(var(--oyk-h-accent), calc(var(--oyk-c-s) - 30%), calc(var(--oyk-c-l) - 35%));
 
-  --oyk-core-bg: #12151A;
+  --oyk-core-bg: #16191f;
   --oyk-core-fg: #929597;
   --oyk-core-fg-subtle: #7A7A7A;
   --oyk-core-fg-muted: #5A5A5A;

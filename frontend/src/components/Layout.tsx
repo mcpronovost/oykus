@@ -2,9 +2,12 @@ import ImgLogo from "@/assets/img/oykus-48.webp";
 
 interface OykLayoutProps {
   children: React.ReactNode;
+  hidden?: boolean;
 }
 
-export default function OykLayout({ children }: OykLayoutProps) {
+export default function OykLayout({ children, hidden }: OykLayoutProps) {
+  if (hidden) return children;
+
   return (
     <div className="oyk-core">
       <div className="oyk-core-header">
