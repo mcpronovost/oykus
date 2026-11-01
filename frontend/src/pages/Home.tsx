@@ -2,6 +2,8 @@ import type { CSSProperties } from "react";
 import { useTranslation } from "@/services/translation";
 import { OykButton } from "@/components/ui";
 import { IconBooks, IconPuzzle, IconWorld } from "@tabler/icons-react";
+import ImgLogo from "@/assets/img/oykus-1024.webp";
+import ImgHeroAtmosphere from "@/assets/img/home-hero-atmosphere.jpg";
 
 const FEATURES = [
   { key: "spaces", icon: IconWorld },
@@ -22,6 +24,17 @@ export default function Home() {
   return (
     <div className="oyk-home">
       <section className="oyk-home-hero" aria-labelledby="oyk-home-hero-brand">
+        <div className="oyk-home-hero-atmosphere" aria-hidden="true">
+          <img
+            className="oyk-home-hero-atmosphere-img"
+            src={ImgHeroAtmosphere}
+            alt=""
+            decoding="async"
+          />
+          <div className="oyk-home-hero-atmosphere-veil" />
+          <div className="oyk-home-hero-glow" />
+        </div>
+
         <div className="oyk-home-hero-frame">
           <div className="oyk-home-hero-copy">
             <p id="oyk-home-hero-brand" className="oyk-home-hero-brand">
@@ -34,10 +47,13 @@ export default function Home() {
               <OykButton label={t("home.hero.register")} />
             </div>
           </div>
-          <div className="oyk-home-hero-panel" aria-hidden="true">
-            <div className="oyk-home-hero-panel-block oyk-home-hero-panel-block--a" />
-            <div className="oyk-home-hero-panel-block oyk-home-hero-panel-block--b" />
-            <div className="oyk-home-hero-panel-block oyk-home-hero-panel-block--c" />
+
+          <div className="oyk-home-hero-visual" aria-hidden="true">
+            <div className="oyk-home-hero-ring oyk-home-hero-ring--outer" />
+            <div className="oyk-home-hero-ring oyk-home-hero-ring--mid" />
+            <div className="oyk-home-hero-halo">
+              <img className="oyk-home-hero-logo" src={ImgLogo} alt="" />
+            </div>
           </div>
         </div>
       </section>
@@ -55,7 +71,11 @@ export default function Home() {
                 className="oyk-home-features-item"
                 style={{ "--oyk-home-feature-delay": `${0.08 * (index + 1)}s` } as CSSProperties}
               >
-                <Icon className="oyk-home-features-icon" size={28} stroke={1.5} aria-hidden="true" />
+                <span className="oyk-home-features-icon-wrap">
+                  <span className="oyk-home-features-icon-inner">
+                    <Icon className="oyk-home-features-icon" size={28} stroke={1.5} aria-hidden="true" />
+                  </span>
+                </span>
                 <h3 className="oyk-home-features-item-title">{t(`home.features.${key}.title`)}</h3>
                 <p className="oyk-home-features-item-body">{t(`home.features.${key}.body`)}</p>
               </li>
