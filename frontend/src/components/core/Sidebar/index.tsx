@@ -14,6 +14,33 @@ export default function OykCoreSidebar() {
               </div>
             </div>
           </li>
+          <li className="oyk-core-sidebar-nav-list-item">
+            <div className="oyk-core-sidebar-nav-link">
+              <div className="oyk-core-sidebar-nav-link-content">
+                <span className="oyk-core-sidebar-nav-link-icon">
+                  <IconLayoutGrid />
+                </span>
+              </div>
+            </div>
+          </li>
+          <li className="oyk-core-sidebar-nav-list-item">
+            <div className="oyk-core-sidebar-nav-link">
+              <div className="oyk-core-sidebar-nav-link-content">
+                <span className="oyk-core-sidebar-nav-link-icon">
+                  <IconLayoutGrid />
+                </span>
+              </div>
+            </div>
+          </li>
+          <li className="oyk-core-sidebar-nav-list-item">
+            <div className="oyk-core-sidebar-nav-link">
+              <div className="oyk-core-sidebar-nav-link-content">
+                <span className="oyk-core-sidebar-nav-link-icon">
+                  <IconLayoutGrid />
+                </span>
+              </div>
+            </div>
+          </li>
         </ul>
         <ul className="oyk-core-sidebar-nav-list">
           <li className="oyk-core-sidebar-nav-list-item">
