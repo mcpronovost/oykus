@@ -1,0 +1,104 @@
+.oyk-core-sidebar {
+  background: linear-gradient(
+    to bottom,
+    var(--oyk-core-sidebar-bg),
+    var(--oyk-core-sidebar-bg-subtle),
+    var(--oyk-core-sidebar-bg)
+  );
+  border-right: 1px solid var(--oyk-core-sidebar-divider);
+  box-shadow:
+    0 0 1px 1px rgba(0, 0, 0, 0.2),
+    6px 0 12px 0 rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  color: var(--oyk-core-sidebar-fg);
+  grid-area: nav;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 100%;
+  z-index: 9000;
+  padding: 12px 0;
+
+  &-nav {
+    font-size: 1rem;
+    line-height: 1;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+
+    &-list {}
+
+    &-link {
+      border-radius: var(--oyk-radius);
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      padding: 1px;
+      transition: opacity 0.2s;
+
+      &-content {
+        background: var(--oyk-core-sidebar-bg);
+        border-radius: var(--oyk-radius);
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: center;
+        padding: 6px;
+      }
+
+      &:hover {
+        color: var(--oyk-core-sidebar-fg-hover);
+        cursor: pointer;
+
+        &.oyk-active {
+          opacity: 0.8;
+        }
+
+        .oyk-core-sidebar-nav-link-content {
+          background: var(--oyk-core-sidebar-bg-hover);
+        }
+
+        &:active {
+          transform: scale(0.98);
+        }
+      }
+
+      &.oyk-active {
+        background: linear-gradient(
+          135deg,
+          var(--oyk-c-accent-muted),
+          var(--oyk-core-sidebar-divider),
+          var(--oyk-c-accent-muted),
+          var(--oyk-core-sidebar-divider),
+          var(--oyk-core-sidebar-divider)
+        );
+        box-shadow: var(--oyk-c-accent);
+        color: var(--oyk-c-accent);
+
+        .oyk-core-sidebar-nav-link-content {
+          background: linear-gradient(
+            to right,
+            var(--oyk-c-accent-faint),
+            var(--oyk-core-sidebar-bg),
+          );
+        }
+      }
+
+      &-icon {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+}

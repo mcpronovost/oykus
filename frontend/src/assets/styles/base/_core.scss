@@ -29,22 +29,6 @@ body {
   overflow: hidden;
 }
 
-.oyk-core-nav {
-  background-color: var(--oyk-card-bg);
-  border-right: 1px solid var(--oyk-card-divider);
-  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2), 6px 0 12px 0 rgba(0, 0, 0, 0.1);
-  color: var(--oyk-card-fg);
-  grid-area: nav;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: center;
-  width: 64px;
-  height: 100%;
-  z-index: 9000;
-}
-
 .oyk-core-main {
   background-color: var(--oyk-core-bg);
   color: var(--oyk-core-fg);

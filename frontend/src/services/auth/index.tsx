@@ -4,7 +4,7 @@ import { createContext, useContext, useState } from "react";
 const AuthContext = createContext<TypeAuthContextValue | undefined>(undefined);
 
 const INITIAL_STATE: TypeAuthContextValue = {
-  isAuth: true,
+  isAuth: false,
   setAuth: () => {},
   login: () => {},
   logout: () => {},

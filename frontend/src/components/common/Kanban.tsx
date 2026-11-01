@@ -89,7 +89,21 @@ const OykKanban = () => {
                     </header>
                     {task.description && (
                       <div className="oyk-kanban-task-content">
-                        {task.description}
+                        <div style={{ color: "var(--oyk-card-fg-hover)" }}>
+                          {task.description} hover
+                        </div>
+                        <div style={{ color: "var(--oyk-card-fg)" }}>
+                          {task.description} default
+                        </div>
+                        <div style={{ color: "var(--oyk-card-fg-subtle)" }}>
+                          {task.description} subtle
+                        </div>
+                        <div style={{ color: "var(--oyk-card-fg-muted)" }}>
+                          {task.description} muted
+                        </div>
+                        <div style={{ color: "var(--oyk-card-fg-faint)" }}>
+                          {task.description} faint
+                        </div>
                       </div>
                     )}
                     {task.id === 1 && (
