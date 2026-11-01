@@ -1,14 +1,28 @@
 import type { CSSProperties } from "react";
 import { useTranslation } from "@/services/translation";
 import { OykButton } from "@/components/ui";
-import { IconBooks, IconPuzzle, IconWorld } from "@tabler/icons-react";
+import {
+  IconBooks,
+  IconDice,
+  IconMap,
+  IconPencil,
+  IconPuzzle,
+  IconWorld,
+} from "@tabler/icons-react";
 import ImgLogo from "@/assets/img/oykus-1024.webp";
 import ImgHeroAtmosphere from "@/assets/img/home-hero-atmosphere.jpg";
+import ImgCraftAtmosphere from "@/assets/img/home-craft-atmosphere.jpg";
 
 const FEATURES = [
   { key: "spaces", icon: IconWorld },
   { key: "plugins", icon: IconPuzzle },
   { key: "encyclopedia", icon: IconBooks },
+] as const;
+
+const CRAFT_PILLARS = [
+  { key: "write", icon: IconPencil },
+  { key: "plan", icon: IconMap },
+  { key: "play", icon: IconDice },
 ] as const;
 
 const FOOTER_MENUS = [
@@ -84,16 +98,32 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="oyk-home-cta" aria-labelledby="oyk-home-cta-title">
-        <div className="oyk-home-cta-inner">
-          <h2 id="oyk-home-cta-title" className="oyk-home-cta-title">
-            {t("home.cta.title")}
-          </h2>
-          <p className="oyk-home-cta-subline">{t("home.cta.subline")}</p>
-          <div className="oyk-home-cta-actions">
-            <OykButton label={t("home.cta.login")} />
-            <OykButton label={t("home.cta.register")} />
+      <section className="oyk-home-craft" aria-labelledby="oyk-home-craft-title">
+        <div className="oyk-home-craft-atmosphere" aria-hidden="true">
+          <img
+            className="oyk-home-craft-atmosphere-img"
+            src={ImgCraftAtmosphere}
+            alt=""
+            decoding="async"
+          />
+          <div className="oyk-home-craft-atmosphere-veil" />
+        </div>
+        <div className="oyk-home-craft-inner">
+          <div className="oyk-home-craft-intro">
+            <h2 id="oyk-home-craft-title" className="oyk-home-craft-title">
+              {t("home.craft.title")}
+            </h2>
+            <p className="oyk-home-craft-subline">{t("home.craft.subline")}</p>
           </div>
+          <ul className="oyk-home-craft-list">
+            {CRAFT_PILLARS.map(({ key, icon: Icon }) => (
+              <li key={key} className="oyk-home-craft-item">
+                <Icon className="oyk-home-craft-icon" size={22} stroke={1.5} aria-hidden="true" />
+                <h3 className="oyk-home-craft-item-title">{t(`home.craft.${key}.title`)}</h3>
+                <p className="oyk-home-craft-item-body">{t(`home.craft.${key}.body`)}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
