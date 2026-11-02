@@ -9,7 +9,7 @@ export default function OykCoreSidebar() {
             <div className="oyk-core-sidebar-nav-link oyk-active">
               <div className="oyk-core-sidebar-nav-link-content">
                 <span className="oyk-core-sidebar-nav-link-icon">
-                  <IconLayoutGrid />
+                  <IconLayoutGrid size={24} stroke={1.5} />
                 </span>
               </div>
             </div>
@@ -18,7 +18,7 @@ export default function OykCoreSidebar() {
             <div className="oyk-core-sidebar-nav-link">
               <div className="oyk-core-sidebar-nav-link-content">
                 <span className="oyk-core-sidebar-nav-link-icon">
-                  <IconBooks />
+                  <IconBooks size={24} stroke={1.5} />
                 </span>
               </div>
             </div>
@@ -27,7 +27,7 @@ export default function OykCoreSidebar() {
             <div className="oyk-core-sidebar-nav-link">
               <div className="oyk-core-sidebar-nav-link-content">
                 <span className="oyk-core-sidebar-nav-link-icon">
-                  <IconNote />
+                  <IconNote size={24} stroke={1.5} />
                 </span>
               </div>
             </div>
@@ -38,7 +38,7 @@ export default function OykCoreSidebar() {
             <div className="oyk-core-sidebar-nav-link">
               <div className="oyk-core-sidebar-nav-link-content">
                 <span className="oyk-core-sidebar-nav-link-icon">
-                  <IconAtom2 />
+                  <IconAtom2 size={24} stroke={2} />
                 </span>
               </div>
             </div>
@@ -47,7 +47,7 @@ export default function OykCoreSidebar() {
             <div className="oyk-core-sidebar-nav-link">
               <div className="oyk-core-sidebar-nav-link-content">
                 <span className="oyk-core-sidebar-nav-link-icon">
-                  <IconPencil />
+                  <IconPencil size={24} stroke={1.5} />
                 </span>
               </div>
             </div>
@@ -56,7 +56,7 @@ export default function OykCoreSidebar() {
             <div className="oyk-core-sidebar-nav-link">
               <div className="oyk-core-sidebar-nav-link-content">
                 <span className="oyk-core-sidebar-nav-link-icon">
-                  <IconMessages />
+                  <IconMessages size={24} stroke={1.5} />
                 </span>
               </div>
             </div>
@@ -65,7 +65,7 @@ export default function OykCoreSidebar() {
             <div className="oyk-core-sidebar-nav-link">
               <div className="oyk-core-sidebar-nav-link-content">
                 <span className="oyk-core-sidebar-nav-link-icon">
-                  <IconIcosahedron />
+                  <IconIcosahedron size={24} stroke={1.5} />
                 </span>
               </div>
             </div>
@@ -77,7 +77,7 @@ export default function OykCoreSidebar() {
             <div className="oyk-core-sidebar-nav-link">
               <div className="oyk-core-sidebar-nav-link-content">
                 <span className="oyk-core-sidebar-nav-link-icon">
-                  <IconSettings />
+                  <IconSettings size={24} stroke={1.5} />
                 </span>
               </div>
             </div>
