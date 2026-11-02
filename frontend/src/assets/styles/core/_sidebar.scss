@@ -39,10 +39,6 @@
       gap: 12px;
     }
 
-    &-spacer {
-      flex: 1;
-    }
-
     &-link {
       border-radius: var(--oyk-radius);
       display: flex;
@@ -92,6 +88,7 @@
           var(--oyk-core-sidebar-divider),
           var(--oyk-core-sidebar-divider)
         );
+        box-shadow: 0 0 16px hsl(var(--oyk-h-accent), 40%, 30%, 0.18);
         color: var(--oyk-c-accent);
 
         .oyk-core-sidebar-nav-link-content {

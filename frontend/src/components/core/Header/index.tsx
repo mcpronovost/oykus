@@ -1,4 +1,5 @@
 import { IconUser } from "@tabler/icons-react";
+import { OykSpacer } from "@/components/ui";
 import ImgLogo from "@/assets/img/oykus-48.webp";
 import ImgUser from "@/assets/img/avt/tyryn.png";
 
@@ -16,7 +17,7 @@ export default function OykCoreHeader() {
           </span>
         </div>
       </div>
-      <div className="oyk-core-header-spacer"></div>
+      <OykSpacer />
       <div className="oyk-core-header-user">
         <div className="oyk-core-header-user-name">
           <span className="oyk-core-header-user-name-title">M-C Pronovost</span>
