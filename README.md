@@ -119,9 +119,11 @@ Docker Desktop on Windows or Mac is the only requirement. The same commands run 
 docker compose up
 ```
 
+On first start, the backend and frontend containers install npm packages into the bind-mounted project folders (so the IDE can resolve them) and generate the Prisma client under `backend/prisma/db`. Later starts skip install unless `package-lock.json` is newer than `node_modules`.
+
 3. Open `http://localhost:8080`.
 
-Postgres is published on port `5432`. The API and Vite are reached only through Nginx.
+Postgres is published on port `5433`. The API and Vite are reached only through Nginx.
 
 Client configuration uses names that start with `VITE_` in `.env`. During local development, Compose injects that file into the Vite process, and the browser can read those names from `import.meta.env`. Other names stay on the server. A production build inlines `VITE_` values when the Nginx image is built, so a change to a client variable means rebuilding that image.
 

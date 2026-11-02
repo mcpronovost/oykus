@@ -1,5 +1,5 @@
 import { createApp } from "./app.js";
-import { prisma } from "./shared/db";
+import { prisma } from "./shared/db/index.js";
 
 const port = Number(process.env.PORT ?? 3000);
 const server = createApp().listen(port, "0.0.0.0");
