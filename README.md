@@ -1,4 +1,4 @@
-![Oykus](.github/assets/banner.jpg "Oykus")
+![Oykus](.github/assets/banner.webp "Oykus")
 
 <p align="center">
   <br/>
