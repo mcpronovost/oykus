@@ -1,0 +1,53 @@
+.oyk-tooltip {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+
+  &.oyk-hint {
+    text-decoration: dotted underline currentColor;
+    text-underline-offset: 0.3rem;
+    cursor: help;
+  }
+
+  &-content {
+    background-color: var(--oyk-card-bg-hover);
+    border-radius: 1rem;
+    box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.24);
+    color: var(--oyk-card-fg);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 10000;
+    padding: 8px 16px;
+    opacity: 0;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+
+    &[data-placement="right"] {
+      transform: translateX(8px);
+    }
+
+    &[data-placement="left"] {
+      transform: translateX(-8px);
+    }
+
+    &[data-placement="top"] {
+      transform: translateY(-8px);
+    }
+
+    &[data-placement="bottom"] {
+      transform: translateY(8px);
+    }
+
+    &.oyk-open {
+      opacity: 1;
+      transform: translate(0);
+    }
+  }
+}

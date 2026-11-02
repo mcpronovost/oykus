@@ -10,6 +10,7 @@
 @use "./ui/divider" as ui-divider;
 @use "./ui/grid" as ui-grid;
 @use "./ui/progressbar" as ui-progressbar;
+@use "./ui/tooltip" as ui-tooltip;
 
 // Common
 @use "./common/kanban" as common-kanban;
