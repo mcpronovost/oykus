@@ -31,6 +31,10 @@ body {
 
 .oyk-core-main {
   background-color: var(--oyk-core-bg);
+  background:
+    radial-gradient(600px 300px at 85% -10%, color-mix(in srgb, var(--oyk-c-accent) 10%, transparent), transparent 60%),
+    radial-gradient(700px 300px at 4% 104%, color-mix(in srgb, var(--oyk-core-bg-glow) 50%, transparent), transparent 50%),
+    var(--oyk-core-bg);
   color: var(--oyk-core-fg);
   container-name: oyk-main;
   container-type: inline-size;

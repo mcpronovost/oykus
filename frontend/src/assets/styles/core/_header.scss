@@ -1,9 +1,6 @@
 .oyk-core-header {
   background: linear-gradient(to bottom, var(--oyk-core-header-bg), var(--oyk-core-header-bg-subtle));
   border-bottom: 1px solid var(--oyk-core-header-divider);
-  box-shadow:
-    0 0 1px 1px rgba(0, 0, 0, 0.2),
-    0 6px 12px 0 rgba(0, 0, 0, 0.1);
   color: var(--oyk-core-header-fg);
   grid-area: header;
   display: flex;

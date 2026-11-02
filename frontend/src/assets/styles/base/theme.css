@@ -9,38 +9,40 @@
   --oyk-c-accent-muted: hsl(var(--oyk-h-accent), calc(var(--oyk-c-s) - 20%), calc(var(--oyk-c-l) - 25%));
   --oyk-c-accent-faint: hsl(var(--oyk-h-accent), calc(var(--oyk-c-s) - 30%), calc(var(--oyk-c-l) - 35%));
 
-  --oyk-core-bg: #0f1217;
-  --oyk-core-fg: #8a867c;
-  --oyk-core-fg-subtle: #4f4f4a;
-  --oyk-core-fg-muted: #363635;
-  --oyk-core-fg-faint: #252726;
-  --oyk-core-divider: #13161B;
+  --oyk-core-bg: #0a0c0f;
+  --oyk-core-bg-hover: #10151a;
+  --oyk-core-bg-glow: #192027;
+  --oyk-core-fg: #8b8d8a;
+  --oyk-core-fg-subtle: #595b5c;
+  --oyk-core-fg-muted: #373a3c;
+  --oyk-core-fg-faint: #1f252a;
+  --oyk-core-divider: #171b1f;
 
-  --oyk-core-header-bg: #090E11;
-  --oyk-core-header-bg-subtle: #060B0E;
-  --oyk-core-header-fg: #AFB0B4;
-  --oyk-core-header-fg-hover: #C4C4C4;
-  --oyk-core-header-fg-subtle: #64666A;
-  --oyk-core-header-fg-muted: #44464A;
-  --oyk-core-header-fg-faint: #2E3134;
-  --oyk-core-header-divider: #13161B;
+  --oyk-core-header-bg: #0b0e11;
+  --oyk-core-header-bg-subtle: #07090b;
+  --oyk-core-header-fg: #b8b9b6;
+  --oyk-core-header-fg-hover: #eceae4;
+  --oyk-core-header-fg-subtle: #7a7c7c;
+  --oyk-core-header-fg-muted: #505355;
+  --oyk-core-header-fg-faint: #34373a;
+  --oyk-core-header-divider: #1a1f24;
 
-  --oyk-core-sidebar-bg: #090E11;
-  --oyk-core-sidebar-bg-hover: #0C1115;
-  --oyk-core-sidebar-bg-subtle: #060B0E;
-  --oyk-core-sidebar-fg: #8a867c;
-  --oyk-core-sidebar-fg-hover: #C4C4C4;
-  --oyk-core-sidebar-divider: #13161B;
+  --oyk-core-sidebar-bg: #0b0e11;
+  --oyk-core-sidebar-bg-hover: #10151a;
+  --oyk-core-sidebar-bg-subtle: #07090b;
+  --oyk-core-sidebar-fg: #8b8d8a;
+  --oyk-core-sidebar-fg-hover: #eceae4;
+  --oyk-core-sidebar-divider: #1a1f24;
 
-  --oyk-card-bg: #090E11;
-  --oyk-card-bg-hover: #0B1014;
-  --oyk-card-bg-subtle: #060B0E;
-  --oyk-card-fg: #AFB0B4;
-  --oyk-card-fg-hover: #D1D3DF;
-  --oyk-card-fg-subtle: #64666A;
-  --oyk-card-fg-muted: #44464A;
-  --oyk-card-fg-faint: #2E3134;
-  --oyk-card-divider: #13161B;
+  --oyk-card-bg: #0d1013;
+  --oyk-card-bg-hover: #12161a;
+  --oyk-card-bg-subtle: #090b0e;
+  --oyk-card-fg: #d4d5d1;
+  --oyk-card-fg-hover: #f0eee8;
+  --oyk-card-fg-subtle: #8b8d8a;
+  --oyk-card-fg-muted: #595b5c;
+  --oyk-card-fg-faint: #34373a;
+  --oyk-card-divider: #1a1f24;
 
   --oyk-radius: 12px;
 }
