@@ -44,7 +44,6 @@ export default function OykCoreSidebar() {
                       <option value="default">{t("My space")}</option>
                     </select>
                   </label>
-                  <OykDivider />
                   <p className="oyk-core-sidebar-settings-version">v{APP_VERSION}</p>
                 </div>
               }
