@@ -3,9 +3,9 @@ import {
   IconBooks,
   IconNote,
   IconPencil,
+  IconVocabulary,
   IconMessages,
   IconIcosahedron,
-  IconAtom2,
   IconSettings,
 } from "@tabler/icons-react";
 import { oykClass } from "@/utils";
@@ -18,12 +18,11 @@ export default function OykCoreSidebar() {
       <nav className="oyk-core-sidebar-nav">
         <ul className="oyk-core-sidebar-nav-list">
           <OykCoreSidebarNavLink routeName="dashboard" label="Dashboard" icon={IconLayoutGrid} />
-          <OykCoreSidebarNavLink routeName="knowledge" label="Knowledge" icon={IconBooks} />
+          <OykCoreSidebarNavLink routeName="library" label="Library" icon={IconBooks} />
           <OykCoreSidebarNavLink routeName="notes" label="Notes" icon={IconNote} />
         </ul>
         <ul className="oyk-core-sidebar-nav-list">
-          <OykCoreSidebarNavLink routeName="?" label="?" icon={IconAtom2} />
-          <OykCoreSidebarNavLink routeName="?" label="?" icon={IconPencil} />
+          <OykCoreSidebarNavLink routeName="manuscript" label="Manuscript" icon={IconVocabulary} />
           <OykCoreSidebarNavLink routeName="forum" label="Forum" icon={IconMessages} />
           <OykCoreSidebarNavLink routeName="game" label="Game" icon={IconIcosahedron} />
         </ul>

@@ -10,12 +10,16 @@ interface OykCoreSidebarNavLinkProps {
 }
 
 export default function OykCoreSidebarNavLink({ routeName, label, icon: NavLinkIcon }: OykCoreSidebarNavLinkProps) {
-  const { route } = useRouter();
+  const { route, n } = useRouter();
+
+  const handleClick = () => {
+    n(routeName);
+  };
 
   return (
     <li className="oyk-core-sidebar-nav-list-item">
       <OykTooltip content={label}>
-        <div className={oykClass("oyk-core-sidebar-nav-link", route?.name === routeName && "oyk-active")}>
+        <div className={oykClass("oyk-core-sidebar-nav-link", route?.name === routeName && "oyk-active")} onClick={handleClick}>
           <div className="oyk-core-sidebar-nav-link-content">
             <span className="oyk-core-sidebar-nav-link-icon">
               <NavLinkIcon size={24} stroke={1.5} />
