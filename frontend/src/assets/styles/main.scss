@@ -15,6 +15,7 @@
 
 // Common
 @use "./common/kanban" as common-kanban;
+@use "./common/result" as pages-result;
 
 // Pages
 @use "./pages/home" as pages-home;
