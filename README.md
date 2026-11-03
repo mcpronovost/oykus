@@ -109,7 +109,10 @@ CSS classes use the `oyk-` prefix when a separator is required. Exported React c
 
 ## Docs
 
-Product decisions and feature notes live in [`.docs/`](./.docs/). Start with [spaces and current workspace](./.docs/spaces-and-workspace.md).
+Product decisions and feature notes live in [`.docs/`](./.docs/):
+
+- [Spaces and current workspace](./.docs/spaces-and-workspace.md)
+- [Navigation and menu](./.docs/navigation-and-menu.md)
 
 ## Install
 

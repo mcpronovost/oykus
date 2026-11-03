@@ -17,6 +17,7 @@ export default function OykCoreHeader() {
           </span>
         </div>
       </div>
+      {/* TODO: Relative menu */}
       <OykSpacer />
       <div className="oyk-core-header-user">
         <div className="oyk-core-header-user-name">
