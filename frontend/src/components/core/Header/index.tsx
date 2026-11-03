@@ -1,7 +1,7 @@
-import { IconUser } from "@tabler/icons-react";
+import { IconBell, IconUser } from "@tabler/icons-react";
 import { OykSpacer } from "@/components/ui";
 import ImgLogo from "@/assets/img/oykus-48.webp";
-import ImgUser from "@/assets/img/avt/tyryn.png";
+import ImgUser from "@/assets/img/avt/tyryn.jpg";
 
 export default function OykCoreHeader() {
   return (
@@ -19,6 +19,9 @@ export default function OykCoreHeader() {
       </div>
       {/* TODO: Relative menu */}
       <OykSpacer />
+      <div className="oyk-core-header-social">
+        <IconBell strokeWidth={1.5} />
+      </div>
       <div className="oyk-core-header-user">
         <div className="oyk-core-header-user-name">
           <span className="oyk-core-header-user-name-title">M-C Pronovost</span>
