@@ -107,6 +107,10 @@ There is no root `package.json`. Backend and frontend are separate npm projects.
 
 CSS classes use the `oyk-` prefix when a separator is required. Exported React components use `Oyk` in PascalCase. Filenames do not use the prefix.
 
+## Docs
+
+Product decisions and feature notes live in [`.docs/`](./.docs/). Start with [spaces and current workspace](./.docs/spaces-and-workspace.md).
+
 ## Install
 
 Docker Desktop on Windows or Mac is the only requirement. The same commands run on both.
