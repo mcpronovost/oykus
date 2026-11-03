@@ -1,0 +1,52 @@
+.oyk-dialog {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+
+  &-content {
+    background: linear-gradient(
+      to bottom,
+      var(--oyk-card-bg),
+      var(--oyk-card-bg-subtle)
+    );
+    border: 1px solid var(--oyk-card-divider);
+    border-radius: var(--oyk-radius);
+    box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.36);
+    color: var(--oyk-card-fg);
+    font-size: 0.875rem;
+    line-height: 1.4;
+    width: max-content;
+    min-width: 220px;
+    max-width: min(320px, calc(100vw - 16px));
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    padding: 16px;
+    opacity: 0;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+
+    &[data-placement="right"] {
+      transform: translateX(8px);
+    }
+
+    &[data-placement="left"] {
+      transform: translateX(-8px);
+    }
+
+    &[data-placement="top"] {
+      transform: translateY(-8px);
+    }
+
+    &[data-placement="bottom"] {
+      transform: translateY(8px);
+    }
+
+    &.oyk-open {
+      opacity: 1;
+      transform: translate(0);
+    }
+  }
+}

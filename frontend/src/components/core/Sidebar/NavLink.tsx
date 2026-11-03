@@ -4,7 +4,7 @@ import { useRouter } from "@/services/router";
 import { OykTooltip } from "@/components/ui";
 
 interface OykCoreSidebarNavLinkProps {
-  routeName: string;
+  routeName?: string;
   label: string;
   icon: TablerIcon;
   size?: "sm" | "md" | "lg";
@@ -14,13 +14,14 @@ export default function OykCoreSidebarNavLink({ routeName, label, icon: NavLinkI
   const { route, n } = useRouter();
 
   const handleClick = () => {
+    if (!routeName) return;
     n(routeName);
   };
 
   return (
     <li className="oyk-core-sidebar-nav-list-item">
       <OykTooltip content={label}>
-        <div className={oykClass("oyk-core-sidebar-nav-link", route?.name === routeName && "oyk-active")} onClick={handleClick}>
+        <div className={oykClass("oyk-core-sidebar-nav-link", routeName && route?.name === routeName && "oyk-active")} onClick={handleClick}>
           <div className="oyk-core-sidebar-nav-link-content">
             <span className="oyk-core-sidebar-nav-link-icon">
               <NavLinkIcon size={size === "sm" ? 16 : size === "md" ? 24 : 32} stroke={1.5} />

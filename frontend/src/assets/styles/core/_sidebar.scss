@@ -111,4 +111,47 @@
       }
     }
   }
+
+  &-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    &-field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    &-label {
+      color: var(--oyk-card-fg-subtle);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    &-select {
+      appearance: none;
+      background: var(--oyk-card-bg-hover);
+      border: 1px solid var(--oyk-card-divider);
+      border-radius: 8px;
+      color: var(--oyk-card-fg);
+      font: inherit;
+      padding: 8px 12px;
+      width: 100%;
+
+      &:disabled {
+        color: var(--oyk-card-fg-muted);
+        cursor: not-allowed;
+        opacity: 0.8;
+      }
+    }
+
+    &-version {
+      color: var(--oyk-card-fg-faint);
+      font-size: 0.6875rem;
+      letter-spacing: 0.04em;
+      margin: 0;
+      text-align: center;
+    }
+  }
 }
