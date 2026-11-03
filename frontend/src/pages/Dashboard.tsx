@@ -1,11 +1,11 @@
-import { OykKanban } from "@/components/common";
+import { OykKanban, OykResult } from "@/components/common";
 import { OykGrid } from "@/components/ui";
 
-export default function Dashboard() {
+export default function OykDashboard() {
   return (
-    <div>
+    <div className="oyk-page-dashboard">
       <OykGrid>
-        <OykKanban />
+        <OykResult />
       </OykGrid>
     </div>
   );
