@@ -5,6 +5,7 @@ import { registerSW } from "virtual:pwa-register";
 
 import OykProviders from "@/components/Providers";
 import OykLayout from "@/components/Layout";
+import { OykResult } from "@/components/common"
 import { OykCoreLoading } from "@/components/core";
 import { useRouter } from "@/services/router";
 
@@ -20,7 +21,7 @@ function OykApp() {
           {createElement(route.component)}
         </Suspense>
       ) : (
-        <div>404</div>
+        <OykResult title="404" />
       )}
     </OykLayout>
   );
