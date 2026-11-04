@@ -15,7 +15,7 @@ function OykApp() {
   const { route } = useRouter();
 
   return (
-    <OykLayout hidden={route?.name === "home"}>
+    <OykLayout hidden={["home", "register", "login", "logout"].includes(route?.name || "")}>
       {route?.component ? (
         <Suspense fallback={<OykCoreLoading />}>
           {createElement(route.component)}
