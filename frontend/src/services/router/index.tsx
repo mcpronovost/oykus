@@ -2,28 +2,31 @@ import type { TypeLang } from "@/services/translation/types";
 import type {
   TypeRoute,
   TypeRouteParams,
-  TypeRouteResult,
   TypeRouterContextValue,
   TypeRouterProviderProps,
 } from "./types";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "@/services/auth";
 import { ROUTES } from "./routes";
-import { buildLocalizedPath, buildRoutePath, findRoute, getBreadcrumbs, getLangFromPath } from "./utils";
+import { buildLocalizedPath, buildRoutePath, getBreadcrumbs, getLangFromPath, resolveRoute } from "./utils";
 
 const RouterContext = createContext<TypeRouterContextValue | undefined>(undefined);
 
-const initialRouteResult: TypeRouteResult | null = findRoute(
+const initialResolved = resolveRoute(
   window.location.pathname,
   getLangFromPath(window.location.pathname),
   false,
 );
 
+if (initialResolved.pathname !== window.location.pathname) {
+  window.history.replaceState({}, "", initialResolved.pathname);
+}
+
 const INITIAL_STATE: TypeRouterContextValue = {
-  history: [window.location.pathname],
+  history: [initialResolved.pathname],
   lang: getLangFromPath(window.location.pathname),
-  route: initialRouteResult?.route || null,
-  params: initialRouteResult?.params || {},
+  route: initialResolved.result?.route || null,
+  params: initialResolved.result?.params || {},
   n: () => {},
   breads: () => [],
   routeTitle: () => "",
@@ -40,10 +43,19 @@ export function RouterProvider({ children }: TypeRouterProviderProps) {
   const [params, setParams] = useState<TypeRouteParams>(INITIAL_STATE.params);
 
   const applyRouteResult = (pathname: string, language: TypeLang, authenticated: boolean) => {
-    const routeResult: TypeRouteResult | null = findRoute(pathname, language, authenticated);
+    const { result, pathname: resolvedPath } = resolveRoute(pathname, language, authenticated);
+
+    if (resolvedPath !== window.location.pathname) {
+      window.history.replaceState({}, "", resolvedPath);
+      setHistory((current) => {
+        if (current.length === 0) return [resolvedPath];
+        return [...current.slice(0, -1), resolvedPath];
+      });
+    }
+
     setLang(language);
-    setRoute(routeResult?.route || null);
-    setParams(routeResult?.params || {});
+    setRoute(result?.route || null);
+    setParams(result?.params || {});
   };
 
   const navigate = (name: string, routeParams: TypeRouteParams = {}, language: TypeLang = lang) => {

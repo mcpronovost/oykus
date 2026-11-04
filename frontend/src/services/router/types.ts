@@ -5,11 +5,12 @@ export type TypeRouteParams = Record<string, string>;
 
 export interface TypeRoute {
   name: string;
-  component: LazyExoticComponent<ComponentType<any>>;
+  component?: LazyExoticComponent<ComponentType<any>>;
   paths: Partial<Record<TypeLang, string>>;
   labels?: Partial<Record<TypeLang, string>>;
   params?: TypeRouteParams;
   auth?: boolean;
+  redirect?: string;
   children?: TypeRoute[];
 }
 

@@ -168,6 +168,30 @@ export const buildRoutePath = (routeName: string, params: TypeRouteParams = {}, 
   return findRoutePath(ROUTES, routeName);
 };
 
+// Resolve a pathname, following any route.redirect chain to the final route
+export const resolveRoute = (
+  pathname: string,
+  pathlang: TypeLang,
+  isAuth = false,
+): { result: TypeRouteResult | null; pathname: string } => {
+  let currentPath = pathname;
+  let result = findRoute(currentPath, pathlang, isAuth);
+  const seen = new Set<string>();
+
+  while (result?.route.redirect) {
+    if (seen.has(result.route.name)) break;
+    seen.add(result.route.name);
+
+    const routePath = buildRoutePath(result.route.redirect, result.params, pathlang);
+    if (routePath === null) break;
+
+    currentPath = buildLocalizedPath(routePath, pathlang);
+    result = findRoute(currentPath, pathlang, isAuth);
+  }
+
+  return { result, pathname: currentPath };
+};
+
 // Function to generate breadcrumbs from a route name
 export const getBreadcrumbs = (routeName: string, pathlang: TypeLang): TypeBreadcrumb[] => {
   const breadcrumbs: TypeBreadcrumb[] = [];
