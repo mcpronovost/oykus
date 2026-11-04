@@ -9,7 +9,7 @@ import {
 } from "@tabler/icons-react";
 import { oykClass } from "@/utils";
 import { useTranslation } from "@/services/translation";
-import { OykDialog, OykDivider, OykSpacer, OykTooltip } from "@/components/ui";
+import { OykDialog, OykSpacer, OykTooltip } from "@/components/ui";
 import OykCoreSidebarNavLink from "./NavLink";
 
 const APP_VERSION = "0.4.0";
