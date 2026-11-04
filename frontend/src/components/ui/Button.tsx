@@ -1,16 +1,24 @@
 import type { IconProps as TablerIconProps } from "@tabler/icons-react";
+import { useRouter } from "@/services/router";
 
 interface OykButtonProps {
   label?: string;
   icon?: React.ComponentType<TablerIconProps>;
   iconSize?: number;
   disabled?: boolean;
+  routeName?: string;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export const OykButton = ({ label, icon: Icon, iconSize = 16, disabled, onClick }: OykButtonProps) => {
+export const OykButton = ({ label, icon: Icon, iconSize = 16, disabled, routeName, onClick }: OykButtonProps) => {
+  const { route, n } = useRouter();
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (disabled) return;
+    if (routeName) {
+      n(routeName);
+      return;
+    }
     onClick?.(event);
   };
 
