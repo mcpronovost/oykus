@@ -4,6 +4,7 @@ import {
   IconBooks,
   IconNote,
   IconPlus,
+  IconFlask,
   IconSettings,
 } from "@tabler/icons-react";
 import { oykClass } from "@/utils";
@@ -26,6 +27,7 @@ export default function OykCoreSidebar() {
           <OykCoreSidebarNavLink routeName="notes" label={t("Notes")} icon={IconNote} />
         </ul>
         <ul className="oyk-core-sidebar-nav-list" aria-label={t("Plugins")}>
+          <OykCoreSidebarNavLink routeName="dev-laboratory" label={t("Laboratory")} icon={IconFlask} />
           <OykCoreSidebarNavLink label={t("Add plugins")} icon={IconPlus} size="sm" />
         </ul>
         <OykSpacer />
