@@ -83,7 +83,7 @@ export function RouterProvider({ children }: TypeRouterProviderProps) {
   };
 
   const routeTitle = (title?: string) => {
-    const appName = "Kotan";
+    const appName = "Oykus";
     if (title) return (window.document.title = `${title} | ${appName}`);
     return (window.document.title = appName);
   };
