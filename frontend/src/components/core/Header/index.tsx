@@ -1,9 +1,14 @@
 import { IconBell, IconUser } from "@tabler/icons-react";
+import { useAuth } from "@/services/auth";
 import { OykButton, OykSpacer } from "@/components/ui";
 import ImgLogo from "@/assets/img/oykus-48.webp";
 import ImgUser from "@/assets/img/avt/tyryn.jpg";
 
 export default function OykCoreHeader() {
+  const { isAuth } = useAuth();
+
+  if (!isAuth) return null;
+
   return (
     <div className="oyk-core-header">
       <div className="oyk-core-header-brand">

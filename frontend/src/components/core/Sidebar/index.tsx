@@ -8,6 +8,7 @@ import {
   IconSettings,
 } from "@tabler/icons-react";
 import { oykClass } from "@/utils";
+import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
 import { OykDialog, OykSpacer, OykTooltip } from "@/components/ui";
 import OykCoreSidebarNavLink from "./NavLink";
@@ -15,8 +16,11 @@ import OykCoreSidebarNavLink from "./NavLink";
 const APP_VERSION = "0.4.0";
 
 export default function OykCoreSidebar() {
+  const { isAuth } = useAuth();
   const { t } = useTranslation();
   const [settingsOpen, setSettingsOpen] = useState(false);
+
+  if (!isAuth) return null;
 
   return (
     <div className="oyk-core-sidebar">

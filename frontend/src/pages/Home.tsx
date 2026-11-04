@@ -57,8 +57,8 @@ export default function Home() {
             <h1 className="oyk-home-hero-headline">{t("home.hero.headline")}</h1>
             <p className="oyk-home-hero-subline">{t("home.hero.subline")}</p>
             <div className="oyk-home-hero-actions">
-              <OykButton label={t("home.hero.login")} />
-              <OykButton label={t("home.hero.register")} />
+              <OykButton label={t("home.hero.login")} routeName="login" />
+              <OykButton label={t("home.hero.register")} routeName="register" />
             </div>
           </div>
 
