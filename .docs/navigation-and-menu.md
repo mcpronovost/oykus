@@ -11,7 +11,7 @@ The first list of links is the **world-building** tools:
 | Link | Role |
 | --- | --- |
 | **Dashboard** | Stories and goals overview |
-| **Library** | Entries such as characters, flora, lore, events, races, countries, and similar |
+| **Encyclopedia** | Entries such as characters, flora, lore, events, races, countries, and similar |
 | **Notes** | Ideas, references, inspirations, quotes, and similar |
 
 Other sidebar lists (plugins such as Manuscript, Forum, Game, plus Settings) are separate from this world-building group. See [spaces and current workspace](./spaces-and-workspace.md) for when space-scoped links are disabled.
@@ -22,7 +22,7 @@ Other sidebar lists (plugins such as Manuscript, Forum, Game, plus Settings) are
 
 Examples:
 
-- On **Library**, the menu might include Timeline, Characters, World, and similar.
+- On **Encyclopedia**, the menu might include Timeline, Characters, World, and similar.
 - On **Notes**, the menu might include Notes, References, and similar.
 
 When the current page has no page-relative sections, the header menu can be empty or omitted.

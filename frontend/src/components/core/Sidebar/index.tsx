@@ -23,7 +23,7 @@ export default function OykCoreSidebar() {
       <nav className="oyk-core-sidebar-nav">
         <ul className="oyk-core-sidebar-nav-list" aria-label={t("Tools")}>
           <OykCoreSidebarNavLink routeName="dashboard" label={t("Dashboard")} icon={IconLayoutGrid} />
-          <OykCoreSidebarNavLink routeName="library" label={t("Library")} icon={IconBooks} />
+          <OykCoreSidebarNavLink routeName="encyclopedia" label={t("Encyclopedia")} icon={IconBooks} />
           <OykCoreSidebarNavLink routeName="notes" label={t("Notes")} icon={IconNote} />
         </ul>
         <ul className="oyk-core-sidebar-nav-list" aria-label={t("Plugins")}>

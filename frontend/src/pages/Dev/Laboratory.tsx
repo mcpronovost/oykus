@@ -14,7 +14,7 @@ export default function OykDevLaboratory() {
 /
 ├── /dashboard
 │   └── /goals
-├── /library
+├── /encyclopedia
 │   ├── /timeline
 │   ├── /characters
 │   └── /world

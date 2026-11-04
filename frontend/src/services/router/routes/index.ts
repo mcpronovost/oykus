@@ -21,11 +21,11 @@ export const ROUTES: TypeRoute[] = [
     auth: true,
   },
   {
-    name: "library",
-    component: React.lazy(() => import("../../../pages/Library")),
+    name: "encyclopedia",
+    component: React.lazy(() => import("../../../pages/Encyclopedia")),
     paths: {
-      fr: "bibliotheque",
-      en: "library",
+      fr: "encyclopedia",
+      en: "encyclopedia",
     },
     auth: true,
   },
