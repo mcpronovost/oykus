@@ -91,8 +91,10 @@ export function object(shape) {
       const result = validator(input[key]);
       value[key] = result.value;
 
-      if (Array.isArray(result.errors) && result.errors.length > 0) {
-        errors[key] = result.errors;
+      if (Array.isArray(result.errors)) {
+        if (result.errors.length > 0) {
+          errors[key] = result.errors;
+        }
       } else if (result.errors && typeof result.errors === "object") {
         errors[key] = result.errors;
       }

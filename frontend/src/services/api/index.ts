@@ -1,9 +1,91 @@
-async function getHealth(): Promise<void> {
-  const response = await fetch("/api/v1/health");
+type TypeApiError = {
+  code: string;
+  message: string;
+  fields?: Record<string, string[] | Record<string, unknown>>;
+};
 
+type TypeApiEnvelope<T> = {
+  data?: T;
+  error?: TypeApiError;
+  ok?: boolean;
+};
+
+export class ApiError extends Error {
+  code: string;
+  fields?: TypeApiError["fields"];
+  status: number;
+
+  constructor(status: number, error: TypeApiError) {
+    super(error.message);
+    this.name = "ApiError";
+    this.status = status;
+    this.code = error.code;
+    this.fields = error.fields;
+  }
+}
+
+async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
+  const headers = new Headers(init.headers);
+
+  if (init.body && !headers.has("Content-Type")) {
+    headers.set("Content-Type", "application/json");
+  }
+
+  const response = await fetch(path, {
+    ...init,
+    headers,
+    credentials: "include",
+  });
+
+  if (response.status === 204) {
+    return undefined as T;
+  }
+
+  const payload = (await response.json().catch(() => null)) as TypeApiEnvelope<T> | null;
+
+  if (!response.ok) {
+    throw new ApiError(response.status, payload?.error ?? {
+      code: "request_failed",
+      message: "The request failed.",
+    });
+  }
+
+  if (payload && "data" in payload) {
+    return payload.data as T;
+  }
+
+  return payload as T;
+}
+
+export type TypePublicUser = {
+  id: string;
+  name: string;
+  avatar: string | null;
+  cover: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+async function getHealth(): Promise<void> {
+  const response = await fetch("/api/v1/health", { credentials: "include" });
   if (!response.ok) {
     throw new Error("The health check failed.");
   }
 }
 
-export { getHealth };
+async function login(email: string, password: string): Promise<TypePublicUser> {
+  return request<TypePublicUser>("/api/v1/auth/login", {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+  });
+}
+
+async function logout(): Promise<void> {
+  await request<void>("/api/v1/auth/logout", { method: "POST" });
+}
+
+async function getMe(): Promise<TypePublicUser> {
+  return request<TypePublicUser>("/api/v1/users/me");
+}
+
+export { getHealth, getMe, login, logout, request };

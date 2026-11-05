@@ -36,7 +36,7 @@ const INITIAL_STATE: TypeRouterContextValue = {
 };
 
 export function RouterProvider({ children }: TypeRouterProviderProps) {
-  const { isAuth } = useAuth();
+  const { isAuth, isLoading } = useAuth();
   const [history, setHistory] = useState<string[]>(INITIAL_STATE.history);
   const [lang, setLang] = useState<TypeLang>(INITIAL_STATE.lang);
   const [route, setRoute] = useState<TypeRoute | null>(INITIAL_STATE.route);
@@ -97,18 +97,20 @@ export function RouterProvider({ children }: TypeRouterProviderProps) {
   }, [lang]);
 
   useEffect(() => {
+    if (isLoading) return;
     applyRouteResult(window.location.pathname, getLangFromPath(window.location.pathname), isAuth);
-  }, [isAuth]);
+  }, [isAuth, isLoading]);
 
   useEffect(() => {
     const onPopState = () => {
+      if (isLoading) return;
       const newLang = getLangFromPath(window.location.pathname);
       applyRouteResult(window.location.pathname, newLang, isAuth);
       setHistory((h) => [...h, window.location.pathname]);
     };
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
-  }, [isAuth]);
+  }, [isAuth, isLoading]);
 
   return (
     <RouterContext.Provider value={{ route, params, lang, history, breads, n: navigate, routeTitle, refresh }}>

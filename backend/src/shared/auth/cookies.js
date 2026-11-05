@@ -33,20 +33,27 @@ export function getSessionToken(req) {
   return cookies[config.session.cookieName] ?? null;
 }
 
-export function setSessionCookie(res, token) {
-  const { cookieName, ttlMs, cookie } = config.session;
+function cookieOptions(req) {
+  const { cookie } = config.session;
+  return {
+    httpOnly: cookie.httpOnly,
+    sameSite: cookie.sameSite,
+    // Follow the request proto (trust proxy + X-Forwarded-Proto) so HTTP deploys work
+    // and HTTPS automatically gets Secure.
+    secure: Boolean(req.secure),
+    path: cookie.path,
+  };
+}
+
+export function setSessionCookie(res, token, req) {
+  const { cookieName, ttlMs } = config.session;
   res.cookie(cookieName, token, {
-    ...cookie,
+    ...cookieOptions(req),
     maxAge: ttlMs,
   });
 }
 
-export function clearSessionCookie(res) {
-  const { cookieName, cookie } = config.session;
-  res.clearCookie(cookieName, {
-    path: cookie.path,
-    sameSite: cookie.sameSite,
-    secure: cookie.secure,
-    httpOnly: cookie.httpOnly,
-  });
+export function clearSessionCookie(res, req) {
+  const { cookieName } = config.session;
+  res.clearCookie(cookieName, cookieOptions(req));
 }

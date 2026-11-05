@@ -7,30 +7,7 @@ import {
   deleteSessionByToken,
   deleteSessionsForUser,
 } from "../../shared/auth/session.js";
-
-const USER_PUBLIC_SELECT = {
-  id: true,
-  username: true,
-  email: true,
-  name: true,
-  avatar: true,
-  cover: true,
-  createdAt: true,
-  updatedAt: true,
-};
-
-function toPublicUser(user) {
-  return {
-    id: user.id,
-    username: user.username,
-    email: user.email,
-    name: user.name,
-    avatar: user.avatar,
-    cover: user.cover,
-    createdAt: user.createdAt,
-    updatedAt: user.updatedAt,
-  };
-}
+import { USER_OUTPUT_SELECT, toUserOutput } from "../users/users.outputs.js";
 
 async function issueSession(user, { userAgent, ip }) {
   const token = createSessionToken();
@@ -40,7 +17,7 @@ async function issueSession(user, { userAgent, ip }) {
     userAgent,
     ip,
   });
-  return { token, user: toPublicUser(user) };
+  return { token, user: toUserOutput(user) };
 }
 
 export async function register({ username, email, password, name }, meta) {
@@ -65,7 +42,7 @@ export async function register({ username, email, password, name }, meta) {
       password: await hashPassword(password),
       name,
     },
-    select: USER_PUBLIC_SELECT,
+    select: USER_OUTPUT_SELECT,
   });
 
   return issueSession(user, meta);

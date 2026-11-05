@@ -8,16 +8,15 @@ export async function requireAuth(req, res, next) {
     const session = await findValidSession(token);
 
     if (!session) {
-      clearSessionCookie(res);
+      clearSessionCookie(res, req);
       throw new UnauthorizedError("Authentication required");
     }
 
     await touchSession(session.id);
-    setSessionCookie(res, token);
+    setSessionCookie(res, token, req);
 
     req.session = session;
-    req.user = session.user;
-    req.userId = session.user.id;
+    req.userId = session.userId;
     next();
   } catch (error) {
     next(error);

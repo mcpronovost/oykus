@@ -8,7 +8,6 @@ export const config = {
     cookie: {
       httpOnly: true,
       sameSite: "lax",
-      secure: isProd,
       path: "/",
     },
   },

@@ -1,21 +1,11 @@
 import { prisma } from "../../shared/db/index.js";
 import { NotFoundError } from "../../shared/errors/index.js";
-
-const USER_PUBLIC_SELECT = {
-  id: true,
-  username: true,
-  email: true,
-  name: true,
-  avatar: true,
-  cover: true,
-  createdAt: true,
-  updatedAt: true,
-};
+import { USER_OUTPUT_SELECT } from "./users.outputs.js";
 
 export async function getMe(userId) {
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    select: USER_PUBLIC_SELECT,
+    select: USER_OUTPUT_SELECT,
   });
 
   if (!user) {

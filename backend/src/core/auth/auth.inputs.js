@@ -1,11 +1,11 @@
 import { email, object, string } from "../../shared/validate.js";
 
-export const loginSchema = object({
+export const loginInput = object({
   email: email({ required: true, max: 254 }),
   password: string({ required: true, min: 1, max: 200, trim: false }),
 });
 
-export const registerSchema = object({
+export const registerInput = object({
   username: string({ required: true, min: 3, max: 32 }),
   email: email({ required: true, max: 254 }),
   password: string({ required: true, min: 8, max: 200, trim: false }),
