@@ -11,19 +11,15 @@ function errorHandler(error, req, res, next) {
     return;
   }
 
-  // Errors raised by Express itself (bad JSON, payload too large) carry a 4xx status
   const status = error.statusCode ?? error.status;
   if (status >= 400 && status < 500) {
-    res.status(status).json(new OykError(error.message, status).toJSON());
+    res.status(status).json(new OykError("bad_request", error.message, status).toJSON());
     return;
   }
 
   console.error(error);
 
-  const fallback = new OykError(
-    "An unexpected error occurred",
-    500,
-  );
+  const fallback = new OykError("internal_error", "An unexpected error occurred", 500);
   res.status(fallback.statusCode).json(fallback.toJSON());
 }
 

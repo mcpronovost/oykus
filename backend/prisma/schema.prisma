@@ -8,18 +8,35 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid(7)) @db.Uuid
-  username  String   @unique
-  email     String   @unique
+  id        String    @id @default(uuid(7)) @db.Uuid
+  username  String    @unique
+  email     String    @unique
   password  String
   name      String
   avatar    String?
   cover     String?
   spaces    Space[]
+  sessions  Session[]
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@map("core_users")
+}
+
+model Session {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  token     String   @unique
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime @map("expires_at") @db.Timestamptz(3)
+  userAgent String?  @map("user_agent")
+  ip        String?
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  @@map("core_users")
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("core_sessions")
 }
 
 model Space {

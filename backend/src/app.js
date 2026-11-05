@@ -1,18 +1,26 @@
 import express from "express";
 import { prisma } from "./shared/db/index.js";
+import { securityHeaders } from "./shared/middlewares/securityHeaders.js";
+import { csrfOriginCheck } from "./shared/middlewares/csrf.js";
 import errorHandler from "./shared/middlewares/errorHandler.js";
+import authRoutes from "./core/auth/auth.routes.js";
+import usersRoutes from "./core/users/users.routes.js";
 
 export function createApp() {
   const app = express();
 
-  app.use(express.json());
+  app.set("trust proxy", 1);
+  app.use(securityHeaders);
+  app.use(express.json({ limit: "100kb" }));
+  app.use(csrfOriginCheck);
 
-  app.get("/api/health", async (req, res) => {
+  app.get("/api/v1/health", async (_req, res) => {
     await prisma.$queryRaw`SELECT 1`;
     res.json({ ok: true });
   });
 
-  // mount core and plugin routes here
+  app.use("/api/v1/auth", authRoutes);
+  app.use("/api/v1/users", usersRoutes);
 
   app.use(errorHandler);
 
