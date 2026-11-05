@@ -54,7 +54,7 @@ export const ROUTES: TypeRoute[] = [
       fr: "dev",
       en: "dev",
     },
-    auth: true,
+    auth: false,
     children: [
       {
         name: "dev-laboratory",
