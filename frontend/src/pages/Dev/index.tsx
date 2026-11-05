@@ -1,10 +1,12 @@
 import { useTranslation } from "@/services/translation";
-import { OykResult } from "@/components/common";
+import { OykAlert, OykGrid } from "@/components/ui";
 
 export default function OykDev() {
   const { t } = useTranslation();
 
   return (
-    <OykResult />
+    <OykGrid>
+      <OykAlert />
+    </OykGrid>
   );
 }

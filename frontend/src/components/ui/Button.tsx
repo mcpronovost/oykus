@@ -10,7 +10,7 @@ interface OykButtonProps {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export const OykButton = ({ label, icon: Icon, iconSize = 16, disabled, routeName, onClick }: OykButtonProps) => {
+export default function OykButton({ label, icon: Icon, iconSize = 16, disabled, routeName, onClick }: OykButtonProps) {
   const { route, n } = useRouter();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -31,4 +31,4 @@ export const OykButton = ({ label, icon: Icon, iconSize = 16, disabled, routeNam
       </div>
     </button>
   );
-};
+}

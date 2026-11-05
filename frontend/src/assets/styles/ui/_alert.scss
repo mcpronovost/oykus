@@ -1,0 +1,85 @@
+.oyk-alert {
+  --oyk-alert-bg: var(--oyk-card-bg);
+  --oyk-alert-fg: var(--oyk-card-fg);
+  --oyk-alert-fg-subtle: var(--oyk-card-fg-subtle);
+  --oyk-alert-bcolor: var(--oyk-card-divider);
+  --oyk-alert-bstyle: solid;
+
+  background-color: var(--oyk-alert-bg);
+  border: 1px var(--oyk-alert-bstyle) var(--oyk-alert-bcolor);
+  border-radius: var(--oyk-radius);
+  color: var(--oyk-alert-fg);
+  font-family: var(--oyk-font);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  position: relative;
+  padding: 16px;
+
+  &-icon {
+    color: var(--oyk-alert-fg);
+    line-height: 0;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 4px;
+    width: 100%;
+    padding: 0 32px 0 0;
+
+    &-title {
+      color: var(--oyk-alert-fg);
+      font-size: 1.125rem;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    &-message {
+      color: var(--oyk-alert-fg-subtle);
+      font-size: 1rem;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+  }
+
+  &-close {
+    line-height: 0;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+
+  $colors: accent, danger, success, info, warning, special;
+
+  @each $color in $colors {
+    &.oyk-type-#{$color} {
+      --oyk-alert-c: var(--oyk-c-#{$color});
+      --oyk-alert-bg: var(--oyk-c-#{$color}-faint);
+      --oyk-alert-fg: var(--oyk-c-#{$color});
+      --oyk-alert-fg-subtle: var(--oyk-c-#{$color}-subtle);
+      --oyk-alert-bcolor: var(--oyk-c-#{$color}-muted);
+    }
+  }
+
+  &.oyk-variant-ghost {
+    --oyk-alert-bstyle: dashed;
+  }
+
+  &.oyk-closed {
+    display: none;
+  }
+}
