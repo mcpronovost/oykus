@@ -6,7 +6,7 @@ export interface TypeAuthContextValue {
   user: TypePublicUser | null;
   isLoading: boolean;
   setAuth: (value: boolean) => void;
-  login: (email: string, password: string) => Promise<TypePublicUser>;
+  login: (username: string, password: string) => Promise<TypePublicUser>;
   logout: () => Promise<void>;
   refresh: () => Promise<TypePublicUser | null>;
 }

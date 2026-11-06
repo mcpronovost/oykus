@@ -48,13 +48,13 @@ export async function register({ username, email, password, name }, meta) {
   return issueSession(user, meta);
 }
 
-export async function login({ email, password }, meta) {
+export async function login({ username, password }, meta) {
   const user = await prisma.user.findUnique({
-    where: { email },
+    where: { username },
   });
 
   if (!user || !(await verifyPassword(password, user.password))) {
-    throw new UnauthorizedError("Invalid email or password");
+    throw new UnauthorizedError("Invalid username or password");
   }
 
   return issueSession(user, meta);

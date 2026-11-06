@@ -10,8 +10,9 @@ const authAttemptLimit = rateLimit({
   windowMs: config.rateLimit.windowMs,
   max: config.rateLimit.max,
   keyFn: (req) => {
-    const email = typeof req.body?.email === "string" ? req.body.email.trim().toLowerCase() : "";
-    return `${req.ip}:${email}`;
+    const username =
+      typeof req.body?.username === "string" ? req.body.username.trim().toLowerCase() : "";
+    return `${req.ip}:${username}`;
   },
 });
 

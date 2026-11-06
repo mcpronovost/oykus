@@ -62,8 +62,8 @@ export function AuthProvider({ children }: TypeAuthProviderProps) {
     }
   };
 
-  const login = async (email: string, password: string) => {
-    const nextUser = await apiLogin(email, password);
+  const login = async (username: string, password: string) => {
+    const nextUser = await apiLogin(username, password);
     setUser(nextUser);
     return nextUser;
   };

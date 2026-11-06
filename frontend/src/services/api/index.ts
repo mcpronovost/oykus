@@ -73,10 +73,10 @@ async function getHealth(): Promise<void> {
   }
 }
 
-async function login(email: string, password: string): Promise<TypePublicUser> {
+async function login(username: string, password: string): Promise<TypePublicUser> {
   return request<TypePublicUser>("/api/v1/auth/login", {
     method: "POST",
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ username, password }),
   });
 }
 

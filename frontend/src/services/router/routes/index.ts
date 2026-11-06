@@ -39,6 +39,15 @@ export const ROUTES: TypeRoute[] = [
     auth: true,
   },
   {
+    name: "login",
+    component: React.lazy(() => import("../../../pages/Auth/Login")),
+    paths: {
+      fr: "connexion",
+      en: "login",
+    },
+    auth: false,
+  },
+  {
     name: "register",
     component: React.lazy(() => import("../../../pages/Auth/Register")),
     paths: {
@@ -54,7 +63,7 @@ export const ROUTES: TypeRoute[] = [
       fr: "dev",
       en: "dev",
     },
-    auth: false,
+    auth: true,
     children: [
       {
         name: "dev-laboratory",
