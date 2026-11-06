@@ -139,12 +139,7 @@ export default function Login() {
 
       <aside className="oyk-register-aside-panel" aria-labelledby="oyk-login-aside-title">
         <div className="oyk-register-aside-atmosphere" aria-hidden="true">
-          <img
-            className="oyk-register-aside-atmosphere-img"
-            src={ImgAsideAtmosphere}
-            alt=""
-            decoding="async"
-          />
+          <img className="oyk-register-aside-atmosphere-img" src={ImgAsideAtmosphere} alt="" decoding="async" />
           <div className="oyk-register-aside-atmosphere-veil" />
           <div className="oyk-register-aside-glow" />
         </div>

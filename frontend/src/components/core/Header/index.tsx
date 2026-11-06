@@ -5,7 +5,7 @@ import ImgLogo from "@/assets/img/oykus-48.webp";
 import ImgUser from "@/assets/img/avt/tyryn.jpg";
 
 export default function OykCoreHeader() {
-  const { isAuth } = useAuth();
+  const { isAuth, user } = useAuth();
 
   if (!isAuth) return null;
 
@@ -29,13 +29,13 @@ export default function OykCoreHeader() {
       </div>
       <div className="oyk-core-header-user">
         <div className="oyk-core-header-user-name">
-          <span className="oyk-core-header-user-name-title">M-C Pronovost</span>
+          <span className="oyk-core-header-user-name-title">{user?.name}</span>
           <span className="oyk-core-header-user-name-subtitle">Niveau 2</span>
         </div>
         <div className="oyk-core-header-user-avatar">
           <div className="oyk-core-header-user-avatar-img">
             {/* <IconUser /> */}
-            <img src={ImgUser} alt="User" />
+            <img src={user?.avatar || ImgUser} alt="User" />
           </div>
         </div>
       </div>

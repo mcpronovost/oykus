@@ -88,4 +88,5 @@ async function getMe(): Promise<TypePublicUser> {
   return request<TypePublicUser>("/api/v1/users/me");
 }
 
+export { queryKeys } from "./queryKeys";
 export { getHealth, getMe, login, logout, request };
