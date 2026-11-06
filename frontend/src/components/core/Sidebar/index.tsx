@@ -35,7 +35,7 @@ export default function OykCoreSidebar() {
         </ul>
         <OykSpacer />
         <ul className="oyk-core-sidebar-nav-list" aria-label={t("Preferences")}>
-          <OykCoreSidebarNavLink routeName="dev-laboratory" label={t("Laboratory")} icon={IconFlask} />
+          <OykCoreSidebarNavLink routeName="dev" label={t("Dev")} icon={IconFlask} />
           <li className="oyk-core-sidebar-nav-list-item">
             <OykDialog
               open={settingsOpen}
