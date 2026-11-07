@@ -8,8 +8,8 @@ interface AlertProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
   title?: string;
   message?: string;
-  type?: "default" | "accent" | "success" | "danger" | "info" | "warning" | "special";
   variant?: "default" | "ghost";
+  color?: "default" | "accent" | "success" | "danger" | "info" | "warning" | "special";
   icon?: Icon;
   closable?: boolean;
   onClose?: () => void;
@@ -29,8 +29,8 @@ const DEFAULT_ICONS = {
 export default function OykAlert({
   title,
   message,
-  type = "default",
   variant = "default",
+  color = "default",
   closable = false,
   icon: IconComponent,
   onClose,
@@ -42,7 +42,7 @@ export default function OykAlert({
 
   if (isClosed) return null;
 
-  const ResolvedIcon = IconComponent ?? DEFAULT_ICONS[type];
+  const ResolvedIcon = IconComponent ?? DEFAULT_ICONS[color];
 
   const handleClose = () => {
     if (!closable) return;
@@ -52,9 +52,10 @@ export default function OykAlert({
 
   return (
     <div
-      className={oykClass("oyk-alert", `oyk-type-${type}`, `oyk-variant-${variant}`, className)}
+      className={oykClass("oyk-alert", `oyk-color-${color}`, `oyk-variant-${variant}`, className)}
       {...props}
     >
+      <div className="oyk-alert-bg" />
       <div className="oyk-alert-icon">
         <ResolvedIcon size={24} />
       </div>

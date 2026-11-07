@@ -5,25 +5,28 @@
   --oyk-alert-bcolor: var(--oyk-card-divider);
   --oyk-alert-bstyle: solid;
 
-  background-color: var(--oyk-alert-bg);
+  background-color: transparent;
   border: 1px var(--oyk-alert-bstyle) var(--oyk-alert-bcolor);
   border-radius: var(--oyk-radius);
   color: var(--oyk-alert-fg);
   font-family: var(--oyk-font);
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-weight: 400;
   line-height: 1;
+  overflow: hidden;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
   gap: 16px;
   position: relative;
-  padding: 16px;
+  padding: 12px 12px;
 
   &-icon {
     color: var(--oyk-alert-fg);
     line-height: 0;
+    position: relative;
+    z-index: 1;
   }
 
   &-content {
@@ -33,18 +36,20 @@
     justify-content: flex-start;
     gap: 4px;
     width: 100%;
+    position: relative;
+    z-index: 1;
     padding: 0 32px 0 0;
 
     &-title {
       color: var(--oyk-alert-fg);
-      font-size: 1.125rem;
+      font-size: 0.875rem;
       font-weight: 500;
       line-height: 1.2;
     }
 
     &-message {
       color: var(--oyk-alert-fg-subtle);
-      font-size: 1rem;
+      font-size: 0.875rem;
       font-weight: 500;
       line-height: 1.2;
     }
@@ -55,6 +60,7 @@
     position: absolute;
     top: 8px;
     right: 8px;
+    z-index: 1;
     cursor: pointer;
     transition: opacity 0.2s;
 
@@ -66,9 +72,9 @@
   $colors: accent, danger, success, info, warning, special;
 
   @each $color in $colors {
-    &.oyk-type-#{$color} {
+    &.oyk-color-#{$color} {
       --oyk-alert-c: var(--oyk-c-#{$color});
-      --oyk-alert-bg: var(--oyk-c-#{$color}-faint);
+      --oyk-alert-bg: var(--oyk-c-#{$color});
       --oyk-alert-fg: var(--oyk-c-#{$color});
       --oyk-alert-fg-subtle: var(--oyk-c-#{$color}-subtle);
       --oyk-alert-bcolor: var(--oyk-c-#{$color}-muted);
@@ -77,9 +83,24 @@
 
   &.oyk-variant-ghost {
     --oyk-alert-bstyle: dashed;
+
+    .oyk-alert-bg {
+      opacity: 0.04;
+    }
   }
 
   &.oyk-closed {
     display: none;
+  }
+
+  &-bg {
+    background-color: var(--oyk-alert-bg);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.1;
+    z-index: 0;
   }
 }

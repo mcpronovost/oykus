@@ -23,8 +23,17 @@ export default function OykDev() {
           subtitle="Triggers an action or navigates to a route."
         />
         <OykCard>
-          {["default", "accent", "success", "danger", "info", "warning", "special"].map((c) => (
+          {[
+            "default",
+            "accent",
+            "success",
+            "danger",
+            "info",
+            "warning",
+            "special",
+          ].map((c) => (
             <div
+              key={c}
               style={{
                 display: "flex",
                 flexWrap: "wrap",
@@ -57,22 +66,57 @@ export default function OykDev() {
           subtitle="Displays a callout for user attention."
         />
         <OykCard>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "16px",
-              maxWidth: "600px",
-              margin: "8px auto",
-            }}
-          >
-            <OykAlert title="Alert" message="This is an alert" type="default" />
-            <OykAlert title="Alert" message="This is an alert" type="accent" />
-            <OykAlert title="Alert" message="This is an alert" type="success" />
-            <OykAlert title="Alert" message="This is an alert" type="danger" />
-            <OykAlert title="Alert" message="This is an alert" type="info" />
-            <OykAlert title="Alert" message="This is an alert" type="warning" />
-            <OykAlert title="Alert" message="This is an alert" type="special" />
+          <div>
+            {[
+              "default",
+              "accent",
+              "success",
+              "danger",
+              "info",
+              "warning",
+              "special",
+            ].map((c) => (
+              <div key={c} style={{ margin: "16px 0" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "16px",
+                  }}
+                >
+                  <OykAlert
+                    title="This is an alert"
+                    color={c}
+                  />
+                  <OykAlert
+                    title="Alert"
+                    message="This is an alert"
+                    color={c}
+                  />
+                  <OykAlert
+                    title="Alert"
+                    message="This is an alert"
+                    color={c}
+                    variant="ghost"
+                  />
+                  <OykAlert
+                    title="Alert"
+                    message="This is an alert"
+                    color={c}
+                    variant="ghost"
+                    closable
+                  />
+                  <OykAlert
+                    title="This is a closable alert"
+                    color={c}
+                    variant="ghost"
+                    closable
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         </OykCard>
       </article>
@@ -109,12 +153,17 @@ export default function OykDev() {
               <OykTooltip content="Appears to the left" placement="left">
                 <OykButton label="Left" />
               </OykTooltip>
-              <span style={{ opacity: 0.5, fontSize: "0.875rem" }}>Hover me</span>
+              <span style={{ opacity: 0.5, fontSize: "0.875rem" }}>
+                Hover me
+              </span>
               <OykTooltip content="Appears to the right" placement="right">
                 <OykButton label="Right" />
               </OykTooltip>
               <span />
-              <OykTooltip content="Appears below the trigger" placement="bottom">
+              <OykTooltip
+                content="Appears below the trigger"
+                placement="bottom"
+              >
                 <OykButton label="Bottom" />
               </OykTooltip>
               <span />
@@ -128,10 +177,18 @@ export default function OykDev() {
                 alignItems: "center",
               }}
             >
-              <OykTooltip content="Dotted underline marks inline help" hint placement="top">
+              <OykTooltip
+                content="Dotted underline marks inline help"
+                hint
+                placement="top"
+              >
                 <span>What is a space?</span>
               </OykTooltip>
-              <OykTooltip content="You should not see this" disabled placement="top">
+              <OykTooltip
+                content="You should not see this"
+                disabled
+                placement="top"
+              >
                 <OykButton label="Disabled" disabled />
               </OykTooltip>
               <OykTooltip
