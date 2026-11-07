@@ -4,6 +4,7 @@ import { oykClass } from "@/utils";
 
 interface OykScrollbarProps extends HTMLAttributes<HTMLDivElement> {
   height?: string | number;
+  flex?: boolean;
   children?: ReactNode;
   className?: string;
 }
@@ -23,6 +24,7 @@ function toCssSize(value?: string | number) {
 
 export default function OykScrollbar({
   height,
+  flex = false,
   children,
   className = "",
   style,
@@ -189,6 +191,7 @@ export default function OykScrollbar({
     <div
       className={oykClass(
         "oyk-scrollbar",
+        flex && "oyk-scrollbar--flex",
         hasVertical && "oyk-scrollbar--vertical",
         hasHorizontal && "oyk-scrollbar--horizontal",
         className,

@@ -19,6 +19,13 @@
     min-height: 100%;
   }
 
+  &--flex > .oyk-scrollbar-wrap > .oyk-scrollbar-view {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 100%;
+  }
+
   &-bar {
     position: absolute;
     z-index: 1;
