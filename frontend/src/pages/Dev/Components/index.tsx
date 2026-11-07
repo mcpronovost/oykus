@@ -1,5 +1,6 @@
 import {
   OykAlert,
+  OykButton,
   OykCard,
   OykGrid,
   OykHeading,
@@ -46,17 +47,76 @@ export default function OykDev() {
           suptitle="Feedback"
           subtitle="Display prompt information for mouse hover."
         />
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <OykTooltip content="This is a tooltip" placement="top" />
-          <OykTooltip content="This is a tooltip" placement="right" />
-          <OykTooltip content="This is a tooltip" placement="bottom" />
-          <OykTooltip content="This is a tooltip" placement="left" />
-        </div>
+        <OykCard>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "32px",
+              padding: "24px 16px",
+            }}
+          >
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "auto auto auto",
+                gridTemplateRows: "auto auto auto",
+                gap: "12px",
+                placeItems: "center",
+              }}
+            >
+              <span />
+              <OykTooltip content="Appears above the trigger" placement="top">
+                <OykButton label="Top" />
+              </OykTooltip>
+              <span />
+              <OykTooltip content="Appears to the left" placement="left">
+                <OykButton label="Left" />
+              </OykTooltip>
+              <span style={{ opacity: 0.5, fontSize: "0.875rem" }}>Hover me</span>
+              <OykTooltip content="Appears to the right" placement="right">
+                <OykButton label="Right" />
+              </OykTooltip>
+              <span />
+              <OykTooltip content="Appears below the trigger" placement="bottom">
+                <OykButton label="Bottom" />
+              </OykTooltip>
+              <span />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
+                gap: "24px",
+                alignItems: "center",
+              }}
+            >
+              <OykTooltip content="Dotted underline marks inline help" hint placement="top">
+                <span>What is a space?</span>
+              </OykTooltip>
+              <OykTooltip content="You should not see this" disabled placement="top">
+                <OykButton label="Disabled" disabled />
+              </OykTooltip>
+              <OykTooltip
+                content={
+                  <span>
+                    Save changes to your <strong>world</strong>
+                  </span>
+                }
+                placement="top"
+              >
+                <OykButton label="Rich content" />
+              </OykTooltip>
+            </div>
+          </div>
+        </OykCard>
       </article>
       <article className="oyk-dev-component">
         <OykHeading
           title="Scrollbar"
-          suptitle="Data Display"
+          suptitle="Navigation"
           subtitle="Custom scrollbar that fills its parent, or uses an explicit height."
         />
         <OykCard>
