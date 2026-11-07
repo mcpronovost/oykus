@@ -18,6 +18,64 @@ export default function OykDev() {
       />
       <article className="oyk-dev-component">
         <OykHeading
+          title="Alert"
+          suptitle="Feedback"
+          subtitle="Displays a callout for user attention."
+        />
+        <OykCard>
+          <div>
+            {[
+              "default",
+              "accent",
+              "success",
+              "danger",
+              "info",
+              "warning",
+              "special",
+            ].map((c) => (
+              <div key={c} style={{ margin: "16px 0" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "16px",
+                  }}
+                >
+                  <OykAlert title="This is an alert" color={c} />
+                  <OykAlert
+                    title="Alert"
+                    message="This is an alert"
+                    color={c}
+                  />
+                  <OykAlert
+                    title="Alert"
+                    message="This is an alert"
+                    color={c}
+                    variant="ghost"
+                  />
+                  <OykAlert
+                    title="Alert"
+                    message="This is an alert"
+                    color={c}
+                    variant="ghost"
+                    closable
+                  />
+                  <OykAlert
+                    title="This is a closable alert"
+                    color={c}
+                    variant="ghost"
+                    closable
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </OykCard>
+      </article>
+      <article className="oyk-dev-component">
+        <OykHeading
           title="Button"
           suptitle="General"
           subtitle="Triggers an action or navigates to a route."
@@ -61,63 +119,19 @@ export default function OykDev() {
       </article>
       <article className="oyk-dev-component">
         <OykHeading
-          title="Alert"
-          suptitle="Feedback"
-          subtitle="Displays a callout for user attention."
+          title="Scrollbar"
+          suptitle="Navigation"
+          subtitle="Custom scrollbar that fills its parent, or uses an explicit height."
         />
         <OykCard>
-          <div>
-            {[
-              "default",
-              "accent",
-              "success",
-              "danger",
-              "info",
-              "warning",
-              "special",
-            ].map((c) => (
-              <div key={c} style={{ margin: "16px 0" }}>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "16px",
-                  }}
-                >
-                  <OykAlert
-                    title="This is an alert"
-                    color={c}
-                  />
-                  <OykAlert
-                    title="Alert"
-                    message="This is an alert"
-                    color={c}
-                  />
-                  <OykAlert
-                    title="Alert"
-                    message="This is an alert"
-                    color={c}
-                    variant="ghost"
-                  />
-                  <OykAlert
-                    title="Alert"
-                    message="This is an alert"
-                    color={c}
-                    variant="ghost"
-                    closable
-                  />
-                  <OykAlert
-                    title="This is a closable alert"
-                    color={c}
-                    variant="ghost"
-                    closable
-                  />
-                </div>
-              </div>
+          <OykScrollbar height={160}>
+            {Array.from({ length: 12 }, (_, index) => (
+              <p key={index}>
+                Scrollable line {index + 1}. Without a height prop, the
+                scrollbar fills its parent container instead.
+              </p>
             ))}
-          </div>
+          </OykScrollbar>
         </OykCard>
       </article>
       <article className="oyk-dev-component">
@@ -203,23 +217,6 @@ export default function OykDev() {
               </OykTooltip>
             </div>
           </div>
-        </OykCard>
-      </article>
-      <article className="oyk-dev-component">
-        <OykHeading
-          title="Scrollbar"
-          suptitle="Navigation"
-          subtitle="Custom scrollbar that fills its parent, or uses an explicit height."
-        />
-        <OykCard>
-          <OykScrollbar height={160}>
-            {Array.from({ length: 12 }, (_, index) => (
-              <p key={index}>
-                Scrollable line {index + 1}. Without a height prop, the
-                scrollbar fills its parent container instead.
-              </p>
-            ))}
-          </OykScrollbar>
         </OykCard>
       </article>
       <footer style={{ height: 120 }}></footer>
