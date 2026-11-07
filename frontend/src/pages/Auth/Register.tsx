@@ -1,4 +1,4 @@
-import type { CSSProperties, FormEvent } from "react";
+import type { CSSProperties, SubmitEvent } from "react";
 import { useEffect, useState } from "react";
 import { IconBooks, IconPuzzle, IconWorld } from "@tabler/icons-react";
 import { OykButton } from "@/components/ui";
@@ -33,7 +33,7 @@ export default function Register() {
     setForm((current) => ({ ...current, [key]: value }));
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!form.acceptTerms) return;
   };
