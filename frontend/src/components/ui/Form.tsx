@@ -1,7 +1,8 @@
 import type { ChangeEvent, HTMLAttributes, ReactNode, SubmitEvent } from "react";
 import type { Icon } from "@tabler/icons-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
+  IconDirection,
   IconEye,
   IconEyeOff,
   IconSquareRounded,
@@ -11,10 +12,19 @@ import {
 } from "@tabler/icons-react";
 import { getValidityMessage, oykClass } from "@/utils";
 import OykAlert from "./Alert";
+import OykScrollbar from "./Scrollbar";
+
+const SELECT_MENU_MAX_HEIGHT = 240;
+const SELECT_OPTION_SIZE = 38;
 
 interface OykFormFieldChecklistItem {
   label: string;
   test: (value: string) => boolean;
+}
+
+interface OykFormFieldOption {
+  value: string;
+  label: string;
 }
 
 interface OykFormProps extends Omit<HTMLAttributes<HTMLFormElement>, "onSubmit"> {
@@ -24,7 +34,7 @@ interface OykFormProps extends Omit<HTMLAttributes<HTMLFormElement>, "onSubmit">
 }
 
 interface OykFormFieldProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
-  type?: "text" | "email" | "password" | "checkbox";
+  type?: "text" | "email" | "password" | "checkbox" | "select";
   name: string;
   label?: string;
   hideLabel?: boolean;
@@ -32,6 +42,7 @@ interface OykFormFieldProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChan
   required?: boolean;
   helptext?: string;
   helplist?: OykFormFieldChecklistItem[];
+  options?: OykFormFieldOption[];
   icon?: Icon;
   value?: string | boolean;
   error?: string;
@@ -55,6 +66,7 @@ function OykFormField({
   required = false,
   helptext,
   helplist,
+  options = [],
   icon: IconComponent,
   value = "",
   error,
@@ -63,16 +75,41 @@ function OykFormField({
   className,
   ...props
 }: OykFormFieldProps) {
+  const fieldRef = useRef<HTMLDivElement>(null);
   const [nativeError, setNativeError] = useState<string | undefined>(undefined);
   const [showPassword, setShowPassword] = useState(false);
+  const [selectOpen, setSelectOpen] = useState(false);
 
   const isCheckbox = type === "checkbox";
+  const isSelect = type === "select";
   const stringValue = typeof value === "string" ? value : "";
   const isChecked = Boolean(value);
   const errorMessage = error || nativeError;
   const fieldId = `field-${name}`;
+  const listboxId = `listbox-${name}`;
   const hintId = `hint-${name}`;
   const describedBy = errorMessage ? undefined : helptext || helplist ? hintId : undefined;
+  const selectedOption = options.find((option) => option.value === stringValue);
+
+  useEffect(() => {
+    if (!selectOpen) return;
+
+    const onPointerDown = (event: PointerEvent) => {
+      if (fieldRef.current?.contains(event.target as Node)) return;
+      setSelectOpen(false);
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelectOpen(false);
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [selectOpen]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const nextValue = isCheckbox ? event.target.checked : event.target.value;
@@ -80,8 +117,18 @@ function OykFormField({
     setNativeError(getValidityMessage(event.target.validity));
   };
 
+  const handleSelect = (nextValue: string) => {
+    onChange?.(nextValue);
+    setSelectOpen(false);
+    setNativeError(required && nextValue === "" ? "This field is required" : undefined);
+  };
+
+  const toggleSelect = () => {
+    setSelectOpen((open) => !open);
+  };
+
   return (
-    <div className={oykClass("oyk-form-field", className)} {...props}>
+    <div ref={fieldRef} className={oykClass("oyk-form-field", className)} {...props}>
       {!hideLabel && label ? (
         <label className="oyk-form-field-label" htmlFor={fieldId}>
           {label}
@@ -92,6 +139,8 @@ function OykFormField({
         className={oykClass(
           "oyk-form-field-input",
           isCheckbox && "oyk-unbox",
+          isSelect && "oyk-select",
+          selectOpen && "oyk-open",
           errorMessage && "oyk-invalid",
         )}
       >
@@ -124,6 +173,38 @@ function OykFormField({
                 <div>{children}</div>
               </label>
             </div>
+          ) : isSelect ? (
+            <>
+              <button
+                type="button"
+                id={fieldId}
+                className="oyk-form-field-select-trigger"
+                aria-haspopup="listbox"
+                aria-expanded={selectOpen}
+                aria-controls={listboxId}
+                aria-describedby={describedBy}
+                aria-invalid={Boolean(errorMessage) || undefined}
+                onClick={toggleSelect}
+              >
+                <span className={oykClass(!selectedOption && "oyk-placeholder")}>
+                  {selectedOption?.label || placeholder || ""}
+                </span>
+              </button>
+              <input
+                className="oyk-form-field-select-native"
+                name={name}
+                value={stringValue}
+                required={required}
+                tabIndex={-1}
+                readOnly
+                aria-hidden
+                onChange={() => {}}
+                onInvalid={(event) => {
+                  event.preventDefault();
+                  setNativeError(getValidityMessage(event.currentTarget.validity));
+                }}
+              />
+            </>
           ) : (
             <input
               id={fieldId}
@@ -148,6 +229,55 @@ function OykFormField({
           >
             {showPassword ? <IconEye size={19} /> : <IconEyeOff size={19} />}
           </button>
+        ) : null}
+        {isSelect ? (
+          <button
+            type="button"
+            className="oyk-form-field-input-append oyk-clickable"
+            onClick={toggleSelect}
+            aria-label={selectOpen ? "Close options" : "Open options"}
+            tabIndex={-1}
+          >
+            <IconDirection size={19} />
+          </button>
+        ) : null}
+        {isSelect && selectOpen ? (
+          <div className="oyk-form-field-select oyk-card">
+            <OykScrollbar
+              height={Math.min(
+                SELECT_MENU_MAX_HEIGHT,
+                Math.max(options.length, 1) * SELECT_OPTION_SIZE,
+              )}
+            >
+              <ul
+                id={listboxId}
+                className="oyk-form-field-select-list"
+                role="listbox"
+                aria-labelledby={fieldId}
+              >
+                {options.map((option) => {
+                  const isSelected = option.value === stringValue;
+                  return (
+                    <li key={option.value} role="presentation">
+                      <button
+                        type="button"
+                        role="option"
+                        aria-selected={isSelected}
+                        className={oykClass(
+                          "oyk-form-field-select-option",
+                          isSelected && "oyk-selected",
+                        )}
+                        onClick={() => handleSelect(option.value)}
+                      >
+                        <span>{option.label}</span>
+                        {isSelected ? <IconCheck size={16} /> : null}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </OykScrollbar>
+          </div>
         ) : null}
       </div>
       {errorMessage ? (

@@ -1,15 +1,49 @@
-import { IconNote } from "@tabler/icons-react";
-import { useTranslation } from "@/services/translation";
-import { OykResult } from "@/components/common";
+import { useState } from "react";
+import { OykForm, OykGrid } from "@/components/ui";
 
 export default function OykNotes() {
-  const { t } = useTranslation();
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
 
   return (
-    <OykResult
-      icon={IconNote}
-      suptitle={t("Notes")}
-      title={t("Under Construction")}
-    />
+    <div className="oyk-page-notes">
+      <OykGrid>
+        <OykForm>
+          <OykForm.Field
+            name="category"
+            placeholder="Select category"
+            type="select"
+            value={category}
+            onChange={(value) => setCategory(value as string)}
+            options={[
+              { label: "Category 1", value: "1" },
+              { label: "Category 2", value: "2" },
+              { label: "Category 3", value: "3" },
+              { label: "Category 1", value: "1" },
+              { label: "Category 2", value: "2" },
+              { label: "Category 3", value: "3" },
+              { label: "Category 1", value: "1" },
+              { label: "Category 2", value: "2" },
+              { label: "Category 3", value: "3" },
+              { label: "Category 1", value: "1" },
+              { label: "Category 2", value: "2" },
+              { label: "Category 3", value: "3" },
+              { label: "Category 1", value: "1" },
+              { label: "Category 2", value: "2" },
+              { label: "Category 3", value: "3" },
+              { label: "Category 1", value: "1" },
+              { label: "Category 2", value: "2" },
+              { label: "Category 3", value: "3" },
+            ]}
+          />
+          <OykForm.Field
+            name="title"
+            placeholder="Enter title"
+            value={title}
+            onChange={(value) => setTitle(value as string)}
+          />
+        </OykForm>
+      </OykGrid>
+    </div>
   );
 }
