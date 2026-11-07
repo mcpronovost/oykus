@@ -1,13 +1,13 @@
 .oyk-scrollbar {
-  position: relative;
   overflow: hidden;
+  position: relative;
   height: 100%;
   width: 100%;
 
   &-wrap {
+    overflow: auto;
     height: 100%;
     width: 100%;
-    overflow: auto;
     scrollbar-width: none;
 
     &::-webkit-scrollbar {
@@ -27,47 +27,47 @@
   }
 
   &-bar {
-    position: absolute;
-    z-index: 1;
     border-radius: 9999px;
     overflow: hidden;
+    position: absolute;
     opacity: 0;
-    transition: opacity 0.2s ease;
     pointer-events: none;
+    z-index: 1;
+    transition: opacity 0.2s ease;
 
     &.oyk-show {
       pointer-events: auto;
     }
 
     &--vertical {
+      width: 6px;
       top: 2px;
       right: 2px;
       bottom: 2px;
-      width: 6px;
     }
 
     &--horizontal {
+      height: 6px;
       left: 2px;
       right: 2px;
       bottom: 2px;
-      height: 6px;
     }
   }
 
   &-thumb {
+    background-color: var(--oyk-scrollbar-fg);
+    border-radius: inherit;
+    width: 100%;
+    height: 100%;
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: inherit;
-    background-color: var(--oyk-core-fg-muted);
     cursor: grab;
     transition: background-color 0.15s ease;
 
     &:hover,
     &:active {
-      background-color: var(--oyk-core-fg-subtle);
+      background-color: var(--oyk-scrollbar-hover);
     }
 
     &:active {

@@ -81,5 +81,8 @@
   --oyk-card-fg-faint: #34373a;
   --oyk-card-divider: #1a1f24;
 
+  --oyk-scrollbar-fg: #1a1f24;
+  --oyk-scrollbar-hover: #22282e;
+
   --oyk-radius: 12px;
 }
