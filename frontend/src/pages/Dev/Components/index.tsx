@@ -1,3 +1,4 @@
+import { IconBell, IconPlus, IconSettings } from "@tabler/icons-react";
 import {
   OykAlert,
   OykButton,
@@ -15,6 +16,40 @@ export default function OykDev() {
         title="Components"
         subtitle="This is a list of all the components in the Oyk UI library."
       />
+      <article className="oyk-dev-component">
+        <OykHeading
+          title="Button"
+          suptitle="General"
+          subtitle="Triggers an action or navigates to a route."
+        />
+        <OykCard>
+          {["default", "accent", "success", "danger", "info", "warning", "special"].map((c) => (
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "16px",
+                padding: "8px",
+              }}
+            >
+              <OykButton color={c} label="Default" />
+              <OykButton color={c} label="Start Icon" icon={IconSettings} />
+              <OykButton color={c} icon={IconBell} shrink />
+              <OykButton color={c} label="Disabled" disabled />
+              <OykButton color={c} label="Pill" variant="pill" />
+              <OykButton color={c} icon={IconSettings} variant="pill" shrink />
+              <OykButton color={c} label="Flat" variant="flat" />
+              <OykButton color={c} icon={IconSettings} variant="flat" shrink />
+              <OykButton color={c} label="Ghost" variant="ghost" />
+              <OykButton color={c} icon={IconSettings} variant="ghost" shrink />
+              <OykButton color={c} label="Plain" variant="plain" shrink />
+              <OykButton color={c} icon={IconSettings} variant="plain" shrink />
+            </div>
+          ))}
+        </OykCard>
+      </article>
       <article className="oyk-dev-component">
         <OykHeading
           title="Alert"

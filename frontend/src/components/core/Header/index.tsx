@@ -25,7 +25,7 @@ export default function OykCoreHeader() {
       {/* TODO: Relative menu */}
       <OykSpacer />
       <div className="oyk-core-header-social">
-        <OykButton icon={IconBell} iconSize={19} disabled />
+        <OykButton icon={IconBell} iconSize={19} variant="plain" shrink />
       </div>
       <div className="oyk-core-header-user">
         <div className="oyk-core-header-user-name">

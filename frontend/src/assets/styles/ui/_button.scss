@@ -1,38 +1,38 @@
 .oyk-button {
-  border-radius: 6px;
+  --oyk-btn-bg: transparent;
+  --oyk-btn-fg: var(--oyk-card-fg);
+  --oyk-btn-border: var(--oyk-card-divider);
+
+  background: var(--oyk-btn-bg);
+  border: 1px solid var(--oyk-btn-border);
+  border-radius: var(--oyk-radius);
+  color: var(--oyk-btn-fg);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
   overflow: hidden;
   position: relative;
-  display: block;
-
-  &-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 0;
-    opacity: 0.12;
-  }
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
 
   &-content {
-    border-radius: 6px;
+    border-radius: var(--oyk-radius);
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    min-height: 0.75rem;
+    min-height: 2rem;
     z-index: 1;
-    padding: 4px;
+    padding: 6px 24px;
   }
 
   &:not(:disabled):hover {
     cursor: pointer;
     opacity: 0.8;
-
-    .oyk-button-bg {
-      background-color: currentColor;
-    }
 
     &:active {
       opacity: 0.6;
@@ -42,5 +42,91 @@
   &:disabled {
     opacity: 0.5;
     cursor: default;
+    filter: grayscale(0.55);
+  }
+
+  &-shrink {
+    .oyk-button-content {
+      aspect-ratio: 1;
+      padding: 6px;
+    }
+  }
+
+  &-color {
+    &--default {
+      border-color: var(--oyk-card-divider);
+      color: var(--oyk-card-fg);
+
+      .oyk-button-bg {
+        background-color: var(--oyk-card-bg);
+        opacity: 1;
+      }
+    }
+
+    &--accent {
+      --oyk-btn-fg: var(--oyk-c-accent);
+      --oyk-btn-border: var(--oyk-c-accent-muted);
+    }
+
+    &--success {
+      --oyk-btn-fg: var(--oyk-c-success);
+      --oyk-btn-border: var(--oyk-c-success-muted);
+    }
+
+    &--danger {
+      --oyk-btn-fg: var(--oyk-c-danger);
+      --oyk-btn-border: var(--oyk-c-danger-muted);
+    }
+
+    &--info {
+      --oyk-btn-fg: var(--oyk-c-info);
+      --oyk-btn-border: var(--oyk-c-info-muted);
+    }
+
+    &--warning {
+      --oyk-btn-fg: var(--oyk-c-warning);
+      --oyk-btn-border: var(--oyk-c-warning-muted);
+    }
+
+    &--special {
+      --oyk-btn-fg: var(--oyk-c-special);
+      --oyk-btn-border: var(--oyk-c-special-muted);
+    }
+  }
+
+  &-variant {
+    &--pill {
+      border-radius: 9999px;
+    }
+
+    &--flat {
+      border-color: transparent;
+    }
+
+    &--ghost {
+      border-style: dashed;
+
+      .oyk-button-bg {
+        opacity: 0.04;
+      }
+    }
+
+    &--plain {
+      border-color: transparent;
+
+      .oyk-button-bg {
+        opacity: 0;
+      }
+    }
+  }
+
+  &-bg {
+    background-color: currentColor;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.1;
   }
 }

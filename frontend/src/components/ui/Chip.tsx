@@ -3,7 +3,7 @@ import { oykClass } from "@/utils/formatters";
 interface OykChipProps {
   children: React.ReactNode;
   variant?: "default" | "pill" | "outline" | "ghost";
-  color?: "default" | "accent";
+  color?: "default" | "accent" | "success" | "danger" | "info" | "warning" | "special";
   customColor?: string;
   size?: "sm" | "md" | "lg";
   clickable?: boolean;
