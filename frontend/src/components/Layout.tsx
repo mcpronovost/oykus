@@ -1,4 +1,5 @@
 import { OykCoreHeader, OykCoreSidebar } from "@/components/core";
+import { OykScrollbar } from "@/components/ui";
 
 interface OykLayoutProps {
   children: React.ReactNode;
@@ -13,7 +14,11 @@ export default function OykLayout({ children, hidden }: OykLayoutProps) {
       <OykCoreHeader />
       <OykCoreSidebar />
       <div className="oyk-core-main">
-        <div className="oyk-core-main-content">{children}</div>
+        <div className="oyk-core-main-content">
+          <OykScrollbar>
+            {children}
+          </OykScrollbar>
+        </div>
       </div>
     </div>
   );

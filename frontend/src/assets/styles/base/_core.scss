@@ -44,4 +44,12 @@ body {
   container-type: inline-size;
   grid-area: main;
   display: block;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.oyk-core-main-content {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
