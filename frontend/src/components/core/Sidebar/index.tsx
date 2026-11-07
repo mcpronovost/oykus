@@ -4,7 +4,7 @@ import {
   IconBooks,
   IconNote,
   IconPlus,
-  IconFlask,
+  IconComponents,
   IconSettings,
 } from "@tabler/icons-react";
 import { oykClass } from "@/utils";
@@ -61,9 +61,9 @@ export default function OykCoreSidebar() {
             aria-label={t("Preferences")}
           >
             <OykCoreSidebarNavLink
-              routeName="dev"
+              routeName="dev-components"
               label={t("Dev")}
-              icon={IconFlask}
+              icon={IconComponents}
             />
             <li className="oyk-core-sidebar-nav-list-item">
               <OykDialog

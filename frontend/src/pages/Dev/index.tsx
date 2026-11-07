@@ -1,4 +1,4 @@
-import { OykAlert, OykGrid, OykHeading, OykTooltip } from "@/components/ui";
+import { OykAlert, OykGrid, OykHeading, OykScrollbar, OykTooltip } from "@/components/ui";
 
 export default function OykDev() {
   return (
@@ -35,6 +35,21 @@ export default function OykDev() {
           <OykTooltip content="This is a tooltip" placement="bottom" />
           <OykTooltip content="This is a tooltip" placement="left" />
         </div>
+      </article>
+      <article className="oyk-dev-component">
+        <OykHeading
+          title="Scrollbar"
+          suptitle="Data Display"
+          subtitle="Custom scrollbar that fills its parent, or uses an explicit height."
+        />
+        <OykScrollbar height={160}>
+          {Array.from({ length: 12 }, (_, index) => (
+            <p key={index}>
+              Scrollable line {index + 1}. Without a height prop, the scrollbar fills its parent
+              container instead.
+            </p>
+          ))}
+        </OykScrollbar>
       </article>
     </OykGrid>
   );
