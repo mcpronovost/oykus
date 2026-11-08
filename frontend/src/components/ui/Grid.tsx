@@ -9,6 +9,7 @@ interface OykGridProps {
 
 interface OykGridRowProps {
   children: React.ReactNode;
+  nop?: boolean;
 }
 
 interface OykGridColProps {
@@ -29,8 +30,8 @@ function buildClasses(prefix: string, value?: SizeType): string[] {
   return classes;
 }
 
-function OykGridRow({ children }: OykGridRowProps) {
-  return <div className="oyk-grid-row">{children}</div>;
+function OykGridRow({ children, nop }: OykGridRowProps) {
+  return <div className={oykClass("oyk-grid-row", nop && "oyk-grid-row-nop")}>{children}</div>;
 }
 
 function OykGridCol({ children, size = 24 }: OykGridColProps) {

@@ -19,6 +19,10 @@ $oyk-breakpoints: (
     grid-template-columns: repeat(24, minmax(0, 1fr));
     gap: 16px;
     margin: 16px 0;
+
+    &-nop {
+      margin: 0;
+    }
   }
 
   &-col {
