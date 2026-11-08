@@ -74,7 +74,7 @@
   --oyk-card-bg: #0d1013;
   --oyk-card-bg-hover: #12161a;
   --oyk-card-bg-subtle: #090b0e;
-  --oyk-card-fg: #d4d5d1;
+  --oyk-card-fg: #bcc0b5;
   --oyk-card-fg-hover: #f0eee8;
   --oyk-card-fg-subtle: #8b8d8a;
   --oyk-card-fg-muted: #595b5c;
@@ -84,6 +84,6 @@
   --oyk-scrollbar-fg: #1a1f24;
   --oyk-scrollbar-hover: #22282e;
 
-  --oyk-radius: 12px;
+  --oyk-radius: 10px;
   --oyk-font: "Lato", sans-serif;
 }
