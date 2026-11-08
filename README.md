@@ -24,6 +24,8 @@ Oykus is an **experimental RPG project** blending story-creation, planning and m
 ---
 
 ## Layout
+<details>
+  <summary>Core structure</summary>
 
 ```
 oykus/
@@ -36,7 +38,10 @@ oykus/
 └── README.md
 ```
 
-`backend/src`:
+</details>
+
+<details>
+  <summary>backend/src</summary>
 
 ```
 src/
@@ -109,7 +114,10 @@ src/
 └── index.js
 ```
 
-`frontend/src`:
+</details>
+
+<details>
+  <summary>frontend/src</summary>
 
 ```
 src/
@@ -138,6 +146,8 @@ src/
 ├── App.tsx
 └── main.tsx
 ```
+
+</details>
 
 There is no root `package.json`. Backend and frontend are separate npm projects. Docker Compose ties them together.
 
