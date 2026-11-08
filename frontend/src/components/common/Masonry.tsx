@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { OykButton, OykCard, OykChip, OykGrid } from "@/components/ui";
 
 const TEST_DATA = [
@@ -86,9 +86,15 @@ export default function OykMasonry() {
         ))}
       </OykGrid.Col>
       <OykGrid.Col size={24}>
-        <div className="oyk-masonry">
-          {items.map((item) => (
-            <div key={item.id} className="oyk-masonry-item">
+        <div className="oyk-masonry" key={currentCategory ?? "all"}>
+          {items.map((item, index) => (
+            <div
+              key={item.id}
+              className="oyk-masonry-item"
+              style={{
+                "--oyk-masonry-item-delay": `${index * 0.045}s`,
+              } as CSSProperties}
+            >
               <OykCard hoverable gradient="accent" pad="lg">
                 <div style={{ marginBottom: "1rem" }}>
                   <OykChip label={item.category} variant="ghost" color="accent" />

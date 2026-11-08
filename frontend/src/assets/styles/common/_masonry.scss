@@ -1,7 +1,37 @@
+@keyframes oyk-masonry-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes oyk-masonry-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .oyk-masonry,
+  .oyk-masonry-item {
+    animation: none !important;
+  }
+}
+
 .oyk-masonry {
   column-count: 1;
   column-gap: 12px;
   width: 100%;
+  animation: oyk-masonry-in 0.25s ease-out both;
 
   @container oyk-main (min-width: 576px) {
     column-count: 2;
@@ -19,5 +49,7 @@
     break-inside: avoid;
     margin: 0 0 12px;
     width: 100%;
+    animation: oyk-masonry-item-in 0.4s ease-out both;
+    animation-delay: var(--oyk-masonry-item-delay, 0s);
   }
 }
