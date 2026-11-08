@@ -58,7 +58,7 @@
 
       &-title {
         color: var(--oyk-core-header-fg-hover);
-        font-family: "Quicksand", sans-serif;
+        font-family: var(--oyk-font-heading);
         font-size: 1rem;
         font-weight: 600;
         line-height: 1;
@@ -67,7 +67,7 @@
 
       &-subtitle {
         color: var(--oyk-c-accent);
-        font-family: "Lato", sans-serif;
+        font-family: var(--oyk-font);
         font-size: 0.5625rem;
         font-weight: 600;
         line-height: 1;
@@ -115,7 +115,7 @@
 
       &-title {
         color: var(--oyk-core-header-fg);
-        font-family: "Quicksand", sans-serif;
+        font-family: var(--oyk-font-heading);
         font-size: 0.75rem;
         font-weight: 600;
         line-height: 1;
@@ -124,7 +124,7 @@
       
       &-subtitle {
         color: var(--oyk-core-header-fg-subtle);
-        font-family: "Lato", sans-serif;
+        font-family: var(--oyk-font);
         font-size: 0.5625rem;
         font-weight: 400;
         line-height: 1;

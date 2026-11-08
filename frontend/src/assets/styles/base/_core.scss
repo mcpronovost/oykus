@@ -6,7 +6,7 @@ html {
 body {
   background-color: var(--oyk-core-bg);
   color: var(--oyk-core-fg);
-  font-family: "Lato", sans-serif;
+  font-family: var(--oyk-font);
   font-size: 1rem;
   font-synthesis: none;
   font-weight: 400;
