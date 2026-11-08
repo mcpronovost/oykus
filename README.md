@@ -26,19 +26,21 @@ Oykus is an **experimental RPG project** blending story-creation, planning and m
 ## Layout
 
 ```mermaid
+treeView-beta
 oykus/
-├── backend/                     // Express and Prisma, JavaScript
-├── frontend/                    // Vite, React, and TypeScript
-├── nginx/                       // reverse proxy
+├── backend/                     ## Express and Prisma, JavaScript
+├── frontend/                    ## Vite, React, and TypeScript
+├── nginx/                       ## reverse proxy
 ├── .env.example
-├── docker-compose.prod.yml      // production images
-├── docker-compose.yml           // local: docker compose up
+├── docker-compose.prod.yml      ## production images
+├── docker-compose.yml           ## local: docker compose up
 └── README.md
 ```
 
 `backend/src`:
 
 ```mermaid
+treeView-beta
 src/
 ├── core/
 │   ├── auth/
@@ -112,6 +114,7 @@ src/
 `frontend/src`:
 
 ```mermaid
+treeView-beta
 src/
 ├── assets/
 │   ├── img/
@@ -122,9 +125,9 @@ src/
 │       ├── ui/
 │       └── main.scss
 ├── components/
-│   ├── common/                    // shared components, imported through index.js
-│   ├── core/                      // singular layout components: sidebar, header, main
-│   ├── ui/                        // interface components, imported through index.js
+│   ├── common/                    ## shared components, imported through index.js
+│   ├── core/                      ## singular layout components: sidebar, header, main
+│   ├── ui/                        ## interface components, imported through index.js
 │   ├── Providers.tsx
 │   └── index.js
 ├── pages/
@@ -134,7 +137,7 @@ src/
 │   ├── router/
 │   ├── store/
 │   └── translation/
-├── utils/                       // imported through index.js
+├── utils/                       ## imported through index.js
 ├── App.tsx
 └── main.tsx
 ```
