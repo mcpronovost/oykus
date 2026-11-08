@@ -1,0 +1,23 @@
+.oyk-masonry {
+  column-count: 1;
+  column-gap: 12px;
+  width: 100%;
+
+  @container oyk-main (min-width: 576px) {
+    column-count: 2;
+  }
+
+  @container oyk-main (min-width: 768px) {
+    column-count: 3;
+  }
+
+  @container oyk-main (min-width: 1200px) {
+    column-count: 4;
+  }
+
+  &-item {
+    break-inside: avoid;
+    margin: 0 0 12px;
+    width: 100%;
+  }
+}
