@@ -1,7 +1,10 @@
+import type { CSSProperties } from "react";
 import { oykClass } from "@/utils";
 
 type BreakpointType = "sm" | "md" | "lg" | "xl";
-type SizeType = number | ({ xs?: number } & Partial<Record<BreakpointType, number>>);
+type SizeType =
+  | number
+  | ({ xs?: number } & Partial<Record<BreakpointType, number>>);
 
 interface OykGridProps {
   children: React.ReactNode;
@@ -15,6 +18,8 @@ interface OykGridRowProps {
 interface OykGridColProps {
   children: React.ReactNode;
   size?: SizeType;
+  flex?: null | "horizontal" | "vertical";
+  gap?: number;
 }
 
 function buildClasses(prefix: string, value?: SizeType): string[] {
@@ -31,12 +36,25 @@ function buildClasses(prefix: string, value?: SizeType): string[] {
 }
 
 function OykGridRow({ children, nop }: OykGridRowProps) {
-  return <div className={oykClass("oyk-grid-row", nop && "oyk-grid-row-nop")}>{children}</div>;
+  return (
+    <div className={oykClass("oyk-grid-row", nop && "oyk-grid-row-nop")}>
+      {children}
+    </div>
+  );
 }
 
-function OykGridCol({ children, size = 24 }: OykGridColProps) {
+function OykGridCol({ children, size = 24, flex = null, gap = 16 }: OykGridColProps) {
   return (
-    <div className={oykClass("oyk-grid-col", ...buildClasses("oyk-grid-col-size", size))}>
+    <div
+      className={oykClass(
+        "oyk-grid-col",
+        ...buildClasses("oyk-grid-col-size", size),
+        flex && `oyk-grid-col-flex--${flex}`,
+      )}
+      style={{
+        ...(gap && { "--oyk-gridcol-gap": `${gap}px` }),
+      } as CSSProperties}
+    >
       {children}
     </div>
   );

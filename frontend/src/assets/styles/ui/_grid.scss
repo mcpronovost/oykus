@@ -26,9 +26,24 @@ $oyk-breakpoints: (
   }
 
   &-col {
+    --oyk-gridcol-gap: 16px;
+
     box-sizing: border-box;
     grid-column: span 24;
     grid-column-start: auto;
+
+    &-flex {
+      &--horizontal {
+        display: flex;
+        flex-direction: row;
+        gap: var(--oyk-gridcol-gap);
+      }
+      &--vertical {
+        display: flex;
+        flex-direction: column;
+        gap: var(--oyk-gridcol-gap);
+      }
+    }
   }
 
   @for $i from 1 through 24 {
