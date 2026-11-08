@@ -8,17 +8,19 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(uuid(7)) @db.Uuid
-  username  String    @unique
-  email     String    @unique
-  password  String
-  name      String
-  avatar    String?
-  cover     String?
-  spaces    Space[]
-  sessions  Session[]
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  id          String        @id @default(uuid(7)) @db.Uuid
+  username    String        @unique
+  email       String        @unique
+  password    String
+  name        String
+  avatar      String?
+  cover       String?
+  sessions    Session[]
+  spaces      Space[]
+  memberships SpaceMember[]
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
   @@map("core_users")
 }
@@ -31,6 +33,7 @@ model Session {
   expiresAt DateTime @map("expires_at") @db.Timestamptz(3)
   userAgent String?  @map("user_agent")
   ip        String?
+
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
@@ -40,13 +43,63 @@ model Session {
 }
 
 model Space {
-  id          String   @id @default(uuid(7)) @db.Uuid
+  id          String        @id @default(uuid(7)) @db.Uuid
   name        String
   description String?
-  ownerId     String   @db.Uuid
-  owner       User     @relation(fields: [ownerId], references: [id])
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  ownerId     String        @db.Uuid
+  owner       User          @relation(fields: [ownerId], references: [id])
+  members     SpaceMember[]
+  roles       SpaceRole[]
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
   @@map("core_spaces")
+}
+
+model SpaceMember {
+  id      String    @id @default(uuid(7)) @db.Uuid
+  spaceId String    @db.Uuid
+  space   Space     @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+  userId  String    @db.Uuid
+  user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roleId  String    @db.Uuid
+  role    SpaceRole @relation(fields: [roleId, spaceId], references: [id, spaceId], onDelete: Restrict)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@unique([spaceId, userId])
+  @@index([userId])
+  @@map("core_spaces_members")
+}
+
+model SpaceRole {
+  id          String                @id @default(uuid(7)) @db.Uuid
+  spaceId     String                @db.Uuid
+  space       Space                 @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  members     SpaceMember[]
+  permissions SpaceRolePermission[]
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@unique([id, spaceId])
+  @@unique([spaceId, name])
+  @@map("core_spaces_roles")
+}
+
+model SpaceRolePermission {
+  id         String    @id @default(uuid(7)) @db.Uuid
+  roleId     String    @db.Uuid
+  role       SpaceRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission String
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@unique([roleId, permission])
+  @@map("core_spaces_roles_permissions")
 }

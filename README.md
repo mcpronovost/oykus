@@ -43,16 +43,41 @@ src/
 ├── core/
 │   ├── auth/
 │   │   ├── auth.controllers.js
+│   │   ├── auth.inputs.js
 │   │   ├── auth.routes.js
 │   │   └── auth.services.js
 │   ├── spaces/
+│   │   ├── members/
+│   │   │   ├── members.controllers.js
+│   │   │   ├── members.routes.js
+│   │   │   └── members.services.js
+│   │   ├── permissions/
+│   │   │   └── permissions.services.js
+│   │   ├── roles/
+│   │   │   ├── roles.controllers.js
+│   │   │   ├── roles.routes.js
+│   │   │   └── roles.services.js
 │   │   ├── spaces.controllers.js
 │   │   ├── spaces.routes.js
 │   │   └── spaces.services.js
 │   └── users/
 │       ├── users.controllers.js
+│       ├── users.outputs.js
 │       ├── users.routes.js
 │       └── users.services.js
+├── features/
+│   ├── encyclopedia/
+│   │   ├── encyclopedia.controllers.js
+│   │   ├── encyclopedia.inputs.js
+│   │   ├── encyclopedia.outputs.js
+│   │   ├── encyclopedia.routes.js
+│   │   └── encyclopedia.services.js
+│   └── notes/
+│       ├── notes.controllers.js
+│       ├── notes.inputs.js
+│       ├── notes.outputs.js
+│       ├── notes.routes.js
+│       └── notes.services.js
 ├── plugins/
 │   ├── blog/
 │   │   ├── blog.controllers.js
@@ -63,12 +88,23 @@ src/
 │       ├── tracker.routes.js
 │       └── tracker.services.js
 ├── shared/
+│   ├── auth/
+│   │   ├── cookies.js
+│   │   ├── password.js
+│   │   └── session.js
+│   ├── config/
+│   │   └── index.js
 │   ├── db/
 │   │   └── index.js
 │   ├── errors/
 │   │   └── index.js
-│   └── middlewares/
-│       └── errorHandler.js
+│   ├── middlewares/
+│   │   ├── csrf.js
+│   │   ├── errorHandler.js
+│   │   ├── rateLimit.js
+│   │   ├── requireAuth.js
+│   │   └── securityHeaders.js
+│   └── validate.js
 ├── app.js
 └── index.js
 ```
