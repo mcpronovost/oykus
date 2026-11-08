@@ -193,7 +193,7 @@ function OykFormField({
                 aria-invalid={Boolean(errorMessage) || undefined}
                 onClick={toggleSelect}
               >
-                <span className={oykClass(!selectedOption && "oyk-placeholder")}>
+                <span className={oykClass(!selectedOption ? "oyk-placeholder" : "oyk-value")}>
                   {selectedOption?.label || placeholder || ""}
                 </span>
               </button>

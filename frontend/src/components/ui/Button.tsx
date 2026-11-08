@@ -4,13 +4,22 @@ import { oykClass } from "@/utils/formatters";
 import { useRouter } from "@/services/router";
 
 interface OykButtonProps {
+  type?: "button" | "submit" | "reset";
   label?: string;
   icon?: React.ComponentType<TablerIconProps>;
   iconSize?: number;
   variant?: "default" | "pill" | "flat" | "ghost" | "plain";
-  color?: "default" | "accent" | "success" | "danger" | "info" | "warning" | "special";
+  color?:
+    | "default"
+    | "accent"
+    | "success"
+    | "danger"
+    | "info"
+    | "warning"
+    | "special";
   customColor?: string;
   size?: "sm" | "md" | "lg";
+  grow?: boolean;
   shrink?: boolean;
   disabled?: boolean;
   routeName?: string;
@@ -18,13 +27,15 @@ interface OykButtonProps {
 }
 
 export default function OykButton({
+  type = "button",
   label,
   icon: Icon,
-  iconSize = 18,
+  iconSize = 16,
   variant = "default",
   color = "default",
   customColor,
   size = "md",
+  grow,
   shrink,
   disabled,
   routeName,
@@ -43,10 +54,18 @@ export default function OykButton({
 
   return (
     <button
-      className={oykClass("oyk-button", `oyk-button-variant--${variant}`, `oyk-button-color--${color}`, `oyk-button-size--${size}`, shrink && "oyk-button-shrink")}
+      className={oykClass(
+        "oyk-button",
+        `oyk-button-variant--${variant}`,
+        `oyk-button-color--${color}`,
+        `oyk-button-size--${size}`,
+        grow && "oyk-button-grow",
+        shrink && "oyk-button-shrink",
+      )}
       style={{
         ...(customColor && { color: customColor }),
       }}
+      type={type}
       disabled={disabled}
       onClick={handleClick}
     >

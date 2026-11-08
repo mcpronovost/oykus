@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { OykForm, OykGrid } from "@/components/ui";
+import { OykButton, OykForm, OykGrid } from "@/components/ui";
 
 export default function OykNotes() {
   const [title, setTitle] = useState("");
@@ -24,13 +24,16 @@ export default function OykNotes() {
                 ]}
               />
             </OykGrid.Col>
-            <OykGrid.Col size={20}>
+            <OykGrid.Col size={16}>
               <OykForm.Field
                 name="title"
-                placeholder="Enter title"
+                placeholder="Enter title ppjhgpq"
                 value={title}
                 onChange={(value) => setTitle(value as string)}
               />
+            </OykGrid.Col>
+            <OykGrid.Col size={4}>
+              <OykButton type="submit" label="Add Note" color="accent" grow />
             </OykGrid.Col>
           </OykGrid.Row>
         </OykForm>
