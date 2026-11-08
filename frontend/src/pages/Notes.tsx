@@ -42,7 +42,7 @@ export default function OykNotes() {
             <OykGrid.Col size={{ xs: 24, sm: 12, md: 16 }}>
               <OykForm.Field
                 name="title"
-                placeholder="Enter title ppjhgpq"
+                placeholder="Capture an idea, a quote, a question, or a thought..."
                 value={formNote.title}
                 onChange={(value) =>
                   handleChangeFormNote("title", value as string)
