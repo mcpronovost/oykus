@@ -134,6 +134,32 @@
     }
   }
 
+  &-size {
+    &--sm {
+      font-size: 0.75rem;
+
+      .oyk-button-content {
+        min-height: 24px;
+      }
+    }
+
+    &--md {
+      font-size: 0.875rem;
+
+      .oyk-button-content {
+        min-height: 34px;
+      }
+    }
+
+    &--lg {
+      font-size: 1rem;
+
+      .oyk-button-content {
+        min-height: 44px;
+      }
+    }
+  }
+
   &-bg {
     background-color: currentColor;
     position: absolute;
