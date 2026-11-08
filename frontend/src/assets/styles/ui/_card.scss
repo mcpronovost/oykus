@@ -1,4 +1,6 @@
 .oyk-card {
+  --oyk-card-hoverable: var(--oyk-card-fg-faint);
+
   background: linear-gradient(
     to bottom,
     var(--oyk-card-bg),
@@ -8,5 +10,46 @@
   border-radius: var(--oyk-radius);
   box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
   color: var(--oyk-card-fg);
-  padding: 12px;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  padding: 16px;
+  transition: border-color 0.2s;
+  
+  &-pad {
+    &-sm {
+      padding: 12px;
+    }
+    &-md {
+      padding: 16px;
+    }
+    &-lg {
+      padding: 20px;
+    }
+    &-xl {
+      padding: 24px;
+    }
+  }
+
+  @each $gradient in (accent, success, danger, info, warning, special) {
+    &-gradient-#{$gradient} {
+      --oyk-card-hoverable: var(--oyk-c-#{$gradient}-muted);
+      background:
+        radial-gradient(
+          240px 140px at 100% 0,
+          color-mix(in srgb, var(--oyk-c-#{$gradient}) 6%, transparent),
+          transparent
+        ),
+        linear-gradient(
+          to bottom,
+          var(--oyk-card-bg),
+          var(--oyk-card-bg-subtle)
+        );
+    }
+  }
+
+  &-hoverable {
+    &:hover {
+      border-color: var(--oyk-card-hoverable);
+    }
+  }
 }
