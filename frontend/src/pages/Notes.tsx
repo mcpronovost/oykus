@@ -27,7 +27,7 @@ export default function OykNotes() {
               <OykForm.Field
                 name="category"
                 placeholder="Select category"
-                type="select"
+                type="multiselect"
                 value={formNote.category}
                 onChange={(value) =>
                   handleChangeFormNote("category", value as string)
