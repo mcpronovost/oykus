@@ -88,38 +88,50 @@
         outline: none;
         color: inherit;
         font: inherit;
-        font-size: 0.876rem;
-        line-height: 1.2;
+        line-height: 1;
         text-align: left;
         justify-content: flex-start;
         width: 100%;
+        height: 100%;
         cursor: pointer;
-        padding: 8px 12px;
+        padding: 0 12px;
 
         .oyk-placeholder {
           color: var(--oyk-card-fg-faint);
           font-family: var(--oyk-font);
           font-size: 0.876rem;
-          line-height: 1.5;
+          line-height: 1;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 100%;
         }
       }
 
       &-option {
-        width: 100%;
+        background: transparent;
+        border-radius: calc(var(--oyk-radius) - 4px);
+        border: none;
+        color: var(--oyk-card-fg);
+        font: inherit;
+        font-size: 0.9rem;
+        line-height: 1;
+        text-align: left;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-        padding: 8px 10px;
-        border: none;
-        border-radius: calc(var(--oyk-radius) - 4px);
-        background: transparent;
-        color: var(--oyk-card-fg);
-        font: inherit;
-        font-size: 0.9rem;
-        line-height: 1.3;
-        text-align: left;
+        width: 100%;
+        height: 34px;
         cursor: pointer;
+        padding: 0 10px;
+
+        > span {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 100%;
+        }
 
         &:hover {
           background: var(--oyk-card-bg-hover);
@@ -142,9 +154,13 @@
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;
-      align-items: center;
+      align-items: stretch;
       justify-content: flex-start;
       position: relative;
+
+      &:not(.oyk-unbox) {
+        height: 36px;
+      }
 
       &.oyk-invalid {
         box-shadow: 0 0 2px 1px var(--oyk-c-danger-subtle);
@@ -153,6 +169,7 @@
 
       &.oyk-unbox {
         border-color: transparent;
+        align-items: center;
 
         &.oyk-invalid {
           padding: 6px;
@@ -173,8 +190,9 @@
         color: var(--oyk-card-fg-subtle);
         display: flex;
         align-items: center;
-        height: 100%;
-        padding: 8px 16px;
+        align-self: stretch;
+        flex-shrink: 0;
+        padding: 0 12px;
       }
 
       &-append {
@@ -185,8 +203,9 @@
         color: var(--oyk-card-fg-subtle);
         display: flex;
         align-items: center;
-        height: 100%;
-        padding: 8px 16px;
+        align-self: stretch;
+        flex-shrink: 0;
+        padding: 0 12px;
 
         &.oyk-clickable {
           cursor: pointer;
@@ -202,7 +221,11 @@
       }
 
       &-content {
-        flex: 1 1 100%;
+        flex: 1 1 auto;
+        min-width: 0;
+        min-height: 0;
+        display: flex;
+        align-items: stretch;
 
         &-labeled {
           &-icon {
@@ -244,18 +267,20 @@
       input[type="email"],
       input[type="password"] {
         width: 100%;
-        padding: 8px 12px;
+        height: 100%;
+        padding: 0 12px;
         border: none;
         background: transparent;
         color: inherit;
         font: inherit;
+        line-height: 1;
         outline: none;
 
         &::placeholder {
           color: var(--oyk-card-fg-faint);
           font-family: var(--oyk-font);
           font-size: 0.876rem;
-          line-height: 1.5;
+          line-height: 1;
           opacity: 1;
         }
       }

@@ -15,7 +15,14 @@ import OykAlert from "./Alert";
 import OykScrollbar from "./Scrollbar";
 
 const SELECT_MENU_MAX_HEIGHT = 240;
-const SELECT_OPTION_SIZE = 38;
+const SELECT_OPTION_HEIGHT = 34;
+const SELECT_OPTION_GAP = 2;
+
+function getSelectMenuHeight(optionCount: number) {
+  const count = Math.max(optionCount, 1);
+  const contentHeight = count * SELECT_OPTION_HEIGHT + (count - 1) * SELECT_OPTION_GAP;
+  return Math.min(SELECT_MENU_MAX_HEIGHT, contentHeight);
+}
 
 interface OykFormFieldChecklistItem {
   label: string;
@@ -243,12 +250,7 @@ function OykFormField({
         ) : null}
         {isSelect && selectOpen ? (
           <div className="oyk-form-field-select oyk-card">
-            <OykScrollbar
-              height={Math.min(
-                SELECT_MENU_MAX_HEIGHT,
-                Math.max(options.length, 1) * SELECT_OPTION_SIZE,
-              )}
-            >
+            <OykScrollbar height={getSelectMenuHeight(options.length)}>
               <ul
                 id={listboxId}
                 className="oyk-form-field-select-list"
