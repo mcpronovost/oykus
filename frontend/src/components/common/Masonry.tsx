@@ -1,4 +1,5 @@
-import { OykCard, OykChip } from "@/components/ui";
+import { useState } from "react";
+import { OykButton, OykCard, OykChip, OykGrid } from "@/components/ui";
 
 const TEST_DATA = [
   {
@@ -9,7 +10,7 @@ const TEST_DATA = [
   },
   {
     id: 2,
-    category: "other",
+    category: "idea",
     title: "Note 2",
     description:
       "A longer note with more text so the card grows and the masonry columns stagger visibly across the layout.",
@@ -54,19 +55,50 @@ const TEST_DATA = [
   },
 ];
 
+const CATEGORIES = [
+  { label: "All", value: null },
+  { label: "Idea", value: "idea" },
+  { label: "Inspiration", value: "inspiration" },
+  { label: "Quote", value: "quote" },
+  { label: "Question", value: "question" },
+  { label: "Thought", value: "thought" },
+] as const;
+
 export default function OykMasonry() {
+  const [currentCategory, setCurrentCategory] = useState<string | null>(null);
+
+  const items =
+    currentCategory === null
+      ? TEST_DATA
+      : TEST_DATA.filter((item) => item.category === currentCategory);
+
   return (
-    <div className="oyk-masonry">
-      {TEST_DATA.map((item) => (
-        <div key={item.id} className="oyk-masonry-item">
-          <OykCard hoverable gradient="accent" pad="lg">
-            <div style={{ marginBottom: "1rem" }}>
-              <OykChip label={item.category} variant="ghost" color="accent" />
+    <OykGrid.Row>
+      <OykGrid.Col size={24} flex="horizontal" gap={8}>
+        {CATEGORIES.map((category) => (
+          <OykButton
+            key={category.label}
+            label={category.label}
+            size="sm"
+            color={currentCategory === category.value ? "accent" : "default"}
+            onClick={() => setCurrentCategory(category.value)}
+          />
+        ))}
+      </OykGrid.Col>
+      <OykGrid.Col size={24}>
+        <div className="oyk-masonry">
+          {items.map((item) => (
+            <div key={item.id} className="oyk-masonry-item">
+              <OykCard hoverable gradient="accent" pad="lg">
+                <div style={{ marginBottom: "1rem" }}>
+                  <OykChip label={item.category} variant="ghost" color="accent" />
+                </div>
+                <p>{item.description}</p>
+              </OykCard>
             </div>
-            <p>{item.description}</p>
-          </OykCard>
+          ))}
         </div>
-      ))}
-    </div>
+      </OykGrid.Col>
+    </OykGrid.Row>
   );
 }

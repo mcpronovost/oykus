@@ -7,14 +7,9 @@ export default function OykNotes() {
     title: "",
     category: "",
   });
-  const [currentCategory, setCurrentCategory] = useState<string | null>(null);
 
   const handleChangeFormNote = (name: string, value: string) => {
     setFormNote({ ...formNote, [name]: value });
-  };
-
-  const handleChangeCurrentCategory = (category: string | null) => {
-    setCurrentCategory(category);
   };
 
   return (
@@ -54,19 +49,7 @@ export default function OykNotes() {
             </OykGrid.Col>
           </OykGrid.Row>
         </OykForm>
-        <OykGrid.Row>
-          <OykGrid.Col size={24}>
-            <OykButton
-              label="All"
-              size="sm"
-              color={currentCategory === null ? "accent" : "default"}
-              onClick={() => handleChangeCurrentCategory(null)}
-            />
-          </OykGrid.Col>
-          <OykGrid.Col size={24}>
-            <OykMasonry />
-          </OykGrid.Col>
-        </OykGrid.Row>
+        <OykMasonry />
       </OykGrid>
     </div>
   );
