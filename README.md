@@ -25,7 +25,7 @@ Oykus is an **experimental RPG project** blending story-creation, planning and m
 
 ## Layout
 
-```js
+```mermaid
 oykus/
 ├── backend/                     // Express and Prisma, JavaScript
 ├── frontend/                    // Vite, React, and TypeScript
@@ -38,7 +38,7 @@ oykus/
 
 `backend/src`:
 
-```js
+```mermaid
 src/
 ├── core/
 │   ├── auth/
@@ -111,7 +111,7 @@ src/
 
 `frontend/src`:
 
-```js
+```mermaid
 src/
 ├── assets/
 │   ├── img/
