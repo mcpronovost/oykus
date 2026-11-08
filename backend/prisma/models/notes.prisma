@@ -1,0 +1,26 @@
+model Note {
+  id         String        @id @default(uuid(7)) @db.Uuid
+  content    String
+  categoryId Int?
+  category   NoteCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  spaceId String @db.Uuid
+  space   Space  @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+  userId  String @db.Uuid
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([spaceId])
+  @@index([userId])
+  @@map("features_notes")
+}
+
+model NoteCategory {
+  id    Int    @id @default(autoincrement())
+  label String @unique
+  notes Note[]
+
+  @@map("features_notes_categories")
+}
