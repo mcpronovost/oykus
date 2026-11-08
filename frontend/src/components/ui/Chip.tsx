@@ -1,7 +1,8 @@
 import { oykClass } from "@/utils/formatters";
 
 interface OykChipProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  label?: string;
   variant?: "default" | "pill" | "outline" | "ghost";
   color?: "default" | "accent" | "success" | "danger" | "info" | "warning" | "special";
   customColor?: string;
@@ -13,6 +14,7 @@ interface OykChipProps {
 
 export default function OykChip({
   children,
+  label,
   variant = "default",
   color = "default",
   customColor,
@@ -37,7 +39,7 @@ export default function OykChip({
       }}
     >
       <div className="oyk-chip-bg" />
-      <div className="oyk-chip-content">{children}</div>
+      <div className="oyk-chip-content">{children || label}</div>
     </div>
   );
 }
