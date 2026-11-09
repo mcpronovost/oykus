@@ -41,11 +41,13 @@ export default function OykCoreSidebar() {
               routeName="encyclopedia"
               label={t("Encyclopedia")}
               icon={IconBooks}
+              disabled={!user?.currentSpace}
             />
             <OykCoreSidebarNavLink
               routeName="notes"
               label={t("Notes")}
               icon={IconNote}
+              disabled={!user?.currentSpace}
             />
           </ul>
           <ul className="oyk-core-sidebar-nav-list" aria-label={t("Plugins")}>

@@ -30,7 +30,7 @@ export default function OykLink({ children, href, routeName, disabled, className
   };
 
   return (
-    <a href={resolvedHref} className={oykClass(className, (disabled || !resolvedHref) && "oyk-disabled")} {...props} onClick={handleClick}>
+    <a href={resolvedHref} className={oykClass("oyk-link", className, (disabled || !resolvedHref) && "oyk-disabled")} {...props} onClick={handleClick}>
       {children}
     </a>
   );

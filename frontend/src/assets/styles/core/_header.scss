@@ -177,12 +177,6 @@
         cursor: default;
       }
 
-      &.oyk-disabled {
-        color: var(--oyk-core-header-fg-muted);
-        pointer-events: none;
-        cursor: default;
-      }
-
       &:hover:not(.oyk-disabled):not(.oyk-active) {
         color: var(--oyk-core-header-fg);
       }
