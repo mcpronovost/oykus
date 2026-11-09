@@ -12,7 +12,7 @@ import {
 } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
-import { findOtherNoteCategory, sortNoteCategories } from "@/utils";
+import { findOtherCategory, sortCategories } from "@/utils";
 
 const INITIAL_FORM = {
   content: "",
@@ -80,7 +80,7 @@ export default function OykNotes() {
         return;
       }
     } else {
-      const otherCategory = findOtherNoteCategory(categories);
+      const otherCategory = findOtherCategory(categories);
       if (!otherCategory) {
         setError(t("Select a valid category."));
         return;
@@ -132,7 +132,7 @@ export default function OykNotes() {
 
   const isPending = isNotesPending || isCategoriesPending;
   const isError = isNotesError || isCategoriesError;
-  const sortedCategories = sortNoteCategories(categories, (category) =>
+  const sortedCategories = sortCategories(categories, (category) =>
     t(`note.category.${category.label}`),
   );
 

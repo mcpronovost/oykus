@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { OykButton, OykCard, OykChip, OykGrid } from "@/components/ui";
 import type { TypeNote } from "@/services/api";
 import { useTranslation } from "@/services/translation";
-import { sortNoteCategories } from "@/utils";
+import { sortCategories } from "@/utils";
 
 function getColumnCount(width: number) {
   if (width >= 1600) return 5;
@@ -51,7 +51,7 @@ export default function OykMasonry({ notes = [] }: { notes?: TypeNote[] }) {
     return () => resizeObserver.disconnect();
   }, []);
 
-  const usedCategories = sortNoteCategories(
+  const usedCategories = sortCategories(
     notes.reduce<NonNullable<TypeNote["category"]>[]>((acc, note) => {
       if (!note.category) return acc;
       if (acc.some((category) => category.id === note.category!.id)) return acc;
