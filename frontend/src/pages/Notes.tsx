@@ -1,55 +1,206 @@
+import type { SubmitEvent } from "react";
 import { useState } from "react";
-import { OykButton, OykForm, OykGrid, OykHeading } from "@/components/ui";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { OykButton, OykForm, OykGrid, OykHeading, OykResult } from "@/components/ui";
 import { OykMasonry } from "@/components/common";
+import {
+  ApiError,
+  createNote,
+  listNoteCategories,
+  listNotes,
+  queryKeys,
+} from "@/services/api";
+import { useAuth } from "@/services/auth";
+import { useTranslation } from "@/services/translation";
+
+const INITIAL_FORM = {
+  content: "",
+  categoryId: "",
+};
 
 export default function OykNotes() {
-  const [formNote, setFormNote] = useState({
-    title: "",
-    category: "",
+  const { user } = useAuth();
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const spaceId = user?.currentSpaceId ?? user?.currentSpace?.id ?? null;
+
+  const [formNote, setFormNote] = useState(INITIAL_FORM);
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const {
+    data: notes = [],
+    isPending: isNotesPending,
+    isError: isNotesError,
+    refetch: refetchNotes,
+  } = useQuery({
+    queryKey: queryKeys.notes.list(spaceId ?? ""),
+    queryFn: () => listNotes(spaceId!),
+    enabled: Boolean(spaceId),
   });
 
-  const handleChangeFormNote = (name: string, value: string) => {
-    setFormNote({ ...formNote, [name]: value });
+  const {
+    data: categories = [],
+    isPending: isCategoriesPending,
+    isError: isCategoriesError,
+    refetch: refetchCategories,
+  } = useQuery({
+    queryKey: queryKeys.notes.categories,
+    queryFn: listNoteCategories,
+  });
+
+  const updateField = <K extends keyof typeof INITIAL_FORM>(
+    key: K,
+    value: (typeof INITIAL_FORM)[K],
+  ) => {
+    setFormNote((current) => ({ ...current, [key]: value }));
   };
+
+  const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setError(null);
+
+    if (!spaceId) {
+      setError(t("Select a space before adding a note."));
+      return;
+    }
+
+    const content = formNote.content.trim();
+    if (!content) {
+      setError(t("Note content is required."));
+      return;
+    }
+
+    const categoryId = formNote.categoryId
+      ? Number(formNote.categoryId)
+      : undefined;
+    if (categoryId !== undefined && (!Number.isInteger(categoryId) || categoryId < 1)) {
+      setError(t("Select a valid category."));
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await createNote({
+        content,
+        spaceId,
+        categoryId,
+      });
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.notes.list(spaceId),
+      });
+      setFormNote(INITIAL_FORM);
+    } catch (err) {
+      if (err instanceof ApiError) {
+        const fieldErrors = err.fields
+          ? Object.values(err.fields)
+              .flatMap((value) => (Array.isArray(value) ? value : []))
+              .filter((value): value is string => typeof value === "string")
+          : [];
+        setError(fieldErrors[0] || err.message || t("Could not create the note."));
+      } else {
+        setError(t("Could not create the note."));
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (!spaceId) {
+    return (
+      <div className="oyk-page-notes">
+        <OykGrid>
+          <OykHeading title={t("Notes")} />
+          <OykResult
+            title={t("No space selected")}
+            message={t("Choose a space to view and capture notes.")}
+            variant="ghost"
+          />
+        </OykGrid>
+      </div>
+    );
+  }
+
+  const isPending = isNotesPending || isCategoriesPending;
+  const isError = isNotesError || isCategoriesError;
 
   return (
     <div className="oyk-page-notes">
       <OykGrid>
-        <OykHeading title="Notes" />
-        <OykForm>
+        <OykHeading title={t("Notes")} />
+        <OykForm loading={isSubmitting} onSubmit={handleSubmit}>
+          <OykForm.Alert
+            error={error ?? undefined}
+            errorTitle={t("Could not create note")}
+          />
           <OykGrid.Row nop>
             <OykGrid.Col size={{ xs: 24, sm: 6, md: 4 }}>
               <OykForm.Field
                 name="category"
-                placeholder="Select category"
-                type="multiselect"
-                value={formNote.category}
-                onChange={(value) =>
-                  handleChangeFormNote("category", value as string)
-                }
-                options={[
-                  { label: "Category 1", value: "1" },
-                  { label: "Category 2", value: "2" },
-                  { label: "Category 3", value: "3" },
-                ]}
+                placeholder={t("Select category")}
+                type="select"
+                value={formNote.categoryId}
+                onChange={(value) => updateField("categoryId", value as string)}
+                options={categories.map((category) => ({
+                  label: category.label,
+                  value: String(category.id),
+                }))}
               />
             </OykGrid.Col>
             <OykGrid.Col size={{ xs: 24, sm: 12, md: 16 }}>
               <OykForm.Field
-                name="title"
-                placeholder="Capture an idea, a quote, a question, or a thought..."
-                value={formNote.title}
-                onChange={(value) =>
-                  handleChangeFormNote("title", value as string)
-                }
+                name="content"
+                placeholder={t(
+                  "Capture an idea, a quote, a question, or a thought...",
+                )}
+                value={formNote.content}
+                onChange={(value) => updateField("content", value as string)}
+                required
               />
             </OykGrid.Col>
             <OykGrid.Col size={{ xs: 24, sm: 6, md: 4 }}>
-              <OykButton type="submit" label="Add Note" color="accent" grow />
+              <OykButton
+                type="submit"
+                label={t("Add Note")}
+                color="accent"
+                grow
+                disabled={isSubmitting}
+              />
             </OykGrid.Col>
           </OykGrid.Row>
         </OykForm>
-        <OykMasonry />
+
+        {isPending ? (
+          <OykResult
+            title={t("Loading notes")}
+            message={t("Fetching notes for this space...")}
+            variant="ghost"
+          />
+        ) : isError ? (
+          <OykResult
+            title={t("Could not load notes")}
+            message={t("Something went wrong while fetching notes.")}
+            color="danger"
+            variant="ghost"
+          >
+            <OykButton
+              label={t("Try again")}
+              color="accent"
+              onClick={() => {
+                void refetchNotes();
+                void refetchCategories();
+              }}
+            />
+          </OykResult>
+        ) : notes.length === 0 ? (
+          <OykResult
+            title={t("No notes yet")}
+            message={t("Capture your first idea above.")}
+            variant="ghost"
+          />
+        ) : (
+          <OykMasonry notes={notes} />
+        )}
       </OykGrid>
     </div>
   );

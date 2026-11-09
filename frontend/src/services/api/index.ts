@@ -86,6 +86,28 @@ export type TypeCreateSpaceInput = {
   description?: string;
 };
 
+export type TypeNoteCategory = {
+  id: number;
+  label: string;
+};
+
+export type TypeNote = {
+  id: string;
+  content: string;
+  categoryId: number | null;
+  category: TypeNoteCategory | null;
+  spaceId: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TypeCreateNoteInput = {
+  content: string;
+  spaceId: string;
+  categoryId?: number;
+};
+
 async function getHealth(): Promise<void> {
   const response = await fetch("/api/v1/health", { credentials: "include" });
   if (!response.ok) {
@@ -119,5 +141,32 @@ async function createSpace(input: TypeCreateSpaceInput): Promise<TypeSpace> {
   });
 }
 
+async function listNotes(spaceId: string): Promise<TypeNote[]> {
+  const params = new URLSearchParams({ spaceId });
+  return request<TypeNote[]>(`/api/v1/notes?${params.toString()}`);
+}
+
+async function createNote(input: TypeCreateNoteInput): Promise<TypeNote> {
+  return request<TypeNote>("/api/v1/notes", {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+}
+
+async function listNoteCategories(): Promise<TypeNoteCategory[]> {
+  return request<TypeNoteCategory[]>("/api/v1/notes/categories");
+}
+
 export { queryKeys } from "./queryKeys";
-export { createSpace, getHealth, getMe, listSpaces, login, logout, request };
+export {
+  createNote,
+  createSpace,
+  getHealth,
+  getMe,
+  listNoteCategories,
+  listNotes,
+  listSpaces,
+  login,
+  logout,
+  request,
+};
