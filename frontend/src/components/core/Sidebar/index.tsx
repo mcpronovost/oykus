@@ -21,7 +21,7 @@ import OykCoreSidebarNavLink from "./NavLink";
 const APP_VERSION = "0.4.0";
 
 export default function OykCoreSidebar() {
-  const { isAuth } = useAuth();
+  const { isAuth, user } = useAuth();
   const { t } = useTranslation();
   const [settingsOpen, setSettingsOpen] = useState(false);
 
@@ -86,7 +86,7 @@ export default function OykCoreSidebar() {
                         disabled
                         value="default"
                       >
-                        <option value="default">{t("My space")}</option>
+                        <option value="default">{user?.currentSpace?.name}</option>
                       </select>
                     </label>
                     <p className="oyk-core-sidebar-settings-version">

@@ -5,6 +5,7 @@ import { IconPlus } from "@tabler/icons-react";
 import {
   OykButton,
   OykCard,
+  OykDivider,
   OykForm,
   OykGrid,
   OykHeading,
@@ -14,6 +15,8 @@ import {
 import { ApiError, createSpace, listSpaces, queryKeys } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { getTimeGreeting } from "@/utils";
+import ImgPlaceholder1 from "@/assets/img/space-cover-1.webp";
+import ImgPlaceholder2 from "@/assets/img/space-cover-2.webp";
 
 const INITIAL_FORM = {
   name: "",
@@ -139,19 +142,49 @@ export default function OykDashboard() {
           />
         ) : (
           <OykGrid.Row>
-            {spaces.map((space) => (
-              <OykGrid.Col key={space.id} size={{ xs: 24, sm: 12, md: 8 }}>
-                <OykCard hoverable>
-                  <strong>{space.name}</strong>
-                  {space.description ? <p>{space.description}</p> : null}
+            <OykGrid.Col>
+              <OykCard outlined hoverable gradient="accent">
+                <div
+                  style={{
+                    backgroundColor: "var(--oyk-card-bg)",
+                    backgroundImage: `url(${ImgPlaceholder1})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    border: "1px solid var(--oyk-c-accent-faint)",
+                    borderRadius: "var(--oyk-radius)",
+                    width: "180px",
+                    height: "256px",
+                  }}
+                ></div>
+              </OykCard>
+            </OykGrid.Col>
+            <OykGrid.Col>
+              <OykDivider start="Your worlds" end={`${spaces.length} spaces`} />
+            </OykGrid.Col>
+            <OykGrid.Col flex="horizontal">
+              {spaces.map((space, index) => (
+                <div>
+                  <OykCard key={space.id} hoverable nop>
+                    <div
+                      style={{
+                        backgroundImage: `url(${index === 0 ? ImgPlaceholder1 : ImgPlaceholder2})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        borderRadius: "var(--oyk-radius)",
+                        width: "180px",
+                        height: "256px",
+                      }}
+                    ></div>
+                  </OykCard>
+                  <p>{space.name}</p>
                   {user?.currentSpaceId === space.id ? (
                     <p style={{ marginBottom: 0, opacity: 0.7 }}>
                       Current space
                     </p>
                   ) : null}
-                </OykCard>
-              </OykGrid.Col>
-            ))}
+                </div>
+              ))}
+            </OykGrid.Col>
           </OykGrid.Row>
         )}
       </OykGrid>

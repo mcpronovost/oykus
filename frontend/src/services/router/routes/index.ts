@@ -13,7 +13,7 @@ export const ROUTES: TypeRoute[] = [
   },
   {
     name: "dashboard",
-    component: React.lazy(() => import("../../../pages/Dashboard")),
+    component: React.lazy(() => import("../../../pages/Dashboard/index")),
     paths: {
       fr: "",
       en: "",
