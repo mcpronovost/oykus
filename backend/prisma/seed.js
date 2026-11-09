@@ -15,7 +15,7 @@ const TEST_USER = {
   name: "M-C Pronovost",
 };
 
-async function main() {
+async function seedUsers() {
   const password = await hashPassword(TEST_USER.password);
 
   const user = await prisma.user.upsert({
@@ -34,6 +34,26 @@ async function main() {
   });
 
   console.log(`Seeded test user: ${user.username} <${user.email}>`);
+}
+
+async function seedNoteCategories() {
+  const categories = await prisma.noteCategory.createMany({
+    data: [
+      { label: "idea" },
+      { label: "inspiration" },
+      { label: "quote" },
+      { label: "question" },
+      { label: "thought" },
+      { label: "other" },
+    ],
+  });
+
+  console.log(`Seeded ${categories.length} note categories`);
+}
+
+async function main() {
+  await seedUsers();
+  await seedNoteCategories();
 }
 
 main()
