@@ -1,4 +1,5 @@
 .oyk-card {
+  --oyk-card-outlined: var(--oyk-card-fg-faint);
   --oyk-card-hoverable: var(--oyk-card-fg-faint);
 
   background: linear-gradient(
@@ -33,6 +34,8 @@
   @each $gradient in (accent, success, danger, info, warning, special) {
     &-gradient-#{$gradient} {
       --oyk-card-hoverable: var(--oyk-c-#{$gradient}-muted);
+      --oyk-card-outlined: var(--oyk-c-#{$gradient}-faint);
+
       background:
         radial-gradient(
           240px 140px at 100% 0,
@@ -47,9 +50,17 @@
     }
   }
 
+  &-outlined {
+    border-color: var(--oyk-card-outlined);
+  }
+
   &-hoverable {
     &:hover {
       border-color: var(--oyk-card-hoverable);
     }
+  }
+
+  &-nop {
+    padding: 0;
   }
 }
