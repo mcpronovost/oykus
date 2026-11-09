@@ -3,7 +3,6 @@ export const USER_OUTPUT_SELECT = {
   name: true,
   avatar: true,
   cover: true,
-  currentSpaceId: true,
   currentSpace: {
     select: {
       id: true,
@@ -21,7 +20,6 @@ export function toUserOutput(user) {
     name: user.name,
     avatar: user.avatar,
     cover: user.cover,
-    currentSpaceId: user.currentSpaceId ?? null,
     currentSpace: user.currentSpace
       ? {
           id: user.currentSpace.id,
