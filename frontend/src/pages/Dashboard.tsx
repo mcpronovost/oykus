@@ -84,7 +84,9 @@ export default function OykDashboard() {
               .flatMap((value) => (Array.isArray(value) ? value : []))
               .filter((value): value is string => typeof value === "string")
           : [];
-        setError(fieldErrors[0] || err.message || "Could not create the space.");
+        setError(
+          fieldErrors[0] || err.message || "Could not create the space.",
+        );
       } else {
         setError("Could not create the space.");
       }
@@ -111,7 +113,11 @@ export default function OykDashboard() {
         />
 
         {isPending ? (
-          <OykResult title="Loading spaces" message="Fetching your worlds..." variant="ghost" />
+          <OykResult
+            title="Loading spaces"
+            message="Fetching your worlds..."
+            variant="ghost"
+          />
         ) : isError ? (
           <OykResult
             title="Could not load spaces"
@@ -119,7 +125,11 @@ export default function OykDashboard() {
             color="danger"
             variant="ghost"
           >
-            <OykButton label="Try again" color="accent" onClick={() => refetch()} />
+            <OykButton
+              label="Try again"
+              color="accent"
+              onClick={() => refetch()}
+            />
           </OykResult>
         ) : spaces.length === 0 ? (
           <OykResult
@@ -135,7 +145,9 @@ export default function OykDashboard() {
                   <strong>{space.name}</strong>
                   {space.description ? <p>{space.description}</p> : null}
                   {user?.currentSpaceId === space.id ? (
-                    <p style={{ marginBottom: 0, opacity: 0.7 }}>Current space</p>
+                    <p style={{ marginBottom: 0, opacity: 0.7 }}>
+                      Current space
+                    </p>
                   ) : null}
                 </OykCard>
               </OykGrid.Col>
@@ -150,7 +162,10 @@ export default function OykDashboard() {
         title="New Space"
         content={({ close }) => (
           <OykForm loading={isSubmitting} onSubmit={handleSubmit}>
-            <OykForm.Alert error={error ?? undefined} errorTitle="Could not create space" />
+            <OykForm.Alert
+              error={error ?? undefined}
+              errorTitle="Could not create space"
+            />
             <OykForm.Field
               name="name"
               label="Name"
