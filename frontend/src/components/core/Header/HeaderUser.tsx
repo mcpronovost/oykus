@@ -1,6 +1,6 @@
 import { IconUser } from "@tabler/icons-react";
 import { useAuth } from "@/services/auth";
-import ImgUser from "@/assets/img/avt/tyryn.jpg";
+import ImgUser from "@/assets/img/space-avatar-1.jpg";
 
 export default function OykCoreHeaderUser() {
   const { user } = useAuth();
