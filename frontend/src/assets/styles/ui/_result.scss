@@ -1,0 +1,106 @@
+.oyk-result {
+  --oyk-result-bg: var(--oyk-card-bg);
+  --oyk-result-fg: var(--oyk-card-fg);
+  --oyk-result-fg-subtle: var(--oyk-card-fg-subtle);
+  --oyk-result-bcolor: var(--oyk-card-divider);
+  --oyk-result-bstyle: solid;
+
+  background-color: transparent;
+  border: 1px var(--oyk-result-bstyle) var(--oyk-result-bcolor);
+  border-radius: var(--oyk-radius);
+  color: var(--oyk-result-fg);
+  font-family: var(--oyk-font);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  position: relative;
+  padding: 64px 12px;
+
+  &-icon {
+    color: var(--oyk-result-fg);
+    line-height: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+
+    &-title {
+      color: var(--oyk-result-fg);
+      font-size: 1.1rem;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    &-message {
+      color: var(--oyk-result-fg-subtle);
+      font-size: 0.875rem;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+  }
+
+  &-close {
+    line-height: 0;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 1;
+    cursor: pointer;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+
+  $colors: accent, danger, success, info, warning, special;
+
+  @each $color in $colors {
+    &.oyk-color-#{$color} {
+      --oyk-result-c: var(--oyk-c-#{$color});
+      --oyk-result-bg: var(--oyk-c-#{$color});
+      --oyk-result-fg: var(--oyk-c-#{$color});
+      --oyk-result-fg-subtle: var(--oyk-c-#{$color}-subtle);
+      --oyk-result-bcolor: var(--oyk-c-#{$color}-muted);
+    }
+  }
+
+  &.oyk-variant-ghost {
+    --oyk-result-bstyle: dashed;
+
+    .oyk-result-bg {
+      opacity: 0.04;
+    }
+  }
+
+  &.oyk-closed {
+    display: none;
+  }
+
+  &-bg {
+    background-color: var(--oyk-result-bg);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.1;
+    z-index: 0;
+  }
+}

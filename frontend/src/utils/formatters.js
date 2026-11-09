@@ -1,3 +1,12 @@
 export function oykClass(...classes) {
   return classes.filter(Boolean).join(" ");
 }
+
+export function getTimeGreeting(date = new Date()) {
+  const hour = date.getHours();
+  if (hour < 6) return "Hello";
+  if (hour < 12) return "Good morning";
+  if (hour < 18) return "Good afternoon";
+  if (hour < 22) return "Good evening";
+  return "Hello";
+}

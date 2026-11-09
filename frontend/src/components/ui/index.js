@@ -8,6 +8,7 @@ export { default as OykForm } from "./Form";
 export { default as OykGrid } from "./Grid";
 export { default as OykHeading } from "./Heading";
 export { default as OykProgressBar } from "./ProgressBar";
+export { default as OykResult } from "./Result";
 export { default as OykScrollbar } from "./Scrollbar";
 export { default as OykSpacer } from "./Spacer";
 export { default as OykTooltip } from "./Tooltip";

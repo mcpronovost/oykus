@@ -1,4 +1,4 @@
-@keyframes oyk-result-rise {
+@keyframes oyk-pageresult-rise {
   from {
     opacity: 0;
     transform: translateY(1rem);
@@ -10,7 +10,7 @@
   }
 }
 
-@keyframes oyk-result-visual-in {
+@keyframes oyk-pageresult-visual-in {
   from {
     opacity: 0;
     transform: scale(0.92);
@@ -22,7 +22,7 @@
   }
 }
 
-@keyframes oyk-result-halo-pulse {
+@keyframes oyk-pageresult-halo-pulse {
   0%,
   100% {
     box-shadow:
@@ -37,7 +37,7 @@
   }
 }
 
-@keyframes oyk-result-ring-drift {
+@keyframes oyk-pageresult-ring-drift {
   0%,
   100% {
     transform: translate(-50%, -50%) rotate(0deg) scale(1);
@@ -50,7 +50,7 @@
   }
 }
 
-@keyframes oyk-result-badge-float {
+@keyframes oyk-pageresult-badge-float {
   0%,
   100% {
     transform: translateY(0);
@@ -62,19 +62,19 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .oyk-result-visual,
-  .oyk-result-halo,
-  .oyk-result-ring,
-  .oyk-result-badge,
-  .oyk-result-suptitle,
-  .oyk-result-title,
-  .oyk-result-subtitle,
-  .oyk-result-message {
+  .oyk-pageresult-visual,
+  .oyk-pageresult-halo,
+  .oyk-pageresult-ring,
+  .oyk-pageresult-badge,
+  .oyk-pageresult-suptitle,
+  .oyk-pageresult-title,
+  .oyk-pageresult-subtitle,
+  .oyk-pageresult-message {
     animation: none !important;
   }
 }
 
-.oyk-result {
+.oyk-pageresult {
   box-sizing: border-box;
   display: grid;
   place-items: center;
@@ -95,7 +95,7 @@
     position: relative;
     aspect-ratio: 1;
     margin: 0 0 1.75rem;
-    animation: oyk-result-visual-in 0.85s ease-out both;
+    animation: oyk-pageresult-visual-in 0.85s ease-out both;
   }
 
   &-ring {
@@ -105,7 +105,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    animation: oyk-result-ring-drift 7s ease-in-out infinite;
+    animation: oyk-pageresult-ring-drift 7s ease-in-out infinite;
     pointer-events: none;
 
     &--outer {
@@ -142,7 +142,7 @@
     aspect-ratio: 1;
     transform: translate(-50%, -50%);
     padding: 2px;
-    animation: oyk-result-halo-pulse 4.5s ease-in-out infinite;
+    animation: oyk-pageresult-halo-pulse 4.5s ease-in-out infinite;
 
     &::before {
       content: "";
@@ -170,7 +170,7 @@
     height: 2.25rem;
     position: absolute;
     place-items: center;
-    animation: oyk-result-badge-float 3.6s ease-in-out infinite;
+    animation: oyk-pageresult-badge-float 3.6s ease-in-out infinite;
 
     &--hammer {
       right: 0.1rem;
@@ -196,7 +196,7 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     margin: 0 0 0.5rem;
-    animation: oyk-result-rise 0.65s ease-out 0.08s both;
+    animation: oyk-pageresult-rise 0.65s ease-out 0.08s both;
   }
 
   &-title {
@@ -206,7 +206,7 @@
     font-weight: 400;
     line-height: 1.2;
     margin: 0 0 0.65rem;
-    animation: oyk-result-rise 0.65s ease-out 0.14s both;
+    animation: oyk-pageresult-rise 0.65s ease-out 0.14s both;
   }
 
   &-subtitle {
@@ -216,7 +216,7 @@
     font-weight: 400;
     line-height: 1.45;
     margin: 0 0 0.85rem;
-    animation: oyk-result-rise 0.65s ease-out 0.2s both;
+    animation: oyk-pageresult-rise 0.65s ease-out 0.2s both;
   }
 
   &-message {
@@ -224,6 +224,6 @@
     font-size: 0.95rem;
     line-height: 1.65;
     margin: 0;
-    animation: oyk-result-rise 0.65s ease-out 0.26s both;
+    animation: oyk-pageresult-rise 0.65s ease-out 0.26s both;
   }
 }

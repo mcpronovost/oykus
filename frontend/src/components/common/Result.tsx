@@ -1,5 +1,4 @@
 import type { TablerIcon } from "@tabler/icons-react";
-import { useTranslation } from "@/services/translation";
 import { IconMoodEmpty, IconHammer, IconSparkles } from "@tabler/icons-react";
 
 interface OykResultProps {
@@ -17,32 +16,30 @@ export default function OykResult({
   subtitle,
   message,
 }: OykResultProps) {
-  const { t } = useTranslation();
-
   return (
-    <div className="oyk-result">
-      <div className="oyk-result-panel" role="status" aria-labelledby="oyk-result-title">
-        <div className="oyk-result-visual" aria-hidden="true">
-          <div className="oyk-result-ring oyk-result-ring--outer" />
-          <div className="oyk-result-ring oyk-result-ring--mid" />
-          <div className="oyk-result-halo">
-            <Icon className="oyk-result-icon" size={56} stroke={1} />
+    <div className="oyk-pageresult">
+      <div className="oyk-pageresult-panel" role="status" aria-labelledby="oyk-pageresult-title">
+        <div className="oyk-pageresult-visual" aria-hidden="true">
+          <div className="oyk-pageresult-ring oyk-pageresult-ring--outer" />
+          <div className="oyk-pageresult-ring oyk-pageresult-ring--mid" />
+          <div className="oyk-pageresult-halo">
+            <Icon className="oyk-pageresult-icon" size={56} stroke={1} />
           </div>
-          <span className="oyk-result-badge oyk-result-badge--hammer">
+          <span className="oyk-pageresult-badge oyk-pageresult-badge--hammer">
             <IconHammer size={18} stroke={1.6} />
           </span>
-          <span className="oyk-result-badge oyk-result-badge--sparkles">
+          <span className="oyk-pageresult-badge oyk-pageresult-badge--sparkles">
             <IconSparkles size={16} stroke={1.6} />
           </span>
         </div>
-        {suptitle && <p className="oyk-result-suptitle">{suptitle}</p>}
+        {suptitle && <p className="oyk-pageresult-suptitle">{suptitle}</p>}
         {title && (
-          <h1 id="oyk-result-title" className="oyk-result-title">
+          <h1 id="oyk-pageresult-title" className="oyk-pageresult-title">
             {title}
           </h1>
         )}
-        {subtitle && <p className="oyk-result-subtitle">{subtitle}</p>}
-        {message && <p className="oyk-result-message">{message}</p>}
+        {subtitle && <p className="oyk-pageresult-subtitle">{subtitle}</p>}
+        {message && <p className="oyk-pageresult-message">{message}</p>}
       </div>
     </div>
   );
