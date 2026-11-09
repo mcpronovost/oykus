@@ -1,12 +1,13 @@
 model Space {
-  id          String        @id @default(uuid(7)) @db.Uuid
-  name        String
-  description String?
-  ownerId     String        @db.Uuid
-  owner       User          @relation(fields: [ownerId], references: [id])
-  members     SpaceMember[]
-  roles       SpaceRole[]
-  notes       Note[]
+  id           String        @id @default(uuid(7)) @db.Uuid
+  name         String
+  description  String?
+  ownerId      String        @db.Uuid
+  owner        User          @relation("SpaceOwner", fields: [ownerId], references: [id])
+  members      SpaceMember[]
+  roles        SpaceRole[]
+  notes        Note[]
+  currentUsers User[]        @relation("UserCurrentSpace")
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)

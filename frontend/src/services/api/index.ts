@@ -62,8 +62,28 @@ export type TypePublicUser = {
   name: string;
   avatar: string | null;
   cover: string | null;
+  currentSpaceId: string | null;
+  currentSpace: {
+    id: string;
+    name: string;
+    description: string | null;
+  } | null;
   createdAt: string;
   updatedAt: string;
+};
+
+export type TypeSpace = {
+  id: string;
+  name: string;
+  description: string | null;
+  ownerId: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TypeCreateSpaceInput = {
+  name: string;
+  description?: string;
 };
 
 async function getHealth(): Promise<void> {
@@ -88,5 +108,16 @@ async function getMe(): Promise<TypePublicUser> {
   return request<TypePublicUser>("/api/v1/users/me");
 }
 
+async function listSpaces(): Promise<TypeSpace[]> {
+  return request<TypeSpace[]>("/api/v1/spaces");
+}
+
+async function createSpace(input: TypeCreateSpaceInput): Promise<TypeSpace> {
+  return request<TypeSpace>("/api/v1/spaces", {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+}
+
 export { queryKeys } from "./queryKeys";
-export { getHealth, getMe, login, logout, request };
+export { createSpace, getHealth, getMe, listSpaces, login, logout, request };

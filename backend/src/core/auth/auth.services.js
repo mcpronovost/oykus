@@ -51,13 +51,18 @@ export async function register({ username, email, password, name }, meta) {
 export async function login({ username, password }, meta) {
   const user = await prisma.user.findUnique({
     where: { username },
+    select: {
+      ...USER_OUTPUT_SELECT,
+      password: true,
+    },
   });
 
   if (!user || !(await verifyPassword(password, user.password))) {
     throw new UnauthorizedError("Invalid username or password");
   }
 
-  return issueSession(user, meta);
+  const { password: _password, ...publicUser } = user;
+  return issueSession(publicUser, meta);
 }
 
 export async function logout(token) {

@@ -1,19 +1,22 @@
 model User {
-  id          String        @id @default(uuid(7)) @db.Uuid
-  username    String        @unique
-  email       String        @unique
-  password    String
-  name        String
-  avatar      String?
-  cover       String?
-  sessions    Session[]
-  memberships SpaceMember[]
-  spaces      Space[]
-  notes       Note[]
+  id             String        @id @default(uuid(7)) @db.Uuid
+  username       String        @unique
+  email          String        @unique
+  password       String
+  name           String
+  avatar         String?
+  cover          String?
+  currentSpaceId String?       @db.Uuid
+  currentSpace   Space?        @relation("UserCurrentSpace", fields: [currentSpaceId], references: [id], onDelete: SetNull)
+  sessions       Session[]
+  memberships    SpaceMember[]
+  ownedSpaces    Space[]       @relation("SpaceOwner")
+  notes          Note[]
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
+  @@index([currentSpaceId])
   @@map("core_users")
 }
 

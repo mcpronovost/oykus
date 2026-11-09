@@ -4,6 +4,7 @@ import { securityHeaders } from "./shared/middlewares/securityHeaders.js";
 import { csrfOriginCheck } from "./shared/middlewares/csrf.js";
 import errorHandler from "./shared/middlewares/errorHandler.js";
 import authRoutes from "./core/auth/auth.routes.js";
+import spacesRoutes from "./core/spaces/spaces.routes.js";
 import usersRoutes from "./core/users/users.routes.js";
 import notesRoutes from "./features/notes/notes.routes.js";
 
@@ -22,6 +23,7 @@ export function createApp() {
 
   app.use("/api/v1/auth", authRoutes);
   app.use("/api/v1/users", usersRoutes);
+  app.use("/api/v1/spaces", spacesRoutes);
   app.use("/api/v1/notes", notesRoutes);
 
   app.use(errorHandler);
