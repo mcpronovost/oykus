@@ -1,0 +1,12 @@
+.oyk-page-dashboard {
+  &-currentspace {
+    &-cover {
+      border: 1px solid var(--oyk-c-accent-faint);
+      border-radius: var(--oyk-radius);
+      width: 180px;
+      height: 256px;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+}
