@@ -8,15 +8,23 @@ type OykProvidersProps = {
   children: ReactNode;
 };
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 30_000,
-      refetchOnWindowFocus: true,
-      retry: false,
+function createQueryClient() {
+  return new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 30_000,
+        refetchOnWindowFocus: true,
+        retry: false,
+      },
     },
-  },
-});
+  });
+}
+
+// Keep the same client across Vite HMR so auth/session cache is not wiped on remount.
+const queryClient = import.meta.hot?.data.queryClient ?? createQueryClient();
+if (import.meta.hot) {
+  import.meta.hot.data.queryClient = queryClient;
+}
 
 function OykLocale({ children }: OykProvidersProps) {
   const { lang } = useRouter();

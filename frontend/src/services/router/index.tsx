@@ -1,22 +1,18 @@
 import type { TypeLang } from "@/services/translation/types";
-import type {
-  TypeRoute,
-  TypeRouteParams,
-  TypeRouterContextValue,
-  TypeRouterProviderProps,
-} from "./types";
+import type { TypeRoute, TypeRouteParams, TypeRouterContextValue, TypeRouterProviderProps } from "./types";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "@/services/auth";
 import { ROUTES } from "./routes";
 import { buildLocalizedPath, buildRoutePath, getBreadcrumbs, getLangFromPath, resolveRoute } from "./utils";
 
-const RouterContext = createContext<TypeRouterContextValue | undefined>(undefined);
+const RouterContext =
+  import.meta.hot?.data.RouterContext ?? createContext<TypeRouterContextValue | undefined>(undefined);
 
-const initialResolved = resolveRoute(
-  window.location.pathname,
-  getLangFromPath(window.location.pathname),
-  false,
-);
+if (import.meta.hot) {
+  import.meta.hot.data.RouterContext = RouterContext;
+}
+
+const initialResolved = resolveRoute(window.location.pathname, getLangFromPath(window.location.pathname), false);
 
 if (initialResolved.pathname !== window.location.pathname) {
   window.history.replaceState({}, "", initialResolved.pathname);
@@ -122,8 +118,10 @@ export function RouterProvider({ children }: TypeRouterProviderProps) {
 export function useRouter(): TypeRouterContextValue {
   const context = useContext(RouterContext);
   if (!context) {
-    window.location.reload();
-    return INITIAL_STATE;
+    if (import.meta.hot) {
+      return INITIAL_STATE;
+    }
+    throw new Error("useRouter must be used within RouterProvider");
   }
   return context;
 }

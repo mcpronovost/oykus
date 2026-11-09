@@ -1,9 +1,20 @@
 import type { TypeAuthContextValue, TypeAuthProviderProps } from "./types";
 import { createContext, useContext } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ApiError, getMe, login as apiLogin, logout as apiLogout, queryKeys, type TypePublicUser } from "@/services/api";
+import {
+  ApiError,
+  getMe,
+  login as apiLogin,
+  logout as apiLogout,
+  queryKeys,
+  type TypePublicUser,
+} from "@/services/api";
 
-const AuthContext = createContext<TypeAuthContextValue | undefined>(undefined);
+const AuthContext = import.meta.hot?.data.AuthContext ?? createContext<TypeAuthContextValue | undefined>(undefined);
+
+if (import.meta.hot) {
+  import.meta.hot.data.AuthContext = AuthContext;
+}
 
 const INITIAL_STATE: TypeAuthContextValue = {
   isAuth: false,
@@ -88,8 +99,10 @@ export function AuthProvider({ children }: TypeAuthProviderProps) {
 export function useAuth(): TypeAuthContextValue {
   const context = useContext(AuthContext);
   if (!context) {
-    window.location.reload();
-    return INITIAL_STATE;
+    if (import.meta.hot) {
+      return INITIAL_STATE;
+    }
+    throw new Error("useAuth must be used within AuthProvider");
   }
   return context;
 }

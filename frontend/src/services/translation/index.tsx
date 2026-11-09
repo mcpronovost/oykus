@@ -12,7 +12,12 @@ import type {
 import { Fragment, createContext, useContext } from "react";
 import { DEFAULT_LANG, loadTranslations } from "./utils";
 
-const TranslationContext = createContext<TypeTranslationContextValue | undefined>(undefined);
+const TranslationContext =
+  import.meta.hot?.data.TranslationContext ?? createContext<TypeTranslationContextValue | undefined>(undefined);
+
+if (import.meta.hot) {
+  import.meta.hot.data.TranslationContext = TranslationContext;
+}
 
 const interpolate = (template: string, count: number | undefined, vars: TypeTranslationVars): string =>
   template.replace(/\{(\w+)\}/g, (_, varName: string) =>
@@ -83,8 +88,10 @@ export function TranslationProvider({ children, lang = DEFAULT_LANG }: TypeTrans
 export function useTranslation(): TypeTranslationContextValue {
   const context = useContext(TranslationContext);
   if (!context) {
-    window.location.reload();
-    return { lang: "fr", t: () => "", tNode: () => "" };
+    if (import.meta.hot) {
+      return { lang: "fr", t: () => "", tNode: () => "" };
+    }
+    throw new Error("useTranslation must be used within TranslationProvider");
   }
   return context;
 }
