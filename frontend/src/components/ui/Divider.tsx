@@ -1,24 +1,25 @@
 import { oykClass } from "@/utils";
 
 interface OykDividerProps {
-  variant?: "default" | "subtle";
+  label?: undefined | string;
+  start?: undefined | string;
+  end?: undefined | string;
   nop?: boolean;
-  className?: string;
 }
 
 export default function OykDivider({
-  variant = "default",
+  label,
+  start,
+  end,
   nop = false,
-  className,
 }: OykDividerProps) {
   return (
-    <hr
-      className={oykClass(
-        "oyk-divider",
-        `oyk-divider-variant--${variant}`,
-        nop && "oyk-divider-nop",
-        className,
-      )}
-    />
+    <div className="oyk-divider">
+      {start && (<div className="oyk-divider-start">{start}</div>)}
+      <div className="oyk-divider-line"></div>
+      {label && (<div className="oyk-divider-label">{label}</div>)}
+      <div className="oyk-divider-line"></div>
+      {end && (<div className="oyk-divider-end">{end}</div>)}
+    </div>
   );
 }
