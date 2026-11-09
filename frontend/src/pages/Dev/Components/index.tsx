@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { IconBell, IconPlus, IconSettings } from "@tabler/icons-react";
 import {
   OykAlert,
@@ -5,11 +6,14 @@ import {
   OykCard,
   OykGrid,
   OykHeading,
+  OykModal,
   OykScrollbar,
   OykTooltip,
 } from "@/components/ui";
 
 export default function OykDev() {
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <OykGrid>
       <OykHeading
@@ -217,6 +221,57 @@ export default function OykDev() {
               </OykTooltip>
             </div>
           </div>
+        </OykCard>
+      </article>
+      <article className="oyk-dev-component">
+        <OykHeading
+          title="Modal"
+          suptitle="Feedback"
+          subtitle="Centred overlay dialog for focused user tasks."
+        />
+        <OykCard>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              padding: "16px",
+            }}
+          >
+            <OykButton
+              label="Open modal"
+              color="accent"
+              onClick={() => setModalOpen(true)}
+            />
+          </div>
+          <OykModal
+            open={modalOpen}
+            onOpenChange={setModalOpen}
+            title="Example modal"
+            content={({ close }) => (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "16px",
+                }}
+              >
+                <p style={{ margin: 0 }}>
+                  Use a modal for confirmations, forms, or short focused
+                  workflows that should block the page behind them.
+                </p>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    gap: "8px",
+                  }}
+                >
+                  <OykButton label="Cancel" variant="ghost" onClick={close} />
+                  <OykButton label="Confirm" color="accent" onClick={close} />
+                </div>
+              </div>
+            )}
+          />
         </OykCard>
       </article>
       <footer style={{ height: 120 }}></footer>
