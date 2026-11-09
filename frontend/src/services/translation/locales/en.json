@@ -26,5 +26,12 @@
   "Something went wrong while fetching notes.": "Something went wrong while fetching notes.",
   "Try again": "Try again",
   "No notes yet": "No notes yet",
-  "Capture your first idea above.": "Capture your first idea above."
+  "Capture your first idea above.": "Capture your first idea above.",
+  "note.category.general": "General",
+  "note.category.idea": "Idea",
+  "note.category.inspiration": "Inspiration",
+  "note.category.quote": "Quote",
+  "note.category.question": "Question",
+  "note.category.thought": "Thought",
+  "note.category.other": "Other"
 }

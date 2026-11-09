@@ -12,6 +12,7 @@ import {
 } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
+import { findOtherNoteCategory, sortNoteCategories } from "@/utils";
 
 const INITIAL_FORM = {
   content: "",
@@ -71,12 +72,20 @@ export default function OykNotes() {
       return;
     }
 
-    const categoryId = formNote.categoryId
-      ? Number(formNote.categoryId)
-      : undefined;
-    if (categoryId !== undefined && (!Number.isInteger(categoryId) || categoryId < 1)) {
-      setError(t("Select a valid category."));
-      return;
+    let categoryId: number;
+    if (formNote.categoryId) {
+      categoryId = Number(formNote.categoryId);
+      if (!Number.isInteger(categoryId) || categoryId < 1) {
+        setError(t("Select a valid category."));
+        return;
+      }
+    } else {
+      const otherCategory = findOtherNoteCategory(categories);
+      if (!otherCategory) {
+        setError(t("Select a valid category."));
+        return;
+      }
+      categoryId = otherCategory.id;
     }
 
     setIsSubmitting(true);
@@ -123,6 +132,9 @@ export default function OykNotes() {
 
   const isPending = isNotesPending || isCategoriesPending;
   const isError = isNotesError || isCategoriesError;
+  const sortedCategories = sortNoteCategories(categories, (category) =>
+    t(`note.category.${category.label}`),
+  );
 
   return (
     <div className="oyk-page-notes">
@@ -141,8 +153,8 @@ export default function OykNotes() {
                 type="select"
                 value={formNote.categoryId}
                 onChange={(value) => updateField("categoryId", value as string)}
-                options={categories.map((category) => ({
-                  label: category.label,
+                options={sortedCategories.map((category) => ({
+                  label: t(`note.category.${category.label}`),
                   value: String(category.id),
                 }))}
               />

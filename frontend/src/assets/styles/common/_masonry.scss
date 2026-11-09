@@ -28,26 +28,21 @@
 }
 
 .oyk-masonry {
-  column-count: 1;
-  column-gap: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
   width: 100%;
   animation: oyk-masonry-in 0.25s ease-out both;
 
-  @container oyk-main (min-width: 576px) {
-    column-count: 2;
-  }
-
-  @container oyk-main (min-width: 768px) {
-    column-count: 3;
-  }
-
-  @container oyk-main (min-width: 1200px) {
-    column-count: 4;
+  &-column {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
   }
 
   &-item {
-    break-inside: avoid;
-    margin: 0 0 12px;
     width: 100%;
     animation: oyk-masonry-item-in 0.4s ease-out both;
     animation-delay: var(--oyk-masonry-item-delay, 0s);

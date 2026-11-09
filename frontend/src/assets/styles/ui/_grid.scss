@@ -44,6 +44,10 @@ $oyk-breakpoints: (
         gap: var(--oyk-gridcol-gap);
       }
     }
+
+    &-wrap {
+      flex-wrap: wrap;
+    }
   }
 
   @for $i from 1 through 24 {

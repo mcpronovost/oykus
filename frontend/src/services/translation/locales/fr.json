@@ -26,5 +26,12 @@
   "Something went wrong while fetching notes.": "Une erreur est survenue lors du chargement des notes.",
   "Try again": "Réessayer",
   "No notes yet": "Aucune note pour l'instant",
-  "Capture your first idea above.": "Capturez votre première idée ci-dessus."
+  "Capture your first idea above.": "Capturez votre première idée ci-dessus.",
+  "note.category.general": "Général",
+  "note.category.idea": "Idée",
+  "note.category.inspiration": "Inspiration",
+  "note.category.quote": "Citation",
+  "note.category.question": "Question",
+  "note.category.thought": "Pensée",
+  "note.category.other": "Autre"
 }
