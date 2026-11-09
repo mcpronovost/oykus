@@ -1,7 +1,7 @@
 import type { CSSProperties, SubmitEvent } from "react";
 import { useEffect, useState } from "react";
 import { IconBooks, IconPuzzle, IconWorld } from "@tabler/icons-react";
-import { OykAlert, OykButton } from "@/components/ui";
+import { OykButton, OykForm } from "@/components/ui";
 import { ApiError } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
@@ -54,7 +54,6 @@ export default function Login() {
     setIsSubmitting(true);
     try {
       await login(username, form.password);
-      n("dashboard");
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message || t("auth.login.error.generic"));
@@ -76,57 +75,39 @@ export default function Login() {
           </h1>
           <p className="oyk-register-subline">{t("auth.login.subline")}</p>
 
-          {error && (
-            <OykAlert
-              key={error}
-              type="danger"
-              title={t("auth.login.error.title")}
-              message={error}
+          <OykForm
+            className="oyk-register-form"
+            loading={isSubmitting}
+            noValidate
+            onSubmit={handleSubmit}
+          >
+            <OykForm.Alert
+              key={error ?? "clear"}
+              error={error ?? undefined}
+              errorTitle={t("auth.login.error.title")}
+              className="oyk-register-alert"
               closable
               onClose={() => setError(null)}
-              className="oyk-register-alert"
             />
-          )}
-
-          <form className="oyk-register-form" onSubmit={handleSubmit} noValidate>
-            <div className="oyk-register-field">
-              <label className="oyk-register-label" htmlFor="oyk-login-username">
-                {t("auth.login.username")}
-              </label>
-              <input
-                id="oyk-login-username"
-                className="oyk-register-input"
-                name="username"
-                type="text"
-                autoComplete="username"
-                required
-                value={form.username}
-                disabled={isSubmitting}
-                onChange={(event) => updateField("username", event.target.value)}
-              />
-            </div>
-
-            <div className="oyk-register-field">
-              <label className="oyk-register-label" htmlFor="oyk-login-password">
-                {t("auth.login.password")}
-              </label>
-              <input
-                id="oyk-login-password"
-                className="oyk-register-input"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                value={form.password}
-                disabled={isSubmitting}
-                onChange={(event) => updateField("password", event.target.value)}
-              />
-            </div>
-
+            <OykForm.Field
+              name="username"
+              label={t("auth.login.username")}
+              required
+              value={form.username}
+              onChange={(value) => updateField("username", value as string)}
+            />
+            <OykForm.Field
+              name="password"
+              type="password"
+              label={t("auth.login.password")}
+              required
+              value={form.password}
+              onChange={(value) => updateField("password", value as string)}
+            />
             <div className="oyk-register-actions">
-              <OykButton label={t("auth.login.submit")} disabled={isSubmitting} />
+              <OykButton type="submit" label={t("auth.login.submit")} disabled={isSubmitting} />
             </div>
-          </form>
+          </OykForm>
 
           <p className="oyk-register-login">
             <span>{t("auth.login.noAccount")}</span>
