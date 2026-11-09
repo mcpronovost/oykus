@@ -99,6 +99,8 @@
         );
         box-shadow: 0 0 16px hsl(var(--oyk-h-accent), 40%, 30%, 0.18);
         color: var(--oyk-c-accent);
+        pointer-events: none;
+        cursor: default;
 
         .oyk-core-sidebar-nav-link-content {
           background: linear-gradient(
