@@ -13,6 +13,7 @@ type OykCardProps = {
     | "special";
   outlined?: boolean;
   hoverable?: boolean;
+  clickable?: boolean;
   nop?: boolean;
 };
 
@@ -22,6 +23,7 @@ export default function OykCard({
   gradient = null,
   outlined = false,
   hoverable = false,
+  clickable = false,
   nop = false,
 }: OykCardProps) {
   return (
@@ -32,6 +34,7 @@ export default function OykCard({
         gradient && `oyk-card-gradient-${gradient}`,
         outlined && "oyk-card-outlined",
         hoverable && "oyk-card-hoverable",
+        clickable && "oyk-card-clickable",
         nop && "oyk-card-nop",
       )}
     >

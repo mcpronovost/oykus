@@ -1,35 +1,24 @@
-import type { SubmitEvent } from "react";
 import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { IconPlus } from "@tabler/icons-react";
 import {
   OykButton,
   OykCard,
   OykDivider,
-  OykForm,
   OykGrid,
   OykHeading,
-  OykModal,
   OykResult,
 } from "@/components/ui";
-import { ApiError, createSpace, listSpaces, queryKeys } from "@/services/api";
+import { listSpaces, queryKeys } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { getTimeGreeting } from "@/utils";
+import OykDashboardModalsSpaceCreate from "./modals/SpaceCreate";
 import ImgPlaceholder1 from "@/assets/img/space-cover-1.webp";
 import ImgPlaceholder2 from "@/assets/img/space-cover-2.webp";
 
-const INITIAL_FORM = {
-  name: "",
-  description: "",
-};
-
 export default function OykDashboard() {
-  const { user, refresh } = useAuth();
-  const queryClient = useQueryClient();
+  const { user } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
-  const [form, setForm] = useState(INITIAL_FORM);
-  const [error, setError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     data: spaces = [],
@@ -41,65 +30,12 @@ export default function OykDashboard() {
     queryFn: listSpaces,
   });
 
-  const updateField = <K extends keyof typeof INITIAL_FORM>(
-    key: K,
-    value: (typeof INITIAL_FORM)[K],
-  ) => {
-    setForm((current) => ({ ...current, [key]: value }));
-  };
-
-  const resetForm = () => {
-    setForm(INITIAL_FORM);
-    setError(null);
-    setIsSubmitting(false);
-  };
-
-  const handleOpenChange = (open: boolean) => {
-    setModalOpen(open);
-    if (!open) resetForm();
-  };
-
-  const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setError(null);
-
-    const name = form.name.trim();
-    if (!name) {
-      setError("Name is required.");
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      await createSpace({
-        name,
-        description: form.description.trim() || undefined,
-      });
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: queryKeys.spaces.list }),
-        refresh(),
-      ]);
-      handleOpenChange(false);
-    } catch (err) {
-      if (err instanceof ApiError) {
-        const fieldErrors = err.fields
-          ? Object.values(err.fields)
-              .flatMap((value) => (Array.isArray(value) ? value : []))
-              .filter((value): value is string => typeof value === "string")
-          : [];
-        setError(
-          fieldErrors[0] || err.message || "Could not create the space.",
-        );
-      } else {
-        setError("Could not create the space.");
-      }
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
     <div className="oyk-page-dashboard">
+      <OykDashboardModalsSpaceCreate
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+      />
       <OykGrid>
         <OykHeading
           title={user?.name}
@@ -164,7 +100,7 @@ export default function OykDashboard() {
             <OykGrid.Col flex="horizontal">
               {spaces.map((space, index) => (
                 <div>
-                  <OykCard key={space.id} hoverable nop>
+                  <OykCard key={space.id} hoverable clickable nop>
                     <div
                       style={{
                         backgroundImage: `url(${index === 0 ? ImgPlaceholder1 : ImgPlaceholder2})`,
@@ -188,56 +124,6 @@ export default function OykDashboard() {
           </OykGrid.Row>
         )}
       </OykGrid>
-
-      <OykModal
-        open={modalOpen}
-        onOpenChange={handleOpenChange}
-        title="New Space"
-        content={({ close }) => (
-          <OykForm loading={isSubmitting} onSubmit={handleSubmit}>
-            <OykForm.Alert
-              error={error ?? undefined}
-              errorTitle="Could not create space"
-            />
-            <OykForm.Field
-              name="name"
-              label="Name"
-              placeholder="My world"
-              required
-              value={form.name}
-              onChange={(value) => updateField("name", value as string)}
-            />
-            <OykForm.Field
-              name="description"
-              label="Description"
-              placeholder="A short overview of this space"
-              value={form.description}
-              onChange={(value) => updateField("description", value as string)}
-            />
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: "8px",
-                marginTop: "8px",
-              }}
-            >
-              <OykButton
-                label="Cancel"
-                variant="ghost"
-                disabled={isSubmitting}
-                onClick={close}
-              />
-              <OykButton
-                type="submit"
-                label="Create"
-                color="accent"
-                disabled={isSubmitting}
-              />
-            </div>
-          </OykForm>
-        )}
-      />
     </div>
   );
 }

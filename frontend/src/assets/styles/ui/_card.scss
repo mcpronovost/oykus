@@ -14,7 +14,7 @@
   font-size: 0.95rem;
   line-height: 1.2;
   padding: 16px;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
   
   &-pad {
     &-sm {
@@ -55,8 +55,25 @@
   }
 
   &-hoverable {
-    &:hover {
+    &:hover,
+    &:focus,
+    &:active {
       border-color: var(--oyk-card-hoverable);
+    }
+  }
+
+  &-clickable {
+    &:hover,
+    &:focus {
+      box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+      transform: translateY(-2px);
+      cursor: pointer;
+
+      &:active {
+        box-shadow: none;
+        transform: none;
+        opacity: 0.8;
+      }
     }
   }
 
