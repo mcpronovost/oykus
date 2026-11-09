@@ -2,11 +2,29 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { OykButton, OykCard, OykChip, OykGrid } from "@/components/ui";
 import type { TypeNote } from "@/services/api";
 import { useTranslation } from "@/services/translation";
-import {
-  distributeMasonryItems,
-  getMasonryColumnCount,
-  sortNoteCategories,
-} from "@/utils";
+import { sortNoteCategories } from "@/utils";
+
+function getColumnCount(width: number) {
+  if (width >= 1600) return 5;
+  if (width >= 1200) return 4;
+  if (width >= 768) return 3;
+  if (width >= 576) return 2;
+  return 1;
+}
+
+function distributeItems<T>(items: T[], columnCount: number) {
+  const count = Math.max(1, columnCount);
+  const columns: { item: T; index: number }[][] = Array.from(
+    { length: count },
+    () => [],
+  );
+
+  items.forEach((item, index) => {
+    columns[index % count].push({ item, index });
+  });
+
+  return columns;
+}
 
 export default function OykMasonry({ notes = [] }: { notes?: TypeNote[] }) {
   const { t } = useTranslation();
@@ -22,7 +40,7 @@ export default function OykMasonry({ notes = [] }: { notes?: TypeNote[] }) {
     const observedEl = mainEl instanceof HTMLElement ? mainEl : masonryEl;
 
     const updateColumnCount = () => {
-      setColumnCount(getMasonryColumnCount(observedEl.clientWidth));
+      setColumnCount(getColumnCount(observedEl.clientWidth));
     };
 
     updateColumnCount();
@@ -47,7 +65,7 @@ export default function OykMasonry({ notes = [] }: { notes?: TypeNote[] }) {
       ? notes
       : notes.filter((note) => note.categoryId === currentCategoryId);
 
-  const columns = distributeMasonryItems(items, columnCount);
+  const columns = distributeItems(items, columnCount);
 
   return (
     <OykGrid.Row>
