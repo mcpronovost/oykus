@@ -11,6 +11,7 @@ import {
 } from "@/components/ui";
 import { listSpaces, queryKeys } from "@/services/api";
 import { useAuth } from "@/services/auth";
+import { useTranslation } from "@/services/translation";
 import { getTimeGreeting } from "@/utils";
 import OykDashboardModalsSpaceCreate from "./modals/SpaceCreate";
 import ImgPlaceholder1 from "@/assets/img/space-cover-1.webp";
@@ -18,6 +19,8 @@ import ImgPlaceholder2 from "@/assets/img/space-cover-2.webp";
 
 export default function OykDashboard() {
   const { user } = useAuth();
+  const { t } = useTranslation();
+
   const [modalOpen, setModalOpen] = useState(false);
 
   const {
@@ -39,11 +42,11 @@ export default function OykDashboard() {
       <OykGrid>
         <OykHeading
           title={user?.name}
-          suptitle={getTimeGreeting()}
-          subtitle="Here's what's happening with your worlds"
+          suptitle={t(getTimeGreeting())}
+          subtitle={t("Here's what's happening with your worlds")}
           actions={
             <OykButton
-              label="New Space"
+              label={t("New Space")}
               color="accent"
               icon={IconPlus}
               onClick={() => setModalOpen(true)}
@@ -113,11 +116,6 @@ export default function OykDashboard() {
                     ></div>
                   </OykCard>
                   <p>{space.name}</p>
-                  {user?.currentSpaceId === space.id ? (
-                    <p style={{ marginBottom: 0, opacity: 0.7 }}>
-                      Current space
-                    </p>
-                  ) : null}
                 </div>
               ))}
             </OykGrid.Col>
