@@ -262,18 +262,12 @@ export default function OykNotes() {
       <OykModal
         open={Boolean(noteToDelete)}
         onOpenChange={handleDeleteOpenChange}
-        title={t("Delete note")}
+        title={t("Delete Note")}
         size="sm"
         closable={!isDeleting}
         closeOnBackdrop={!isDeleting}
         content={
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "16px",
-            }}
-          >
+          <>
             <p>{t("Are you sure you want to delete this note?")}</p>
             <OykAlert
               title={t("This action is irreversible.")}
@@ -283,7 +277,7 @@ export default function OykNotes() {
             {deleteError ? (
               <OykAlert title={deleteError} color="danger" variant="ghost" />
             ) : null}
-          </div>
+          </>
         }
         actions={({ close }) => (
           <>

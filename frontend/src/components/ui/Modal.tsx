@@ -128,7 +128,11 @@ export default function OykModal({
       <div className="oyk-modal-backdrop" onClick={handleBackdropClick} />
       <div
         ref={panelRef}
-        className={oykClass("oyk-modal-panel", `oyk-modal-size-${size}`)}
+        className={oykClass(
+          "oyk-modal-panel",
+          `oyk-modal-size-${size}`,
+          !title && "oyk-modal-untitled",
+        )}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? titleId : undefined}

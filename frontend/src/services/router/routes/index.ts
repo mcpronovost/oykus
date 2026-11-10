@@ -22,7 +22,7 @@ export const ROUTES: TypeRoute[] = [
   },
   {
     name: "encyclopedia",
-    component: React.lazy(() => import("../../../pages/Encyclopedia")),
+    component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/index")),
     paths: {
       fr: "encyclopedia",
       en: "encyclopedia",
@@ -31,7 +31,7 @@ export const ROUTES: TypeRoute[] = [
   },
   {
     name: "notes",
-    component: React.lazy(() => import("../../../pages/Notes")),
+    component: React.lazy(() => import("../../../pages/Tools/Notes/index")),
     paths: {
       fr: "notes",
       en: "notes",
