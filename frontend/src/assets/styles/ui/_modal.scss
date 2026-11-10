@@ -95,5 +95,17 @@
   &-body {
     padding: 16px;
     overflow: auto;
+
+    &-with-actions {
+      padding-bottom: 0;
+    }
+  }
+
+  &-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 16px;
+    flex-shrink: 0;
   }
 }

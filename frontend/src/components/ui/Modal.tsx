@@ -8,13 +8,14 @@ type OykModalHelpers = {
   close: () => void;
 };
 
-type OykModalContent = ReactNode | ((helpers: OykModalHelpers) => ReactNode);
+type OykModalSlot = ReactNode | ((helpers: OykModalHelpers) => ReactNode);
 
 type OykModalSize = "sm" | "md" | "lg";
 
 interface OykModalProps extends Omit<HTMLAttributes<HTMLDivElement>, "title" | "content"> {
-  content: OykModalContent;
+  content: OykModalSlot;
   title?: string;
+  actions?: OykModalSlot;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   closable?: boolean;
@@ -24,9 +25,15 @@ interface OykModalProps extends Omit<HTMLAttributes<HTMLDivElement>, "title" | "
   className?: string;
 }
 
+function renderSlot(slot: OykModalSlot | undefined, helpers: OykModalHelpers) {
+  if (slot == null) return null;
+  return typeof slot === "function" ? slot(helpers) : slot;
+}
+
 export default function OykModal({
   content,
   title,
+  actions,
   open: openProp,
   onOpenChange,
   closable = true,
@@ -53,6 +60,7 @@ export default function OykModal({
   const wantOpen = open && !disabled && Boolean(content);
 
   const close = () => setOpen(false);
+  const helpers = { close };
 
   useEffect(() => {
     if (disabled) setOpen(false);
@@ -106,7 +114,8 @@ export default function OykModal({
     setOpen(false);
   };
 
-  const renderedContent = typeof content === "function" ? content({ close }) : content;
+  const renderedContent = renderSlot(content, helpers);
+  const renderedActions = renderSlot(actions, helpers);
 
   if (!mounted) return null;
 
@@ -145,7 +154,17 @@ export default function OykModal({
             )}
           </header>
         )}
-        <div className="oyk-modal-body">{renderedContent}</div>
+        <div
+          className={oykClass(
+            "oyk-modal-body",
+            renderedActions != null && "oyk-modal-body-with-actions",
+          )}
+        >
+          {renderedContent}
+        </div>
+        {renderedActions != null && (
+          <footer className="oyk-modal-actions">{renderedActions}</footer>
+        )}
       </div>
     </div>,
     document.body,

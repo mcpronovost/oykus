@@ -266,7 +266,7 @@ export default function OykNotes() {
         size="sm"
         closable={!isDeleting}
         closeOnBackdrop={!isDeleting}
-        content={({ close }) => (
+        content={
           <div
             style={{
               display: "flex",
@@ -274,36 +274,34 @@ export default function OykNotes() {
               gap: "16px",
             }}
           >
-            <p>
-              {t("Are you sure you want to delete this note?")}
-            </p>
-            <OykAlert title={t("This action is irreversible.")} color="warning" variant="ghost" />
+            <p>{t("Are you sure you want to delete this note?")}</p>
+            <OykAlert
+              title={t("This action is irreversible.")}
+              color="warning"
+              variant="ghost"
+            />
             {deleteError ? (
               <OykAlert title={deleteError} color="danger" variant="ghost" />
             ) : null}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: "8px",
-              }}
-            >
-              <OykButton
-                label={t("Cancel")}
-                variant="ghost"
-                disabled={isDeleting}
-                onClick={close}
-              />
-              <OykButton
-                label={t("Delete")}
-                color="danger"
-                disabled={isDeleting}
-                onClick={() => {
-                  void handleConfirmDelete(close);
-                }}
-              />
-            </div>
           </div>
+        }
+        actions={({ close }) => (
+          <>
+            <OykButton
+              label={t("Cancel")}
+              variant="ghost"
+              disabled={isDeleting}
+              onClick={close}
+            />
+            <OykButton
+              label={t("Delete")}
+              color="danger"
+              disabled={isDeleting}
+              onClick={() => {
+                void handleConfirmDelete(close);
+              }}
+            />
+          </>
         )}
       />
     </div>

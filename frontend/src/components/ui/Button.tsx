@@ -5,6 +5,7 @@ import { useRouter } from "@/services/router";
 
 interface OykButtonProps {
   type?: "button" | "submit" | "reset";
+  form?: string;
   label?: string;
   icon?: React.ComponentType<TablerIconProps>;
   iconSize?: number;
@@ -28,6 +29,7 @@ interface OykButtonProps {
 
 export default function OykButton({
   type = "button",
+  form,
   label,
   icon: Icon,
   iconSize = 16,
@@ -66,6 +68,7 @@ export default function OykButton({
         ...(customColor && { color: customColor }),
       }}
       type={type}
+      form={form}
       disabled={disabled}
       onClick={handleClick}
     >

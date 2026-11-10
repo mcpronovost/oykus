@@ -247,29 +247,17 @@ export default function OykDev() {
             open={modalOpen}
             onOpenChange={setModalOpen}
             title="Example modal"
-            content={({ close }) => (
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "16px",
-                }}
-              >
-                <p style={{ margin: 0 }}>
-                  Use a modal for confirmations, forms, or short focused
-                  workflows that should block the page behind them.
-                </p>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    gap: "8px",
-                  }}
-                >
-                  <OykButton label="Cancel" variant="ghost" onClick={close} />
-                  <OykButton label="Confirm" color="accent" onClick={close} />
-                </div>
-              </div>
+            content={
+              <p style={{ margin: 0 }}>
+                Use a modal for confirmations, forms, or short focused
+                workflows that should block the page behind them.
+              </p>
+            }
+            actions={({ close }) => (
+              <>
+                <OykButton label="Cancel" variant="ghost" onClick={close} />
+                <OykButton label="Confirm" color="accent" onClick={close} />
+              </>
             )}
           />
         </OykCard>

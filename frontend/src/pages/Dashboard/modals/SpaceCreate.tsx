@@ -1,5 +1,5 @@
 import type { SubmitEvent } from "react";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { OykButton, OykForm, OykModal } from "@/components/ui";
 import { ApiError, createSpace, queryKeys } from "@/services/api";
@@ -19,6 +19,7 @@ export default function OykDashboardModalsSpaceCreate({
 }) {
   const { refresh } = useAuth();
   const queryClient = useQueryClient();
+  const formId = useId();
   const [form, setForm] = useState(INITIAL_FORM);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -85,8 +86,8 @@ export default function OykDashboardModalsSpaceCreate({
       open={modalOpen}
       onOpenChange={handleOpenChange}
       title="New Space"
-      content={({ close }) => (
-        <OykForm loading={isSubmitting} onSubmit={handleSubmit}>
+      content={
+        <OykForm id={formId} loading={isSubmitting} onSubmit={handleSubmit}>
           <OykForm.Alert
             error={error ?? undefined}
             errorTitle="Could not create space"
@@ -106,28 +107,24 @@ export default function OykDashboardModalsSpaceCreate({
             value={form.description}
             onChange={(value) => updateField("description", value as string)}
           />
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              gap: "8px",
-              marginTop: "8px",
-            }}
-          >
-            <OykButton
-              label="Cancel"
-              variant="ghost"
-              disabled={isSubmitting}
-              onClick={close}
-            />
-            <OykButton
-              type="submit"
-              label="Create"
-              color="accent"
-              disabled={isSubmitting}
-            />
-          </div>
         </OykForm>
+      }
+      actions={({ close }) => (
+        <>
+          <OykButton
+            label="Cancel"
+            variant="ghost"
+            disabled={isSubmitting}
+            onClick={close}
+          />
+          <OykButton
+            type="submit"
+            form={formId}
+            label="Create"
+            color="accent"
+            disabled={isSubmitting}
+          />
+        </>
       )}
     />
   );
