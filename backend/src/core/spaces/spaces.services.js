@@ -1,3 +1,4 @@
+import { ForbiddenError, NotFoundError } from "../../shared/errors/index.js";
 import { prisma } from "../../shared/db/index.js";
 import { SPACE_OUTPUT_SELECT, toSpaceOutput } from "./spaces.outputs.js";
 
@@ -33,4 +34,25 @@ export async function createSpace(userId, { name, description }) {
   });
 
   return toSpaceOutput(space);
+}
+
+export async function deleteSpace(userId, spaceId) {
+  const space = await prisma.space.findUnique({
+    where: { id: spaceId },
+    select: { id: true, ownerId: true },
+  });
+
+  if (!space) {
+    throw new NotFoundError("Space not found");
+  }
+
+  if (space.ownerId !== userId) {
+    throw new ForbiddenError("Only the owner can delete this space");
+  }
+
+  await prisma.$transaction(async (tx) => {
+    await tx.spaceMember.deleteMany({ where: { spaceId } });
+    await tx.spaceRole.deleteMany({ where: { spaceId } });
+    await tx.space.delete({ where: { id: spaceId } });
+  });
 }

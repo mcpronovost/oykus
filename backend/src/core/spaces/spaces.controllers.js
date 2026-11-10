@@ -10,6 +10,13 @@ function parseBody(schema, body) {
   return value;
 }
 
+function parseIdParam(value, label = "id") {
+  if (typeof value !== "string" || value.trim().length === 0) {
+    throw new BadRequestError("Validation failed", { [label]: ["Required"] });
+  }
+  return value.trim();
+}
+
 export async function list(req, res) {
   const spaces = await spacesServices.listSpaces(req.userId);
   res.json({ data: spaces });
@@ -19,4 +26,10 @@ export async function create(req, res) {
   const input = parseBody(createSpaceInput, req.body ?? {});
   const space = await spacesServices.createSpace(req.userId, input);
   res.status(201).json({ data: space });
+}
+
+export async function remove(req, res) {
+  const spaceId = parseIdParam(req.params.id);
+  await spacesServices.deleteSpace(req.userId, spaceId);
+  res.status(204).send();
 }

@@ -137,6 +137,12 @@ async function createSpace(input: TypeCreateSpaceInput): Promise<TypeSpace> {
   });
 }
 
+async function deleteSpace(spaceId: string): Promise<void> {
+  await request<void>(`/api/v1/spaces/${spaceId}`, {
+    method: "DELETE",
+  });
+}
+
 async function setCurrentSpace(spaceId: string): Promise<TypePublicUser> {
   return request<TypePublicUser>("/api/v1/users/me/current-space", {
     method: "PATCH",
@@ -171,6 +177,7 @@ export {
   createNote,
   createSpace,
   deleteNote,
+  deleteSpace,
   getHealth,
   getMe,
   listNoteCategories,

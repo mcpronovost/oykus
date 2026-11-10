@@ -12,6 +12,15 @@ type OykModalSlot = ReactNode | ((helpers: OykModalHelpers) => ReactNode);
 
 type OykModalSize = "sm" | "md" | "lg";
 
+type OykModalColor =
+  | "default"
+  | "accent"
+  | "success"
+  | "danger"
+  | "info"
+  | "warning"
+  | "special";
+
 interface OykModalProps extends Omit<HTMLAttributes<HTMLDivElement>, "title" | "content"> {
   content: OykModalSlot;
   title?: string;
@@ -22,6 +31,7 @@ interface OykModalProps extends Omit<HTMLAttributes<HTMLDivElement>, "title" | "
   closeOnBackdrop?: boolean;
   disabled?: boolean;
   size?: OykModalSize;
+  color?: OykModalColor;
   className?: string;
 }
 
@@ -40,6 +50,7 @@ export default function OykModal({
   closeOnBackdrop = true,
   disabled = false,
   size = "md",
+  color = "default",
   className = "",
   ...props
 }: OykModalProps) {
@@ -131,6 +142,7 @@ export default function OykModal({
         className={oykClass(
           "oyk-modal-panel",
           `oyk-modal-size-${size}`,
+          color !== "default" && `oyk-modal-color-${color}`,
           !title && "oyk-modal-untitled",
         )}
         role="dialog"

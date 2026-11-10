@@ -8,5 +8,6 @@ router.use(requireAuth);
 
 router.get("/", spacesControllers.list);
 router.post("/", spacesControllers.create);
+router.delete("/:id", spacesControllers.remove);
 
 export default router;

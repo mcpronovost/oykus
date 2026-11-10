@@ -9,11 +9,12 @@ import {
   OykHeading,
   OykResult,
 } from "@/components/ui";
-import { listSpaces, queryKeys } from "@/services/api";
+import { listSpaces, queryKeys, type TypeSpace } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
 import { getTimeGreeting } from "@/utils";
 import OykDashboardModalsSpaceCreate from "./modals/SpaceCreate";
+import OykDashboardModalsSpaceDelete from "./modals/SpaceDelete";
 import OykSpaceCurrentCard from "./SpaceCurrentCard";
 import OykSpaceShelfCard from "./SpaceShelfCard";
 
@@ -22,6 +23,7 @@ export default function OykDashboard() {
   const { t } = useTranslation();
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [spaceToDelete, setSpaceToDelete] = useState<TypeSpace | null>(null);
 
   const handleSelectSpace = (spaceId: string) => {
     if (user?.currentSpace?.id === spaceId) return;
@@ -45,6 +47,10 @@ export default function OykDashboard() {
       <OykDashboardModalsSpaceCreate
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
+      />
+      <OykDashboardModalsSpaceDelete
+        space={spaceToDelete}
+        setSpace={setSpaceToDelete}
       />
       <OykGrid>
         <OykHeading
@@ -102,6 +108,7 @@ export default function OykDashboard() {
                   key={space.id}
                   space={space}
                   onSelect={(selected) => handleSelectSpace(selected.id)}
+                  onDelete={setSpaceToDelete}
                 />
               ))}
             </OykGrid.Col>

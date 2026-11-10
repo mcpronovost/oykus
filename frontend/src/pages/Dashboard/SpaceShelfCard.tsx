@@ -6,15 +6,20 @@ import ImgPlaceholder1 from "@/assets/img/space-cover-1.webp";
 type SpaceShelfCardProps = {
   space: TypeSpace;
   onSelect?: (space: TypeSpace) => void;
+  onDelete?: (space: TypeSpace) => void;
 };
 
 export default function OykSpaceShelfCard({
   space,
   onSelect,
+  onDelete,
 }: SpaceShelfCardProps) {
   return (
     <div className="oyk-page-dashboard-shelf-item">
-      <button className="oyk-page-dashboard-shelf-item-btn" onClick={() => onSelect?.(space)}>
+      <button
+        className="oyk-page-dashboard-shelf-item-btn"
+        onClick={() => onSelect?.(space)}
+      >
         <div className="oyk-page-dashboard-shelf-item-cover">
           <img
             src={space.cover || ImgPlaceholder1}
@@ -27,7 +32,13 @@ export default function OykSpaceShelfCard({
         <p className="oyk-page-dashboard-shelf-item-name">{space.name}</p>
       </button>
       <div className="oyk-page-dashboard-shelf-item-delete">
-        <OykButton icon={IconX} shrink color="danger" variant="plain" />
+        <OykButton
+          icon={IconX}
+          shrink
+          color="danger"
+          variant="plain"
+          onClick={() => onDelete?.(space)}
+        />
       </div>
     </div>
   );
