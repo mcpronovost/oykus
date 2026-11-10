@@ -9,7 +9,7 @@ export default function OykCoreHeaderUser() {
     <div className="oyk-core-header-user">
       <div className="oyk-core-header-user-name">
         <span className="oyk-core-header-user-name-title">{user?.name}</span>
-        <span className="oyk-core-header-user-name-subtitle">Niveau 2</span>
+        <span className="oyk-core-header-user-name-subtitle">Niveau 1</span>
       </div>
       <div className="oyk-core-header-user-avatar">
         <div className="oyk-core-header-user-avatar-img">
