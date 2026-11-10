@@ -96,7 +96,7 @@ export default function OykDashboard() {
             <OykGrid.Col>
               <OykDivider start="Your words" end={`${spaces.length} spaces`} />
             </OykGrid.Col>
-            <OykGrid.Col flex="horizontal">
+            <OykGrid.Col flex="horizontal" wrap>
               {spaces.map((space) => (
                 <OykSpaceShelfCard
                   key={space.id}
