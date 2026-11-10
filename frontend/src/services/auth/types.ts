@@ -9,6 +9,7 @@ export interface TypeAuthContextValue {
   login: (username: string, password: string) => Promise<TypePublicUser>;
   logout: () => Promise<void>;
   refresh: () => Promise<TypePublicUser | null>;
+  setCurrentSpace: (spaceId: string) => Promise<TypePublicUser>;
 }
 
 export interface TypeAuthProviderProps {

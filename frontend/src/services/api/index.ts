@@ -62,12 +62,7 @@ export type TypePublicUser = {
   name: string;
   avatar: string | null;
   cover: string | null;
-  currentSpaceId: string | null;
-  currentSpace: {
-    id: string;
-    name: string;
-    description: string | null;
-  } | null;
+  currentSpace: TypeSpace | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -76,6 +71,7 @@ export type TypeSpace = {
   id: string;
   name: string;
   description: string | null;
+  cover: string | null;
   ownerId: string;
   createdAt: string;
   updatedAt: string;
@@ -141,6 +137,13 @@ async function createSpace(input: TypeCreateSpaceInput): Promise<TypeSpace> {
   });
 }
 
+async function setCurrentSpace(spaceId: string): Promise<TypePublicUser> {
+  return request<TypePublicUser>("/api/v1/users/me/current-space", {
+    method: "PATCH",
+    body: JSON.stringify({ spaceId }),
+  });
+}
+
 async function listNotes(spaceId: string): Promise<TypeNote[]> {
   const params = new URLSearchParams({ spaceId });
   return request<TypeNote[]>(`/api/v1/notes?${params.toString()}`);
@@ -176,4 +179,5 @@ export {
   login,
   logout,
   request,
+  setCurrentSpace,
 };

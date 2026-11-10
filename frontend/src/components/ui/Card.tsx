@@ -1,3 +1,4 @@
+import type { MouseEvent } from "react";
 import { oykClass } from "@/utils";
 
 type OykCardProps = {
@@ -15,6 +16,7 @@ type OykCardProps = {
   hoverable?: boolean;
   clickable?: boolean;
   nop?: boolean;
+  onClick?: (event: MouseEvent<HTMLDivElement>) => void;
 };
 
 export default function OykCard({
@@ -25,6 +27,7 @@ export default function OykCard({
   hoverable = false,
   clickable = false,
   nop = false,
+  onClick,
 }: OykCardProps) {
   return (
     <div
@@ -37,6 +40,7 @@ export default function OykCard({
         clickable && "oyk-card-clickable",
         nop && "oyk-card-nop",
       )}
+      onClick={onClick}
     >
       {children}
     </div>

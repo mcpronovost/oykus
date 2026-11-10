@@ -7,6 +7,7 @@ import {
   login as apiLogin,
   logout as apiLogout,
   queryKeys,
+  setCurrentSpace as apiSetCurrentSpace,
   type TypePublicUser,
 } from "@/services/api";
 
@@ -23,7 +24,8 @@ const INITIAL_STATE: TypeAuthContextValue = {
   login: async () => {},
   logout: async () => {},
   refresh: async () => null,
-};
+  setCurrentSpace: async () => {},
+} as TypeAuthContextValue;
 
 async function fetchCurrentUser(): Promise<TypePublicUser | null> {
   try {
@@ -79,6 +81,12 @@ export function AuthProvider({ children }: TypeAuthProviderProps) {
     return result.data ?? null;
   };
 
+  const setCurrentSpace = async (spaceId: string) => {
+    const nextUser = await apiSetCurrentSpace(spaceId);
+    queryClient.setQueryData(queryKeys.user.me, nextUser);
+    return nextUser;
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -89,6 +97,7 @@ export function AuthProvider({ children }: TypeAuthProviderProps) {
         login,
         logout,
         refresh,
+        setCurrentSpace,
       }}
     >
       {children}

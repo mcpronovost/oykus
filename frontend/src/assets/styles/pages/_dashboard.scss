@@ -1,12 +1,50 @@
 .oyk-page-dashboard {
   &-currentspace {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+
     &-cover {
       border: 1px solid var(--oyk-c-accent-faint);
       border-radius: var(--oyk-radius);
+      flex: 0 0 180px;
       width: 180px;
       height: 256px;
       object-fit: cover;
       object-position: center;
+    }
+
+    &-content {
+      flex: 1;
+
+      &-suptitle {
+        color: var(--oyk-c-accent-subtle);
+        font-size: 0.875rem;
+        line-height: 1.2;
+        padding: 6px 0;
+      }
+
+      &-title {
+        color: var(--oyk-card-fg);
+        font-size: 2rem;
+        font-weight: 400;
+        line-height: 1.2;
+      }
+    }
+  }
+
+  &-shelf-item {
+    &-cover {
+      &-img {
+        border-radius: var(--oyk-radius);
+        width: 180px;
+        height: 256px;
+        object-fit: cover;
+        object-position: center;
+      }
     }
   }
 }
