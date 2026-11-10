@@ -153,6 +153,12 @@ async function createNote(input: TypeCreateNoteInput): Promise<TypeNote> {
   });
 }
 
+async function deleteNote(noteId: string): Promise<void> {
+  await request<void>(`/api/v1/notes/${noteId}`, {
+    method: "DELETE",
+  });
+}
+
 async function listNoteCategories(): Promise<TypeNoteCategory[]> {
   return request<TypeNoteCategory[]>("/api/v1/notes/categories");
 }
@@ -161,6 +167,7 @@ export { queryKeys } from "./queryKeys";
 export {
   createNote,
   createSpace,
+  deleteNote,
   getHealth,
   getMe,
   listNoteCategories,

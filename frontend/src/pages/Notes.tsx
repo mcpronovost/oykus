@@ -1,14 +1,24 @@
 import type { SubmitEvent } from "react";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { OykButton, OykForm, OykGrid, OykHeading, OykResult } from "@/components/ui";
+import {
+  OykAlert,
+  OykButton,
+  OykForm,
+  OykGrid,
+  OykHeading,
+  OykModal,
+  OykResult,
+} from "@/components/ui";
 import { OykMasonry } from "@/components/common";
 import {
   ApiError,
   createNote,
+  deleteNote,
   listNoteCategories,
   listNotes,
   queryKeys,
+  type TypeNote,
 } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
@@ -28,6 +38,9 @@ export default function OykNotes() {
   const [formNote, setFormNote] = useState(INITIAL_FORM);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [noteToDelete, setNoteToDelete] = useState<TypeNote | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const {
     data: notes = [],
@@ -112,6 +125,37 @@ export default function OykNotes() {
       }
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleDeleteOpenChange = (open: boolean) => {
+    if (!open && isDeleting) return;
+    if (!open) {
+      setNoteToDelete(null);
+      setDeleteError(null);
+    }
+  };
+
+  const handleConfirmDelete = async (close: () => void) => {
+    if (!noteToDelete || !spaceId) return;
+
+    setDeleteError(null);
+    setIsDeleting(true);
+    try {
+      await deleteNote(noteToDelete.id);
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.notes.list(spaceId),
+      });
+      setNoteToDelete(null);
+      close();
+    } catch (err) {
+      if (err instanceof ApiError) {
+        setDeleteError(err.message || t("Could not delete the note."));
+      } else {
+        setDeleteError(t("Could not delete the note."));
+      }
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -211,9 +255,57 @@ export default function OykNotes() {
             variant="ghost"
           />
         ) : (
-          <OykMasonry notes={notes} />
+          <OykMasonry notes={notes} onDeleteNote={setNoteToDelete} />
         )}
       </OykGrid>
+
+      <OykModal
+        open={Boolean(noteToDelete)}
+        onOpenChange={handleDeleteOpenChange}
+        title={t("Delete note")}
+        size="sm"
+        closable={!isDeleting}
+        closeOnBackdrop={!isDeleting}
+        content={({ close }) => (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
+            }}
+          >
+            <p>
+              {t("Are you sure you want to delete this note?")}
+            </p>
+            <OykAlert title={t("This action is irreversible.")} color="warning" variant="ghost" />
+            {deleteError ? (
+              <OykAlert title={deleteError} color="danger" variant="ghost" />
+            ) : null}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: "8px",
+              }}
+            >
+              <OykButton
+                label={t("Cancel")}
+                variant="ghost"
+                disabled={isDeleting}
+                onClick={close}
+              />
+              <OykButton
+                label={t("Delete")}
+                color="danger"
+                disabled={isDeleting}
+                onClick={() => {
+                  void handleConfirmDelete(close);
+                }}
+              />
+            </div>
+          </div>
+        )}
+      />
     </div>
   );
 }

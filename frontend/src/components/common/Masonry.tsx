@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { IconX } from "@tabler/icons-react";
 import { OykButton, OykCard, OykChip, OykGrid } from "@/components/ui";
 import type { TypeNote } from "@/services/api";
 import { useTranslation } from "@/services/translation";
@@ -26,7 +27,13 @@ function distributeItems<T>(items: T[], columnCount: number) {
   return columns;
 }
 
-export default function OykMasonry({ notes = [] }: { notes?: TypeNote[] }) {
+export default function OykMasonry({
+  notes = [],
+  onDeleteNote,
+}: {
+  notes?: TypeNote[];
+  onDeleteNote?: (note: TypeNote) => void;
+}) {
   const { t } = useTranslation();
   const masonryRef = useRef<HTMLDivElement>(null);
   const [columnCount, setColumnCount] = useState(1);
@@ -105,13 +112,27 @@ export default function OykMasonry({ notes = [] }: { notes?: TypeNote[] }) {
                   }
                 >
                   <OykCard hoverable gradient="accent" pad="lg">
-                    {item.category ? (
-                      <div style={{ marginBottom: "1rem" }}>
-                        <OykChip
-                          label={t(`note.category.${item.category.label}`)}
-                          variant="ghost"
-                          color="accent"
-                        />
+                    {item.category || onDeleteNote ? (
+                      <div className="oyk-masonry-item-header">
+                        {item.category ? (
+                          <OykChip
+                            label={t(`note.category.${item.category.label}`)}
+                            variant="ghost"
+                            color="accent"
+                          />
+                        ) : (
+                          <span />
+                        )}
+                        {onDeleteNote ? (
+                          <button
+                            type="button"
+                            className="oyk-masonry-item-delete"
+                            onClick={() => onDeleteNote(item)}
+                            aria-label={t("Delete note")}
+                          >
+                            <IconX size={16} />
+                          </button>
+                        ) : null}
                       </div>
                     ) : null}
                     <p>{item.content}</p>

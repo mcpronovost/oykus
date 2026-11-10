@@ -46,5 +46,39 @@
     width: 100%;
     animation: oyk-masonry-item-in 0.4s ease-out both;
     animation-delay: var(--oyk-masonry-item-delay, 0s);
+
+    &-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 1rem;
+    }
+
+    &-delete {
+      line-height: 0;
+      flex-shrink: 0;
+      margin-left: auto;
+      cursor: pointer;
+      color: var(--oyk-card-fg-subtle);
+      opacity: 0;
+      pointer-events: none;
+      transition: color 0.2s, opacity 0.2s;
+
+      &:hover {
+        color: var(--oyk-c-danger);
+      }
+
+      &:focus-visible {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+
+    &:hover &-delete,
+    &:focus-within &-delete {
+      opacity: 1;
+      pointer-events: auto;
+    }
   }
 }
