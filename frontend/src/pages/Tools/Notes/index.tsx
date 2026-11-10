@@ -1,20 +1,18 @@
 import type { SubmitEvent } from "react";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { IconNoteOff } from "@tabler/icons-react";
 import {
-  OykAlert,
   OykButton,
   OykForm,
   OykGrid,
   OykHeading,
-  OykModal,
   OykResult,
 } from "@/components/ui";
 import { OykMasonry } from "@/components/common";
 import {
   ApiError,
   createNote,
-  deleteNote,
   listNoteCategories,
   listNotes,
   queryKeys,
@@ -23,6 +21,7 @@ import {
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
 import { findOtherCategory, sortCategories } from "@/utils";
+import OykNotesModalsNoteDelete from "./modals/NoteDelete";
 
 const INITIAL_FORM = {
   content: "",
@@ -39,8 +38,6 @@ export default function OykNotes() {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [noteToDelete, setNoteToDelete] = useState<TypeNote | null>(null);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
-  const [isDeleting, setIsDeleting] = useState(false);
 
   const {
     data: notes = [],
@@ -119,43 +116,14 @@ export default function OykNotes() {
               .flatMap((value) => (Array.isArray(value) ? value : []))
               .filter((value): value is string => typeof value === "string")
           : [];
-        setError(fieldErrors[0] || err.message || t("Could not create the note."));
+        setError(
+          fieldErrors[0] || err.message || t("Could not create the note."),
+        );
       } else {
         setError(t("Could not create the note."));
       }
     } finally {
       setIsSubmitting(false);
-    }
-  };
-
-  const handleDeleteOpenChange = (open: boolean) => {
-    if (!open && isDeleting) return;
-    if (!open) {
-      setNoteToDelete(null);
-      setDeleteError(null);
-    }
-  };
-
-  const handleConfirmDelete = async (close: () => void) => {
-    if (!noteToDelete || !spaceId) return;
-
-    setDeleteError(null);
-    setIsDeleting(true);
-    try {
-      await deleteNote(noteToDelete.id);
-      await queryClient.invalidateQueries({
-        queryKey: queryKeys.notes.list(spaceId),
-      });
-      setNoteToDelete(null);
-      close();
-    } catch (err) {
-      if (err instanceof ApiError) {
-        setDeleteError(err.message || t("Could not delete the note."));
-      } else {
-        setDeleteError(t("Could not delete the note."));
-      }
-    } finally {
-      setIsDeleting(false);
     }
   };
 
@@ -182,6 +150,11 @@ export default function OykNotes() {
 
   return (
     <div className="oyk-page-notes">
+      <OykNotesModalsNoteDelete
+        note={noteToDelete}
+        setNote={setNoteToDelete}
+        spaceId={spaceId}
+      />
       <OykGrid>
         <OykHeading title={t("Notes")} />
         <OykForm loading={isSubmitting} onSubmit={handleSubmit}>
@@ -227,77 +200,50 @@ export default function OykNotes() {
         </OykForm>
 
         {isPending ? (
-          <OykResult
-            title={t("Loading notes")}
-            message={t("Fetching notes for this space...")}
-            variant="ghost"
-          />
+          <OykGrid.Row>
+            <OykGrid.Col>
+              <OykResult
+                title={t("Loading notes")}
+                message={t("Fetching notes for this space...")}
+                variant="ghost"
+              />
+            </OykGrid.Col>
+          </OykGrid.Row>
         ) : isError ? (
-          <OykResult
-            title={t("Could not load notes")}
-            message={t("Something went wrong while fetching notes.")}
-            color="danger"
-            variant="ghost"
-          >
-            <OykButton
-              label={t("Try again")}
-              color="accent"
-              onClick={() => {
-                void refetchNotes();
-                void refetchCategories();
-              }}
-            />
-          </OykResult>
+          <OykGrid.Row>
+            <OykGrid.Col>
+              <OykResult
+                title={t("Could not load notes")}
+                message={t("Something went wrong while fetching notes.")}
+                color="danger"
+                variant="ghost"
+              >
+                <OykButton
+                  label={t("Try again")}
+                  color="accent"
+                  onClick={() => {
+                    void refetchNotes();
+                    void refetchCategories();
+                  }}
+                />
+              </OykResult>
+            </OykGrid.Col>
+          </OykGrid.Row>
         ) : notes.length === 0 ? (
-          <OykResult
-            title={t("No notes yet")}
-            message={t("Capture your first idea above.")}
-            variant="ghost"
-          />
+          <OykGrid.Row>
+            <OykGrid.Col>
+              <OykResult
+                title={t("No notes yet")}
+                message={t("Capture your first idea above.")}
+                variant="ghost"
+                icon={IconNoteOff}
+              />
+            </OykGrid.Col>
+          </OykGrid.Row>
         ) : (
           <OykMasonry notes={notes} onDeleteNote={setNoteToDelete} />
         )}
       </OykGrid>
-
-      <OykModal
-        open={Boolean(noteToDelete)}
-        onOpenChange={handleDeleteOpenChange}
-        title={t("Delete Note")}
-        size="sm"
-        closable={!isDeleting}
-        closeOnBackdrop={!isDeleting}
-        content={
-          <>
-            <p>{t("Are you sure you want to delete this note?")}</p>
-            <OykAlert
-              title={t("This action is irreversible.")}
-              color="warning"
-              variant="ghost"
-            />
-            {deleteError ? (
-              <OykAlert title={deleteError} color="danger" variant="ghost" />
-            ) : null}
-          </>
-        }
-        actions={({ close }) => (
-          <>
-            <OykButton
-              label={t("Cancel")}
-              variant="ghost"
-              disabled={isDeleting}
-              onClick={close}
-            />
-            <OykButton
-              label={t("Delete")}
-              color="danger"
-              disabled={isDeleting}
-              onClick={() => {
-                void handleConfirmDelete(close);
-              }}
-            />
-          </>
-        )}
-      />
     </div>
   );
 }
