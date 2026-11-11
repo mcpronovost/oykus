@@ -8,6 +8,11 @@
   "Hello": "Hello",
   "Here's what's happening with your worlds": "Here's what's happening with your worlds",
   "New Space": "New Space",
+  "Delete {space}": "Delete “{space}”",
+  "{count} notes": {
+    "one": "{count} note",
+    "other": "{count} notes"
+  },
   "Notes": "Notes",
   "All": "All",
   "Select category": "Select category",

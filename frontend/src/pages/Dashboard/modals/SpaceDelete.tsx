@@ -1,11 +1,19 @@
 import type { SubmitEvent } from "react";
-import { useId, useState } from "react";
+import type { Icon } from "@tabler/icons-react";
 import { IconNote } from "@tabler/icons-react";
-import { useQueryClient } from "@tanstack/react-query";
-import { OykAlert, OykButton, OykForm, OykList, OykModal } from "@/components/ui";
-import { ApiError, deleteSpace, queryKeys, type TypeSpace } from "@/services/api";
+import { useId, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { OykButton, OykForm, OykList, OykModal } from "@/components/ui";
+import { ApiError, deleteSpace, listNotes, queryKeys, type TypeSpace } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
+
+type TypeDestroyedItem = {
+  key: string;
+  count: number;
+  icon: Icon;
+  label: string;
+};
 
 export default function OykDashboardModalsSpaceDelete({
   space,
@@ -21,6 +29,25 @@ export default function OykDashboardModalsSpaceDelete({
   const [confirmationName, setConfirmationName] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const {
+    data: notes = [],
+    isPending: isNotesPending,
+  } = useQuery({
+    queryKey: queryKeys.notes.list(space?.id ?? ""),
+    queryFn: () => listNotes(space!.id),
+    enabled: Boolean(space),
+  });
+
+  const destroyedItems: TypeDestroyedItem[] = [
+    {
+      key: "notes",
+      count: notes.length,
+      icon: IconNote,
+      label: t("{count} notes", notes.length),
+    },
+    // Future features: encyclopedia entries, tasks, etc.
+  ].filter((item) => item.count > 0);
 
   const nameMatches =
     space != null && confirmationName.trim() === space.name;
@@ -69,28 +96,33 @@ export default function OykDashboardModalsSpaceDelete({
     }
   };
 
+  if (!space) return null;
+
   return (
     <OykModal
       open={Boolean(space)}
       onOpenChange={handleOpenChange}
-      title={t("Delete Space")}
-      size="sm"
+      title={t("Delete {space}", undefined, { space: space.name })}
       color="danger"
       closable={!isDeleting}
       closeOnBackdrop={!isDeleting}
       content={
         <OykForm id={formId} loading={isDeleting} onSubmit={handleSubmit}>
           <p>
-            {t("This will permanently delete this space and destroy all of its content.")}
+            {t("This will permanently delete this space and destroy all of its content:")}
           </p>
-          <OykList>
-            <OykList.Item content="3 notes" start={IconNote} color="danger" />
-          </OykList>
-          <OykAlert
-            title={t("This action cannot be undone.")}
-            color="danger"
-            variant="ghost"
-          />
+          {!isNotesPending && destroyedItems.length > 0 && (
+            <OykList>
+              {destroyedItems.map((item) => (
+                <OykList.Item
+                  key={item.key}
+                  content={item.label}
+                  start={item.icon}
+                  color="danger"
+                />
+              ))}
+            </OykList>
+          )}
           <OykForm.Alert
             error={error ?? undefined}
             errorTitle={t("Could not delete space")}
@@ -98,7 +130,7 @@ export default function OykDashboardModalsSpaceDelete({
           <OykForm.Field
             name="confirmationName"
             label={t("Type the space name to confirm")}
-            placeholder={space?.name}
+            placeholder={space.name}
             required
             value={confirmationName}
             onChange={(value) => setConfirmationName(value as string)}

@@ -8,6 +8,11 @@
   "Hello": "Salut",
   "Here's what's happening with your worlds": "Voici ce qui se passe avec vos mondes",
   "New Space": "Nouvel espace",
+  "Delete {space}": "Supprimer « {space} »",
+  "{count} notes": {
+    "one": "{count} note",
+    "other": "{count} notes"
+  },
   "Notes": "Notes",
   "All": "Tous",
   "Select category": "Choisir une catégorie",
