@@ -1,7 +1,8 @@
 import type { SubmitEvent } from "react";
 import { useId, useState } from "react";
+import { IconNote } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { OykAlert, OykButton, OykForm, OykModal } from "@/components/ui";
+import { OykAlert, OykButton, OykForm, OykList, OykModal } from "@/components/ui";
 import { ApiError, deleteSpace, queryKeys, type TypeSpace } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
@@ -80,8 +81,11 @@ export default function OykDashboardModalsSpaceDelete({
       content={
         <OykForm id={formId} loading={isDeleting} onSubmit={handleSubmit}>
           <p>
-            {t("This will permanently delete this space and all of its content.")}
+            {t("This will permanently delete this space and destroy all of its content.")}
           </p>
+          <OykList>
+            <OykList.Item content="3 notes" start={IconNote} color="danger" />
+          </OykList>
           <OykAlert
             title={t("This action cannot be undone.")}
             color="danger"

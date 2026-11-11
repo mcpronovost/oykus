@@ -6,6 +6,7 @@ import {
   OykCard,
   OykGrid,
   OykHeading,
+  OykList,
   OykModal,
   OykScrollbar,
   OykTooltip,
@@ -119,6 +120,22 @@ export default function OykDev() {
               <OykButton color={c} icon={IconSettings} variant="plain" shrink />
             </div>
           ))}
+        </OykCard>
+      </article>
+      <article className="oyk-dev-component">
+        <OykHeading
+          title="List"
+          suptitle="Data Display"
+          subtitle="Displays a list of items."
+        />
+        <OykCard>
+          <p>This is a list of items.</p>
+          <OykList>
+            <OykList.Item content="1,200 words of manuscript" start={IconSettings} color="danger" />
+            <OykList.Item content="1 characters and their relationships" end={IconSettings} />
+            <OykList.Item content="1 notes and 1 references" start={IconSettings} end={IconSettings} />
+          </OykList>
+          <p>This was a list of items.</p>
         </OykCard>
       </article>
       <article className="oyk-dev-component">
