@@ -109,7 +109,7 @@ export default function OykDashboardModalsSpaceDelete({
       content={
         <OykForm id={formId} loading={isDeleting} onSubmit={handleSubmit}>
           <p>
-            {t("This will permanently delete this space and destroy all of its content:")}
+            {t("This will permanently delete this space and destroy all of its content")}
           </p>
           {!isNotesPending && destroyedItems.length > 0 && (
             <OykList>
