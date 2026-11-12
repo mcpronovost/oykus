@@ -3,6 +3,10 @@
   width: fit-content;
   max-width: 100%;
 
+  &:not(.oyk-disabled):hover {
+    cursor: pointer;
+  }
+
   &-content {
     background: linear-gradient(
       to bottom,
