@@ -15,7 +15,7 @@ export function sessionExpiryDate(from = new Date()) {
 }
 
 export async function createSession({ userId, token, userAgent, ip }) {
-  return prisma.session.create({
+  return prisma.userSession.create({
     data: {
       token: hashSessionToken(token),
       userId,
@@ -31,7 +31,7 @@ export async function findValidSession(token) {
     return null;
   }
 
-  const session = await prisma.session.findUnique({
+  const session = await prisma.userSession.findUnique({
     where: { token: hashSessionToken(token) },
   });
 
@@ -40,7 +40,7 @@ export async function findValidSession(token) {
   }
 
   if (session.expiresAt.getTime() <= Date.now()) {
-    await prisma.session.delete({ where: { id: session.id } }).catch(() => {});
+    await prisma.userSession.delete({ where: { id: session.id } }).catch(() => {});
     return null;
   }
 
@@ -48,7 +48,7 @@ export async function findValidSession(token) {
 }
 
 export async function touchSession(sessionId) {
-  return prisma.session.update({
+  return prisma.userSession.update({
     where: { id: sessionId },
     data: { expiresAt: sessionExpiryDate() },
   });
@@ -59,13 +59,13 @@ export async function deleteSessionByToken(token) {
     return;
   }
 
-  await prisma.session.deleteMany({
+  await prisma.userSession.deleteMany({
     where: { token: hashSessionToken(token) },
   });
 }
 
 export async function deleteSessionsForUser(userId) {
-  await prisma.session.deleteMany({
+  await prisma.userSession.deleteMany({
     where: { userId },
   });
 }

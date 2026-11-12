@@ -6,9 +6,12 @@ model User {
   name           String
   avatar         String?
   cover          String?
+  language       String        @default("fr")
+  timezone       String        @default("UTC")
   currentSpaceId String?       @db.Uuid
   currentSpace   Space?        @relation("UserCurrentSpace", fields: [currentSpaceId], references: [id], onDelete: SetNull)
-  sessions       Session[]
+  sessions       UserSession[]
+  streaks        UserStreak[]
   memberships    SpaceMember[]
   ownedSpaces    Space[]       @relation("SpaceOwner")
   notes          Note[]
@@ -20,7 +23,7 @@ model User {
   @@map("core_users")
 }
 
-model Session {
+model UserSession {
   id        String   @id @default(uuid(7)) @db.Uuid
   token     String   @unique
   userId    String   @db.Uuid
@@ -34,5 +37,19 @@ model Session {
 
   @@index([userId])
   @@index([expiresAt])
-  @@map("core_sessions")
+  @@map("core_user_sessions")
+}
+
+model UserStreak {
+  id             Int       @id @default(autoincrement())
+  userId         String    @db.Uuid
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  currentStreak  Int       @default(0) @map("current_streak")
+  longestStreak  Int       @default(0) @map("longest_streak")
+  lastStreakDate DateTime? @map("last_streak_date") @db.Date
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([userId])
+  @@map("core_user_streaks")
 }
