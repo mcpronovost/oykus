@@ -120,6 +120,20 @@ export default function OykDev() {
               <OykButton color={c} icon={IconSettings} variant="plain" shrink />
             </div>
           ))}
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "16px",
+              padding: "8px",
+            }}
+          >
+             <OykButton label="Small" size="sm" />
+             <OykButton label="Medium" size="md" />
+             <OykButton label="Large" size="lg" />
+          </div>
         </OykCard>
       </article>
       <article className="oyk-dev-component">
