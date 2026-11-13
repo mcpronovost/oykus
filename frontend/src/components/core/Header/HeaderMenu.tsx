@@ -12,17 +12,20 @@ type HeaderMenuItem = {
 
 const MENUS: HeaderMenuItem[][] = [
   [
-    { routeName: "dashboard", label: "Dashboard" },
-    { routeName: "goals", label: "Goals" },
+    { routeName: "dashboard", label: "menu.dashboard" },
+    { routeName: "goals", label: "menu.goals" },
   ],
   [
-    { routeName: "encyclopedia", label: "Browse" },
-    { routeName: "characters", label: "Characters" },
-    { routeName: "locations", label: "Locations" },
-    { routeName: "events", label: "Events" },
-    { routeName: "quests", label: "Quests" },
+    { routeName: "encyclopedia", label: "menu.encyclopedia" },
+    { routeName: "encyclopedia-characters", label: "menu.characters" },
+    { routeName: "encyclopedia-factions", label: "menu.factions" },
+    { routeName: "encyclopedia-locations", label: "menu.locations" },
+    { routeName: "encyclopedia-nature", label: "menu.nature" },
+    { routeName: "encyclopedia-items", label: "menu.items" },
+    { routeName: "encyclopedia-events", label: "menu.events" },
+    { routeName: "encyclopedia-lore", label: "menu.lore" },
   ],
-  [{ routeName: "notes", label: "Notes" }],
+  [{ routeName: "notes", label: "menu.notes" }],
 ];
 
 function getVisibleMenuCount(
@@ -62,13 +65,15 @@ function HeaderMenuLink({
   onNavigate?: () => void;
   className?: string;
 }) {
+  const { t } = useTranslation();
+
   return (
     <OykLink
       routeName={item.routeName}
       className={oykClass(className, active && "oyk-active")}
       onClick={onNavigate}
     >
-      {item.label}
+      {t(item.label)}
     </OykLink>
   );
 }
@@ -145,7 +150,7 @@ export default function OykCoreHeaderMenu() {
             className="oyk-core-header-menu-item"
             data-header-menu-measure-item
           >
-            <span className="oyk-core-header-menu-link">{item.label}</span>
+            <span className="oyk-core-header-menu-link">{t(item.label)}</span>
           </li>
         ))}
         <li

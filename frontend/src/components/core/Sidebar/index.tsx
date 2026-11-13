@@ -34,25 +34,25 @@ export default function OykCoreSidebar() {
           <ul className="oyk-core-sidebar-nav-list" aria-label={t("Tools")}>
             <OykCoreSidebarNavLink
               routeName="dashboard"
-              label={t("Dashboard")}
+              label={t("menu.dashboard")}
               icon={IconLayoutGrid}
             />
             <OykCoreSidebarNavLink
               routeName="encyclopedia"
-              label={t("Encyclopedia")}
+              label={t("menu.encyclopedia")}
               icon={IconBooks}
               disabled={!user?.currentSpace}
             />
             <OykCoreSidebarNavLink
               routeName="notes"
-              label={t("Notes")}
+              label={t("menu.notes")}
               icon={IconNote}
               disabled={!user?.currentSpace}
             />
           </ul>
           <ul className="oyk-core-sidebar-nav-list" aria-label={t("Plugins")}>
             <OykCoreSidebarNavLink
-              label={t("Add plugins")}
+              label={t("menu.addplugins")}
               icon={IconPlus}
               size="sm"
             />
@@ -64,7 +64,7 @@ export default function OykCoreSidebar() {
           >
             <OykCoreSidebarNavLink
               routeName="dev-components"
-              label={t("Dev")}
+              label={t("menu.dev")}
               icon={IconComponents}
             />
             <li className="oyk-core-sidebar-nav-list-item">
@@ -97,7 +97,7 @@ export default function OykCoreSidebar() {
                   </div>
                 }
               >
-                <OykTooltip content={t("Settings")} disabled={settingsOpen}>
+                <OykTooltip content={t("menu.settings")} disabled={settingsOpen}>
                   <div
                     className={oykClass(
                       "oyk-core-sidebar-nav-link",
