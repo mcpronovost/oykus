@@ -1,0 +1,45 @@
+.oyk-page-encyclopedia {
+  &-topics {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 16px;
+    width: 100%;
+
+    .oyk-card {
+      flex: 1;
+      min-width: 200px;
+      height: 100%;
+    }
+
+    &-card {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 8px;
+
+      &-icon {
+        background-color: var(--oyk-card-bg-muted);
+        border: 1px solid var(--oyk-card-divider);
+        border-radius: 50%;
+        font-size: 24px;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        aspect-ratio: 1;
+      }
+
+      &-footer {
+        width: 100%;
+        margin: 6px 0 0;
+      }
+    }
+  }
+}
