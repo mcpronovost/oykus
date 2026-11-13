@@ -18,7 +18,7 @@ interface OykGridRowProps {
 interface OykGridColProps {
   children: React.ReactNode;
   size?: SizeType;
-  flex?: null | "horizontal" | "vertical";
+  flex?: "horizontal" | "vertical";
   justify?: "start" | "center" | "end";
   wrap?: boolean;
   gap?: number;
@@ -45,7 +45,7 @@ function OykGridRow({ children, nop }: OykGridRowProps) {
   );
 }
 
-function OykGridCol({ children, size = 24, flex = null, justify = "start", wrap = false, gap = 16 }: OykGridColProps) {
+function OykGridCol({ children, size = 24, flex, justify, wrap = false, gap = 16 }: OykGridColProps) {
   return (
     <div
       className={oykClass(
