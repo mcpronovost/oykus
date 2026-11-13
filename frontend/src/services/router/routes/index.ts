@@ -31,7 +31,7 @@ export const ROUTES: TypeRoute[] = [
     children: [
       {
         name: "encyclopedia-characters",
-        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Characters")),
+        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Characters/index")),
         paths: {
           fr: "personnages",
           en: "characters",
@@ -39,7 +39,7 @@ export const ROUTES: TypeRoute[] = [
       },
       {
         name: "encyclopedia-factions",
-        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Factions")),
+        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Factions/index")),
         paths: {
           fr: "factions",
           en: "factions",
@@ -47,7 +47,7 @@ export const ROUTES: TypeRoute[] = [
       },
       {
         name: "encyclopedia-locations",
-        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Locations")),
+        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Locations/index")),
         paths: {
           fr: "lieux",
           en: "locations",
@@ -55,7 +55,7 @@ export const ROUTES: TypeRoute[] = [
       },
       {
         name: "encyclopedia-nature",
-        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Nature")),
+        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Nature/index")),
         paths: {
           fr: "nature",
           en: "nature",
@@ -63,7 +63,7 @@ export const ROUTES: TypeRoute[] = [
       },
       {
         name: "encyclopedia-items",
-        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Items")),
+        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Items/index")),
         paths: {
           fr: "objets",
           en: "items",
@@ -71,7 +71,7 @@ export const ROUTES: TypeRoute[] = [
       },
       {
         name: "encyclopedia-events",
-        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Events")),
+        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Events/index")),
         paths: {
           fr: "evenements",
           en: "events",
@@ -79,7 +79,7 @@ export const ROUTES: TypeRoute[] = [
       },
       {
         name: "encyclopedia-lore",
-        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Lore")),
+        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Lore/index")),
         paths: {
           fr: "lore",
           en: "lore",
