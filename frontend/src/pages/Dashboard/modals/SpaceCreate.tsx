@@ -1,9 +1,10 @@
 import type { SubmitEvent } from "react";
 import { useId, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { OykButton, OykForm, OykModal } from "@/components/ui";
 import { ApiError, createSpace, queryKeys } from "@/services/api";
 import { useAuth } from "@/services/auth";
+import { useTranslation } from "@/services/translation";
+import { OykButton, OykForm, OykModal } from "@/components/ui";
 
 const INITIAL_FORM = {
   name: "",
@@ -18,6 +19,7 @@ export default function OykDashboardModalsSpaceCreate({
   setModalOpen: (open: boolean) => void;
 }) {
   const { refresh } = useAuth();
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const formId = useId();
   const [form, setForm] = useState(INITIAL_FORM);
@@ -85,25 +87,25 @@ export default function OykDashboardModalsSpaceCreate({
     <OykModal
       open={modalOpen}
       onOpenChange={handleOpenChange}
-      title="New Space"
+      title={t("New Space")}
       content={
         <OykForm id={formId} loading={isSubmitting} onSubmit={handleSubmit}>
           <OykForm.Alert
             error={error ?? undefined}
-            errorTitle="Could not create space"
+            errorTitle={t("Could not create space")}
           />
           <OykForm.Field
             name="name"
-            label="Name"
-            placeholder="My world"
+            label={t("Name")}
+            placeholder={t("My world")}
             required
             value={form.name}
             onChange={(value) => updateField("name", value as string)}
           />
           <OykForm.Field
             name="description"
-            label="Description"
-            placeholder="A short overview of this space"
+            label={t("Description")}
+            placeholder={t("A short overview of this space")}
             value={form.description}
             onChange={(value) => updateField("description", value as string)}
           />
@@ -112,7 +114,7 @@ export default function OykDashboardModalsSpaceCreate({
       actions={({ close }) => (
         <>
           <OykButton
-            label="Cancel"
+            label={t("Cancel")}
             variant="ghost"
             disabled={isSubmitting}
             onClick={close}
@@ -120,7 +122,7 @@ export default function OykDashboardModalsSpaceCreate({
           <OykButton
             type="submit"
             form={formId}
-            label="Create"
+            label={t("Create")}
             color="accent"
             disabled={isSubmitting}
           />

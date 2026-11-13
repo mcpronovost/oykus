@@ -99,8 +99,15 @@ export default function OykDashboard() {
                 <OykSpaceCurrentCard space={user.currentSpace} />
               </OykGrid.Col>
             )}
+            <OykGrid.Col size={12} flex="horizontal" justify="start">
+              <OykButton label={t("All")} size="sm" variant="pill" color="accent" />
+            </OykGrid.Col>
+            <OykGrid.Col size={12} flex="horizontal" justify="end">
+              <OykButton label={t("Shelf")} size="sm" variant="pill" color="accent" />
+              <OykButton label={t("List")} size="sm" variant="pill" disabled />
+            </OykGrid.Col>
             <OykGrid.Col>
-              <OykDivider start="Your words" end={`${spaces.length} spaces`} />
+              <OykDivider start={t("Your worlds")} end={`${t("{count} spaces", spaces.length)}`} nop />
             </OykGrid.Col>
             <OykGrid.Col flex="horizontal" wrap>
               {spaces.map((space) => (
