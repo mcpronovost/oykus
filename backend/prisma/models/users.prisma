@@ -6,8 +6,10 @@ model User {
   name           String
   avatar         String?
   cover          String?
+
   language       String        @default("fr")
   timezone       String        @default("UTC")
+
   currentSpaceId String?       @db.Uuid
   currentSpace   Space?        @relation("UserCurrentSpace", fields: [currentSpaceId], references: [id], onDelete: SetNull)
   sessions       UserSession[]
