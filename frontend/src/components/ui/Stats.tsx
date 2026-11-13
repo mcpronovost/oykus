@@ -9,14 +9,15 @@ interface OykStatsProps {
 
 interface OykStatProps {
   label: string;
-  value: string;
+  value: string | number;
+  valueColor?: "accent" | "success" | "danger" | "info" | "warning" | "special";
 }
 
-function OykStat({ label, value }: OykStatProps) {
+function OykStat({ label, value, valueColor }: OykStatProps) {
   return (
     <dl className="oyk-stats-item">
       <dt className="oyk-stats-label">{label}</dt>
-      <dd className="oyk-stats-value">{value}</dd>
+      <dd className="oyk-stats-value" style={ valueColor ? { color: `var(--oyk-c-${valueColor})` } : undefined }>{value}</dd>
     </dl>
   );
 }
