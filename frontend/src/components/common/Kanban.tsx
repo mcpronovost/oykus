@@ -108,7 +108,7 @@ const OykKanban = () => {
                     )}
                     {task.id === 1 && (
                       <div className="oyk-kanban-task-separator">
-                        <OykProgressBar progress={Math.random() * 100} />
+                        <OykProgressBar value={Math.random() * 100} />
                       </div>
                     )}
                     {/* FUTURE FEATURE: <footer className="oyk-kanban-task-footer">
