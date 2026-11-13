@@ -24,10 +24,68 @@ export const ROUTES: TypeRoute[] = [
     name: "encyclopedia",
     component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/index")),
     paths: {
-      fr: "encyclopedia",
+      fr: "encyclopedie",
       en: "encyclopedia",
     },
     auth: true,
+    children: [
+      {
+        name: "encyclopedia-characters",
+        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Characters")),
+        paths: {
+          fr: "personnages",
+          en: "characters",
+        },
+      },
+      {
+        name: "encyclopedia-factions",
+        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Factions")),
+        paths: {
+          fr: "factions",
+          en: "factions",
+        },
+      },
+      {
+        name: "encyclopedia-locations",
+        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Locations")),
+        paths: {
+          fr: "lieux",
+          en: "locations",
+        },
+      },
+      {
+        name: "encyclopedia-nature",
+        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Nature")),
+        paths: {
+          fr: "nature",
+          en: "nature",
+        },
+      },
+      {
+        name: "encyclopedia-items",
+        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Items")),
+        paths: {
+          fr: "objets",
+          en: "items",
+        },
+      },
+      {
+        name: "encyclopedia-events",
+        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Events")),
+        paths: {
+          fr: "evenements",
+          en: "events",
+        },
+      },
+      {
+        name: "encyclopedia-lore",
+        component: React.lazy(() => import("../../../pages/Tools/Encyclopedia/Lore")),
+        paths: {
+          fr: "lore",
+          en: "lore",
+        },
+      },
+    ],
   },
   {
     name: "notes",
