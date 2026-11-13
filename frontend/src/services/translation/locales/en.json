@@ -28,9 +28,6 @@
   "My world": "My world",
   "Description": "Description",
   "A short overview of this space": "A short overview of this space",
-  "Characters": "Characters",
-  "Locations": "Locations",
-  "Events": "Events",
   "Your worlds": "Your worlds",
   "Shelf": "Shelf",
   "List": "List",
@@ -44,6 +41,14 @@
   "Type the space name to confirm": "Type the space name to confirm:",
   "Continue working on": "Continue working on",
   "Open Encyclopedia": "Open Encyclopedia",
+  "Encyclopedia": "Encyclopedia",
+  "Characters": "Characters",
+  "Locations": "Locations",
+  "Nature": "Nature",
+  "Items": "Items",
+  "Events": "Events",
+  "Lore": "Lore",
+
   "{count} notes": {
     "one": "{count} note",
     "other": "{count} notes"
@@ -65,6 +70,7 @@
   "Could not load notes": "Could not load notes",
   "Something went wrong while fetching notes.": "Something went wrong while fetching notes.",
   "Try again": "Try again",
+  "Come back later": "Come back later",
   "No notes yet": "No notes yet",
   "Capture your first idea above.": "Capture your first idea above.",
   "note.category.general": "General",

@@ -28,9 +28,6 @@
   "My world": "Mon monde",
   "Description": "Description",
   "A short overview of this space": "Une courte description de cet espace",
-  "Characters": "Personnages",
-  "Locations": "Lieux",
-  "Events": "Événements",
   "Your worlds": "Vos mondes",
   "Shelf": "Étagère",
   "List": "Liste",
@@ -44,6 +41,14 @@
   "Type the space name to confirm": "Saisissez le nom de l'espace pour confirmer :",
   "Continue working on": "Continuer à travailler sur",
   "Open Encyclopedia": "Ouvrir l'encyclopédie",
+  "Encyclopedia": "Encyclopédie",
+  "Characters": "Personnages",
+  "Locations": "Lieux",
+  "Nature": "Nature",
+  "Items": "Objets",
+  "Events": "Événements",
+  "Lore": "Lore",
+
   "{count} notes": {
     "one": "{count} note",
     "other": "{count} notes"
@@ -65,6 +70,7 @@
   "Could not load notes": "Impossible de charger les notes",
   "Something went wrong while fetching notes.": "Une erreur est survenue lors du chargement des notes.",
   "Try again": "Réessayer",
+  "Come back later": "Revenez plus tard",
   "No notes yet": "Aucune note pour l'instant",
   "Capture your first idea above.": "Capturez votre première idée ci-dessus.",
   "note.category.general": "Général",
