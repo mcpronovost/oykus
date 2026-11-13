@@ -14,7 +14,7 @@ export default function OykDivider({
   nop = false,
 }: OykDividerProps) {
   return (
-    <div className="oyk-divider">
+    <div className={oykClass("oyk-divider", nop && "oyk-divider-nop")}>
       {start && (<div className="oyk-divider-start">{start}</div>)}
       <div className="oyk-divider-line"></div>
       {label && (<div className="oyk-divider-label">{label}</div>)}
