@@ -1,32 +1,12 @@
 import "@/assets/styles/pages/_encyclopedia.scss";
 import { useQuery } from "@tanstack/react-query";
-import {
-  IconBooksOff,
-  IconBooks,
-  IconCrown,
-  IconFlare,
-  IconLeaf,
-  IconMap,
-  IconNews,
-  IconShield,
-  IconUsers,
-  type Icon,
-} from "@tabler/icons-react";
+import { IconBooksOff } from "@tabler/icons-react";
 import { getEncyclopediaStats, queryKeys } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
+import { getIcon } from "@/utils";
 import { OykGrid, OykHeading, OykResult } from "@/components/ui";
 import OykEncyclopediaTopicsCard from "./TopicsCard";
-
-const TOPIC_ICONS: Record<string, Icon> = {
-  users: IconUsers,
-  crown: IconCrown,
-  map: IconMap,
-  leaf: IconLeaf,
-  shield: IconShield,
-  flare: IconFlare,
-  news: IconNews,
-};
 
 export default function OykEncyclopedia() {
   const { user } = useAuth();
@@ -66,7 +46,7 @@ export default function OykEncyclopedia() {
                     route={`encyclopedia-${topic.slug}`}
                     value={topic.count}
                     total={totalEntries}
-                    icon={TOPIC_ICONS[topic.icon] ?? IconBooks}
+                    icon={getIcon(topic.icon)}
                     color={topic.color}
                   />
                 ))}
