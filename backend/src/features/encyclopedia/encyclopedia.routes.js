@@ -9,7 +9,6 @@ router.use(requireAuth);
 router.get("/topics", encyclopediaControllers.listTopics);
 router.get("/categories", encyclopediaControllers.listCategories);
 
-router.get("/", encyclopediaControllers.list);
 router.post("/", encyclopediaControllers.create);
 router.get("/:id", encyclopediaControllers.get);
 router.patch("/:id", encyclopediaControllers.update);

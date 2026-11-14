@@ -7,7 +7,9 @@ import authRoutes from "./core/auth/auth.routes.js";
 import spacesRoutes from "./core/spaces/spaces.routes.js";
 import usersRoutes from "./core/users/users.routes.js";
 import encyclopediaRoutes from "./features/encyclopedia/encyclopedia.routes.js";
+import encyclopediaSpaceRoutes from "./features/encyclopedia/encyclopedia.space.routes.js";
 import notesRoutes from "./features/notes/notes.routes.js";
+import notesSpaceRoutes from "./features/notes/notes.space.routes.js";
 
 export function createApp() {
   const app = express();
@@ -24,6 +26,8 @@ export function createApp() {
 
   app.use("/api/v1/auth", authRoutes);
   app.use("/api/v1/users", usersRoutes);
+  app.use("/api/v1/spaces/:id/notes", notesSpaceRoutes);
+  app.use("/api/v1/spaces/:id/encyclopedia", encyclopediaSpaceRoutes);
   app.use("/api/v1/spaces", spacesRoutes);
   app.use("/api/v1/encyclopedia", encyclopediaRoutes);
   app.use("/api/v1/notes", notesRoutes);

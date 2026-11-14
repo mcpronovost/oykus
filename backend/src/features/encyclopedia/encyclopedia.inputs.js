@@ -1,8 +1,6 @@
 import { number, object, string } from "../../shared/validate.js";
 
 export const listEncyclopediaEntriesInput = object({
-  spaceId: string({ required: true, min: 1, max: 36 }),
-  topic: string({ required: true, min: 1, max: 100 }),
   category: string({ required: false, min: 1, max: 100 }),
 });
 

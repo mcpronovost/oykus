@@ -2,7 +2,6 @@ import { BadRequestError } from "../../shared/errors/index.js";
 import {
   createNoteCategoryInput,
   createNoteInput,
-  listNotesInput,
   updateNoteCategoryInput,
   updateNoteInput,
 } from "./notes.inputs.js";
@@ -34,8 +33,8 @@ function parseCategoryIdParam(value) {
 }
 
 export async function list(req, res) {
-  const input = parseBody(listNotesInput, req.query ?? {});
-  const notes = await notesServices.listNotes(req.userId, input);
+  const spaceId = parseIdParam(req.params.id, "spaceId");
+  const notes = await notesServices.listNotes(req.userId, { spaceId });
   res.json({ data: notes });
 }
 

@@ -1,9 +1,5 @@
 import { number, object, string } from "../../shared/validate.js";
 
-export const listNotesInput = object({
-  spaceId: string({ required: true, min: 1, max: 36 }),
-});
-
 export const createNoteInput = object({
   content: string({ required: true, min: 1, max: 20000 }),
   spaceId: string({ required: true, min: 1, max: 36 }),

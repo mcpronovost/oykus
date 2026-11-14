@@ -34,8 +34,14 @@ export async function listCategories(req, res) {
 }
 
 export async function list(req, res) {
+  const spaceId = parseIdParam(req.params.id, "spaceId");
+  const topic = parseIdParam(req.params.topic, "topic");
   const input = parseBody(listEncyclopediaEntriesInput, req.query ?? {});
-  const entries = await encyclopediaServices.listEntries(req.userId, input);
+  const entries = await encyclopediaServices.listEntries(req.userId, {
+    spaceId,
+    topic,
+    category: input.category,
+  });
   res.json({ data: entries });
 }
 

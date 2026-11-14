@@ -193,8 +193,7 @@ async function setCurrentSpace(spaceId: string): Promise<TypePublicUser> {
 }
 
 async function listNotes(spaceId: string): Promise<TypeNote[]> {
-  const params = new URLSearchParams({ spaceId });
-  return request<TypeNote[]>(`/api/v1/notes?${params.toString()}`);
+  return request<TypeNote[]>(`/api/v1/spaces/${spaceId}/notes`);
 }
 
 async function createNote(input: TypeCreateNoteInput): Promise<TypeNote> {
@@ -222,9 +221,8 @@ async function listEncyclopediaEntries(
   spaceId: string,
   topic: string,
 ): Promise<TypeEncyclopediaEntry[]> {
-  const params = new URLSearchParams({ spaceId, topic });
   return request<TypeEncyclopediaEntry[]>(
-    `/api/v1/encyclopedia?${params.toString()}`,
+    `/api/v1/spaces/${spaceId}/encyclopedia/${encodeURIComponent(topic)}`,
   );
 }
 

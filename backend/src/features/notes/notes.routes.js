@@ -11,7 +11,6 @@ router.post("/categories", notesControllers.createCategory);
 router.patch("/categories/:id", notesControllers.updateCategory);
 router.delete("/categories/:id", notesControllers.removeCategory);
 
-router.get("/", notesControllers.list);
 router.post("/", notesControllers.create);
 router.get("/:id", notesControllers.get);
 router.patch("/:id", notesControllers.update);
