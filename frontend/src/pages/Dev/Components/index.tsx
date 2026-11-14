@@ -107,17 +107,17 @@ export default function OykDev() {
               }}
             >
               <OykButton color={c} label="Default" />
-              <OykButton color={c} label="Start Icon" icon={IconSettings} />
-              <OykButton color={c} icon={IconBell} shrink />
+              <OykButton color={c} label="Start Icon" start={IconSettings} />
+              <OykButton color={c} start={IconBell} shrink />
               <OykButton color={c} label="Disabled" disabled />
               <OykButton color={c} label="Pill" variant="pill" />
-              <OykButton color={c} icon={IconSettings} variant="pill" shrink />
+              <OykButton color={c} start={IconSettings} variant="pill" shrink />
               <OykButton color={c} label="Flat" variant="flat" />
-              <OykButton color={c} icon={IconSettings} variant="flat" shrink />
+              <OykButton color={c} start={IconSettings} variant="flat" shrink />
               <OykButton color={c} label="Ghost" variant="ghost" />
-              <OykButton color={c} icon={IconSettings} variant="ghost" shrink />
+              <OykButton color={c} start={IconSettings} variant="ghost" shrink />
               <OykButton color={c} label="Plain" variant="plain" shrink />
-              <OykButton color={c} icon={IconSettings} variant="plain" shrink />
+              <OykButton color={c} start={IconSettings} variant="plain" shrink />
             </div>
           ))}
           <div

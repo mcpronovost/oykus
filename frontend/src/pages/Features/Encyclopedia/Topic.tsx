@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IconBooksOff } from "@tabler/icons-react";
+import { IconBooksOff, IconPlus } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import {
   listEncyclopediaCategories,
@@ -91,7 +91,7 @@ export default function OykEncyclopediaTopic() {
         <OykHeading
           title={t(`encyclopedia.topic.${topicSlug}`)}
           suptitle={t("Encyclopedia")}
-          actions={<OykButton label={t("New Entry")} color="accent" />}
+          actions={<OykButton label={t("encyclopedia.newEntry")} color="accent" start={IconPlus} />}
         />
         {!isPending && !isError && populatedCategories.length > 0 ? (
           <OykGrid.Row>

@@ -61,7 +61,7 @@ export default function OykDashboard() {
             <OykButton
               label={t("New Space")}
               color="accent"
-              icon={IconPlus}
+              start={IconPlus}
               onClick={() => setModalOpen(true)}
             />
           }

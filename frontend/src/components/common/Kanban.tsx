@@ -62,7 +62,7 @@ const OykKanban = () => {
               </div>
             </div>
             <div className="oyk-kanban-status-header-actions">
-              <OykButton icon={IconDotsVertical} />
+              <OykButton start={IconDotsVertical} />
             </div>
           </header>
           <ol className="oyk-kanban-status-list">

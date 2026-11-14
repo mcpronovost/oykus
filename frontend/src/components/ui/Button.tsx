@@ -1,5 +1,5 @@
 import type { MouseEvent } from "react";
-import type { IconProps as TablerIconProps } from "@tabler/icons-react";
+import type { Icon } from "@tabler/icons-react";
 import { oykClass } from "@/utils/formatters";
 import { useRouter } from "@/services/router";
 
@@ -7,7 +7,8 @@ interface OykButtonProps {
   type?: "button" | "submit" | "reset";
   form?: string;
   label?: string;
-  icon?: React.ComponentType<TablerIconProps>;
+  start?: Icon;
+  end?: Icon;
   iconSize?: number;
   variant?: "default" | "pill" | "flat" | "ghost" | "plain";
   color?:
@@ -31,8 +32,9 @@ export default function OykButton({
   type = "button",
   form,
   label,
-  icon: Icon,
-  iconSize = 16,
+  start: IconStart,
+  end: IconEnd,
+  iconSize = 15,
   variant = "default",
   color = "default",
   customColor,
@@ -74,8 +76,9 @@ export default function OykButton({
     >
       <div className="oyk-button-bg" />
       <div className="oyk-button-content">
-        {Icon && <Icon size={iconSize} />}
+        {IconStart && <span className="oyk-button-content-start"><IconStart size={iconSize} stroke={1.5} /></span>}
         {label && <span className="oyk-button-content-label">{label}</span>}
+        {IconEnd && <span className="oyk-button-content-end"><IconEnd size={iconSize} stroke={1.5} /></span>}
       </div>
     </button>
   );

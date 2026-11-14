@@ -7,6 +7,7 @@
   "encyclopedia.topic.events": "Événements",
   "encyclopedia.topic.lore": "Lore",
   "Create your first {topic} entry to get started": "Créez votre première entrée « {topic} » pour commencer.",
+  "encyclopedia.newEntry": "Nouvelle entrée",
   "{count} entries": {
     "one": "{count} entrée",
     "other": "{count} entrées"

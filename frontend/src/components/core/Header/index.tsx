@@ -16,7 +16,7 @@ export default function OykCoreHeader() {
       <OykCoreHeaderMenu />
       <OykSpacer />
       <div className="oyk-core-header-social">
-        <OykButton icon={IconBell} iconSize={19} variant="plain" shrink />
+        <OykButton start={IconBell} iconSize={19} variant="plain" shrink />
       </div>
       <OykCoreHeaderUser />
     </div>

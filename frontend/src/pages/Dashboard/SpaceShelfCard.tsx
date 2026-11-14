@@ -33,7 +33,7 @@ export default function OykSpaceShelfCard({
       </button>
       <div className="oyk-page-dashboard-shelf-item-delete">
         <OykButton
-          icon={IconX}
+          start={IconX}
           shrink
           color="danger"
           variant="plain"
