@@ -23,6 +23,7 @@ interface OykDrawerProps extends Omit<HTMLAttributes<HTMLDivElement>, "title" | 
   headerIcon?: Icon;
   headerColor?: string;
   actions?: OykDrawerSlot;
+  prependActions?: OykDrawerSlot;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   closable?: boolean;
@@ -46,6 +47,7 @@ export default function OykDrawer({
   headerIcon: HeaderIcon,
   headerColor = "accent",
   actions,
+  prependActions,
   open: openProp,
   onOpenChange,
   closable = true,
@@ -130,6 +132,7 @@ export default function OykDrawer({
 
   const renderedContent = renderSlot(content, helpers);
   const renderedActions = renderSlot(actions, helpers);
+  const renderedPrependActions = renderSlot(prependActions, helpers);
 
   if (!mounted) return null;
 
@@ -198,7 +201,10 @@ export default function OykDrawer({
           {renderedContent}
         </OykScrollbar>
         {renderedActions != null && (
-          <footer className="oyk-drawer-actions">{renderedActions}</footer>
+          <footer className="oyk-drawer-actions">
+            {renderedPrependActions}
+            {renderedActions}
+          </footer>
         )}
       </div>
     </div>,
