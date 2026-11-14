@@ -59,7 +59,7 @@ interface OykFormProps extends Omit<HTMLAttributes<HTMLFormElement>, "onSubmit">
 }
 
 interface OykFormFieldProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
-  type?: "text" | "email" | "password" | "checkbox" | "select" | "multiselect";
+  type?: "text" | "email" | "password" | "textarea" | "checkbox" | "select" | "multiselect";
   name: string;
   label?: string;
   hideLabel?: boolean;
@@ -155,6 +155,7 @@ function OykFormField({
   const [multiVisibleCount, setMultiVisibleCount] = useState(0);
 
   const isCheckbox = type === "checkbox";
+  const isTextarea = type === "textarea";
   const isMultiSelect = type === "multiselect";
   const isSelect = type === "select" || isMultiSelect;
   const stringValue = typeof value === "string" ? value : "";
@@ -268,8 +269,11 @@ function OykFormField({
     };
   }, [selectOpen]);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const nextValue = isCheckbox ? event.target.checked : event.target.value;
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const nextValue =
+      event.target instanceof HTMLInputElement && event.target.type === "checkbox"
+        ? event.target.checked
+        : event.target.value;
     onChange?.(nextValue);
     setNativeError(getValidityMessage(event.target.validity));
   };
@@ -309,6 +313,7 @@ function OykFormField({
         className={oykClass(
           "oyk-form-field-input",
           isCheckbox && "oyk-unbox",
+          isTextarea && "oyk-textarea",
           isSelect && "oyk-select",
           selectOpen && "oyk-open",
           errorMessage && "oyk-invalid",
@@ -443,6 +448,18 @@ function OykFormField({
                 }}
               />
             </>
+          ) : isTextarea ? (
+            <textarea
+              id={fieldId}
+              name={name}
+              placeholder={placeholder}
+              value={stringValue}
+              required={required}
+              rows={4}
+              onChange={handleChange}
+              aria-describedby={describedBy}
+              aria-invalid={Boolean(errorMessage) || undefined}
+            />
           ) : (
             <input
               id={fieldId}
