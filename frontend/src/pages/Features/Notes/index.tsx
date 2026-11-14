@@ -32,7 +32,7 @@ export default function OykNotes() {
   const { user } = useAuth();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const spaceId = user?.currentSpaceId ?? user?.currentSpace?.id ?? null;
+  const spaceId = user?.currentSpace?.id ?? null;
 
   const [formNote, setFormNote] = useState(INITIAL_FORM);
   const [error, setError] = useState<string | null>(null);
