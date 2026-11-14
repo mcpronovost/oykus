@@ -350,6 +350,10 @@
           opacity: 1;
         }
       }
+
+      &:focus-within {
+        border-color: var(--oyk-c-accent);
+      }
     }
   }
 }
