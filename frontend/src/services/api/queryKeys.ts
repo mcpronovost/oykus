@@ -12,4 +12,12 @@ export const queryKeys = {
     list: (spaceId: string) => ["notes", "list", spaceId] as const,
     categories: ["notes", "categories"] as const,
   },
+  encyclopedia: {
+    all: ["encyclopedia"] as const,
+    list: (spaceId: string, topic: string) =>
+      ["encyclopedia", "list", spaceId, topic] as const,
+    categories: (topic: string) =>
+      ["encyclopedia", "categories", topic] as const,
+    topics: ["encyclopedia", "topics"] as const,
+  },
 } as const;

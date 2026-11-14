@@ -104,6 +104,33 @@ export type TypeCreateNoteInput = {
   categoryId?: number;
 };
 
+export type TypeEncyclopediaTopic = {
+  id: number;
+  slug: string;
+};
+
+export type TypeEncyclopediaCategory = {
+  id: number;
+  slug: string;
+  topicId: number;
+};
+
+export type TypeEncyclopediaEntry = {
+  id: string;
+  title: string;
+  slug: string;
+  summary: string | null;
+  spaceId: string;
+  topicId: number;
+  topic: TypeEncyclopediaTopic | null;
+  categoryId: number | null;
+  category: TypeEncyclopediaCategory | null;
+  createdById: string | null;
+  updatedById: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
 async function getHealth(): Promise<void> {
   const response = await fetch("/api/v1/health", { credentials: "include" });
   if (!response.ok) {
@@ -172,6 +199,25 @@ async function listNoteCategories(): Promise<TypeNoteCategory[]> {
   return request<TypeNoteCategory[]>("/api/v1/notes/categories");
 }
 
+async function listEncyclopediaEntries(
+  spaceId: string,
+  topic: string,
+): Promise<TypeEncyclopediaEntry[]> {
+  const params = new URLSearchParams({ spaceId, topic });
+  return request<TypeEncyclopediaEntry[]>(
+    `/api/v1/encyclopedia?${params.toString()}`,
+  );
+}
+
+async function listEncyclopediaCategories(
+  topic: string,
+): Promise<TypeEncyclopediaCategory[]> {
+  const params = new URLSearchParams({ topic });
+  return request<TypeEncyclopediaCategory[]>(
+    `/api/v1/encyclopedia/categories?${params.toString()}`,
+  );
+}
+
 export { queryKeys } from "./queryKeys";
 export {
   createNote,
@@ -180,6 +226,8 @@ export {
   deleteSpace,
   getHealth,
   getMe,
+  listEncyclopediaCategories,
+  listEncyclopediaEntries,
   listNoteCategories,
   listNotes,
   listSpaces,

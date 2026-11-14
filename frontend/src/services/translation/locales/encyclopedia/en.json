@@ -1,0 +1,19 @@
+{
+  "encyclopedia.underConstruction.suptitle": "Encyclopedia",
+  "encyclopedia.underConstruction.subtitle": "The shelves are still being built.",
+  "encyclopedia.underConstruction.message": "Soon you'll gather lore, characters, and references here — a living encyclopedia for every corner of your worlds. We're crafting the space; check back shortly.",
+  "{count} entries": {
+    "one": "{count} entry",
+    "other": "{count} entries"
+  },
+  "encyclopedia.category.all": "All",
+  "encyclopedia.category.fauna": "Fauna",
+  "encyclopedia.category.flora": "Flora",
+  "Choose a space to view encyclopedia entries.": "Choose a space to view encyclopedia entries.",
+  "Loading entries": "Loading entries",
+  "Fetching encyclopedia entries for this space...": "Fetching encyclopedia entries for this space...",
+  "Could not load entries": "Could not load entries",
+  "Something went wrong while fetching encyclopedia entries.": "Something went wrong while fetching encyclopedia entries.",
+  "No entries yet": "No entries yet",
+  "Create your first nature entry to get started.": "Create your first nature entry to get started."
+}

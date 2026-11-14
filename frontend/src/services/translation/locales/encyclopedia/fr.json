@@ -1,0 +1,19 @@
+{
+  "encyclopedia.underConstruction.suptitle": "Encyclopédie",
+  "encyclopedia.underConstruction.subtitle": "Les rayons sont encore en chantier.",
+  "encyclopedia.underConstruction.message": "Bientôt, vous y rassemblerez lore, personnages et références — une encyclopédie vivante pour chaque recoin de vos univers. Nous préparons l'espace; revenez sous peu.",
+  "{count} entries": {
+    "one": "{count} entrée",
+    "other": "{count} entrées"
+  },
+  "encyclopedia.category.all": "Tout",
+  "encyclopedia.category.fauna": "Faune",
+  "encyclopedia.category.flora": "Flore",
+  "Choose a space to view encyclopedia entries.": "Choisissez un espace pour voir les entrées d'encyclopédie.",
+  "Loading entries": "Chargement des entrées",
+  "Fetching encyclopedia entries for this space...": "Récupération des entrées d'encyclopédie pour cet espace...",
+  "Could not load entries": "Impossible de charger les entrées",
+  "Something went wrong while fetching encyclopedia entries.": "Une erreur est survenue lors du chargement des entrées d'encyclopédie.",
+  "No entries yet": "Aucune entrée pour l'instant",
+  "Create your first nature entry to get started.": "Créez votre première entrée nature pour commencer."
+}
