@@ -31,58 +31,79 @@ export const ROUTES: TypeRoute[] = [
     children: [
       {
         name: "encyclopedia-characters",
-        component: React.lazy(() => import("../../../pages/Features/Encyclopedia/Characters/index")),
+        component: React.lazy(() => import("../../../pages/Features/Encyclopedia/Topic")),
         paths: {
           fr: "personnages",
           en: "characters",
         },
+        params: {
+          topic: "characters",
+        },
       },
       {
         name: "encyclopedia-factions",
-        component: React.lazy(() => import("../../../pages/Features/Encyclopedia/Factions/index")),
+        component: React.lazy(() => import("../../../pages/Features/Encyclopedia/Topic")),
         paths: {
           fr: "factions",
           en: "factions",
         },
+        params: {
+          topic: "factions",
+        },
       },
       {
         name: "encyclopedia-locations",
-        component: React.lazy(() => import("../../../pages/Features/Encyclopedia/Locations/index")),
+        component: React.lazy(() => import("../../../pages/Features/Encyclopedia/Topic")),
         paths: {
           fr: "lieux",
           en: "locations",
         },
+        params: {
+          topic: "locations",
+        },
       },
       {
         name: "encyclopedia-nature",
-        component: React.lazy(() => import("../../../pages/Features/Encyclopedia/Nature/index")),
+        component: React.lazy(() => import("../../../pages/Features/Encyclopedia/Topic")),
         paths: {
           fr: "nature",
           en: "nature",
         },
+        params: {
+          topic: "nature",
+        },
       },
       {
         name: "encyclopedia-items",
-        component: React.lazy(() => import("../../../pages/Features/Encyclopedia/Items/index")),
+        component: React.lazy(() => import("../../../pages/Features/Encyclopedia/Topic")),
         paths: {
           fr: "objets",
           en: "items",
         },
+        params: {
+          topic: "items",
+        },
       },
       {
         name: "encyclopedia-events",
-        component: React.lazy(() => import("../../../pages/Features/Encyclopedia/Events/index")),
+        component: React.lazy(() => import("../../../pages/Features/Encyclopedia/Topic")),
         paths: {
           fr: "evenements",
           en: "events",
         },
+        params: {
+          topic: "events",
+        },
       },
       {
         name: "encyclopedia-lore",
-        component: React.lazy(() => import("../../../pages/Features/Encyclopedia/Lore/index")),
+        component: React.lazy(() => import("../../../pages/Features/Encyclopedia/Topic")),
         paths: {
           fr: "lore",
           en: "lore",
+        },
+        params: {
+          topic: "lore",
         },
       },
     ],

@@ -1,7 +1,12 @@
 {
-  "encyclopedia.underConstruction.suptitle": "Encyclopedia",
-  "encyclopedia.underConstruction.subtitle": "The shelves are still being built.",
-  "encyclopedia.underConstruction.message": "Soon you'll gather lore, characters, and references here — a living encyclopedia for every corner of your worlds. We're crafting the space; check back shortly.",
+  "encyclopedia.topic.characters": "Characters",
+  "encyclopedia.topic.factions": "Factions",
+  "encyclopedia.topic.locations": "Locations",
+  "encyclopedia.topic.nature": "Nature",
+  "encyclopedia.topic.items": "Items",
+  "encyclopedia.topic.events": "Events",
+  "encyclopedia.topic.lore": "Lore",
+  "Create your first {topic} entry to get started": "Create your first “{topic}” entry to get started.",
   "{count} entries": {
     "one": "{count} entry",
     "other": "{count} entries"

@@ -1,7 +1,12 @@
 {
-  "encyclopedia.underConstruction.suptitle": "Encyclopédie",
-  "encyclopedia.underConstruction.subtitle": "Les rayons sont encore en chantier.",
-  "encyclopedia.underConstruction.message": "Bientôt, vous y rassemblerez lore, personnages et références — une encyclopédie vivante pour chaque recoin de vos univers. Nous préparons l'espace; revenez sous peu.",
+  "encyclopedia.topic.characters": "Personnages",
+  "encyclopedia.topic.factions": "Factions",
+  "encyclopedia.topic.locations": "Lieux",
+  "encyclopedia.topic.nature": "Nature",
+  "encyclopedia.topic.items": "Objets",
+  "encyclopedia.topic.events": "Événements",
+  "encyclopedia.topic.lore": "Lore",
+  "Create your first {topic} entry to get started": "Créez votre première entrée « {topic} » pour commencer.",
   "{count} entries": {
     "one": "{count} entrée",
     "other": "{count} entrées"

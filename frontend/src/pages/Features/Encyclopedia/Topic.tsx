@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IconLeafOff } from "@tabler/icons-react";
+import { IconBooksOff } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import {
   listEncyclopediaCategories,
@@ -7,17 +7,43 @@ import {
   queryKeys,
 } from "@/services/api";
 import { useAuth } from "@/services/auth";
+import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
-import { OykButton, OykCard, OykDivider, OykGrid, OykHeading, OykResult } from "@/components/ui";
+import {
+  OykButton,
+  OykCard,
+  OykDivider,
+  OykGrid,
+  OykHeading,
+  OykResult,
+} from "@/components/ui";
 
-const TOPIC = "nature";
-
-export default function OykEncyclopediaNature() {
+export default function OykEncyclopediaTopic() {
   const { user } = useAuth();
+  const { params } = useRouter();
   const { t } = useTranslation();
   const spaceId = user?.currentSpace?.id ?? null;
+  const topicSlug = params?.topic ?? null;
 
   const [selectedCategory, setSelectedCategory] = useState("all");
+
+  if (!spaceId) {
+    return (
+      <div className="oyk-page-encyclopedia">
+        <OykGrid>
+          <OykHeading
+            title={t(`encyclopedia.topic.${topicSlug}`)}
+            suptitle={t("Encyclopedia")}
+          />
+          <OykResult
+            title={t("No space selected")}
+            message={t("Choose a space to view encyclopedia entries")}
+            variant="ghost"
+          />
+        </OykGrid>
+      </div>
+    );
+  }
 
   const {
     data: entries = [],
@@ -25,8 +51,8 @@ export default function OykEncyclopediaNature() {
     isError: isEntriesError,
     refetch: refetchEntries,
   } = useQuery({
-    queryKey: queryKeys.encyclopedia.list(spaceId ?? "", TOPIC),
-    queryFn: () => listEncyclopediaEntries(spaceId!, TOPIC),
+    queryKey: queryKeys.encyclopedia.list(spaceId ?? "", topicSlug),
+    queryFn: () => listEncyclopediaEntries(spaceId!, topicSlug),
     enabled: Boolean(spaceId),
   });
 
@@ -36,8 +62,8 @@ export default function OykEncyclopediaNature() {
     isError: isCategoriesError,
     refetch: refetchCategories,
   } = useQuery({
-    queryKey: queryKeys.encyclopedia.categories(TOPIC),
-    queryFn: () => listEncyclopediaCategories(TOPIC),
+    queryKey: queryKeys.encyclopedia.categories(topicSlug),
+    queryFn: () => listEncyclopediaCategories(topicSlug),
     enabled: Boolean(spaceId),
   });
 
@@ -45,36 +71,25 @@ export default function OykEncyclopediaNature() {
     setSelectedCategory(category);
   };
 
-  if (!spaceId) {
-    return (
-      <div className="oyk-page-encyclopedia">
-        <OykGrid>
-          <OykHeading title={t("Nature")} suptitle={t("Encyclopedia")} />
-          <OykResult
-            title={t("No space selected")}
-            message={t("Choose a space to view encyclopedia entries.")}
-            variant="ghost"
-          />
-        </OykGrid>
-      </div>
-    );
-  }
-
   const isPending = isEntriesPending || isCategoriesPending;
   const isError = isEntriesError || isCategoriesError;
   const populatedCategories = categories.filter((category) =>
     entries.some((entry) => entry.categoryId === category.id),
   );
-  const categoryFilters = ["all", ...populatedCategories.map((category) => category.slug)];
+  const categoryFilters = [
+    "all",
+    ...populatedCategories.map((category) => category.slug),
+  ];
   const visibleCategories = populatedCategories.filter(
-    (category) => selectedCategory === "all" || selectedCategory === category.slug,
+    (category) =>
+      selectedCategory === "all" || selectedCategory === category.slug,
   );
 
   return (
     <div className="oyk-page-encyclopedia">
       <OykGrid>
         <OykHeading
-          title={t("Nature")}
+          title={t(`encyclopedia.topic.${topicSlug}`)}
           suptitle={t("Encyclopedia")}
           actions={<OykButton label={t("New Entry")} color="accent" />}
         />
@@ -109,7 +124,9 @@ export default function OykEncyclopediaNature() {
             <OykGrid.Col>
               <OykResult
                 title={t("Could not load entries")}
-                message={t("Something went wrong while fetching encyclopedia entries.")}
+                message={t(
+                  "Something went wrong while fetching encyclopedia entries",
+                )}
                 color="danger"
                 variant="ghost"
               >
@@ -129,9 +146,13 @@ export default function OykEncyclopediaNature() {
             <OykGrid.Col>
               <OykResult
                 title={t("No entries yet")}
-                message={t("Create your first nature entry to get started.")}
+                message={t(
+                  "Create your first {topic} entry to get started",
+                  undefined,
+                  { topic: t(`encyclopedia.topic.${topicSlug}`) },
+                )}
                 variant="ghost"
-                icon={IconLeafOff}
+                icon={IconBooksOff}
               />
             </OykGrid.Col>
           </OykGrid.Row>
@@ -151,9 +172,7 @@ export default function OykEncyclopediaNature() {
                 </OykGrid.Col>
                 <OykGrid.Col flex="horizontal" wrap>
                   {categoryEntries.map((entry) => (
-                    <OykCard key={entry.id}>
-                      {entry.title}
-                    </OykCard>
+                    <OykCard key={entry.id}>{entry.title}</OykCard>
                   ))}
                 </OykGrid.Col>
               </OykGrid.Row>
