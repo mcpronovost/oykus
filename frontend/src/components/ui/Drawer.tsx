@@ -4,6 +4,7 @@ import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { IconX } from "@tabler/icons-react";
 import { oykClass } from "@/utils";
+import OykScrollbar from "./Scrollbar";
 
 type OykDrawerHelpers = {
   close: () => void;
@@ -15,21 +16,12 @@ type OykDrawerPlacement = "top" | "right" | "bottom" | "left";
 
 type OykDrawerSize = "sm" | "md" | "lg";
 
-type OykDrawerColor =
-  | "default"
-  | "accent"
-  | "success"
-  | "danger"
-  | "info"
-  | "warning"
-  | "special";
-
 interface OykDrawerProps extends Omit<HTMLAttributes<HTMLDivElement>, "title" | "content"> {
   content: OykDrawerSlot;
   title?: string;
   suptitle?: string;
   headerIcon?: Icon;
-  headerColor?: "default" | "accent" | "success" | "danger" | "info" | "warning" | "special";
+  headerColor?: string;
   actions?: OykDrawerSlot;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -38,7 +30,7 @@ interface OykDrawerProps extends Omit<HTMLAttributes<HTMLDivElement>, "title" | 
   disabled?: boolean;
   placement?: OykDrawerPlacement;
   size?: OykDrawerSize;
-  color?: OykDrawerColor;
+  color?: string;
   className?: string;
 }
 
@@ -52,7 +44,7 @@ export default function OykDrawer({
   title,
   suptitle,
   headerIcon: HeaderIcon,
-  headerColor = "default",
+  headerColor = "accent",
   actions,
   open: openProp,
   onOpenChange,
@@ -168,7 +160,7 @@ export default function OykDrawer({
         onClick={(event) => event.stopPropagation()}
       >
         {(title || closable) && (
-          <header className={oykClass("oyk-drawer-header", headerColor !== "default" && `oyk-drawer-header-color--${headerColor}`)}>
+          <header className={oykClass("oyk-drawer-header", headerColor !== "default" && `oyk-drawer-header-color-${headerColor}`)}>
             {HeaderIcon && (
               <div className="oyk-drawer-header-icon">
                 <HeaderIcon size={16} />
@@ -196,14 +188,15 @@ export default function OykDrawer({
             )}
           </header>
         )}
-        <div
+        <OykScrollbar
+          flex
           className={oykClass(
             "oyk-drawer-body",
             renderedActions != null && "oyk-drawer-body-with-actions",
           )}
         >
           {renderedContent}
-        </div>
+        </OykScrollbar>
         {renderedActions != null && (
           <footer className="oyk-drawer-actions">{renderedActions}</footer>
         )}
