@@ -6,6 +6,7 @@ import errorHandler from "./shared/middlewares/errorHandler.js";
 import authRoutes from "./core/auth/auth.routes.js";
 import spacesRoutes from "./core/spaces/spaces.routes.js";
 import usersRoutes from "./core/users/users.routes.js";
+import encyclopediaRoutes from "./features/encyclopedia/encyclopedia.routes.js";
 import notesRoutes from "./features/notes/notes.routes.js";
 
 export function createApp() {
@@ -24,6 +25,7 @@ export function createApp() {
   app.use("/api/v1/auth", authRoutes);
   app.use("/api/v1/users", usersRoutes);
   app.use("/api/v1/spaces", spacesRoutes);
+  app.use("/api/v1/encyclopedia", encyclopediaRoutes);
   app.use("/api/v1/notes", notesRoutes);
 
   app.use(errorHandler);
