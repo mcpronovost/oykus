@@ -1,6 +1,7 @@
 export const ENCYCLOPEDIA_TOPIC_OUTPUT_SELECT = {
   id: true,
   slug: true,
+  position: true,
 };
 
 export const ENCYCLOPEDIA_CATEGORY_OUTPUT_SELECT = {
@@ -50,6 +51,7 @@ export function toEncyclopediaTopicOutput(topic) {
   return {
     id: topic.id,
     slug: topic.slug,
+    position: topic.position,
   };
 }
 

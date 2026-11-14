@@ -113,7 +113,7 @@ async function ensureUniqueSlug(spaceId, topicId, slug, excludeEntryId = null) {
 export async function listTopics() {
   const topics = await prisma.encyclopediaTopic.findMany({
     select: ENCYCLOPEDIA_TOPIC_OUTPUT_SELECT,
-    orderBy: { slug: "asc" },
+    orderBy: { position: "asc" },
   });
 
   return topics.map(toEncyclopediaTopicOutput);

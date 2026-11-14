@@ -69,13 +69,14 @@ async function seedEncyclopediaTopics() {
   ];
 
   await prisma.$transaction(async (tx) => {
-    for (const topic of topics) {
+    for (const [index, topic] of topics.entries()) {
       const { categories, slug } = topic;
+      const position = index;
 
       const createdTopic = await tx.encyclopediaTopic.upsert({
         where: { slug },
-        create: { slug },
-        update: {},
+        create: { slug, position },
+        update: { position },
       });
 
       if (!categories?.length) {

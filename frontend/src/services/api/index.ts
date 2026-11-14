@@ -107,6 +107,7 @@ export type TypeCreateNoteInput = {
 export type TypeEncyclopediaTopic = {
   id: number;
   slug: string;
+  position: number;
 };
 
 export type TypeEncyclopediaCategory = {
@@ -199,6 +200,10 @@ async function listNoteCategories(): Promise<TypeNoteCategory[]> {
   return request<TypeNoteCategory[]>("/api/v1/notes/categories");
 }
 
+async function listEncyclopediaTopics(): Promise<TypeEncyclopediaTopic[]> {
+  return request<TypeEncyclopediaTopic[]>("/api/v1/encyclopedia/topics");
+}
+
 async function listEncyclopediaEntries(
   spaceId: string,
   topic: string,
@@ -228,6 +233,7 @@ export {
   getMe,
   listEncyclopediaCategories,
   listEncyclopediaEntries,
+  listEncyclopediaTopics,
   listNoteCategories,
   listNotes,
   listSpaces,

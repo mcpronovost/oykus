@@ -1,9 +1,11 @@
 model EncyclopediaTopic {
   id         Int                         @id @default(autoincrement())
   slug       String                      @unique
+  position   Int                         @default(0)
   categories EncyclopediaTopicCategory[]
   entries    EncyclopediaEntry[]
 
+  @@index([position])
   @@map("features_encyclopedia_topics")
 }
 
