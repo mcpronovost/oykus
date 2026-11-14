@@ -36,6 +36,65 @@ async function seedUsers() {
   console.log(`Seeded test user: ${user.username} <${user.email}>`);
 }
 
+async function seedEncyclopediaTopics() {
+  const topics = [
+    {
+      slug: "characters",
+      // categories: ["individuals", "species", "creatures"],
+    },
+    {
+      slug: "factions",
+      // categories: ["organizations", "cultures", "kingdoms"],
+    },
+    {
+      slug: "locations",
+      categories: ["continents", "regions", "cities"],
+    },
+    {
+      slug: "nature",
+      categories: ["flora", "fauna"],
+    },
+    {
+      slug: "items",
+      categories: ["weapons", "artifacts", "equipment", "resources"],
+    },
+    {
+      slug: "events",
+      categories: ["historical", "political", "military", "natural"],
+    },
+    {
+      slug: "lore",
+      categories: ["myths", "legends", "beliefs", "knowledge"],
+    },
+  ];
+
+  await prisma.$transaction(async (tx) => {
+    for (const topic of topics) {
+      const { categories, slug } = topic;
+
+      const createdTopic = await tx.encyclopediaTopic.upsert({
+        where: { slug },
+        create: { slug },
+        update: {},
+      });
+
+      if (!categories?.length) {
+        continue;
+      }
+
+      await tx.encyclopediaTopicCategory.createMany({
+        data: categories.map((categorySlug) => ({
+          slug: categorySlug,
+          topicId: createdTopic.id,
+        })),
+        skipDuplicates: true,
+      });
+    }
+  });
+
+  console.log(`Seeded ${topics.length} encyclopedia topics`);
+}
+
 async function seedNoteCategories() {
   const categories = await prisma.noteCategory.createMany({
     data: [
@@ -46,14 +105,16 @@ async function seedNoteCategories() {
       { label: "thought" },
       { label: "other" },
     ],
+    skipDuplicates: true,
   });
 
-  console.log(`Seeded ${categories.length} note categories`);
+  console.log(`Seeded ${categories.count} note categories`);
 }
 
 async function main() {
-  await seedUsers();
-  await seedNoteCategories();
+  try { await seedUsers(); } catch (e) { console.error("Seed users failed:", e); }
+  try { await seedNoteCategories(); } catch (e) { console.error("Seed note categories failed:", e); }
+  try { await seedEncyclopediaTopics(); } catch (e) { console.error("Seed encyclopedia topics failed:", e); }
 }
 
 main()
