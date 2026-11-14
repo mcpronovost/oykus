@@ -40,43 +40,57 @@ async function seedEncyclopediaTopics() {
   const topics = [
     {
       slug: "characters",
+      icon: "users",
+      color: "accent",
       // categories: ["individuals", "species", "creatures"],
     },
     {
       slug: "factions",
+      icon: "crown",
+      color: "info",
       // categories: ["organizations", "cultures", "kingdoms"],
     },
     {
       slug: "locations",
+      icon: "map",
+      color: "special",
       categories: ["continents", "regions", "cities"],
     },
     {
       slug: "nature",
+      icon: "leaf",
+      color: "success",
       categories: ["flora", "fauna"],
     },
     {
       slug: "items",
+      icon: "shield",
+      color: "info",
       categories: ["weapons", "artifacts", "equipment", "resources"],
     },
     {
       slug: "events",
+      icon: "flare",
+      color: "special",
       categories: ["historical", "political", "military", "natural"],
     },
     {
       slug: "lore",
+      icon: "news",
+      color: "accent",
       categories: ["myths", "legends", "beliefs", "knowledge"],
     },
   ];
 
   await prisma.$transaction(async (tx) => {
     for (const [index, topic] of topics.entries()) {
-      const { categories, slug } = topic;
+      const { categories, slug, icon, color } = topic;
       const position = index;
 
       const createdTopic = await tx.encyclopediaTopic.upsert({
         where: { slug },
-        create: { slug, position },
-        update: { position },
+        create: { slug, position, icon, color },
+        update: { position, icon, color },
       });
 
       if (!categories?.length) {
