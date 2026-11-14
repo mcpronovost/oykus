@@ -1,49 +1,53 @@
 model EncyclopediaTopic {
-  id    Int    @id @default(autoincrement())
-  label String @unique
+  id         Int                         @id @default(autoincrement())
+  label      String                      @unique
   categories EncyclopediaTopicCategory[]
-  entries EncyclopediaEntry[]
+  entries    EncyclopediaEntry[]
 
   @@map("features_encyclopedia_topics")
 }
 
 model EncyclopediaTopicCategory {
-  id    Int    @id @default(autoincrement())
-  label String @unique
+  id      Int                 @id @default(autoincrement())
+  label   String              @unique
   topicId Int
-  topic   EncyclopediaTopic @relation(fields: [topicId], references: [id])
+  topic   EncyclopediaTopic   @relation(fields: [topicId], references: [id])
   entries EncyclopediaEntry[]
 
   @@map("features_encyclopedia_topics_categories")
 }
 
 model EncyclopediaEntry {
-  id      String @id @default(uuid(7)) @db.Uuid
-  spaceId String
-  space   Space  @relation(fields: [spaceId], references: [id])
-
+  id         String                     @id @default(uuid(7)) @db.Uuid
+  spaceId    String
+  space      Space                      @relation(fields: [spaceId], references: [id])
   topicId    Int
-  topic      EncyclopediaTopic     @relation(fields: [topicId], references: [id])
+  topic      EncyclopediaTopic          @relation(fields: [topicId], references: [id])
   categoryId Int?
   category   EncyclopediaTopicCategory? @relation(fields: [categoryId], references: [id])
-
   title      String
   slug       String
   summary    String?
-  attributes Json       @default("{}")
-  coverUrl   String?
-  visibility Visibility @default(PUBLIC)
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  sections   EncyclopediaEntrySection[]
 
-  sections  EntrySection[]
-  linksOut  EntryLink[]     @relation("From")
-  linksIn   EntryLink[]     @relation("To")
-  revisions EntryRevision[]
-  event     EventDetail?
-  location  LocationDetail?
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
   @@unique([spaceId, slug])
   @@index([spaceId, topicId])
+  @@index([spaceId, categoryId])
   @@map("features_encyclopedia_entries")
+}
+
+model EncyclopediaEntrySection {
+  id      String            @id @default(uuid(7)) @db.Uuid
+  entryId String
+  entry   EncyclopediaEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  title   String
+  content String
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@map("features_encyclopedia_entries_sections")
 }
