@@ -33,3 +33,9 @@ export async function remove(req, res) {
   await spacesServices.deleteSpace(req.userId, spaceId);
   res.status(204).send();
 }
+
+export async function stats(req, res) {
+  const spaceId = parseIdParam(req.params.id);
+  const data = await spacesServices.getSpaceStats(req.userId, spaceId);
+  res.json({ data });
+}

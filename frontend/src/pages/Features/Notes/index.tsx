@@ -105,9 +105,14 @@ export default function OykNotes() {
         spaceId,
         categoryId,
       });
-      await queryClient.invalidateQueries({
-        queryKey: queryKeys.notes.list(spaceId),
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.notes.list(spaceId),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.spaces.stats(spaceId),
+        }),
+      ]);
       setFormNote(INITIAL_FORM);
     } catch (err) {
       if (err instanceof ApiError) {

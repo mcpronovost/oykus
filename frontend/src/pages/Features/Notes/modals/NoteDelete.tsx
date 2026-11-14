@@ -38,9 +38,14 @@ export default function OykNotesModalsNoteDelete({
     setIsDeleting(true);
     try {
       await deleteNote(note.id);
-      await queryClient.invalidateQueries({
-        queryKey: queryKeys.notes.list(spaceId),
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.notes.list(spaceId),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.spaces.stats(spaceId),
+        }),
+      ]);
       setNote(null);
       resetState();
       close();

@@ -2,6 +2,8 @@ export const ENCYCLOPEDIA_TOPIC_OUTPUT_SELECT = {
   id: true,
   slug: true,
   position: true,
+  icon: true,
+  color: true,
 };
 
 export const ENCYCLOPEDIA_CATEGORY_OUTPUT_SELECT = {
@@ -52,6 +54,8 @@ export function toEncyclopediaTopicOutput(topic) {
     id: topic.id,
     slug: topic.slug,
     position: topic.position,
+    icon: topic.icon,
+    color: topic.color,
   };
 }
 

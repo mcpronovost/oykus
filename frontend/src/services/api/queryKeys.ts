@@ -6,6 +6,7 @@ export const queryKeys = {
   spaces: {
     all: ["spaces"] as const,
     list: ["spaces", "list"] as const,
+    stats: (spaceId: string) => ["spaces", "stats", spaceId] as const,
   },
   notes: {
     all: ["notes"] as const,

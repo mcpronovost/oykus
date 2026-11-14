@@ -82,6 +82,14 @@ export type TypeCreateSpaceInput = {
   description?: string;
 };
 
+export type TypeSpaceStats = {
+  notes: number;
+  encyclopedia: Array<{
+    slug: string;
+    count: number;
+  }>;
+};
+
 export type TypeNoteCategory = {
   id: number;
   label: string;
@@ -108,6 +116,8 @@ export type TypeEncyclopediaTopic = {
   id: number;
   slug: string;
   position: number;
+  icon: string;
+  color: string;
 };
 
 export type TypeEncyclopediaCategory = {
@@ -171,6 +181,10 @@ async function deleteSpace(spaceId: string): Promise<void> {
   });
 }
 
+async function getSpaceStats(spaceId: string): Promise<TypeSpaceStats> {
+  return request<TypeSpaceStats>(`/api/v1/spaces/${spaceId}/stats`);
+}
+
 async function setCurrentSpace(spaceId: string): Promise<TypePublicUser> {
   return request<TypePublicUser>("/api/v1/users/me/current-space", {
     method: "PATCH",
@@ -231,6 +245,7 @@ export {
   deleteSpace,
   getHealth,
   getMe,
+  getSpaceStats,
   listEncyclopediaCategories,
   listEncyclopediaEntries,
   listEncyclopediaTopics,

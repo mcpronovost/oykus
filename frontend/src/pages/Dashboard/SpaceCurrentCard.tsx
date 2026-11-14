@@ -1,12 +1,6 @@
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { IconSettings } from "@tabler/icons-react";
-import {
-  listEncyclopediaEntries,
-  listEncyclopediaTopics,
-  listNotes,
-  queryKeys,
-  type TypeSpace,
-} from "@/services/api";
+import { getSpaceStats, queryKeys, type TypeSpace } from "@/services/api";
 import { useTranslation } from "@/services/translation";
 import { OykButton, OykCard, OykStats } from "@/components/ui";
 import ImgPlaceholder1 from "@/assets/img/space-cover-1.webp";
@@ -18,21 +12,9 @@ type SpaceCurrentCardProps = {
 export default function OykSpaceCurrentCard({ space }: SpaceCurrentCardProps) {
   const { t } = useTranslation();
 
-  const { data: notes = [] } = useQuery({
-    queryKey: queryKeys.notes.list(space.id),
-    queryFn: () => listNotes(space.id),
-  });
-
-  const { data: topics = [] } = useQuery({
-    queryKey: queryKeys.encyclopedia.topics,
-    queryFn: listEncyclopediaTopics,
-  });
-
-  const encyclopediaQueries = useQueries({
-    queries: topics.map((topic) => ({
-      queryKey: queryKeys.encyclopedia.list(space.id, topic.slug),
-      queryFn: () => listEncyclopediaEntries(space.id, topic.slug),
-    })),
+  const { data: stats } = useQuery({
+    queryKey: queryKeys.spaces.stats(space.id),
+    queryFn: () => getSpaceStats(space.id),
   });
 
   return (
@@ -51,12 +33,12 @@ export default function OykSpaceCurrentCard({ space }: SpaceCurrentCardProps) {
           </header>
           <OykStats justify="start">
             {/* On future Manuscript plugin: <OykStats.Item label="Words" value="0" /> */}
-            <OykStats.Item label={t("Notes")} value={notes.length} />
-            {topics.map((topic, index) => (
+            <OykStats.Item label={t("Notes")} value={stats?.notes ?? 0} />
+            {(stats?.encyclopedia ?? []).map((topic) => (
               <OykStats.Item
-                key={topic.id}
+                key={topic.slug}
                 label={t(`encyclopedia.topic.${topic.slug}`)}
-                value={encyclopediaQueries[index]?.data?.length ?? 0}
+                value={topic.count}
               />
             ))}
           </OykStats>

@@ -56,3 +56,46 @@ export async function deleteSpace(userId, spaceId) {
     await tx.space.delete({ where: { id: spaceId } });
   });
 }
+
+async function assertSpaceAccess(spaceId, userId) {
+  const space = await prisma.space.findFirst({
+    where: {
+      id: spaceId,
+      OR: [{ ownerId: userId }, { members: { some: { userId } } }],
+    },
+    select: { id: true },
+  });
+
+  if (!space) {
+    throw new ForbiddenError("No access to this space");
+  }
+}
+
+export async function getSpaceStats(userId, spaceId) {
+  await assertSpaceAccess(spaceId, userId);
+
+  const [notes, topics, entryCounts] = await Promise.all([
+    prisma.note.count({ where: { spaceId } }),
+    prisma.encyclopediaTopic.findMany({
+      select: { id: true, slug: true },
+      orderBy: { position: "asc" },
+    }),
+    prisma.encyclopediaEntry.groupBy({
+      by: ["topicId"],
+      where: { spaceId },
+      _count: { _all: true },
+    }),
+  ]);
+
+  const countByTopicId = new Map(
+    entryCounts.map((row) => [row.topicId, row._count._all]),
+  );
+
+  return {
+    notes,
+    encyclopedia: topics.map((topic) => ({
+      slug: topic.slug,
+      count: countByTopicId.get(topic.id) ?? 0,
+    })),
+  };
+}
