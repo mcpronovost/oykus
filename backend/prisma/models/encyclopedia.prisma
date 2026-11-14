@@ -1,6 +1,6 @@
 model EncyclopediaTopic {
   id         Int                         @id @default(autoincrement())
-  label      String                      @unique
+  slug       String                      @unique
   categories EncyclopediaTopicCategory[]
   entries    EncyclopediaEntry[]
 
@@ -9,22 +9,24 @@ model EncyclopediaTopic {
 
 model EncyclopediaTopicCategory {
   id      Int                 @id @default(autoincrement())
-  label   String              @unique
+  slug    String
   topicId Int
-  topic   EncyclopediaTopic   @relation(fields: [topicId], references: [id])
+  topic   EncyclopediaTopic   @relation(fields: [topicId], references: [id], onDelete: Cascade)
   entries EncyclopediaEntry[]
 
+  @@unique([topicId, slug])
+  @@index([topicId])
   @@map("features_encyclopedia_topics_categories")
 }
 
 model EncyclopediaEntry {
   id         String                     @id @default(uuid(7)) @db.Uuid
-  spaceId    String
-  space      Space                      @relation(fields: [spaceId], references: [id])
+  spaceId    String                     @db.Uuid
+  space      Space                      @relation(fields: [spaceId], references: [id], onDelete: Cascade)
   topicId    Int
-  topic      EncyclopediaTopic          @relation(fields: [topicId], references: [id])
+  topic      EncyclopediaTopic          @relation(fields: [topicId], references: [id], onDelete: Cascade)
   categoryId Int?
-  category   EncyclopediaTopicCategory? @relation(fields: [categoryId], references: [id])
+  category   EncyclopediaTopicCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   title      String
   slug       String
   summary    String?
@@ -40,14 +42,17 @@ model EncyclopediaEntry {
 }
 
 model EncyclopediaEntrySection {
-  id      String            @id @default(uuid(7)) @db.Uuid
-  entryId String
-  entry   EncyclopediaEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
-  title   String
-  content String
+  id       String            @id @default(uuid(7)) @db.Uuid
+  entryId  String            @db.Uuid
+  entry    EncyclopediaEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  title    String
+  content  String            @db.Text
+  position Int               @default(autoincrement())
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
+  @@unique([entryId, position])
+  @@index([entryId])
   @@map("features_encyclopedia_entries_sections")
 }
