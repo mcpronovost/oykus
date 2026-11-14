@@ -24,6 +24,7 @@ type OykModalColor =
 interface OykModalProps extends Omit<HTMLAttributes<HTMLDivElement>, "title" | "content"> {
   content: OykModalSlot;
   title?: string;
+  suptitle?: string;
   actions?: OykModalSlot;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -43,6 +44,7 @@ function renderSlot(slot: OykModalSlot | undefined, helpers: OykModalHelpers) {
 export default function OykModal({
   content,
   title,
+  suptitle,
   actions,
   open: openProp,
   onOpenChange,
@@ -153,11 +155,16 @@ export default function OykModal({
       >
         {(title || closable) && (
           <header className="oyk-modal-header">
-            {title && (
-              <h2 id={titleId} className="oyk-modal-title">
-                {title}
-              </h2>
-            )}
+            <div>
+              {suptitle && (
+                <p className="oyk-modal-suptitle">{suptitle}</p>
+              )}
+              {title && (
+                <h2 id={titleId} className="oyk-modal-title">
+                  {title}
+                </h2>
+              )}
+            </div>
             {closable && (
               <button
                 type="button"
