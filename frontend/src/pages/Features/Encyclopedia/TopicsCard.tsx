@@ -1,8 +1,10 @@
 import type { Icon } from "@tabler/icons-react";
+import { useRouter } from "@/services/router";
 import { OykCard, OykProgressBar, OykStats } from "@/components/ui";
 
 type OykEncyclopediaTopicsCardProps = {
   label: string;
+  route: string;
   value: number;
   icon: Icon;
   color?: "accent" | "success" | "danger" | "info" | "warning" | "special";
@@ -10,12 +12,25 @@ type OykEncyclopediaTopicsCardProps = {
 
 export default function OykEncyclopediaTopicsCard({
   label,
+  route,
   value,
   icon: IconComponent,
   color = "accent",
 }: OykEncyclopediaTopicsCardProps) {
+  const { n } = useRouter();
+
+  const handleClick = () => {
+    n(route);
+  };
+
   return (
-    <OykCard gradient={color} outlined hoverable>
+    <OykCard
+      gradient={color}
+      outlined
+      hoverable
+      clickable
+      onClick={handleClick}
+    >
       <div className="oyk-page-encyclopedia-topics-card">
         <div
           className="oyk-page-encyclopedia-topics-card-icon"
