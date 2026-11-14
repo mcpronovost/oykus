@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { IconLeafOff } from "@tabler/icons-react";
-import { OykButton, OykCard, OykDivider, OykGrid, OykHeading, OykResult } from "@/components/ui";
+import { useQuery } from "@tanstack/react-query";
 import {
   listEncyclopediaCategories,
   listEncyclopediaEntries,
@@ -9,6 +8,7 @@ import {
 } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
+import { OykButton, OykCard, OykDivider, OykGrid, OykHeading, OykResult } from "@/components/ui";
 
 const TOPIC = "nature";
 
