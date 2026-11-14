@@ -17,6 +17,10 @@ model User {
   memberships    SpaceMember[]
   ownedSpaces    Space[]       @relation("SpaceOwner")
   notes          Note[]
+  encyclopediaEntriesCreated EncyclopediaEntry[] @relation("EncyclopediaEntryCreatedBy")
+  encyclopediaEntriesUpdated EncyclopediaEntry[] @relation("EncyclopediaEntryUpdatedBy")
+  encyclopediaEntrySectionsCreated EncyclopediaEntrySection[] @relation("EncyclopediaEntrySectionCreatedBy")
+  encyclopediaEntrySectionsUpdated EncyclopediaEntrySection[] @relation("EncyclopediaEntrySectionUpdatedBy")
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)

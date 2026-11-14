@@ -24,7 +24,7 @@ model EncyclopediaEntry {
   spaceId    String                     @db.Uuid
   space      Space                      @relation(fields: [spaceId], references: [id], onDelete: Cascade)
   topicId    Int
-  topic      EncyclopediaTopic          @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  topic      EncyclopediaTopic          @relation(fields: [topicId], references: [id], onDelete: Restrict)
   categoryId Int?
   category   EncyclopediaTopicCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   title      String
@@ -32,12 +32,19 @@ model EncyclopediaEntry {
   summary    String?
   sections   EncyclopediaEntrySection[]
 
+  createdById String? @db.Uuid
+  createdBy   User?   @relation("EncyclopediaEntryCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  updatedById String? @db.Uuid
+  updatedBy   User?   @relation("EncyclopediaEntryUpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
+
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  @@unique([spaceId, slug])
+  @@unique([spaceId, topicId, slug])
   @@index([spaceId, topicId])
   @@index([spaceId, categoryId])
+  @@index([createdById])
+  @@index([updatedById])
   @@map("features_encyclopedia_entries")
 }
 
@@ -47,12 +54,18 @@ model EncyclopediaEntrySection {
   entry    EncyclopediaEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
   title    String
   content  String            @db.Text
-  position Int               @default(autoincrement())
+  position Int               @default(0)
+
+  createdById String? @db.Uuid
+  createdBy   User?   @relation("EncyclopediaEntrySectionCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  updatedById String? @db.Uuid
+  updatedBy   User?   @relation("EncyclopediaEntrySectionUpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  @@unique([entryId, position])
   @@index([entryId])
+  @@index([createdById])
+  @@index([updatedById])
   @@map("features_encyclopedia_entries_sections")
 }
