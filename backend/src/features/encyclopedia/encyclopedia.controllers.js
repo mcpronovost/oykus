@@ -33,6 +33,12 @@ export async function listCategories(req, res) {
   res.json({ data: categories });
 }
 
+export async function stats(req, res) {
+  const spaceId = parseIdParam(req.params.id, "spaceId");
+  const data = await encyclopediaServices.getStats(req.userId, spaceId);
+  res.json({ data });
+}
+
 export async function list(req, res) {
   const spaceId = parseIdParam(req.params.id, "spaceId");
   const topic = parseIdParam(req.params.topic, "topic");

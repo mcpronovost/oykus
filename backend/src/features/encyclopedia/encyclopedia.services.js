@@ -119,6 +119,43 @@ export async function listTopics() {
   return topics.map(toEncyclopediaTopicOutput);
 }
 
+export async function getStats(userId, spaceId) {
+  await assertSpaceAccess(spaceId, userId);
+
+  const [topics, entryCounts] = await Promise.all([
+    prisma.encyclopediaTopic.findMany({
+      select: {
+        id: true,
+        slug: true,
+        icon: true,
+        color: true,
+      },
+      orderBy: { position: "asc" },
+    }),
+    prisma.encyclopediaEntry.groupBy({
+      by: ["topicId"],
+      where: { spaceId },
+      _count: { _all: true },
+    }),
+  ]);
+
+  const countByTopicId = new Map(
+    entryCounts.map((row) => [row.topicId, row._count._all]),
+  );
+
+  const topicsWithCounts = topics.map((topic) => ({
+    slug: topic.slug,
+    icon: topic.icon,
+    color: topic.color,
+    count: countByTopicId.get(topic.id) ?? 0,
+  }));
+
+  return {
+    total: topicsWithCounts.reduce((sum, topic) => sum + topic.count, 0),
+    topics: topicsWithCounts,
+  };
+}
+
 export async function listCategories({ topic }) {
   const encyclopediaTopic = await getTopicBySlug(topic);
 

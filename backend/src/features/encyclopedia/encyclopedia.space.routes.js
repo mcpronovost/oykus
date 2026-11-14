@@ -6,6 +6,7 @@ const router = Router({ mergeParams: true });
 
 router.use(requireAuth);
 
+router.get("/stats", encyclopediaControllers.stats);
 router.get("/:topic", encyclopediaControllers.list);
 
 export default router;

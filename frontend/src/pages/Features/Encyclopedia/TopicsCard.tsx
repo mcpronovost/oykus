@@ -6,14 +6,16 @@ type OykEncyclopediaTopicsCardProps = {
   label: string;
   route: string;
   value: number;
+  total: number;
   icon: Icon;
-  color?: "accent" | "success" | "danger" | "info" | "warning" | "special";
+  color?: string;
 };
 
 export default function OykEncyclopediaTopicsCard({
   label,
   route,
   value,
+  total,
   icon: IconComponent,
   color = "accent",
 }: OykEncyclopediaTopicsCardProps) {
@@ -46,7 +48,7 @@ export default function OykEncyclopediaTopicsCard({
         </OykStats>
         <footer className="oyk-page-encyclopedia-topics-card-footer">
           <OykProgressBar
-            value={Math.floor(Math.random() * 100)}
+            value={Math.floor((value / total) * 100) || 0}
             color={color}
           />
         </footer>

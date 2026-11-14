@@ -120,6 +120,18 @@ export type TypeEncyclopediaTopic = {
   color: string;
 };
 
+export type TypeEncyclopediaTopicStats = {
+  slug: string;
+  icon: string;
+  color: string;
+  count: number;
+};
+
+export type TypeEncyclopediaStats = {
+  total: number;
+  topics: TypeEncyclopediaTopicStats[];
+};
+
 export type TypeEncyclopediaCategory = {
   id: number;
   slug: string;
@@ -217,6 +229,14 @@ async function listEncyclopediaTopics(): Promise<TypeEncyclopediaTopic[]> {
   return request<TypeEncyclopediaTopic[]>("/api/v1/encyclopedia/topics");
 }
 
+async function getEncyclopediaStats(
+  spaceId: string,
+): Promise<TypeEncyclopediaStats> {
+  return request<TypeEncyclopediaStats>(
+    `/api/v1/spaces/${spaceId}/encyclopedia/stats`,
+  );
+}
+
 async function listEncyclopediaEntries(
   spaceId: string,
   topic: string,
@@ -241,6 +261,7 @@ export {
   createSpace,
   deleteNote,
   deleteSpace,
+  getEncyclopediaStats,
   getHealth,
   getMe,
   getSpaceStats,

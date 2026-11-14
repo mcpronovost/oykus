@@ -1,15 +1,48 @@
 import "@/assets/styles/pages/_encyclopedia.scss";
-import { IconUsers, IconCrown, IconMap, IconLeaf, IconShield, IconFlare, IconNews } from "@tabler/icons-react";
+import { useQuery } from "@tanstack/react-query";
+import {
+  IconBooksOff,
+  IconBooks,
+  IconCrown,
+  IconFlare,
+  IconLeaf,
+  IconMap,
+  IconNews,
+  IconShield,
+  IconUsers,
+  type Icon,
+} from "@tabler/icons-react";
+import { getEncyclopediaStats, queryKeys } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
-import { OykGrid, OykHeading } from "@/components/ui";
+import { OykGrid, OykHeading, OykResult } from "@/components/ui";
 import OykEncyclopediaTopicsCard from "./TopicsCard";
+
+const TOPIC_ICONS: Record<string, Icon> = {
+  users: IconUsers,
+  crown: IconCrown,
+  map: IconMap,
+  leaf: IconLeaf,
+  shield: IconShield,
+  flare: IconFlare,
+  news: IconNews,
+};
 
 export default function OykEncyclopedia() {
   const { user } = useAuth();
   const { t } = useTranslation();
+  const spaceId = user?.currentSpace?.id ?? null;
 
-  if (!user?.currentSpace) return null;
+  const { data: stats } = useQuery({
+    queryKey: queryKeys.encyclopedia.stats(spaceId ?? ""),
+    queryFn: () => getEncyclopediaStats(spaceId!),
+    enabled: Boolean(spaceId),
+  });
+
+  const topics = stats?.topics ?? [];
+  const totalEntries = stats?.total ?? 0;
+
+  if (!user?.currentSpace || !spaceId) return null;
 
   return (
     <div className="oyk-page-encyclopedia">
@@ -17,15 +50,28 @@ export default function OykEncyclopedia() {
         <OykHeading title={t("Encyclopedia")} suptitle={user.currentSpace.name} />
         <OykGrid.Row>
           <OykGrid.Col>
-            <div className="oyk-page-encyclopedia-topics">
-              <OykEncyclopediaTopicsCard label={t("Characters")} route="encyclopedia-characters" value={0} icon={IconUsers} color="accent" />
-              <OykEncyclopediaTopicsCard label={t("Factions")} route="encyclopedia-factions" value={0} icon={IconCrown} color="info" />
-              <OykEncyclopediaTopicsCard label={t("Locations")} route="encyclopedia-locations" value={0} icon={IconMap} color="special" />
-              <OykEncyclopediaTopicsCard label={t("Nature")} route="encyclopedia-nature" value={0} icon={IconLeaf} color="success" />
-              <OykEncyclopediaTopicsCard label={t("Items")} route="encyclopedia-items" value={0} icon={IconShield} color="info" />
-              <OykEncyclopediaTopicsCard label={t("Events")} route="encyclopedia-events" value={0} icon={IconFlare} color="special" />
-              <OykEncyclopediaTopicsCard label={t("Lore")} route="encyclopedia-lore" value={0} icon={IconNews} color="accent" />
-            </div>
+            {topics.length === 0 ? (
+              <OykResult
+                title={t("No topics yet")}
+                message={t("Contact your administrator to create a new topic")}
+                variant="ghost"
+                icon={IconBooksOff}
+              />
+            ) : (
+              <div className="oyk-page-encyclopedia-topics">
+                {topics.map((topic) => (
+                  <OykEncyclopediaTopicsCard
+                    key={topic.slug}
+                    label={t(`encyclopedia.topic.${topic.slug}`)}
+                    route={`encyclopedia-${topic.slug}`}
+                    value={topic.count}
+                    total={totalEntries}
+                    icon={TOPIC_ICONS[topic.icon] ?? IconBooks}
+                    color={topic.color}
+                  />
+                ))}
+              </div>
+            )}
           </OykGrid.Col>
         </OykGrid.Row>
       </OykGrid>

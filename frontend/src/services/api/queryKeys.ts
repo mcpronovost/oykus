@@ -20,5 +20,6 @@ export const queryKeys = {
     categories: (topic: string) =>
       ["encyclopedia", "categories", topic] as const,
     topics: ["encyclopedia", "topics"] as const,
+    stats: (spaceId: string) => ["encyclopedia", "stats", spaceId] as const,
   },
 } as const;
