@@ -1,6 +1,7 @@
 import type { ChangeEvent, HTMLAttributes, ReactNode, SubmitEvent } from "react";
 import type { Icon } from "@tabler/icons-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   IconDirection,
   IconEye,
@@ -17,11 +18,28 @@ import OykScrollbar from "./Scrollbar";
 const SELECT_MENU_MAX_HEIGHT = 240;
 const SELECT_OPTION_HEIGHT = 34;
 const SELECT_OPTION_GAP = 2;
+const SELECT_MENU_GAP = 4;
+const SELECT_MENU_PADDING = 12;
 
 function getSelectMenuHeight(optionCount: number) {
   const count = Math.max(optionCount, 1);
   const contentHeight = count * SELECT_OPTION_HEIGHT + (count - 1) * SELECT_OPTION_GAP;
   return Math.min(SELECT_MENU_MAX_HEIGHT, contentHeight);
+}
+
+function placeSelectMenu(trigger: DOMRect, menuHeight: number) {
+  const spaceBelow = window.innerHeight - trigger.bottom - SELECT_MENU_GAP;
+  const spaceAbove = trigger.top - SELECT_MENU_GAP;
+  const placeAbove = spaceBelow < menuHeight && spaceAbove > spaceBelow;
+  const top = placeAbove
+    ? Math.max(SELECT_MENU_GAP, trigger.top - menuHeight - SELECT_MENU_GAP)
+    : trigger.bottom + SELECT_MENU_GAP;
+
+  return {
+    top,
+    left: trigger.left,
+    width: trigger.width,
+  };
 }
 
 interface OykFormFieldChecklistItem {
@@ -126,6 +144,8 @@ function OykFormField({
   ...props
 }: OykFormFieldProps) {
   const fieldRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLDivElement>(null);
+  const selectMenuRef = useRef<HTMLDivElement>(null);
   const nativeInputRef = useRef<HTMLInputElement>(null);
   const multiValuesRef = useRef<HTMLSpanElement>(null);
   const multiMeasureRef = useRef<HTMLSpanElement>(null);
@@ -202,11 +222,37 @@ function OykFormField({
     return () => resizeObserver.disconnect();
   }, [isMultiSelect, selectedOptionsKey]);
 
+  useLayoutEffect(() => {
+    if (!selectOpen) return;
+
+    const updatePosition = () => {
+      const input = inputRef.current;
+      const menu = selectMenuRef.current;
+      if (!input || !menu) return;
+
+      const menuHeight = menu.offsetHeight || getSelectMenuHeight(options.length) + SELECT_MENU_PADDING;
+      const { top, left, width } = placeSelectMenu(input.getBoundingClientRect(), menuHeight);
+      menu.style.top = `${top}px`;
+      menu.style.left = `${left}px`;
+      menu.style.width = `${width}px`;
+    };
+
+    updatePosition();
+    window.addEventListener("scroll", updatePosition, true);
+    window.addEventListener("resize", updatePosition);
+    return () => {
+      window.removeEventListener("scroll", updatePosition, true);
+      window.removeEventListener("resize", updatePosition);
+    };
+  }, [selectOpen, options.length]);
+
   useEffect(() => {
     if (!selectOpen) return;
 
     const onPointerDown = (event: PointerEvent) => {
-      if (fieldRef.current?.contains(event.target as Node)) return;
+      const target = event.target as Node;
+      if (fieldRef.current?.contains(target)) return;
+      if (selectMenuRef.current?.contains(target)) return;
       setSelectOpen(false);
     };
 
@@ -259,6 +305,7 @@ function OykFormField({
         </label>
       ) : null}
       <div
+        ref={inputRef}
         className={oykClass(
           "oyk-form-field-input",
           isCheckbox && "oyk-unbox",
@@ -432,50 +479,53 @@ function OykFormField({
             <IconDirection size={19} />
           </button>
         ) : null}
-        {isSelect && selectOpen ? (
-          <div className="oyk-form-field-select oyk-card">
-            <OykScrollbar height={getSelectMenuHeight(options.length)}>
-              <ul
-                id={listboxId}
-                className="oyk-form-field-select-list"
-                role="listbox"
-                aria-labelledby={fieldId}
-                aria-multiselectable={isMultiSelect || undefined}
-              >
-                {options.map((option) => {
-                  const isSelected = isMultiSelect
-                    ? selectedValues.includes(option.value)
-                    : option.value === stringValue;
-                  const isDisabled = isMultiSelect && !isSelected && isAtMax;
-                  return (
-                    <li key={option.value} role="presentation">
-                      <button
-                        type="button"
-                        role="option"
-                        aria-selected={isSelected}
-                        disabled={isDisabled}
-                        className={oykClass(
-                          "oyk-form-field-select-option",
-                          isSelected && "oyk-selected",
-                          isDisabled && "oyk-disabled",
-                        )}
-                        onClick={() =>
-                          isMultiSelect
-                            ? handleMultiSelect(option.value)
-                            : handleSelect(option.value)
-                        }
-                      >
-                        <span>{option.label}</span>
-                        {isSelected ? <IconCheck size={16} /> : null}
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-            </OykScrollbar>
-          </div>
-        ) : null}
       </div>
+      {isSelect && selectOpen
+        ? createPortal(
+            <div ref={selectMenuRef} className="oyk-form-field-select oyk-card">
+              <OykScrollbar height={getSelectMenuHeight(options.length)}>
+                <ul
+                  id={listboxId}
+                  className="oyk-form-field-select-list"
+                  role="listbox"
+                  aria-labelledby={fieldId}
+                  aria-multiselectable={isMultiSelect || undefined}
+                >
+                  {options.map((option) => {
+                    const isSelected = isMultiSelect
+                      ? selectedValues.includes(option.value)
+                      : option.value === stringValue;
+                    const isDisabled = isMultiSelect && !isSelected && isAtMax;
+                    return (
+                      <li key={option.value} role="presentation">
+                        <button
+                          type="button"
+                          role="option"
+                          aria-selected={isSelected}
+                          disabled={isDisabled}
+                          className={oykClass(
+                            "oyk-form-field-select-option",
+                            isSelected && "oyk-selected",
+                            isDisabled && "oyk-disabled",
+                          )}
+                          onClick={() =>
+                            isMultiSelect
+                              ? handleMultiSelect(option.value)
+                              : handleSelect(option.value)
+                          }
+                        >
+                          <span>{option.label}</span>
+                          {isSelected ? <IconCheck size={16} /> : null}
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </OykScrollbar>
+            </div>,
+            document.body,
+          )
+        : null}
       {errorMessage ? (
         <div className="oyk-form-field-error" role="alert">
           <p>{errorMessage}</p>
