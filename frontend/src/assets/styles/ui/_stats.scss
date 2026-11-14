@@ -1,8 +1,10 @@
 .oyk-stats {
+  --oyk-stats-justify: center;
+
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: var(--oyk-stats-justify);
   gap: 32px;
   padding: 0;
   margin: 0;
@@ -11,7 +13,7 @@
     display: flex;
     flex: 1 0 auto;
     flex-direction: column;
-    align-items: center;
+    align-items: var(--oyk-stats-justify);
     justify-content: center;
     gap: 4px;
     min-width: 0;
@@ -49,18 +51,12 @@
   }
 
   &.oyk-justify--start {
-    .oyk-stats-item {
-      align-items: flex-start;
-    }
+    --oyk-stats-justify: flex-start;
   }
   &.oyk-justify--center {
-    .oyk-stats-item {
-      align-items: center;
-    }
+    --oyk-stats-justify: center;
   }
   &.oyk-justify--end {
-    .oyk-stats-item {
-      align-items: flex-end;
-    }
+    --oyk-stats-justify: flex-end;
   }
 }
