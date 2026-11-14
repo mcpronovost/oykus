@@ -13,6 +13,7 @@
     "other": "{count} entrées"
   },
   "encyclopedia.category.all": "Tout",
+  "encyclopedia.category.other": "Autre",
   "encyclopedia.category.fauna": "Faune",
   "encyclopedia.category.flora": "Flore",
   "Choose a space to view encyclopedia entries.": "Choisissez un espace pour voir les entrées d'encyclopédie.",
@@ -21,5 +22,17 @@
   "Could not load entries": "Impossible de charger les entrées",
   "Something went wrong while fetching encyclopedia entries.": "Une erreur est survenue lors du chargement des entrées d'encyclopédie.",
   "No entries yet": "Aucune entrée pour l'instant",
-  "Create your first nature entry to get started.": "Créez votre première entrée nature pour commencer."
+  "Create your first nature entry to get started.": "Créez votre première entrée nature pour commencer.",
+  "Title": "Titre",
+  "My entry title": "Titre de mon entrée",
+  "Category": "Catégorie",
+  "Select a category": "Sélectionner une catégorie",
+  "Summary": "Résumé",
+  "A short summary of this entry": "Un court résumé de cette entrée",
+  "Title is required.": "Le titre est requis.",
+  "Select a space before creating an entry.": "Sélectionnez un espace avant de créer une entrée.",
+  "Select a topic before creating an entry.": "Sélectionnez un sujet avant de créer une entrée.",
+  "Select a valid category.": "Sélectionnez une catégorie valide.",
+  "Could not create the entry.": "Impossible de créer l'entrée.",
+  "Could not create entry": "Impossible de créer l'entrée"
 }

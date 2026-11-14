@@ -154,6 +154,15 @@ export type TypeEncyclopediaEntry = {
   updatedAt: string;
 };
 
+export type TypeCreateEncyclopediaEntryInput = {
+  title: string;
+  spaceId: string;
+  topic: string;
+  categoryId?: number;
+  summary?: string;
+  slug?: string;
+};
+
 async function getHealth(): Promise<void> {
   const response = await fetch("/api/v1/health", { credentials: "include" });
   if (!response.ok) {
@@ -255,8 +264,18 @@ async function listEncyclopediaCategories(
   );
 }
 
+async function createEncyclopediaEntry(
+  input: TypeCreateEncyclopediaEntryInput,
+): Promise<TypeEncyclopediaEntry> {
+  return request<TypeEncyclopediaEntry>("/api/v1/encyclopedia", {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+}
+
 export { queryKeys } from "./queryKeys";
 export {
+  createEncyclopediaEntry,
   createNote,
   createSpace,
   deleteNote,

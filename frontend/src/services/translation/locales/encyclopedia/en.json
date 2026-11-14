@@ -13,6 +13,7 @@
     "other": "{count} entries"
   },
   "encyclopedia.category.all": "All",
+  "encyclopedia.category.other": "Other",
   "encyclopedia.category.fauna": "Fauna",
   "encyclopedia.category.flora": "Flora",
   "Choose a space to view encyclopedia entries.": "Choose a space to view encyclopedia entries.",
@@ -21,5 +22,17 @@
   "Could not load entries": "Could not load entries",
   "Something went wrong while fetching encyclopedia entries.": "Something went wrong while fetching encyclopedia entries.",
   "No entries yet": "No entries yet",
-  "Create your first nature entry to get started.": "Create your first nature entry to get started."
+  "Create your first nature entry to get started.": "Create your first nature entry to get started.",
+  "Title": "Title",
+  "My entry title": "My entry title",
+  "Category": "Category",
+  "Select a category": "Select a category",
+  "Summary": "Summary",
+  "A short summary of this entry": "A short summary of this entry",
+  "Title is required.": "Title is required.",
+  "Select a space before creating an entry.": "Select a space before creating an entry.",
+  "Select a topic before creating an entry.": "Select a topic before creating an entry.",
+  "Select a valid category.": "Select a valid category.",
+  "Could not create the entry.": "Could not create the entry.",
+  "Could not create entry": "Could not create entry"
 }

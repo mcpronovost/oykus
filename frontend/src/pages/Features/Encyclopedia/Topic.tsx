@@ -17,6 +17,7 @@ import {
   OykHeading,
   OykResult,
 } from "@/components/ui";
+import OykEncyclopediaModalsCreateEntry from "./modals/EntryCreate";
 
 export default function OykEncyclopediaTopic() {
   const { user } = useAuth();
@@ -26,6 +27,7 @@ export default function OykEncyclopediaTopic() {
   const topicSlug = params?.topic ?? null;
 
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [modalCreateEntryOpen, setModalCreateEntryOpen] = useState(false);
 
   if (!spaceId) {
     return (
@@ -73,27 +75,50 @@ export default function OykEncyclopediaTopic() {
 
   const isPending = isEntriesPending || isCategoriesPending;
   const isError = isEntriesError || isCategoriesError;
+  const uncategorizedEntries = entries.filter(
+    (entry) => entry.categoryId === null,
+  );
   const populatedCategories = categories.filter((category) =>
     entries.some((entry) => entry.categoryId === category.id),
   );
+  const hasCategorizedEntries = populatedCategories.length > 0;
+  const hasUncategorizedEntries = uncategorizedEntries.length > 0;
   const categoryFilters = [
     "all",
     ...populatedCategories.map((category) => category.slug),
+    ...(hasCategorizedEntries && hasUncategorizedEntries ? ["other"] : []),
   ];
   const visibleCategories = populatedCategories.filter(
     (category) =>
       selectedCategory === "all" || selectedCategory === category.slug,
   );
+  const showUncategorized =
+    hasUncategorizedEntries &&
+    (selectedCategory === "all" || selectedCategory === "other");
+  const showUncategorizedDivider = hasCategorizedEntries && showUncategorized;
 
   return (
     <div className="oyk-page-encyclopedia">
+      <OykEncyclopediaModalsCreateEntry
+        modalOpen={modalCreateEntryOpen}
+        setModalOpen={setModalCreateEntryOpen}
+        topicSlug={topicSlug}
+        categories={categories}
+      />
       <OykGrid>
         <OykHeading
           title={t(`encyclopedia.topic.${topicSlug}`)}
           suptitle={t("Encyclopedia")}
-          actions={<OykButton label={t("encyclopedia.newEntry")} color="accent" start={IconPlus} />}
+          actions={
+            <OykButton
+              label={t("encyclopedia.newEntry")}
+              color="accent"
+              start={IconPlus}
+              onClick={() => setModalCreateEntryOpen(true)}
+            />
+          }
         />
-        {!isPending && !isError && populatedCategories.length > 0 ? (
+        {!isPending && !isError && hasCategorizedEntries ? (
           <OykGrid.Row>
             <OykGrid.Col flex="horizontal" justify="start">
               {categoryFilters.map((c) => (
@@ -141,7 +166,7 @@ export default function OykEncyclopediaTopic() {
               </OykResult>
             </OykGrid.Col>
           </OykGrid.Row>
-        ) : populatedCategories.length === 0 ? (
+        ) : entries.length === 0 ? (
           <OykGrid.Row>
             <OykGrid.Col>
               <OykResult
@@ -157,27 +182,46 @@ export default function OykEncyclopediaTopic() {
             </OykGrid.Col>
           </OykGrid.Row>
         ) : (
-          visibleCategories.map((category) => {
-            const categoryEntries = entries.filter(
-              (entry) => entry.categoryId === category.id,
-            );
+          <>
+            {visibleCategories.map((category) => {
+              const categoryEntries = entries.filter(
+                (entry) => entry.categoryId === category.id,
+              );
 
-            return (
-              <OykGrid.Row key={category.id}>
-                <OykGrid.Col>
-                  <OykDivider
-                    start={t(`encyclopedia.category.${category.slug}`)}
-                    end={`${t("{count} entries", categoryEntries.length)}`}
-                  />
-                </OykGrid.Col>
+              return (
+                <OykGrid.Row key={category.id}>
+                  <OykGrid.Col>
+                    <OykDivider
+                      start={t(`encyclopedia.category.${category.slug}`)}
+                      end={`${t("{count} entries", categoryEntries.length)}`}
+                    />
+                  </OykGrid.Col>
+                  <OykGrid.Col flex="horizontal" wrap>
+                    {categoryEntries.map((entry) => (
+                      <OykCard key={entry.id}>{entry.title}</OykCard>
+                    ))}
+                  </OykGrid.Col>
+                </OykGrid.Row>
+              );
+            })}
+            {showUncategorized ? (
+              <OykGrid.Row>
+                {showUncategorizedDivider ? (
+                  <OykGrid.Col>
+                    <OykDivider
+                      start={t("encyclopedia.category.other")}
+                      end={`${t("{count} entries", uncategorizedEntries.length)}`}
+                    />
+                  </OykGrid.Col>
+                ) : null}
                 <OykGrid.Col flex="horizontal" wrap>
-                  {categoryEntries.map((entry) => (
+                  {uncategorizedEntries.map((entry) => (
                     <OykCard key={entry.id}>{entry.title}</OykCard>
                   ))}
                 </OykGrid.Col>
               </OykGrid.Row>
-            );
-          })
+            ) : null}
+          </>
         )}
       </OykGrid>
     </div>
