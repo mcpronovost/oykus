@@ -2,6 +2,7 @@ import { useState } from "react";
 import { IconBooksOff, IconPlus } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import {
+  type TypeEncyclopediaEntry,
   listEncyclopediaCategories,
   listEncyclopediaEntries,
   queryKeys,
@@ -11,13 +12,14 @@ import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import {
   OykButton,
-  OykCard,
   OykDivider,
   OykGrid,
   OykHeading,
   OykResult,
 } from "@/components/ui";
 import OykEncyclopediaModalsCreateEntry from "./modals/EntryCreate";
+import OykEncyclopediaDrawerEntry from "./drawers/EntryPreview";
+import OykEncyclopediaEntryCard from "./EntryCard";
 
 export default function OykEncyclopediaTopic() {
   const { user } = useAuth();
@@ -28,6 +30,8 @@ export default function OykEncyclopediaTopic() {
 
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [modalCreateEntryOpen, setModalCreateEntryOpen] = useState(false);
+  const [drawerEntryOpen, setDrawerEntryOpen] = useState(false);
+  const [drawerEntry, setDrawerEntry] = useState<TypeEncyclopediaEntry | null>(null);
 
   if (!spaceId) {
     return (
@@ -73,6 +77,11 @@ export default function OykEncyclopediaTopic() {
     setSelectedCategory(category);
   };
 
+  const handleEntryClick = (entry: TypeEncyclopediaEntry) => {
+    setDrawerEntry(entry);
+    setDrawerEntryOpen(true);
+  };
+
   const isPending = isEntriesPending || isCategoriesPending;
   const isError = isEntriesError || isCategoriesError;
   const uncategorizedEntries = entries.filter(
@@ -104,6 +113,11 @@ export default function OykEncyclopediaTopic() {
         setModalOpen={setModalCreateEntryOpen}
         topicSlug={topicSlug}
         categories={categories}
+      />
+      <OykEncyclopediaDrawerEntry
+        drawerOpen={drawerEntryOpen}
+        setDrawerOpen={setDrawerEntryOpen}
+        entry={drawerEntry}
       />
       <OykGrid>
         <OykHeading
@@ -198,7 +212,7 @@ export default function OykEncyclopediaTopic() {
                   </OykGrid.Col>
                   <OykGrid.Col flex="horizontal" wrap>
                     {categoryEntries.map((entry) => (
-                      <OykCard key={entry.id}>{entry.title}</OykCard>
+                      <OykEncyclopediaEntryCard key={entry.id} entry={entry} onClick={() => handleEntryClick(entry)} />
                     ))}
                   </OykGrid.Col>
                 </OykGrid.Row>
@@ -216,7 +230,7 @@ export default function OykEncyclopediaTopic() {
                 ) : null}
                 <OykGrid.Col flex="horizontal" wrap>
                   {uncategorizedEntries.map((entry) => (
-                    <OykCard key={entry.id}>{entry.title}</OykCard>
+                    <OykEncyclopediaEntryCard key={entry.id} entry={entry} onClick={() => handleEntryClick(entry)} />
                   ))}
                 </OykGrid.Col>
               </OykGrid.Row>
