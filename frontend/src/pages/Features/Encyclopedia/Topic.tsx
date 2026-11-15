@@ -1,3 +1,4 @@
+import "@/assets/styles/pages/_encyclopedia.scss";
 import { useState } from "react";
 import { IconBooksOff, IconPlus } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
@@ -210,11 +211,11 @@ export default function OykEncyclopediaTopic() {
                       end={`${t("{count} entries", categoryEntries.length)}`}
                     />
                   </OykGrid.Col>
-                  <OykGrid.Col flex="horizontal" wrap>
                     {categoryEntries.map((entry) => (
-                      <OykEncyclopediaEntryCard key={entry.id} entry={entry} onClick={() => handleEntryClick(entry)} />
+                      <OykGrid.Col key={entry.id} size={{ xs: 24, md: 12, xl: 8, xxl: 6 }}>
+                        <OykEncyclopediaEntryCard entry={entry} onClick={() => handleEntryClick(entry)} />
+                      </OykGrid.Col>
                     ))}
-                  </OykGrid.Col>
                 </OykGrid.Row>
               );
             })}
@@ -228,11 +229,11 @@ export default function OykEncyclopediaTopic() {
                     />
                   </OykGrid.Col>
                 ) : null}
-                <OykGrid.Col flex="horizontal" wrap>
-                  {uncategorizedEntries.map((entry) => (
-                    <OykEncyclopediaEntryCard key={entry.id} entry={entry} onClick={() => handleEntryClick(entry)} />
-                  ))}
-                </OykGrid.Col>
+                {uncategorizedEntries.map((entry) => (
+                  <OykGrid.Col key={entry.id} size={{ xs: 24, md: 12, xl: 8, xxl: 6 }}>
+                    <OykEncyclopediaEntryCard entry={entry} onClick={() => handleEntryClick(entry)} />
+                  </OykGrid.Col>
+                ))}
               </OykGrid.Row>
             ) : null}
           </>

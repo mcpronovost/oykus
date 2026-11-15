@@ -42,4 +42,82 @@
       }
     }
   }
+
+  &-entrycard {
+    flex: 1 1 25%;
+    min-width: 200px;
+    
+    &-header {
+      --oyk-entrycard-color: var(--oyk-c-accent);
+      --oyk-entrycard-muted: var(--oyk-c-accent-muted);
+
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+
+      &-title {
+        color: var(--oyk-card-fg-hover);
+        font-family: var(--oyk-font-heading);
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.3;
+        margin: 0;
+      }
+    
+      &-subtitle {
+        color: var(--oyk-entrycard-color);
+        font-family: var(--oyk-font);
+        font-size: 0.75rem;
+        font-weight: 400;
+        line-height: 1.4;
+        letter-spacing: 0.1em;
+        margin: 0;
+      }
+
+      &-icon {
+        border: 1px solid var(--oyk-entrycard-muted);
+        border-radius: var(--oyk-radius);
+        color: var(--oyk-entrycard-color);
+        font-size: 1rem;
+        line-height: 1;
+        display: flex;
+        flex: 0 0 32px;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        position: relative;
+        aspect-ratio: 1;
+
+        &::before {
+          content: "";
+          background: var(--oyk-entrycard-color);
+          position: absolute;
+          inset: 0;
+          opacity: 0.1;
+        }
+      }
+
+      @each $color in (accent, success, danger, info, warning, special) {
+        &-color-#{$color} {
+          --oyk-entrycard-color: var(--oyk-c-#{$color});
+          --oyk-entrycard-muted: var(--oyk-c-#{$color}-muted);
+        }
+      }
+    }
+
+    &-content {
+      &-summary {
+        color: var(--oyk-card-fg-subtle);
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1.2;
+        padding: 16px 0;
+        margin: 0;
+      }
+    }
+  }
 }
