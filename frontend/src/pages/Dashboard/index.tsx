@@ -12,7 +12,7 @@ import {
 import { listSpaces, queryKeys, type TypeSpace } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
-import { getTimeGreeting } from "@/utils";
+import { oykTimeGreeting } from "@/utils";
 import OykDashboardModalsSpaceCreate from "./modals/SpaceCreate";
 import OykDashboardModalsSpaceDelete from "./modals/SpaceDelete";
 import OykSpaceCurrentCard from "./SpaceCurrentCard";
@@ -55,7 +55,7 @@ export default function OykDashboard() {
       <OykGrid>
         <OykHeading
           title={user?.name}
-          suptitle={t(getTimeGreeting())}
+          suptitle={t(oykTimeGreeting())}
           subtitle={t("Here's what's happening with your worlds")}
           actions={
             <OykButton
