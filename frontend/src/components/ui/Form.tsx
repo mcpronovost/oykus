@@ -145,6 +145,7 @@ function OykFormField({
 }: OykFormFieldProps) {
   const fieldRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const selectMenuRef = useRef<HTMLDivElement>(null);
   const nativeInputRef = useRef<HTMLInputElement>(null);
   const multiValuesRef = useRef<HTMLSpanElement>(null);
@@ -222,6 +223,14 @@ function OykFormField({
     resizeObserver.observe(valuesEl);
     return () => resizeObserver.disconnect();
   }, [isMultiSelect, selectedOptionsKey]);
+
+  useLayoutEffect(() => {
+    if (!isTextarea) return;
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+    textarea.style.height = "0px";
+    textarea.style.height = `${textarea.scrollHeight}px`;
+  }, [isTextarea, stringValue]);
 
   useLayoutEffect(() => {
     if (!selectOpen) return;
@@ -449,17 +458,20 @@ function OykFormField({
               />
             </>
           ) : isTextarea ? (
-            <textarea
-              id={fieldId}
-              name={name}
-              placeholder={placeholder}
-              value={stringValue}
-              required={required}
-              rows={4}
-              onChange={handleChange}
-              aria-describedby={describedBy}
-              aria-invalid={Boolean(errorMessage) || undefined}
-            />
+            <OykScrollbar className="oyk-form-field-textarea-scroll">
+              <textarea
+                ref={textareaRef}
+                id={fieldId}
+                name={name}
+                placeholder={placeholder}
+                value={stringValue}
+                required={required}
+                rows={4}
+                onChange={handleChange}
+                aria-describedby={describedBy}
+                aria-invalid={Boolean(errorMessage) || undefined}
+              />
+            </OykScrollbar>
           ) : (
             <input
               id={fieldId}

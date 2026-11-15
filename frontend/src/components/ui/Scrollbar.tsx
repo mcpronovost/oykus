@@ -184,7 +184,7 @@ export default function OykScrollbar({
 
   const rootStyle: CSSProperties = {
     ...style,
-    height: toCssSize(height) ?? "100%",
+    ...(height !== undefined ? { height: toCssSize(height) } : {}),
   };
 
   return (
