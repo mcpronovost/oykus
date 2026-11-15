@@ -1,0 +1,13 @@
+.oyk-clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @for $i from 1 through 6 {
+    &-#{$i} {
+      -webkit-line-clamp: $i;
+      line-clamp: $i;
+    }
+  }
+}
