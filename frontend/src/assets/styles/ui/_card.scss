@@ -1,6 +1,6 @@
 .oyk-card {
-  --oyk-card-outlined: var(--oyk-card-fg-faint);
-  --oyk-card-hoverable: var(--oyk-card-fg-faint);
+  --oyk-card-outlined: var(--oyk-card-divider-hover);
+  --oyk-card-hoverable: var(--oyk-card-divider-hover);
 
   background: linear-gradient(
     to bottom,
