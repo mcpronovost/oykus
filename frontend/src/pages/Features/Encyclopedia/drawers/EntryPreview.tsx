@@ -20,13 +20,29 @@ export default function OykEncyclopediaDrawerEntry({
     <OykDrawer
       open={drawerOpen}
       onOpenChange={setDrawerOpen}
-      title={entry?.title}
-      suptitle={`${t("Encyclopedia")} · ${t(`encyclopedia.topic.${entry?.topic?.slug}`)}`}
+      title={entry?.title ?? t("Untitled")}
+      suptitle={`${t("Encyclopedia")}${entry?.topic ? ` · ${t(`encyclopedia.topic.${entry?.topic.slug}`)}` : ""}${entry?.category ? ` · ${t(`encyclopedia.category.${entry?.category.slug}`)}` : ""}`}
       headerIcon={getIcon(entry?.topic?.icon)}
       headerColor={entry?.topic?.color ?? "default"}
-      content={<pre>{JSON.stringify(entry, null, 2)}</pre>}
-      prependActions={<OykButton label={t("Close")} variant="ghost" onClick={() => setDrawerOpen(false)} />}
-      actions={<OykButton label={t("Edit Entry")} color="accent" onClick={() => {}} />}
+      content={
+        <div className="oyk-page-encyclopedia-entrypreview">
+          <div className="oyk-page-encyclopedia-entrypreview-summary">
+            <h3 className="oyk-page-encyclopedia-entrypreview-title">{t("Summary")}</h3>
+            <p>{entry?.summary}</p>
+          </div>
+          <pre style={{ whiteSpace: "pre-wrap" }}>{JSON.stringify(entry, null, 2)}</pre>
+        </div>
+      }
+      prependActions={
+        <OykButton
+          label={t("Close")}
+          variant="ghost"
+          onClick={() => setDrawerOpen(false)}
+        />
+      }
+      actions={
+        <OykButton label={t("Edit Entry")} color="accent" onClick={() => {}} />
+      }
     />
   );
 }

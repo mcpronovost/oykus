@@ -145,4 +145,33 @@
       padding: 16px 0 0;
     }
   }
+
+  &-entrypreview {
+    color: var(--oyk-card-fg);
+    font-size: 1rem;
+    line-height: 1.4;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 16px;
+
+    &-title {
+      color: var(--oyk-card-fg-muted);
+      font-family: var(--oyk-font-small);
+      font-size: 0.625rem;
+      font-weight: 600;
+      line-height: 1.3;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin: 0 0 8px;
+    }
+
+    &-summary {
+      color: var(--oyk-card-fg);
+      font-size: 1rem;
+      line-height: 1.4;
+      width: 100%;
+    }
+  }
 }
