@@ -21,11 +21,16 @@ const INITIAL_STATE: TypeAuthContextValue = {
   isAuth: false,
   user: null,
   isLoading: true,
-  login: async () => {},
+  hasError: false,
+  login: async () => {
+    throw new Error("AuthProvider not ready");
+  },
   logout: async () => {},
   refresh: async () => null,
-  setCurrentSpace: async () => {},
-} as TypeAuthContextValue;
+  setCurrentSpace: async () => {
+    throw new Error("AuthProvider not ready");
+  },
+};
 
 async function fetchCurrentUser(): Promise<TypePublicUser | null> {
   try {

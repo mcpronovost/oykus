@@ -62,6 +62,8 @@ export type TypePublicUser = {
   name: string;
   avatar: string | null;
   cover: string | null;
+  language: string;
+  timezone: string;
   currentSpace: TypeSpace | null;
   createdAt: string;
   updatedAt: string;
