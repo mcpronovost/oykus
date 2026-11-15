@@ -4,14 +4,7 @@ import { oykClass } from "@/utils";
 type OykCardProps = {
   children: React.ReactNode;
   pad?: "sm" | "md" | "lg" | "xl";
-  gradient?:
-    | null
-    | "accent"
-    | "success"
-    | "danger"
-    | "info"
-    | "warning"
-    | "special";
+  gradient?: "accent" | "success" | "danger" | "info" | "warning" | "special";
   outlined?: boolean;
   hoverable?: boolean;
   clickable?: boolean;
@@ -22,7 +15,7 @@ type OykCardProps = {
 export default function OykCard({
   children,
   pad = "md",
-  gradient = null,
+  gradient,
   outlined = false,
   hoverable = false,
   clickable = false,
