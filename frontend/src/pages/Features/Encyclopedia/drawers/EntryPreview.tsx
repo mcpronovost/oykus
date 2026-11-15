@@ -25,6 +25,7 @@ export default function OykEncyclopediaDrawerEntry({
       headerIcon={getIcon(entry?.topic?.icon)}
       headerColor={entry?.topic?.color ?? "default"}
       content={<pre>{JSON.stringify(entry, null, 2)}</pre>}
+      prependActions={<OykButton label={t("Close")} variant="ghost" onClick={() => setDrawerOpen(false)} />}
       actions={<OykButton label={t("Edit Entry")} color="accent" onClick={() => {}} />}
     />
   );

@@ -166,7 +166,7 @@ export default function OykDrawer({
           <header className={oykClass("oyk-drawer-header", headerColor !== "default" && `oyk-drawer-header-color-${headerColor}`)}>
             {HeaderIcon && (
               <div className="oyk-drawer-header-icon">
-                <HeaderIcon size={16} />
+                <HeaderIcon size={24} stroke={1.5} />
               </div>
             )}
             <div>
@@ -202,7 +202,11 @@ export default function OykDrawer({
         </OykScrollbar>
         {renderedActions != null && (
           <footer className="oyk-drawer-actions">
-            {renderedPrependActions}
+            {renderedPrependActions != null && (
+              <div className="oyk-drawer-actions-prepend">
+                {renderedPrependActions}
+              </div>
+            )}
             {renderedActions}
           </footer>
         )}
