@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import { oykClass } from "@/utils";
 
-type BreakpointType = "sm" | "md" | "lg" | "xl";
+type BreakpointType = "sm" | "md" | "lg" | "xl" | "xxl";
 type SizeType =
   | number
   | ({ xs?: number } & Partial<Record<BreakpointType, number>>);
@@ -30,7 +30,7 @@ function buildClasses(prefix: string, value?: SizeType): string[] {
 
   const classes: string[] = [];
   if (value.xs !== undefined) classes.push(`${prefix}--${value.xs}`);
-  (["sm", "md", "lg", "xl"] as BreakpointType[]).forEach((bp) => {
+  (["sm", "md", "lg", "xl", "xxl"] as BreakpointType[]).forEach((bp) => {
     const v = value[bp as BreakpointType];
     if (v !== undefined) classes.push(`${prefix}--${bp}-${v}`);
   });
