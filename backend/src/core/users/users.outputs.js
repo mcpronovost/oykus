@@ -3,6 +3,8 @@ export const USER_OUTPUT_SELECT = {
   name: true,
   avatar: true,
   cover: true,
+  language: true,
+  timezone: true,
   currentSpace: {
     select: {
       id: true,
@@ -20,6 +22,8 @@ export function toUserOutput(user) {
     name: user.name,
     avatar: user.avatar,
     cover: user.cover,
+    language: user.language,
+    timezone: user.timezone,
     currentSpace: user.currentSpace
       ? {
           id: user.currentSpace.id,
