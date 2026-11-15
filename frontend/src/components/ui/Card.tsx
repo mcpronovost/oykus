@@ -8,6 +8,7 @@ type OykCardProps = {
   outlined?: boolean;
   hoverable?: boolean;
   clickable?: boolean;
+  grow?: boolean;
   nop?: boolean;
   onClick?: (event: MouseEvent<HTMLDivElement>) => void;
 };
@@ -19,6 +20,7 @@ export default function OykCard({
   outlined = false,
   hoverable = false,
   clickable = false,
+  grow = false,
   nop = false,
   onClick,
 }: OykCardProps) {
@@ -31,6 +33,7 @@ export default function OykCard({
         outlined && "oyk-card-outlined",
         hoverable && "oyk-card-hoverable",
         clickable && "oyk-card-clickable",
+        grow && "oyk-card-grow",
         nop && "oyk-card-nop",
       )}
       onClick={onClick}

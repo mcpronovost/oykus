@@ -31,6 +31,10 @@
     }
   }
 
+  &-grow {
+    height: 100%;
+  }
+
   @each $gradient in (accent, success, danger, info, warning, special) {
     &-gradient-#{$gradient} {
       --oyk-card-hoverable: var(--oyk-c-#{$gradient}-muted);
