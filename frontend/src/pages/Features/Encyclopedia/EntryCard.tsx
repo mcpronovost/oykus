@@ -2,7 +2,7 @@ import type { TypeEncyclopediaEntry } from "@/services/api";
 import { getIcon, oykClass, oykTimeAgo } from "@/utils";
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
-import { OykCard } from "@/components/ui";
+import { OykCard, OykClamp } from "@/components/ui";
 
 interface OykEncyclopediaEntryCardProps {
   entry: TypeEncyclopediaEntry;
@@ -19,12 +19,17 @@ export default function OykEncyclopediaEntryCard({
   const TopicIcon = getIcon(entry.topic?.icon);
 
   return (
-    <OykCard hoverable clickable onClick={onClick}>
+    <OykCard hoverable clickable grow onClick={onClick}>
       <div className="oyk-page-encyclopedia-entrycard">
-        <header className={oykClass("oyk-page-encyclopedia-entrycard-header", entry.topic?.color && `oyk-page-encyclopedia-entrycard-header-color-${entry.topic.color}`)}>
+        <header
+          className={oykClass(
+            "oyk-page-encyclopedia-entrycard-header",
+            entry.topic?.color &&
+              `oyk-page-encyclopedia-entrycard-header-color-${entry.topic.color}`,
+          )}
+        >
           {TopicIcon && (
-            <div
-              className="oyk-page-encyclopedia-entrycard-header-icon">
+            <div className="oyk-page-encyclopedia-entrycard-header-icon">
               <TopicIcon size={20} stroke={1.5} />
             </div>
           )}
@@ -34,18 +39,27 @@ export default function OykEncyclopediaEntryCard({
             </h2>
             <p className="oyk-page-encyclopedia-entrycard-header-subtitle">
               {t(`encyclopedia.topic.${entry.topic?.slug}`)}
+              {entry.category &&
+                ` · ${t(`encyclopedia.category.${entry.category.slug}`)}`}
             </p>
           </div>
         </header>
         {entry.summary && (
           <div className="oyk-page-encyclopedia-entrycard-content">
-            <p className="oyk-page-encyclopedia-entrycard-content-summary">{entry.summary}</p>
+            <OykClamp
+              lines={3}
+              className="oyk-page-encyclopedia-entrycard-content-summary"
+            >
+              {entry.summary}
+            </OykClamp>
           </div>
         )}
         <footer className="oyk-page-encyclopedia-entrycard-footer">
           <div></div>
           <div>
-            <span>{oykTimeAgo(entry.updatedAt, user?.language, user?.timezone)}</span>
+            <span>
+              {oykTimeAgo(entry.updatedAt, user?.language, user?.timezone)}
+            </span>
           </div>
         </footer>
       </div>

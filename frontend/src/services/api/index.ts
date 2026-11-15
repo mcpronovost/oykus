@@ -257,6 +257,14 @@ async function listEncyclopediaEntries(
   );
 }
 
+async function listRecentEncyclopediaEntries(
+  spaceId: string,
+): Promise<TypeEncyclopediaEntry[]> {
+  return request<TypeEncyclopediaEntry[]>(
+    `/api/v1/spaces/${spaceId}/encyclopedia/recent`,
+  );
+}
+
 async function listEncyclopediaCategories(
   topic: string,
 ): Promise<TypeEncyclopediaCategory[]> {
@@ -289,6 +297,7 @@ export {
   listEncyclopediaCategories,
   listEncyclopediaEntries,
   listEncyclopediaTopics,
+  listRecentEncyclopediaEntries,
   listNoteCategories,
   listNotes,
   listSpaces,

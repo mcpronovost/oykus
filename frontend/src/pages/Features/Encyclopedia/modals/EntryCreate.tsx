@@ -110,6 +110,9 @@ export default function OykEncyclopediaModalsCreateEntry({
           queryKey: queryKeys.encyclopedia.list(spaceId, topicSlug),
         }),
         queryClient.invalidateQueries({
+          queryKey: queryKeys.encyclopedia.recent(spaceId),
+        }),
+        queryClient.invalidateQueries({
           queryKey: queryKeys.encyclopedia.stats(spaceId),
         }),
         queryClient.invalidateQueries({

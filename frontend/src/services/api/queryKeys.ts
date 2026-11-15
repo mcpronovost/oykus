@@ -17,6 +17,8 @@ export const queryKeys = {
     all: ["encyclopedia"] as const,
     list: (spaceId: string, topic: string) =>
       ["encyclopedia", "list", spaceId, topic] as const,
+    recent: (spaceId: string) =>
+      ["encyclopedia", "recent", spaceId] as const,
     categories: (topic: string) =>
       ["encyclopedia", "categories", topic] as const,
     topics: ["encyclopedia", "topics"] as const,

@@ -202,6 +202,19 @@ export async function listEntries(userId, { spaceId, topic, category }) {
   return entries.map(toEncyclopediaEntryOutput);
 }
 
+export async function listRecentEntries(userId, spaceId) {
+  await assertSpaceAccess(spaceId, userId);
+
+  const entries = await prisma.encyclopediaEntry.findMany({
+    where: { spaceId },
+    select: ENCYCLOPEDIA_ENTRY_OUTPUT_SELECT,
+    orderBy: { updatedAt: "desc" },
+    take: 12,
+  });
+
+  return entries.map(toEncyclopediaEntryOutput);
+}
+
 export async function getEntry(userId, entryId) {
   const entry = await getAccessibleEntry(entryId, userId);
   return toEncyclopediaEntryOutput(entry);

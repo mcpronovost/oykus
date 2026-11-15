@@ -51,6 +51,15 @@ export async function list(req, res) {
   res.json({ data: entries });
 }
 
+export async function recent(req, res) {
+  const spaceId = parseIdParam(req.params.id, "spaceId");
+  const entries = await encyclopediaServices.listRecentEntries(
+    req.userId,
+    spaceId,
+  );
+  res.json({ data: entries });
+}
+
 export async function get(req, res) {
   const entryId = parseIdParam(req.params.id);
   const entry = await encyclopediaServices.getEntry(req.userId, entryId);
