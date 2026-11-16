@@ -8,6 +8,14 @@
   "encyclopedia.topic.lore": "Lore",
   "Create your first {topic} entry to get started": "Créez votre première entrée « {topic} » pour commencer.",
   "encyclopedia.newEntry": "Nouvelle entrée",
+  "encyclopedia.editEntry": "Modifier l'entrée",
+  "Edit Entry": "Modifier l'entrée",
+  "Delete Entry": "Supprimer l'entrée",
+  "Are you sure you want to delete this entry?": "Êtes-vous sûr de vouloir supprimer cette entrée?",
+  "This action is irreversible.": "Cette action est irréversible.",
+  "Could not delete the entry.": "Impossible de supprimer l'entrée.",
+  "Could not update the entry.": "Impossible de mettre à jour l'entrée.",
+  "Could not update entry": "Impossible de mettre à jour l'entrée",
   "{count} entries": {
     "one": "{count} entrée",
     "other": "{count} entrées"

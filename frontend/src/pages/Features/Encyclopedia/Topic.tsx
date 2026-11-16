@@ -19,6 +19,7 @@ import {
   OykResult,
 } from "@/components/ui";
 import OykEncyclopediaModalsCreateEntry from "./modals/EntryCreate";
+import OykEncyclopediaModalsEditEntry from "./modals/EntryEdit";
 import OykEncyclopediaDrawerEntry from "./drawers/EntryPreview";
 import OykEncyclopediaEntryCard from "./EntryCard";
 
@@ -31,6 +32,7 @@ export default function OykEncyclopediaTopic() {
 
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [modalCreateEntryOpen, setModalCreateEntryOpen] = useState(false);
+  const [modalEditEntryOpen, setModalEditEntryOpen] = useState(false);
   const [drawerEntryOpen, setDrawerEntryOpen] = useState(false);
   const [drawerEntry, setDrawerEntry] = useState<TypeEncyclopediaEntry | null>(null);
 
@@ -83,6 +85,11 @@ export default function OykEncyclopediaTopic() {
     setDrawerEntryOpen(true);
   };
 
+  const handleOpenEdit = (entry: TypeEncyclopediaEntry) => {
+    setDrawerEntry(entry);
+    setModalEditEntryOpen(true);
+  };
+
   const isPending = isEntriesPending || isCategoriesPending;
   const isError = isEntriesError || isCategoriesError;
   const uncategorizedEntries = entries.filter(
@@ -115,10 +122,21 @@ export default function OykEncyclopediaTopic() {
         topicSlug={topicSlug}
         categories={categories}
       />
+      <OykEncyclopediaModalsEditEntry
+        modalOpen={modalEditEntryOpen}
+        setModalOpen={setModalEditEntryOpen}
+        entry={drawerEntry}
+        onUpdated={setDrawerEntry}
+        onDeleted={() => {
+          setDrawerEntryOpen(false);
+          setDrawerEntry(null);
+        }}
+      />
       <OykEncyclopediaDrawerEntry
         drawerOpen={drawerEntryOpen}
         setDrawerOpen={setDrawerEntryOpen}
         entry={drawerEntry}
+        onOpenEdit={handleOpenEdit}
       />
       <OykGrid>
         <OykHeading

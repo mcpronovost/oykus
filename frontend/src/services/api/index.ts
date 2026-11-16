@@ -165,6 +165,13 @@ export type TypeCreateEncyclopediaEntryInput = {
   slug?: string;
 };
 
+export type TypeUpdateEncyclopediaEntryInput = {
+  title?: string;
+  categoryId?: number | null;
+  summary?: string;
+  slug?: string;
+};
+
 async function getHealth(): Promise<void> {
   const response = await fetch("/api/v1/health", { credentials: "include" });
   if (!response.ok) {
@@ -283,11 +290,34 @@ async function createEncyclopediaEntry(
   });
 }
 
+async function updateEncyclopediaEntry(
+  entryId: string,
+  input: TypeUpdateEncyclopediaEntryInput,
+): Promise<TypeEncyclopediaEntry> {
+  return request<TypeEncyclopediaEntry>(
+    `/api/v1/encyclopedia/${encodeURIComponent(entryId)}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify(input),
+    },
+  );
+}
+
+async function deleteEncyclopediaEntry(entryId: string): Promise<void> {
+  await request<void>(
+    `/api/v1/encyclopedia/${encodeURIComponent(entryId)}`,
+    {
+      method: "DELETE",
+    },
+  );
+}
+
 export { queryKeys } from "./queryKeys";
 export {
   createEncyclopediaEntry,
   createNote,
   createSpace,
+  deleteEncyclopediaEntry,
   deleteNote,
   deleteSpace,
   getEncyclopediaStats,
@@ -305,4 +335,5 @@ export {
   logout,
   request,
   setCurrentSpace,
+  updateEncyclopediaEntry,
 };

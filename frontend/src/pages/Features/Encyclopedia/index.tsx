@@ -14,6 +14,7 @@ import { getIcon } from "@/utils";
 import { OykDivider, OykGrid, OykHeading, OykResult } from "@/components/ui";
 import OykEncyclopediaDrawerEntry from "./drawers/EntryPreview";
 import OykEncyclopediaEntryCard from "./EntryCard";
+import OykEncyclopediaModalsEditEntry from "./modals/EntryEdit";
 import OykEncyclopediaTopicsCard from "./TopicsCard";
 
 export default function OykEncyclopedia() {
@@ -23,6 +24,7 @@ export default function OykEncyclopedia() {
 
   const [drawerEntryOpen, setDrawerEntryOpen] = useState(false);
   const [drawerEntry, setDrawerEntry] = useState<TypeEncyclopediaEntry | null>(null);
+  const [modalEditEntryOpen, setModalEditEntryOpen] = useState(false);
 
   const { data: stats } = useQuery({
     queryKey: queryKeys.encyclopedia.stats(spaceId ?? ""),
@@ -44,14 +46,30 @@ export default function OykEncyclopedia() {
     setDrawerEntryOpen(true);
   };
 
+  const handleOpenEdit = (entry: TypeEncyclopediaEntry) => {
+    setDrawerEntry(entry);
+    setModalEditEntryOpen(true);
+  };
+
   if (!user?.currentSpace || !spaceId) return null;
 
   return (
     <div className="oyk-page-encyclopedia">
+      <OykEncyclopediaModalsEditEntry
+        modalOpen={modalEditEntryOpen}
+        setModalOpen={setModalEditEntryOpen}
+        entry={drawerEntry}
+        onUpdated={setDrawerEntry}
+        onDeleted={() => {
+          setDrawerEntryOpen(false);
+          setDrawerEntry(null);
+        }}
+      />
       <OykEncyclopediaDrawerEntry
         drawerOpen={drawerEntryOpen}
         setDrawerOpen={setDrawerEntryOpen}
         entry={drawerEntry}
+        onOpenEdit={handleOpenEdit}
       />
       <OykGrid>
         <OykHeading title={t("Encyclopedia")} suptitle={user.currentSpace.name} />

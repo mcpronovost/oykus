@@ -44,16 +44,16 @@ export default function OykEncyclopediaEntryCard({
             </p>
           </div>
         </header>
-        {entry.summary && (
-          <div className="oyk-page-encyclopedia-entrycard-content">
+        <div className="oyk-page-encyclopedia-entrycard-content">
+          {entry.summary && (
             <OykClamp
               lines={3}
               className="oyk-page-encyclopedia-entrycard-content-summary"
             >
               {entry.summary}
             </OykClamp>
-          </div>
-        )}
+          )}
+        </div>
         <footer className="oyk-page-encyclopedia-entrycard-footer">
           <div></div>
           <div>

@@ -7,12 +7,14 @@ interface OykEncyclopediaDrawerEntryProps {
   drawerOpen: boolean;
   setDrawerOpen: (drawerOpen: boolean) => void;
   entry: TypeEncyclopediaEntry | null;
+  onOpenEdit?: (entry: TypeEncyclopediaEntry) => void;
 }
 
 export default function OykEncyclopediaDrawerEntry({
   drawerOpen,
   setDrawerOpen,
   entry,
+  onOpenEdit,
 }: OykEncyclopediaDrawerEntryProps) {
   const { t } = useTranslation();
 
@@ -41,7 +43,15 @@ export default function OykEncyclopediaDrawerEntry({
         />
       }
       actions={
-        <OykButton label={t("Edit Entry")} color="accent" onClick={() => {}} />
+        <OykButton
+          label={t("Edit Entry")}
+          color="accent"
+          onClick={() => {
+            if (entry && onOpenEdit) {
+              onOpenEdit(entry);
+            }
+          }}
+        />
       }
     />
   );
