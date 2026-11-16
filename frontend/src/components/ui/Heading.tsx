@@ -2,7 +2,10 @@ import type { HTMLAttributes, ReactNode } from "react";
 import type { Icon } from "@tabler/icons-react";
 import { oykClass } from "@/utils";
 
-interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
+type OykHeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+
+interface OykHeadingProps extends HTMLAttributes<HTMLHeadingElement> {
+  tag?: OykHeadingTag;
   suptitle?: string;
   title?: string;
   subtitle?: string;
@@ -13,6 +16,7 @@ interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
 }
 
 export default function OykHeading({
+  tag = "h1",
   suptitle,
   title,
   subtitle,
@@ -21,7 +25,9 @@ export default function OykHeading({
   variant = "default",
   className,
   ...props
-}: HeadingProps) {
+}: OykHeadingProps) {
+  const HeadingComponent = tag as OykHeadingTag;
+
   return (
     <header
       className={oykClass(
@@ -38,7 +44,7 @@ export default function OykHeading({
       )}
       <hgroup className="oyk-heading-group">
         {suptitle && <p className="oyk-heading-group-suptitle">{suptitle}</p>}
-        {title && <h1 className="oyk-heading-group-title">{title}</h1>}
+        {title && <HeadingComponent className="oyk-heading-group-title">{title}</HeadingComponent>}
         {subtitle && <p className="oyk-heading-group-subtitle">{subtitle}</p>}
       </hgroup>
       {actions && <div className="oyk-heading-actions">{actions}</div>}
