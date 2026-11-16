@@ -1,0 +1,53 @@
+.oyk-code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+  .oyk-code-g {
+    font-weight: 700;
+  }
+
+  .oyk-code-i {
+    font-style: italic;
+  }
+
+  .oyk-code-s {
+    text-decoration: underline;
+  }
+
+  .oyk-code-b {
+    text-decoration: line-through;
+  }
+
+  .oyk-code-ag,
+  .oyk-code-ac,
+  .oyk-code-ad {
+    display: block;
+  }
+
+  .oyk-code-ag {
+    text-align: left;
+  }
+
+  .oyk-code-ac {
+    text-align: center;
+  }
+
+  .oyk-code-ad {
+    text-align: right;
+  }
+
+  .oyk-code-url {
+    color: var(--oyk-c-accent);
+    text-decoration: underline;
+
+    &:hover {
+      color: var(--oyk-c-accent-hover);
+    }
+  }
+
+  .oyk-code-img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+}

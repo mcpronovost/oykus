@@ -3,6 +3,7 @@ export { default as OykButton } from "./Button";
 export { default as OykCard } from "./Card";
 export { default as OykChip } from "./Chip";
 export { default as OykClamp } from "./Clamp";
+export { default as OykCode } from "./Code";
 export { default as OykDialog } from "./Dialog";
 export { default as OykDivider } from "./Divider";
 export { default as OykDrawer } from "./Drawer";
