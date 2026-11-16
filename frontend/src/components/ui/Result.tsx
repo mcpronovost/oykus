@@ -55,7 +55,6 @@ export default function OykResult({
       className={oykClass("oyk-result", `oyk-color-${color}`, `oyk-variant-${variant}`, className)}
       {...props}
     >
-      <div className="oyk-result-bg" />
       <div className="oyk-result-icon">
         <ResolvedIcon size={64} stroke={1} />
       </div>

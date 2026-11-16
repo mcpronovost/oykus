@@ -1,5 +1,5 @@
 .oyk-button {
-  --oyk-btn-bg: transparent;
+  --oyk-btn-bg: color-mix(in srgb, var(--oyk-btn-fg) 6%, transparent);
   --oyk-btn-fg: var(--oyk-card-fg);
   --oyk-btn-border: var(--oyk-card-divider);
 
@@ -75,43 +75,39 @@
 
   &-color {
     &--default {
-      border-color: var(--oyk-card-divider);
-      color: var(--oyk-card-fg);
-
-      .oyk-button-bg {
-        background-color: var(--oyk-card-bg);
-        opacity: 1;
-      }
+      --oyk-btn-bg: var(--oyk-card-bg);
+      --oyk-btn-border: var(--oyk-card-divider);
+      --oyk-btn-fg: var(--oyk-card-fg);
     }
 
     &--accent {
       --oyk-btn-fg: var(--oyk-c-accent);
-      --oyk-btn-border: var(--oyk-c-accent-muted);
+      --oyk-btn-border: var(--oyk-c-accent);
     }
 
     &--success {
       --oyk-btn-fg: var(--oyk-c-success);
-      --oyk-btn-border: var(--oyk-c-success-muted);
+      --oyk-btn-border: var(--oyk-c-success);
     }
 
     &--danger {
       --oyk-btn-fg: var(--oyk-c-danger);
-      --oyk-btn-border: var(--oyk-c-danger-muted);
+      --oyk-btn-border: var(--oyk-c-danger);
     }
 
     &--info {
       --oyk-btn-fg: var(--oyk-c-info);
-      --oyk-btn-border: var(--oyk-c-info-muted);
+      --oyk-btn-border: var(--oyk-c-info);
     }
 
     &--warning {
       --oyk-btn-fg: var(--oyk-c-warning);
-      --oyk-btn-border: var(--oyk-c-warning-muted);
+      --oyk-btn-border: var(--oyk-c-warning);
     }
 
     &--special {
       --oyk-btn-fg: var(--oyk-c-special);
-      --oyk-btn-border: var(--oyk-c-special-muted);
+      --oyk-btn-border: var(--oyk-c-special);
     }
   }
 
@@ -125,19 +121,13 @@
     }
 
     &--ghost {
+      --oyk-btn-bg: color-mix(in srgb, var(--oyk-btn-fg) 3%, transparent);
       border-style: dashed;
-
-      .oyk-button-bg {
-        opacity: 0.04;
-      }
     }
 
     &--plain {
+      --oyk-btn-bg: transparent;
       border-color: transparent;
-
-      .oyk-button-bg {
-        opacity: 0;
-      }
     }
   }
 
@@ -204,15 +194,5 @@
     &+.oyk-button-content {
       opacity: 0.15;
     }
-  }
-
-  &-bg {
-    background-color: currentColor;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 0.1;
   }
 }

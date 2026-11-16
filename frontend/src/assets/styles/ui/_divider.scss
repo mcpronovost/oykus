@@ -37,7 +37,7 @@
 
   @each $color in (danger, success, info, warning, special) {
     &-color--#{$color} {
-      --oyk-divider-line: var(--oyk-c-#{$color}-subtle);
+      --oyk-divider-line: var(--oyk-c-#{$color});
     }
   }
 

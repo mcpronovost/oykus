@@ -9,7 +9,7 @@
 
   &-icon {
     background: color-mix(in srgb, var(--oyk-card-color, var(--oyk-c-accent)) 6%, transparent);
-    border: 1px solid var(--oyk-card-outlined, var(--oyk-c-accent-subtle));
+    border: 1px solid var(--oyk-card-outlined, var(--oyk-c-accent));
     border-radius: var(--oyk-radius);
     color: var(--oyk-card-color, var(--oyk-c-accent));
     font-size: 1rem;
@@ -36,7 +36,7 @@
 
     &::after {
       content: "";
-      background-color: var(--oyk-c-accent-subtle);
+      background-color: var(--oyk-c-accent);
       border-radius: 9999px;
       display: inline-block;
       width: 32px;
@@ -45,7 +45,7 @@
     }
 
     &-suptitle {
-      color: var(--oyk-c-accent-subtle);
+      color: var(--oyk-c-accent);
       font-size: 0.875rem;
       font-weight: 500;
       line-height: 1.2;

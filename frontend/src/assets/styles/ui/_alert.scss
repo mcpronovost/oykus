@@ -4,8 +4,9 @@
   --oyk-alert-fg-subtle: var(--oyk-card-fg-subtle);
   --oyk-alert-bcolor: var(--oyk-card-divider);
   --oyk-alert-bstyle: solid;
+  --oyk-alert-bg-mix: 6%;
 
-  background-color: transparent;
+  background: color-mix(in srgb, var(--oyk-alert-bg) var(--oyk-alert-bg-mix), transparent);
   border: 1px var(--oyk-alert-bstyle) var(--oyk-alert-bcolor);
   border-radius: var(--oyk-radius);
   color: var(--oyk-alert-fg);
@@ -74,34 +75,19 @@
 
   @each $color in $colors {
     &.oyk-color-#{$color} {
-      --oyk-alert-c: var(--oyk-c-#{$color});
       --oyk-alert-bg: var(--oyk-c-#{$color});
       --oyk-alert-fg: var(--oyk-c-#{$color});
-      --oyk-alert-fg-subtle: var(--oyk-c-#{$color}-subtle);
-      --oyk-alert-bcolor: var(--oyk-c-#{$color}-muted);
+      --oyk-alert-fg-subtle: var(--oyk-c-#{$color});
+      --oyk-alert-bcolor: var(--oyk-c-#{$color});
     }
   }
 
   &.oyk-variant-ghost {
     --oyk-alert-bstyle: dashed;
-
-    .oyk-alert-bg {
-      opacity: 0.04;
-    }
+    --oyk-alert-bg-mix: 3%;
   }
 
   &.oyk-closed {
     display: none;
-  }
-
-  &-bg {
-    background-color: var(--oyk-alert-bg);
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 0.1;
-    z-index: 0;
   }
 }

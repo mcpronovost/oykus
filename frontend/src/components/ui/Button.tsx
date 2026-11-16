@@ -77,7 +77,6 @@ export default function OykButton({
       disabled={disabled}
       onClick={handleClick}
     >
-      <div className="oyk-button-bg" />
       {loading && (
         <div className="oyk-button-loading">
           <IconLoader size={iconSize} stroke={1.5} />

@@ -195,35 +195,30 @@
       width: 100%;
       color: #f0f0f0;
       border: 1px solid transparent;
-      background: linear-gradient(
-        135deg,
-        var(--oyk-core-sidebar-divider),
-        var(--oyk-core-sidebar-divider),
-        var(--oyk-c-accent-subtle),
-        var(--oyk-core-sidebar-divider),
-        var(--oyk-core-sidebar-divider)
-      );
-      background-origin: border-box;
-      box-shadow: 0 0 0 1px var(--oyk-core-sidebar-divider) inset;
-      transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.25s ease;
-
-      .oyk-button-bg {
-        background: linear-gradient(
+      background:
+        linear-gradient(
           to bottom,
           var(--oyk-core-header-bg),
           var(--oyk-core-header-bg-subtle)
-        );
-        opacity: 1;
-        inset: 1px;
-        border-radius: inherit;
-      }
+        ) padding-box,
+        linear-gradient(
+          135deg,
+          var(--oyk-core-sidebar-divider),
+          var(--oyk-core-sidebar-divider),
+          var(--oyk-c-accent),
+          var(--oyk-core-sidebar-divider),
+          var(--oyk-core-sidebar-divider)
+        ) border-box;
+      background-clip: padding-box, border-box;
+      box-shadow: 0 0 0 1px var(--oyk-core-sidebar-divider) inset;
+      transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.25s ease;
 
       &:not(:disabled):hover {
         opacity: 1;
         transform: translateY(-2px);
         box-shadow:
           0 0 18px hsl(var(--oyk-h-accent), 45%, 38%, 0.28),
-          0 0 0 1px var(--oyk-c-accent-muted) inset;
+          0 0 0 1px var(--oyk-c-accent) inset;
       }
 
       .oyk-button-content {

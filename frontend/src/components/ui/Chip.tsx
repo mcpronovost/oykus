@@ -38,7 +38,6 @@ export default function OykChip({
         ...(customColor && { color: customColor }),
       }}
     >
-      <div className="oyk-chip-bg" />
       <div className="oyk-chip-content">{children || label}</div>
     </div>
   );

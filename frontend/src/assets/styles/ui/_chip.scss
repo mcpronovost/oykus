@@ -1,5 +1,7 @@
 .oyk-chip {
-  background: transparent;
+  --oyk-chip-bg-mix: 6%;
+
+  background: color-mix(in srgb, currentColor var(--oyk-chip-bg-mix), transparent);
   border-radius: 6px;
   color: var(--oyk-card-fg);
   font-size: 0.75rem;
@@ -56,6 +58,8 @@
     }
 
     &--ghost {
+      --oyk-chip-bg-mix: 3%;
+
       &::before {
         content: "";
         border: 1px dashed currentColor;
@@ -67,26 +71,14 @@
         bottom: 0;
         opacity: 0.5;
       }
-
-      .oyk-chip-bg {
-        opacity: 0.04;
-      }
     }
   }
 
   &-color {
-    &--accent {
-      color: var(--oyk-c-accent);
+    @each $color in (accent, success, danger, info, warning, special) {
+      &--#{$color} {
+        color: var(--oyk-c-#{$color});
+      }
     }
-  }
-
-  &-bg {
-    background-color: currentColor;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 0.14;
   }
 }

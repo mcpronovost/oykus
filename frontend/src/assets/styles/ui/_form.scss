@@ -229,7 +229,7 @@
       }
 
       &.oyk-invalid {
-        box-shadow: 0 0 2px 1px var(--oyk-c-danger-subtle);
+        box-shadow: 0 0 2px 1px color-mix(in srgb, var(--oyk-c-danger) 40%, transparent);
         outline: 1px dashed var(--oyk-c-danger);
       }
 
@@ -389,7 +389,7 @@
       }
 
       &:focus-within {
-        border-color: var(--oyk-c-accent-muted);
+        border-color: var(--oyk-c-accent);
       }
     }
   }

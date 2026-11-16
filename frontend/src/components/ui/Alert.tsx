@@ -55,7 +55,6 @@ export default function OykAlert({
       className={oykClass("oyk-alert", `oyk-color-${color}`, `oyk-variant-${variant}`, className)}
       {...props}
     >
-      <div className="oyk-alert-bg" />
       <div className="oyk-alert-icon">
         <ResolvedIcon size={24} />
       </div>

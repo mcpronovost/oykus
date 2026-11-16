@@ -10,8 +10,11 @@
   width: 100%;
 
   &-fill {
-    background-color: var(--oyk-c-accent-subtle);
-    background: linear-gradient(to right, var(--oyk-c-accent-subtle), var(--oyk-c-accent));
+    background: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--oyk-c-accent) 40%, transparent),
+      var(--oyk-c-accent)
+    );
     border-radius: 4px;
     height: 100%;
   }

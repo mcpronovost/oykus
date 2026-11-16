@@ -62,7 +62,7 @@
 
   @each $color in (accent, success, danger, info, warning, special) {
     &-color-#{$color} {
-      border-color: var(--oyk-c-#{$color}-subtle);
+      border-color: var(--oyk-c-#{$color});
     }
   }
 

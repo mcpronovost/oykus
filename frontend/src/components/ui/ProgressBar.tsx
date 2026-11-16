@@ -12,7 +12,7 @@ export default function OykProgressBar({
       <div
         className="oyk-progress-bar-fill"
         style={{
-          background: `linear-gradient(to right, var(--oyk-c-${color}-subtle), var(--oyk-c-${color}))`,
+          background: `linear-gradient(to right, color-mix(in srgb, var(--oyk-c-${color}) 40%, transparent), var(--oyk-c-${color}))`,
           width: `${value}%`,
         }}
       ></div>
