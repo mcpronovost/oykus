@@ -2,7 +2,7 @@ import type { TypeEncyclopediaEntry } from "@/services/api";
 import { getIcon, oykClass, oykTimeAgo } from "@/utils";
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
-import { OykCard, OykClamp } from "@/components/ui";
+import { OykCard, OykClamp, OykCode } from "@/components/ui";
 
 interface OykEncyclopediaEntryCardProps {
   entry: TypeEncyclopediaEntry;
@@ -50,7 +50,7 @@ export default function OykEncyclopediaEntryCard({
               lines={3}
               className="oyk-page-encyclopedia-entrycard-content-summary"
             >
-              {entry.summary}
+              <OykCode>{entry.summary}</OykCode>
             </OykClamp>
           )}
         </div>

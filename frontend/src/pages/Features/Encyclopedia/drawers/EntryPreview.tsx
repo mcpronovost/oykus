@@ -1,7 +1,7 @@
 import type { TypeEncyclopediaEntry } from "@/services/api";
 import { getIcon } from "@/utils";
 import { useTranslation } from "@/services/translation";
-import { OykButton, OykDrawer } from "@/components/ui";
+import { OykButton, OykCode, OykDrawer } from "@/components/ui";
 
 interface OykEncyclopediaDrawerEntryProps {
   drawerOpen: boolean;
@@ -30,9 +30,8 @@ export default function OykEncyclopediaDrawerEntry({
         <div className="oyk-page-encyclopedia-entrypreview">
           <div className="oyk-page-encyclopedia-entrypreview-summary">
             <h3 className="oyk-page-encyclopedia-entrypreview-title">{t("Summary")}</h3>
-            <p>{entry?.summary}</p>
+            <OykCode>{entry?.summary ?? ""}</OykCode>
           </div>
-          <pre style={{ whiteSpace: "pre-wrap" }}>{JSON.stringify(entry, null, 2)}</pre>
         </div>
       }
       prependActions={
