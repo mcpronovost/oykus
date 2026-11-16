@@ -1,12 +1,12 @@
 .oyk-form {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  gap: 16px;
   width: 100%;
-  margin: 8px 0;
+  margin: 0;
 
   &-field {
+    &+& {
+      margin-top: 16px;
+    }
+
     &-label {
       font-size: 0.9rem;
       line-height: 1.2;
@@ -388,7 +388,7 @@
       }
 
       &:focus-within {
-        border-color: var(--oyk-c-accent);
+        border-color: var(--oyk-c-accent-muted);
       }
     }
   }
