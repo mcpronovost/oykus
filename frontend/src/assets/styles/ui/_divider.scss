@@ -1,4 +1,6 @@
 .oyk-divider {
+  --oyk-divider-line: var(--oyk-card-divider);
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6,9 +8,9 @@
   margin: 16px 0;
 
   &-line {
+    background: var(--oyk-divider-line);
     flex: 1;
     height: 1px;
-    background: var(--oyk-card-divider);
   }
 
   &-label,
@@ -31,6 +33,12 @@
 
   &-end {
     padding: 0 0 0 16px;
+  }
+
+  @each $color in (danger, success, info, warning, special) {
+    &-color--#{$color} {
+      --oyk-divider-line: var(--oyk-c-#{$color}-subtle);
+    }
   }
 
   &-nop {
