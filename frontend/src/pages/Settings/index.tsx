@@ -21,7 +21,7 @@ import {
   OykHeading,
 } from "@/components/ui";
 import ImgPlaceholder1 from "@/assets/img/space-cover-1.webp";
-import OykDashboardModalsSpaceDelete from "@/pages/Dashboard/modals/SpaceDelete";
+import OykDashboardModalsSpaceDelete from "./modals/SpaceDelete";
 import OykSettingsModalsSpaceDeactivate from "./modals/SpaceDeactivate";
 
 type TypeSettingsForm = {

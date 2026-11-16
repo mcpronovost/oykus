@@ -6,6 +6,8 @@
   "encyclopedia.topic.items": "Objets",
   "encyclopedia.topic.events": "Événements",
   "encyclopedia.topic.lore": "Lore",
+  "encyclopedia.noTopics.title": "Aucun sujet trouvé",
+  "encyclopedia.noTopics.message": "Contactez votre administrateur pour créer un nouveau sujet",
   "Create your first {topic} entry to get started": "Créez votre première entrée « {topic} » pour commencer.",
   "encyclopedia.newEntry": "Nouvelle entrée",
   "encyclopedia.editEntry": "Modifier l'entrée",

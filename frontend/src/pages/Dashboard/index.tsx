@@ -14,7 +14,7 @@ import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
 import { oykTimeGreeting } from "@/utils";
 import OykDashboardModalsSpaceCreate from "./modals/SpaceCreate";
-import OykDashboardModalsSpaceDelete from "./modals/SpaceDelete";
+import OykDashboardModalsSpaceDelete from "@/pages/Settings/modals/SpaceDelete";
 import OykSpaceCurrentCard from "./SpaceCurrentCard";
 import OykSpaceShelfCard from "./SpaceShelfCard";
 

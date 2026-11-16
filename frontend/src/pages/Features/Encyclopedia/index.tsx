@@ -77,8 +77,8 @@ export default function OykEncyclopedia() {
           <OykGrid.Col>
             {topics.length === 0 ? (
               <OykResult
-                title={t("No topics yet")}
-                message={t("Contact your administrator to create a new topic")}
+                title={t("encyclopedia.noTopics.title")}
+                message={t("encyclopedia.noTopics.message")}
                 variant="ghost"
                 icon={IconBooksOff}
               />

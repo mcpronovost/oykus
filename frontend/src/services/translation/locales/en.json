@@ -59,6 +59,10 @@
     "one": "{count} note",
     "other": "{count} notes"
   },
+  "{count} encyclopedia entries": {
+    "one": "{count} encyclopedia entry",
+    "other": "{count} encyclopedia entries"
+  },
   "Notes": "Notes",
   "All": "All",
   "Select category": "Select category",

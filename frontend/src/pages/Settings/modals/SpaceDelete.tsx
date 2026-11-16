@@ -1,10 +1,17 @@
 import type { SubmitEvent } from "react";
 import type { Icon } from "@tabler/icons-react";
-import { IconNote } from "@tabler/icons-react";
+import { IconBooks, IconNote } from "@tabler/icons-react";
 import { useId, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { OykButton, OykForm, OykList, OykModal } from "@/components/ui";
-import { ApiError, deleteSpace, listNotes, queryKeys, type TypeSpace } from "@/services/api";
+import {
+  ApiError,
+  deleteSpace,
+  getEncyclopediaStats,
+  listNotes,
+  queryKeys,
+  type TypeSpace,
+} from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
 
@@ -39,14 +46,31 @@ export default function OykDashboardModalsSpaceDelete({
     enabled: Boolean(space),
   });
 
+  const {
+    data: encyclopediaStats,
+    isPending: isEncyclopediaPending,
+  } = useQuery({
+    queryKey: queryKeys.encyclopedia.stats(space?.id ?? ""),
+    queryFn: () => getEncyclopediaStats(space!.id),
+    enabled: Boolean(space),
+  });
+
+  const encyclopediaCount = encyclopediaStats?.total ?? 0;
+  const isDestroyedItemsPending = isNotesPending || isEncyclopediaPending;
+
   const destroyedItems: TypeDestroyedItem[] = [
+    {
+      key: "encyclopedia",
+      count: encyclopediaCount,
+      icon: IconBooks,
+      label: t("{count} encyclopedia entries", encyclopediaCount),
+    },
     {
       key: "notes",
       count: notes.length,
       icon: IconNote,
       label: t("{count} notes", notes.length),
     },
-    // Future features: encyclopedia entries, tasks, etc.
   ].filter((item) => item.count > 0);
 
   const nameMatches =
@@ -111,7 +135,7 @@ export default function OykDashboardModalsSpaceDelete({
           <p>
             {t("This will permanently delete this space and destroy all of its content")}
           </p>
-          {!isNotesPending && destroyedItems.length > 0 && (
+          {!isDestroyedItemsPending && destroyedItems.length > 0 && (
             <OykList>
               {destroyedItems.map((item) => (
                 <OykList.Item
