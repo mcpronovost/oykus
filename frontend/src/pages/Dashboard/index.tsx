@@ -2,19 +2,14 @@ import "@/assets/styles/pages/_dashboard.scss";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { IconPlus } from "@tabler/icons-react";
-import {
-  OykButton,
-  OykDivider,
-  OykGrid,
-  OykHeading,
-  OykResult,
-} from "@/components/ui";
+import { OykButton, OykDivider, OykGrid, OykHeading, OykResult } from "@/components/ui";
 import { listSpaces, queryKeys, type TypeSpace } from "@/services/api";
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
 import { oykTimeGreeting } from "@/utils";
 import OykDashboardModalsSpaceCreate from "./modals/SpaceCreate";
 import OykDashboardModalsSpaceDelete from "@/pages/Settings/modals/SpaceDelete";
+import OykSettingsModalsSpaceDeactivate from "@/pages/Settings/modals/SpaceDeactivate";
 import OykSpaceCurrentCard from "./SpaceCurrentCard";
 import OykSpaceShelfCard from "./SpaceShelfCard";
 
@@ -24,6 +19,7 @@ export default function OykDashboard() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [spaceToDelete, setSpaceToDelete] = useState<TypeSpace | null>(null);
+  const [spaceToReactivate, setSpaceToReactivate] = useState<TypeSpace | null>(null);
 
   const handleSelectSpace = (spaceId: string) => {
     if (user?.currentSpace?.id === spaceId) return;
@@ -40,39 +36,28 @@ export default function OykDashboard() {
     queryFn: listSpaces,
   });
 
+  const activeSpaces = spaces.filter((space) => space.isActive !== false);
+  const inactiveSpaces = spaces.filter((space) => space.isActive === false);
+
   if (!isAuth || user == null) return null;
 
   return (
     <div className="oyk-page-dashboard">
-      <OykDashboardModalsSpaceCreate
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-      />
-      <OykDashboardModalsSpaceDelete
-        space={spaceToDelete}
-        setSpace={setSpaceToDelete}
-      />
+      <OykDashboardModalsSpaceCreate modalOpen={modalOpen} setModalOpen={setModalOpen} />
+      <OykDashboardModalsSpaceDelete space={spaceToDelete} setSpace={setSpaceToDelete} />
+      <OykSettingsModalsSpaceDeactivate space={spaceToReactivate} setSpace={setSpaceToReactivate} />
       <OykGrid>
         <OykHeading
           title={user?.name}
           suptitle={t(oykTimeGreeting())}
           subtitle={t("Here's what's happening with your worlds")}
           actions={
-            <OykButton
-              label={t("New Space")}
-              color="accent"
-              start={IconPlus}
-              onClick={() => setModalOpen(true)}
-            />
+            <OykButton label={t("New Space")} color="accent" start={IconPlus} onClick={() => setModalOpen(true)} />
           }
         />
 
         {isPending ? (
-          <OykResult
-            title="Loading spaces"
-            message="Fetching your worlds..."
-            variant="ghost"
-          />
+          <OykResult title="Loading spaces" message="Fetching your worlds..." variant="ghost" />
         ) : isError ? (
           <OykResult
             title="Could not load spaces"
@@ -80,23 +65,15 @@ export default function OykDashboard() {
             color="danger"
             variant="ghost"
           >
-            <OykButton
-              label="Try again"
-              color="accent"
-              onClick={() => refetch()}
-            />
+            <OykButton label="Try again" color="accent" onClick={() => refetch()} />
           </OykResult>
         ) : spaces.length === 0 ? (
-          <OykResult
-            title="No spaces found"
-            message="Create a new space to get started"
-            variant="ghost"
-          />
+          <OykResult title="No spaces found" message="Create a new space to get started" variant="ghost" />
         ) : (
           <OykGrid.Row>
             {user.currentSpace && (
               <OykGrid.Col>
-                <OykSpaceCurrentCard space={user.currentSpace} />
+                <OykSpaceCurrentCard space={user.currentSpace} onReactivate={setSpaceToReactivate} />
               </OykGrid.Col>
             )}
             <OykGrid.Col size={12} flex="horizontal" justify="start">
@@ -106,19 +83,40 @@ export default function OykDashboard() {
               <OykButton label={t("Shelf")} size="sm" variant="pill" color="accent" />
               <OykButton label={t("List")} size="sm" variant="pill" disabled />
             </OykGrid.Col>
-            <OykGrid.Col>
-              <OykDivider start={t("Your worlds")} end={`${t("{count} spaces", spaces.length)}`} nop />
-            </OykGrid.Col>
-            <OykGrid.Col flex="horizontal" wrap>
-              {spaces.map((space) => (
-                <OykSpaceShelfCard
-                  key={space.id}
-                  space={space}
-                  onSelect={(selected) => handleSelectSpace(selected.id)}
-                  onDelete={setSpaceToDelete}
-                />
-              ))}
-            </OykGrid.Col>
+            {activeSpaces.length > 0 ? (
+              <>
+                <OykGrid.Col>
+                  <OykDivider start={t("Your worlds")} end={`${t("{count} spaces", activeSpaces.length)}`} nop />
+                </OykGrid.Col>
+                <OykGrid.Col flex="horizontal" wrap>
+                  {activeSpaces.map((space) => (
+                    <OykSpaceShelfCard
+                      key={space.id}
+                      space={space}
+                      onSelect={(selected) => handleSelectSpace(selected.id)}
+                      onDelete={setSpaceToDelete}
+                    />
+                  ))}
+                </OykGrid.Col>
+              </>
+            ) : null}
+            {inactiveSpaces.length > 0 ? (
+              <>
+                <OykGrid.Col>
+                  <OykDivider start={t("Inactive worlds")} end={`${t("{count} spaces", inactiveSpaces.length)}`} nop />
+                </OykGrid.Col>
+                <OykGrid.Col flex="horizontal" wrap>
+                  {inactiveSpaces.map((space) => (
+                    <OykSpaceShelfCard
+                      key={space.id}
+                      space={space}
+                      onSelect={(selected) => handleSelectSpace(selected.id)}
+                      onDelete={setSpaceToDelete}
+                    />
+                  ))}
+                </OykGrid.Col>
+              </>
+            ) : null}
           </OykGrid.Row>
         )}
       </OykGrid>

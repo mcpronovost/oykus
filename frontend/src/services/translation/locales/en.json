@@ -35,6 +35,7 @@
   "Description": "Description",
   "A short overview of this space": "A short overview of this space",
   "Your worlds": "Your worlds",
+  "Inactive worlds": "Inactive worlds",
   "Shelf": "Shelf",
   "List": "List",
   "{count} spaces": {
@@ -46,7 +47,9 @@
   "This will permanently delete this space and destroy all of its content": "This will permanently delete this space and destroy all of its content.",
   "Type the space name to confirm": "Type the space name to confirm:",
   "Continue working on": "Continue working on",
+  "Reactivate to continue": "Reactivate to continue",
   "Open Encyclopedia": "Open Encyclopedia",
+  "Reactivate Space": "Reactivate Space",
   "Encyclopedia": "Encyclopedia",
   "Characters": "Characters",
   "Locations": "Locations",
