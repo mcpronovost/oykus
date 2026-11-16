@@ -200,7 +200,7 @@ export default function OykDrawer({
         >
           {renderedContent}
         </OykScrollbar>
-        {renderedActions != null && (
+        {(renderedActions != null || renderedPrependActions != null) && (
           <footer className="oyk-drawer-actions">
             {renderedPrependActions != null && (
               <div className="oyk-drawer-actions-prepend">
