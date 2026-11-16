@@ -24,6 +24,10 @@ $oyk-breakpoints: (
     &-nop {
       margin: 0;
     }
+
+    &-nopb {
+      margin-bottom: 0;
+    }
   }
 
   &-col {
