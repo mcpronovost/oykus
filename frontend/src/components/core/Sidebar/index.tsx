@@ -67,7 +67,12 @@ export default function OykCoreSidebar() {
               label={t("menu.dev")}
               icon={IconComponents}
             />
-            <li className="oyk-core-sidebar-nav-list-item">
+            <OykCoreSidebarNavLink
+              routeName="settings"
+              label={t("menu.settings")}
+              icon={IconSettings}
+            />
+            {/*<li className="oyk-core-sidebar-nav-list-item">
               <OykDialog
                 open={settingsOpen}
                 onOpenChange={setSettingsOpen}
@@ -112,7 +117,7 @@ export default function OykCoreSidebar() {
                   </div>
                 </OykTooltip>
               </OykDialog>
-            </li>
+            </li>*/}
           </ul>
         </nav>
       </OykScrollbar>
