@@ -26,6 +26,7 @@ interface OykModalProps extends Omit<HTMLAttributes<HTMLDivElement>, "title" | "
   title?: string;
   suptitle?: string;
   actions?: OykModalSlot;
+  prependActions?: OykModalSlot;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   closable?: boolean;
@@ -46,6 +47,7 @@ export default function OykModal({
   title,
   suptitle,
   actions,
+  prependActions,
   open: openProp,
   onOpenChange,
   closable = true,
@@ -129,6 +131,7 @@ export default function OykModal({
 
   const renderedContent = renderSlot(content, helpers);
   const renderedActions = renderSlot(actions, helpers);
+  const renderedPrependActions = renderSlot(prependActions, helpers);
 
   if (!mounted) return null;
 
@@ -185,8 +188,15 @@ export default function OykModal({
         >
           {renderedContent}
         </div>
-        {renderedActions != null && (
-          <footer className="oyk-modal-actions">{renderedActions}</footer>
+        {(renderedActions != null || renderedPrependActions != null) && (
+          <footer className="oyk-modal-actions">
+            {renderedPrependActions != null && (
+              <div className="oyk-modal-actions-prepend">
+                {renderedPrependActions}
+              </div>
+            )}
+            {renderedActions}
+          </footer>
         )}
       </div>
     </div>,
