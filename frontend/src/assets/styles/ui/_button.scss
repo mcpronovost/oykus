@@ -12,10 +12,11 @@
   line-height: 1;
   white-space: nowrap;
   overflow: hidden;
-  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  height: fit-content;
+  position: relative;
   user-select: none;
 
   &-content {
