@@ -26,6 +26,11 @@ const MENUS: HeaderMenuItem[][] = [
     { routeName: "encyclopedia-lore", label: "menu.lore" },
   ],
   [{ routeName: "notes", label: "menu.notes" }],
+  [
+    { routeName: "settings", label: "menu.settings" },
+    { routeName: "settings-members", label: "menu.members" },
+    { routeName: "settings-plugins", label: "menu.plugins" },
+  ],
 ];
 
 function getVisibleMenuCount(
@@ -42,7 +47,11 @@ function getVisibleMenuCount(
 
   if (totalWidth <= availableWidth) return itemWidths.length;
 
-  for (let visibleCount = itemWidths.length - 1; visibleCount >= 0; visibleCount -= 1) {
+  for (
+    let visibleCount = itemWidths.length - 1;
+    visibleCount >= 0;
+    visibleCount -= 1
+  ) {
     const visibleWidth = itemWidths
       .slice(0, visibleCount)
       .reduce((sum, width) => sum + width, 0);
@@ -87,7 +96,8 @@ export default function OykCoreHeaderMenu() {
   const [overflowOpen, setOverflowOpen] = useState(false);
 
   const items =
-    MENUS.find((menu) => menu.some((link) => link.routeName === route?.name)) ?? [];
+    MENUS.find((menu) => menu.some((link) => link.routeName === route?.name)) ??
+    [];
   const itemsKey = items.map((item) => item.routeName).join("|");
 
   useLayoutEffect(() => {
@@ -102,7 +112,9 @@ export default function OykCoreHeaderMenu() {
 
     const updateVisibleCount = () => {
       const itemEls = Array.from(
-        measureEl.querySelectorAll<HTMLElement>("[data-header-menu-measure-item]"),
+        measureEl.querySelectorAll<HTMLElement>(
+          "[data-header-menu-measure-item]",
+        ),
       );
       const moreEl = measureEl.querySelector<HTMLElement>(
         "[data-header-menu-measure-more]",
@@ -153,10 +165,7 @@ export default function OykCoreHeaderMenu() {
             <span className="oyk-core-header-menu-link">{t(item.label)}</span>
           </li>
         ))}
-        <li
-          className="oyk-core-header-menu-item"
-          data-header-menu-measure-more
-        >
+        <li className="oyk-core-header-menu-item" data-header-menu-measure-more>
           <span className="oyk-core-header-menu-more">
             <IconDots size={20} stroke={1.5} />
           </span>
