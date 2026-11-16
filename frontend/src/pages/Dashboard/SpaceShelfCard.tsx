@@ -1,5 +1,6 @@
 import { IconX } from "@tabler/icons-react";
 import type { TypeSpace } from "@/services/api";
+import { oykClass } from "@/utils";
 import { OykButton } from "@/components/ui";
 import ImgPlaceholder1 from "@/assets/img/space-cover-1.webp";
 
@@ -26,7 +27,7 @@ export default function OykSpaceShelfCard({
             alt={space.name}
             draggable={false}
             loading="lazy"
-            className="oyk-page-dashboard-shelf-item-cover-img"
+            className={oykClass("oyk-page-dashboard-shelf-item-cover-img", !space.isActive && "oyk-deactivated")}
           />
         </div>
         <p className="oyk-page-dashboard-shelf-item-name">{space.name}</p>
