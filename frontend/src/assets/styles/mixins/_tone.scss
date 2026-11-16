@@ -1,0 +1,35 @@
+// Shared bg / fg / border tone for Alert, Button, Chip, Result.
+// Expects colour via `.oyk-color-*` and ghost via `.oyk-variant-ghost`.
+
+@mixin oyk-tone($prefix) {
+  --#{$prefix}-bg: var(--oyk-card-bg);
+  --#{$prefix}-fg: var(--oyk-card-fg);
+  --#{$prefix}-border: var(--oyk-card-divider);
+  --#{$prefix}-border-style: solid;
+  --#{$prefix}-bg-mix: 10%;
+
+  background: color-mix(
+    in srgb,
+    var(--#{$prefix}-bg) var(--#{$prefix}-bg-mix),
+    transparent
+  );
+  border: 1px var(--#{$prefix}-border-style) var(--#{$prefix}-border);
+  color: var(--#{$prefix}-fg);
+
+  @each $color in (accent, success, danger, info, warning, special) {
+    &.oyk-color-#{$color} {
+      --#{$prefix}-bg: var(--oyk-c-#{$color});
+      --#{$prefix}-fg: var(--oyk-c-#{$color});
+      --#{$prefix}-border: color-mix(
+        in srgb,
+        var(--oyk-c-#{$color}) 20%,
+        var(--oyk-card-divider)
+      );
+    }
+  }
+
+  &.oyk-variant-ghost {
+    --#{$prefix}-border-style: dashed;
+    --#{$prefix}-bg-mix: 4%;
+  }
+}

@@ -1,9 +1,9 @@
-.oyk-chip {
-  --oyk-chip-bg-mix: 6%;
+@use "../mixins/tone" as *;
 
-  background: color-mix(in srgb, currentColor var(--oyk-chip-bg-mix), transparent);
+.oyk-chip {
+  @include oyk-tone("oyk-chip");
+
   border-radius: 6px;
-  color: var(--oyk-card-fg);
   font-size: 0.75rem;
   font-weight: 500;
   line-height: 1;
@@ -38,46 +38,32 @@
     }
   }
 
-  &-variant {
-    &--pill {
-      border-radius: 9999px;
-    }
-
-    &--outline {
-      &::before {
-        content: "";
-        border: 1px solid currentColor;
-        border-radius: 6px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        opacity: 0.5;
-      }
-    }
-
-    &--ghost {
-      --oyk-chip-bg-mix: 3%;
-
-      &::before {
-        content: "";
-        border: 1px dashed currentColor;
-        border-radius: 6px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        opacity: 0.5;
-      }
-    }
+  &.oyk-variant-pill {
+    border-radius: 9999px;
   }
 
-  &-color {
-    @each $color in (accent, success, danger, info, warning, special) {
-      &--#{$color} {
-        color: var(--oyk-c-#{$color});
+  &.oyk-variant-outline {
+    --oyk-chip-bg-mix: 0%;
+  }
+
+  &-size {
+    &--sm {
+      font-size: 0.675rem;
+
+      .oyk-chip-content {
+        padding: 2px 6px;
+      }
+    }
+
+    &--md {
+      font-size: 0.75rem;
+    }
+
+    &--lg {
+      font-size: 0.875rem;
+
+      .oyk-chip-content {
+        padding: 6px 10px;
       }
     }
   }

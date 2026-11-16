@@ -1,15 +1,9 @@
-.oyk-alert {
-  --oyk-alert-bg: var(--oyk-card-bg);
-  --oyk-alert-fg: var(--oyk-card-fg);
-  --oyk-alert-fg-subtle: var(--oyk-card-fg-subtle);
-  --oyk-alert-bcolor: var(--oyk-card-divider);
-  --oyk-alert-bstyle: solid;
-  --oyk-alert-bg-mix: 6%;
+@use "../mixins/tone" as *;
 
-  background: color-mix(in srgb, var(--oyk-alert-bg) var(--oyk-alert-bg-mix), transparent);
-  border: 1px var(--oyk-alert-bstyle) var(--oyk-alert-bcolor);
+.oyk-alert {
+  @include oyk-tone("oyk-alert");
+
   border-radius: var(--oyk-radius);
-  color: var(--oyk-alert-fg);
   font-family: var(--oyk-font);
   font-size: 0.875rem;
   font-weight: 400;
@@ -50,10 +44,11 @@
     }
 
     &-message {
-      color: var(--oyk-alert-fg-subtle);
+      color: var(--oyk-alert-fg);
       font-size: 0.875rem;
       font-weight: 500;
       line-height: 1.2;
+      opacity: 0.7;
     }
   }
 
@@ -69,22 +64,6 @@
     &:hover {
       opacity: 0.6;
     }
-  }
-
-  $colors: accent, danger, success, info, warning, special;
-
-  @each $color in $colors {
-    &.oyk-color-#{$color} {
-      --oyk-alert-bg: var(--oyk-c-#{$color});
-      --oyk-alert-fg: var(--oyk-c-#{$color});
-      --oyk-alert-fg-subtle: var(--oyk-c-#{$color});
-      --oyk-alert-bcolor: var(--oyk-c-#{$color});
-    }
-  }
-
-  &.oyk-variant-ghost {
-    --oyk-alert-bstyle: dashed;
-    --oyk-alert-bg-mix: 3%;
   }
 
   &.oyk-closed {

@@ -1,7 +1,8 @@
+import type { CSSProperties, ReactNode } from "react";
 import { oykClass } from "@/utils/formatters";
 
 interface OykChipProps {
-  children?: React.ReactNode;
+  children?: ReactNode;
   label?: string;
   variant?: "default" | "pill" | "outline" | "ghost";
   color?: "default" | "accent" | "success" | "danger" | "info" | "warning" | "special";
@@ -9,7 +10,7 @@ interface OykChipProps {
   size?: "sm" | "md" | "lg";
   clickable?: boolean;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 }
 
 export default function OykChip({
@@ -27,15 +28,21 @@ export default function OykChip({
     <div
       className={oykClass(
         "oyk-chip",
-        `oyk-chip-variant--${variant}`,
+        `oyk-color-${color}`,
+        `oyk-variant-${variant}`,
         `oyk-chip-size--${size}`,
-        `oyk-chip-color--${color}`,
         clickable && "oyk-chip-clickable",
         className,
       )}
       style={{
         ...style,
-        ...(customColor && { color: customColor }),
+        ...(customColor
+          ? ({
+              "--oyk-chip-bg": customColor,
+              "--oyk-chip-fg": customColor,
+              "--oyk-chip-border": customColor,
+            } as CSSProperties)
+          : null),
       }}
     >
       <div className="oyk-chip-content">{children || label}</div>

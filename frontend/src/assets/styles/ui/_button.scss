@@ -1,12 +1,9 @@
-.oyk-button {
-  --oyk-btn-bg: color-mix(in srgb, var(--oyk-btn-fg) 6%, transparent);
-  --oyk-btn-fg: var(--oyk-card-fg);
-  --oyk-btn-border: var(--oyk-card-divider);
+@use "../mixins/tone" as *;
 
-  background: var(--oyk-btn-bg);
-  border: 1px solid var(--oyk-btn-border);
+.oyk-button {
+  @include oyk-tone("oyk-button");
+
   border-radius: var(--oyk-radius);
-  color: var(--oyk-btn-fg);
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1;
@@ -73,62 +70,17 @@
     }
   }
 
-  &-color {
-    &--default {
-      --oyk-btn-bg: var(--oyk-card-bg);
-      --oyk-btn-border: var(--oyk-card-divider);
-      --oyk-btn-fg: var(--oyk-card-fg);
-    }
-
-    &--accent {
-      --oyk-btn-fg: var(--oyk-c-accent);
-      --oyk-btn-border: var(--oyk-c-accent);
-    }
-
-    &--success {
-      --oyk-btn-fg: var(--oyk-c-success);
-      --oyk-btn-border: var(--oyk-c-success);
-    }
-
-    &--danger {
-      --oyk-btn-fg: var(--oyk-c-danger);
-      --oyk-btn-border: var(--oyk-c-danger);
-    }
-
-    &--info {
-      --oyk-btn-fg: var(--oyk-c-info);
-      --oyk-btn-border: var(--oyk-c-info);
-    }
-
-    &--warning {
-      --oyk-btn-fg: var(--oyk-c-warning);
-      --oyk-btn-border: var(--oyk-c-warning);
-    }
-
-    &--special {
-      --oyk-btn-fg: var(--oyk-c-special);
-      --oyk-btn-border: var(--oyk-c-special);
-    }
+  &.oyk-variant-pill {
+    border-radius: 9999px;
   }
 
-  &-variant {
-    &--pill {
-      border-radius: 9999px;
-    }
+  &.oyk-variant-flat {
+    --oyk-button-border: transparent;
+  }
 
-    &--flat {
-      border-color: transparent;
-    }
-
-    &--ghost {
-      --oyk-btn-bg: color-mix(in srgb, var(--oyk-btn-fg) 3%, transparent);
-      border-style: dashed;
-    }
-
-    &--plain {
-      --oyk-btn-bg: transparent;
-      border-color: transparent;
-    }
+  &.oyk-variant-plain {
+    --oyk-button-bg-mix: 0%;
+    --oyk-button-border: transparent;
   }
 
   &-size {
@@ -191,7 +143,7 @@
       }
     }
 
-    &+.oyk-button-content {
+    & + .oyk-button-content {
       opacity: 0.15;
     }
   }

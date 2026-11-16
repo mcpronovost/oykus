@@ -2,12 +2,7 @@
   --oyk-c-s: 42%;
   --oyk-c-l: 45%;
 
-  --oyk-h-accent: 39; /*220; */ /* 196 */
-  --oyk-c-accent: hsl(var(--oyk-h-accent), var(--oyk-c-s), var(--oyk-c-l));
-  --oyk-c-accent-hover: hsl(var(--oyk-h-accent), calc(var(--oyk-c-s) + 10%), calc(var(--oyk-c-l) + 10%));
-  --oyk-c-accent-subtle: hsl(var(--oyk-h-accent), calc(var(--oyk-c-s) - 10%), calc(var(--oyk-c-l) - 10%));
-  --oyk-c-accent-muted: hsl(var(--oyk-h-accent), calc(var(--oyk-c-s) - 20%), calc(var(--oyk-c-l) - 25%));
-  --oyk-c-accent-faint: hsl(var(--oyk-h-accent), calc(var(--oyk-c-s) - 30%), calc(var(--oyk-c-l) - 35%));
+  --oyk-c-accent: #a38143;
 
   --oyk-h-success: 122;
   --oyk-c-success: hsl(var(--oyk-h-success), var(--oyk-c-s), var(--oyk-c-l));
@@ -16,12 +11,7 @@
   --oyk-c-success-muted: hsl(var(--oyk-h-success), calc(var(--oyk-c-s) - 20%), calc(var(--oyk-c-l) - 25%));
   --oyk-c-success-faint: hsl(var(--oyk-h-success), calc(var(--oyk-c-s) - 30%), calc(var(--oyk-c-l) - 35%));
 
-  --oyk-h-danger: 0;
-  --oyk-c-danger: hsl(var(--oyk-h-danger), var(--oyk-c-s), var(--oyk-c-l));
-  --oyk-c-danger-hover: hsl(var(--oyk-h-danger), calc(var(--oyk-c-s) + 10%), calc(var(--oyk-c-l) + 10%));
-  --oyk-c-danger-subtle: hsl(var(--oyk-h-danger), calc(var(--oyk-c-s) - 10%), calc(var(--oyk-c-l) - 10%));
-  --oyk-c-danger-muted: hsl(var(--oyk-h-danger), calc(var(--oyk-c-s) - 20%), calc(var(--oyk-c-l) - 25%));
-  --oyk-c-danger-faint: hsl(var(--oyk-h-danger), calc(var(--oyk-c-s) - 30%), calc(var(--oyk-c-l) - 35%));
+  --oyk-c-danger: #cf3c3c;
 
   --oyk-h-info: 222;
   --oyk-c-info: hsl(var(--oyk-h-info), var(--oyk-c-s), var(--oyk-c-l));

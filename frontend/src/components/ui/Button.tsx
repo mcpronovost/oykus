@@ -1,4 +1,4 @@
-import type { MouseEvent } from "react";
+import type { CSSProperties, MouseEvent } from "react";
 import type { Icon } from "@tabler/icons-react";
 import { IconLoader } from "@tabler/icons-react";
 import { oykClass } from "@/utils/formatters";
@@ -63,15 +63,21 @@ export default function OykButton({
     <button
       className={oykClass(
         "oyk-button",
-        `oyk-button-variant--${variant}`,
-        `oyk-button-color--${color}`,
+        `oyk-color-${color}`,
+        `oyk-variant-${variant}`,
         `oyk-button-size--${size}`,
         grow && "oyk-button-grow",
         shrink && "oyk-button-shrink",
       )}
-      style={{
-        ...(customColor && { color: customColor }),
-      }}
+      style={
+        customColor
+          ? ({
+              "--oyk-button-bg": customColor,
+              "--oyk-button-fg": customColor,
+              "--oyk-button-border": customColor,
+            } as CSSProperties)
+          : undefined
+      }
       type={type}
       form={form}
       disabled={disabled}
