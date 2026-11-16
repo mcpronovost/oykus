@@ -14,7 +14,7 @@ type OykClampProps = {
 export default function OykClamp({
   children,
   lines = 3,
-  as = "p",
+  as = "div",
   className,
 }: OykClampProps) {
   const clampClassName = oykClass("oyk-clamp", `oyk-clamp-${lines}`, className);
@@ -22,9 +22,9 @@ export default function OykClamp({
   switch (as) {
     case "span":
       return <span className={clampClassName}>{children}</span>;
-    case "div":
-      return <div className={clampClassName}>{children}</div>;
-    default:
+    case "p":
       return <p className={clampClassName}>{children}</p>;
+    default:
+      return <div className={clampClassName}>{children}</div>;
   }
 }
