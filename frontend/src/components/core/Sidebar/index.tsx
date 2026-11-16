@@ -24,6 +24,8 @@ export default function OykCoreSidebar() {
   const { isAuth, user } = useAuth();
   const { t } = useTranslation();
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const featuresLocked =
+    !user?.currentSpace || user.currentSpace.isActive === false;
 
   if (!isAuth) return null;
 
@@ -41,13 +43,13 @@ export default function OykCoreSidebar() {
               routeName="encyclopedia"
               label={t("menu.encyclopedia")}
               icon={IconBooks}
-              disabled={!user?.currentSpace}
+              disabled={featuresLocked}
             />
             <OykCoreSidebarNavLink
               routeName="notes"
               label={t("menu.notes")}
               icon={IconNote}
-              disabled={!user?.currentSpace}
+              disabled={featuresLocked}
             />
           </ul>
           <ul className="oyk-core-sidebar-nav-list" aria-label={t("Plugins")}>

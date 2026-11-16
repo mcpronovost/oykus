@@ -22,7 +22,13 @@ export default function OykLink({ children, href, routeName, disabled, className
     return href;
   })();
 
+  const isDisabled = Boolean(disabled || !resolvedHref);
+
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (isDisabled) {
+      event.preventDefault();
+      return;
+    }
     onClick?.(event);
     if (event.defaultPrevented || !routeName) return;
     event.preventDefault();
@@ -30,7 +36,14 @@ export default function OykLink({ children, href, routeName, disabled, className
   };
 
   return (
-    <a href={resolvedHref} className={oykClass("oyk-link", className, (disabled || !resolvedHref) && "oyk-disabled")} {...props} onClick={handleClick}>
+    <a
+      {...props}
+      href={isDisabled ? undefined : resolvedHref}
+      className={oykClass("oyk-link", className, isDisabled && "oyk-disabled")}
+      aria-disabled={isDisabled || undefined}
+      tabIndex={isDisabled ? -1 : props.tabIndex}
+      onClick={handleClick}
+    >
       {children}
     </a>
   );

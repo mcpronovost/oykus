@@ -3,4 +3,5 @@ export * from "./code.js";
 export * from "./formatters.js";
 export * from "./icons";
 export * from "./images.js";
+export * from "./spaces";
 export * from "./validaters.js";

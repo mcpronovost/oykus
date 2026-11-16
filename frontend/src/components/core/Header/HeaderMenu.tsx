@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { IconDots } from "@tabler/icons-react";
-import { oykClass } from "@/utils";
+import { isSpaceFeatureLockedRoute, oykClass } from "@/utils";
+import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
 import { OykDialog, OykLink } from "@/components/ui";
@@ -66,11 +67,13 @@ function getVisibleMenuCount(
 function HeaderMenuLink({
   item,
   active,
+  disabled = false,
   onNavigate,
   className,
 }: {
   item: HeaderMenuItem;
   active: boolean;
+  disabled?: boolean;
   onNavigate?: () => void;
   className?: string;
 }) {
@@ -79,6 +82,7 @@ function HeaderMenuLink({
   return (
     <OykLink
       routeName={item.routeName}
+      disabled={disabled}
       className={oykClass(className, active && "oyk-active")}
       onClick={onNavigate}
     >
@@ -88,12 +92,15 @@ function HeaderMenuLink({
 }
 
 export default function OykCoreHeaderMenu() {
+  const { user } = useAuth();
   const { route } = useRouter();
   const { t } = useTranslation();
   const navRef = useRef<HTMLElement>(null);
   const measureRef = useRef<HTMLUListElement>(null);
   const [visibleCount, setVisibleCount] = useState<number | null>(null);
   const [overflowOpen, setOverflowOpen] = useState(false);
+  const featuresLocked =
+    !user?.currentSpace || user.currentSpace.isActive === false;
 
   const items =
     MENUS.find((menu) => menu.some((link) => link.routeName === route?.name)) ??
@@ -178,6 +185,9 @@ export default function OykCoreHeaderMenu() {
             <HeaderMenuLink
               item={item}
               active={Boolean(route?.name && route.name === item.routeName)}
+              disabled={
+                featuresLocked && isSpaceFeatureLockedRoute(item.routeName)
+              }
               className="oyk-core-header-menu-link"
             />
           </li>
@@ -207,6 +217,10 @@ export default function OykCoreHeaderMenu() {
                         active={Boolean(
                           route?.name && route.name === item.routeName,
                         )}
+                        disabled={
+                          featuresLocked &&
+                          isSpaceFeatureLockedRoute(item.routeName)
+                        }
                         className="oyk-core-header-menu-overflow-link"
                         onNavigate={close}
                       />

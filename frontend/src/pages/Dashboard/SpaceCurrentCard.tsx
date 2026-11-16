@@ -11,6 +11,7 @@ type SpaceCurrentCardProps = {
 
 export default function OykSpaceCurrentCard({ space }: SpaceCurrentCardProps) {
   const { t } = useTranslation();
+  const spaceActive = space.isActive !== false;
 
   const { data: stats } = useQuery({
     queryKey: queryKeys.spaces.stats(space.id),
@@ -44,7 +45,11 @@ export default function OykSpaceCurrentCard({ space }: SpaceCurrentCardProps) {
           </OykStats>
           <footer className="oyk-page-dashboard-currentspace-content-actions">
              {/* On future Manuscript plugin: <OykButton routeName="manuscript" label="Continue Chapter" color="accent" /> */}
-            <OykButton routeName="encyclopedia" label={t("Open Encyclopedia")} />
+            <OykButton
+              routeName="encyclopedia"
+              label={t("Open Encyclopedia")}
+              disabled={!spaceActive}
+            />
             <OykButton routeName="settings" variant="ghost" start={IconSettings} shrink />
           </footer>
         </div>
