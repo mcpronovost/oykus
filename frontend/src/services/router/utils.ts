@@ -13,6 +13,15 @@ const matchLangPrefix = (pathname: string): { code: string; prefix: string } | n
 
 // --- Functions ---------------------------------------------------------------
 
+const SPACE_FEATURE_LOCKED_ROUTE_PREFIXES = ["encyclopedia", "notes"] as const;
+
+export const isSpaceFeatureLockedRoute = (routeName: string | undefined) => {
+  if (!routeName) return false;
+  return SPACE_FEATURE_LOCKED_ROUTE_PREFIXES.some(
+    (prefix) => routeName === prefix || routeName.startsWith(`${prefix}-`),
+  );
+};
+
 export const getLangFromPath = (pathname: string): TypeLang => {
   const match = matchLangPrefix(pathname);
   return match && isSupportedLang(match.code) ? match.code : DEFAULT_LANG;

@@ -9,7 +9,7 @@ import { OykResult } from "@/components/common"
 import { OykCoreLoading } from "@/components/core";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
-import { isSpaceFeatureLockedRoute } from "@/utils";
+import { isSpaceFeatureLockedRoute } from "@/services/router/utils";
 
 registerSW({ immediate: true });
 

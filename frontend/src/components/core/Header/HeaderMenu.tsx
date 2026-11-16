@@ -1,8 +1,9 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { IconDots } from "@tabler/icons-react";
-import { isSpaceFeatureLockedRoute, oykClass } from "@/utils";
+import { oykClass } from "@/utils";
 import { useAuth } from "@/services/auth";
 import { useRouter } from "@/services/router";
+import { isSpaceFeatureLockedRoute } from "@/services/router/utils";
 import { useTranslation } from "@/services/translation";
 import { OykDialog, OykLink } from "@/components/ui";
 
