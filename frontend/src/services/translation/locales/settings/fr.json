@@ -1,3 +1,11 @@
 {
-  "Settings": "Paramètres"
+  "Settings": "Paramètres",
+  "settings.dangerzone.title": "Zone de danger",
+  "settings.dangerzone.subtitle": "Actions irréversibles affectant votre espace",
+  "settings.dangerzone.deactivatespace": "Désactiver l'espace",
+  "settings.dangerzone.deactivatespacedescription": "Masquer temporairement votre espace de la communauté et des collaborateurs.",
+  "settings.dangerzone.deactivatespacenote": "Vous pouvez le réactiver à tout moment.",
+  "settings.dangerzone.deletespacemanually": "Supprimer l'espace de manière permanente",
+  "settings.dangerzone.deletespacemanuallydescription": "Supprimer définitivement votre espace et toutes les données associées.",
+  "settings.dangerzone.deletespacemanuallynote": "Cette action ne peut pas être annulée."
 }

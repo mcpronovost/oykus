@@ -1,3 +1,11 @@
 {
-  "Settings": "Settings"
+  "Settings": "Settings",
+  "settings.dangerzone.title": "Danger Zone",
+  "settings.dangerzone.subtitle": "Irreversible actions affecting your space",
+  "settings.dangerzone.deactivatespace": "Deactivate space",
+  "settings.dangerzone.deactivatespacedescription": "Temporarily hide your space from the community and collaborators.",
+  "settings.dangerzone.deactivatespacenote": "You can reactivate it anytime.",
+  "settings.dangerzone.deletespacemanually": "Delete Space Permanently",
+  "settings.dangerzone.deletespacemanuallydescription": "Permanently delete your space and all associated data.",
+  "settings.dangerzone.deletespacemanuallynote": "This action cannot be undone."
 }
