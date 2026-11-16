@@ -3,4 +3,5 @@ dist/
 dev-dist/
 .env
 backend/prisma/db/
-backend/uploads/
+backend/uploads/*
+!backend/uploads/.gitkeep

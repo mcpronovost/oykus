@@ -78,6 +78,24 @@ export function number({ min, max, required = true, integer = false } = {}) {
   };
 }
 
+export function boolean({ required = true } = {}) {
+  return (input) => {
+    const errors = [];
+
+    if (input === undefined || input === null) {
+      if (required) errors.push("Required");
+      return { value: input, errors };
+    }
+
+    if (typeof input !== "boolean") {
+      errors.push("Must be a boolean");
+      return { value: input, errors };
+    }
+
+    return { value: input, errors };
+  };
+}
+
 export function object(shape) {
   return (input) => {
     if (typeof input !== "object" || input === null || Array.isArray(input)) {

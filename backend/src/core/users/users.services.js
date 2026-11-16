@@ -19,7 +19,13 @@ export async function setCurrentSpace(userId, { spaceId }) {
   const space = await prisma.space.findFirst({
     where: {
       id: spaceId,
-      OR: [{ ownerId: userId }, { members: { some: { userId } } }],
+      OR: [
+        { ownerId: userId },
+        {
+          isActive: true,
+          members: { some: { userId } },
+        },
+      ],
     },
     select: { id: true },
   });

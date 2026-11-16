@@ -74,6 +74,7 @@ export type TypeSpace = {
   name: string;
   description: string | null;
   cover: string | null;
+  isActive: boolean;
   ownerId: string;
   createdAt: string;
   updatedAt: string;
@@ -81,6 +82,11 @@ export type TypeSpace = {
 
 export type TypeCreateSpaceInput = {
   name: string;
+  description?: string;
+};
+
+export type TypeUpdateSpaceInput = {
+  name?: string;
   description?: string;
 };
 
@@ -203,6 +209,42 @@ async function createSpace(input: TypeCreateSpaceInput): Promise<TypeSpace> {
     method: "POST",
     body: JSON.stringify(input),
   });
+}
+
+async function updateSpace(
+  spaceId: string,
+  input: TypeUpdateSpaceInput,
+): Promise<TypeSpace> {
+  return request<TypeSpace>(`/api/v1/spaces/${encodeURIComponent(spaceId)}`, {
+    method: "PATCH",
+    body: JSON.stringify(input),
+  });
+}
+
+async function setSpaceActive(
+  spaceId: string,
+  isActive: boolean,
+): Promise<TypeSpace> {
+  return request<TypeSpace>(
+    `/api/v1/spaces/${encodeURIComponent(spaceId)}/active`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({ isActive }),
+    },
+  );
+}
+
+async function updateSpaceCover(
+  spaceId: string,
+  data: string,
+): Promise<TypeSpace> {
+  return request<TypeSpace>(
+    `/api/v1/spaces/${encodeURIComponent(spaceId)}/cover`,
+    {
+      method: "PUT",
+      body: JSON.stringify({ data }),
+    },
+  );
 }
 
 async function deleteSpace(spaceId: string): Promise<void> {
@@ -335,5 +377,8 @@ export {
   logout,
   request,
   setCurrentSpace,
+  setSpaceActive,
   updateEncyclopediaEntry,
+  updateSpace,
+  updateSpaceCover,
 };

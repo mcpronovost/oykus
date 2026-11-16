@@ -3,7 +3,8 @@
   margin: 0;
 
   &-field {
-    &+& {
+    &+&,
+    &+.oyk-form-alert {
       margin-top: 16px;
     }
 

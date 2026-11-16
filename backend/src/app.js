@@ -16,7 +16,7 @@ export function createApp() {
 
   app.set("trust proxy", 1);
   app.use(securityHeaders);
-  app.use(express.json({ limit: "100kb" }));
+  app.use(express.json({ limit: "2mb" }));
   app.use(csrfOriginCheck);
 
   app.get("/api/v1/health", async (_req, res) => {

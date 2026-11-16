@@ -45,7 +45,7 @@ export default function OykSpaceCurrentCard({ space }: SpaceCurrentCardProps) {
           <footer className="oyk-page-dashboard-currentspace-content-actions">
              {/* On future Manuscript plugin: <OykButton routeName="manuscript" label="Continue Chapter" color="accent" /> */}
             <OykButton routeName="encyclopedia" label={t("Open Encyclopedia")} />
-            <OykButton variant="ghost" start={IconSettings} shrink />
+            <OykButton routeName="settings" variant="ghost" start={IconSettings} shrink />
           </footer>
         </div>
       </section>

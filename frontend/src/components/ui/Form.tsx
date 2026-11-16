@@ -1,4 +1,9 @@
-import type { ChangeEvent, HTMLAttributes, ReactNode, SubmitEvent } from "react";
+import type {
+  ChangeEvent,
+  HTMLAttributes,
+  ReactNode,
+  SubmitEvent,
+} from "react";
 import type { Icon } from "@tabler/icons-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -23,7 +28,8 @@ const SELECT_MENU_PADDING = 12;
 
 function getSelectMenuHeight(optionCount: number) {
   const count = Math.max(optionCount, 1);
-  const contentHeight = count * SELECT_OPTION_HEIGHT + (count - 1) * SELECT_OPTION_GAP;
+  const contentHeight =
+    count * SELECT_OPTION_HEIGHT + (count - 1) * SELECT_OPTION_GAP;
   return Math.min(SELECT_MENU_MAX_HEIGHT, contentHeight);
 }
 
@@ -52,19 +58,33 @@ interface OykFormFieldOption {
   label: string;
 }
 
-interface OykFormProps extends Omit<HTMLAttributes<HTMLFormElement>, "onSubmit"> {
+interface OykFormProps extends Omit<
+  HTMLAttributes<HTMLFormElement>,
+  "onSubmit"
+> {
   loading?: boolean;
   onSubmit?: (event: SubmitEvent<HTMLFormElement>) => void;
   children: ReactNode;
 }
 
-interface OykFormFieldProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
-  type?: "text" | "email" | "password" | "textarea" | "checkbox" | "select" | "multiselect";
+interface OykFormFieldProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "onChange"
+> {
+  type?:
+    | "text"
+    | "email"
+    | "password"
+    | "textarea"
+    | "checkbox"
+    | "select"
+    | "multiselect";
   name: string;
   label?: string;
   hideLabel?: boolean;
   placeholder?: string;
   required?: boolean;
+  disabled?: boolean;
   helptext?: string;
   helplist?: OykFormFieldChecklistItem[];
   options?: OykFormFieldOption[];
@@ -77,7 +97,10 @@ interface OykFormFieldProps extends Omit<HTMLAttributes<HTMLDivElement>, "onChan
   children?: ReactNode;
 }
 
-interface OykFormAlertProps extends Omit<HTMLAttributes<HTMLDivElement>, "color" | "title"> {
+interface OykFormAlertProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "color" | "title"
+> {
   error?: string;
   errorTitle?: string;
   success?: string;
@@ -112,9 +135,15 @@ function getMultiselectVisibleCount(
   const totalWidth = itemWidths.reduce((sum, width) => sum + width, 0);
   if (totalWidth <= availableWidth) return itemWidths.length;
 
-  for (let visibleCount = itemWidths.length - 1; visibleCount >= 0; visibleCount -= 1) {
+  for (
+    let visibleCount = itemWidths.length - 1;
+    visibleCount >= 0;
+    visibleCount -= 1
+  ) {
     const hiddenCount = itemWidths.length - visibleCount;
-    const visibleWidth = itemWidths.slice(0, visibleCount).reduce((sum, width) => sum + width, 0);
+    const visibleWidth = itemWidths
+      .slice(0, visibleCount)
+      .reduce((sum, width) => sum + width, 0);
     const moreWidth = moreWidthForCount(hiddenCount);
     const needed = visibleWidth + (visibleCount > 0 ? moreGap : 0) + moreWidth;
     if (needed <= availableWidth) return visibleCount;
@@ -130,6 +159,7 @@ function OykFormField({
   hideLabel = false,
   placeholder,
   required = false,
+  disabled = false,
   helptext,
   helplist,
   options = [],
@@ -166,12 +196,23 @@ function OykFormField({
   const fieldId = `field-${name}`;
   const listboxId = `listbox-${name}`;
   const hintId = `hint-${name}`;
-  const describedBy = errorMessage ? undefined : helptext || helplist ? hintId : undefined;
+  const describedBy = errorMessage
+    ? undefined
+    : helptext || helplist
+      ? hintId
+      : undefined;
   const selectedOption = options.find((option) => option.value === stringValue);
-  const selectedOptions = options.filter((option) => selectedValues.includes(option.value));
-  const hasSelectValue = isMultiSelect ? selectedOptions.length > 0 : Boolean(selectedOption);
+  const selectedOptions = options.filter((option) =>
+    selectedValues.includes(option.value),
+  );
+  const hasSelectValue = isMultiSelect
+    ? selectedOptions.length > 0
+    : Boolean(selectedOption);
   const isAtMax = max !== undefined && selectedValues.length >= max;
-  const multiHiddenCount = Math.max(selectedOptions.length - multiVisibleCount, 0);
+  const multiHiddenCount = Math.max(
+    selectedOptions.length - multiVisibleCount,
+    0,
+  );
   const visibleMultiOptions = selectedOptions.slice(0, multiVisibleCount);
   const selectedOptionsKey = selectedOptions
     .map((option) => `${option.value}:${option.label}`)
@@ -180,7 +221,12 @@ function OykFormField({
   useEffect(() => {
     if (!isMultiSelect || !nativeInputRef.current) return;
     const message =
-      getMultiselectValidityMessage(selectedValues.length, required, min, max) || "";
+      getMultiselectValidityMessage(
+        selectedValues.length,
+        required,
+        min,
+        max,
+      ) || "";
     nativeInputRef.current.setCustomValidity(message);
   }, [isMultiSelect, selectedValues, required, min, max]);
 
@@ -193,14 +239,21 @@ function OykFormField({
 
     const updateVisibleCount = () => {
       const itemEls = Array.from(
-        measureEl.querySelectorAll<HTMLElement>("[data-multiselect-measure-item]"),
+        measureEl.querySelectorAll<HTMLElement>(
+          "[data-multiselect-measure-item]",
+        ),
       );
       const moreEls = Array.from(
-        measureEl.querySelectorAll<HTMLElement>("[data-multiselect-measure-more]"),
+        measureEl.querySelectorAll<HTMLElement>(
+          "[data-multiselect-measure-more]",
+        ),
       );
       const itemWidths = itemEls.map((item) => item.offsetWidth);
       const moreWidthByCount = new Map(
-        moreEls.map((moreEl) => [Number(moreEl.dataset.hiddenCount), moreEl.offsetWidth]),
+        moreEls.map((moreEl) => [
+          Number(moreEl.dataset.hiddenCount),
+          moreEl.offsetWidth,
+        ]),
       );
       // `.oyk-form-field-select-value + .oyk-form-field-select-more` applies margin-left
       const moreGap = moreEls[0]
@@ -211,7 +264,8 @@ function OykFormField({
         getMultiselectVisibleCount(
           valuesEl.clientWidth,
           itemWidths,
-          (hiddenCount) => moreWidthByCount.get(hiddenCount) || moreWidthByCount.get(1) || 0,
+          (hiddenCount) =>
+            moreWidthByCount.get(hiddenCount) || moreWidthByCount.get(1) || 0,
           moreGap,
         ),
       );
@@ -240,8 +294,13 @@ function OykFormField({
       const menu = selectMenuRef.current;
       if (!input || !menu) return;
 
-      const menuHeight = menu.offsetHeight || getSelectMenuHeight(options.length) + SELECT_MENU_PADDING;
-      const { top, left, width } = placeSelectMenu(input.getBoundingClientRect(), menuHeight);
+      const menuHeight =
+        menu.offsetHeight ||
+        getSelectMenuHeight(options.length) + SELECT_MENU_PADDING;
+      const { top, left, width } = placeSelectMenu(
+        input.getBoundingClientRect(),
+        menuHeight,
+      );
       menu.style.top = `${top}px`;
       menu.style.left = `${left}px`;
       menu.style.width = `${width}px`;
@@ -278,9 +337,12 @@ function OykFormField({
     };
   }, [selectOpen]);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const nextValue =
-      event.target instanceof HTMLInputElement && event.target.type === "checkbox"
+      event.target instanceof HTMLInputElement &&
+      event.target.type === "checkbox"
         ? event.target.checked
         : event.target.value;
     onChange?.(nextValue);
@@ -290,7 +352,9 @@ function OykFormField({
   const handleSelect = (nextValue: string) => {
     onChange?.(nextValue);
     setSelectOpen(false);
-    setNativeError(required && nextValue === "" ? "This field is required" : undefined);
+    setNativeError(
+      required && nextValue === "" ? "This field is required" : undefined,
+    );
   };
 
   const handleMultiSelect = (nextValue: string) => {
@@ -302,15 +366,26 @@ function OykFormField({
       : [...selectedValues, nextValue];
 
     onChange?.(nextValues);
-    setNativeError(getMultiselectValidityMessage(nextValues.length, required, min, max));
+    setNativeError(
+      getMultiselectValidityMessage(nextValues.length, required, min, max),
+    );
   };
 
   const toggleSelect = () => {
+    if (disabled) return;
     setSelectOpen((open) => !open);
   };
 
   return (
-    <div ref={fieldRef} className={oykClass("oyk-form-field", className)} {...props}>
+    <div
+      ref={fieldRef}
+      className={oykClass(
+        "oyk-form-field",
+        disabled && "oyk-disabled",
+        className,
+      )}
+      {...props}
+    >
       {!hideLabel && label ? (
         <label className="oyk-form-field-label" htmlFor={fieldId}>
           {label}
@@ -326,6 +401,7 @@ function OykFormField({
           isSelect && "oyk-select",
           selectOpen && "oyk-open",
           errorMessage && "oyk-invalid",
+          disabled && "oyk-disabled",
         )}
       >
         {IconComponent ? (
@@ -342,6 +418,7 @@ function OykFormField({
                 type="checkbox"
                 checked={isChecked}
                 required={required}
+                disabled={disabled}
                 onChange={handleChange}
                 aria-describedby={describedBy}
                 aria-invalid={Boolean(errorMessage) || undefined}
@@ -349,7 +426,10 @@ function OykFormField({
               <label htmlFor={fieldId}>
                 <span className="oyk-form-field-input-content-labeled-icon">
                   {isChecked ? (
-                    <IconSquareRoundedCheck size={22} color="var(--oyk-c-accent)" />
+                    <IconSquareRoundedCheck
+                      size={22}
+                      color="var(--oyk-c-accent)"
+                    />
                   ) : (
                     <IconSquareRounded size={22} />
                   )}
@@ -373,6 +453,7 @@ function OykFormField({
                     ? selectedOptions.map((option) => option.label).join(", ")
                     : undefined
                 }
+                disabled={disabled}
                 onClick={toggleSelect}
               >
                 {isMultiSelect ? (
@@ -387,12 +468,17 @@ function OykFormField({
                       {hasSelectValue ? (
                         <>
                           {visibleMultiOptions.map((option, index) => (
-                            <span key={option.value} className="oyk-form-field-select-value">
+                            <span
+                              key={option.value}
+                              className="oyk-form-field-select-value"
+                            >
                               {index > 0 ? `, ${option.label}` : option.label}
                             </span>
                           ))}
                           {multiHiddenCount > 0 ? (
-                            <span className="oyk-form-field-select-more">+{multiHiddenCount}</span>
+                            <span className="oyk-form-field-select-more">
+                              +{multiHiddenCount}
+                            </span>
                           ) : null}
                         </>
                       ) : (
@@ -430,7 +516,11 @@ function OykFormField({
                     </span>
                   </>
                 ) : (
-                  <span className={oykClass(!hasSelectValue ? "oyk-placeholder" : "oyk-value")}>
+                  <span
+                    className={oykClass(
+                      !hasSelectValue ? "oyk-placeholder" : "oyk-value",
+                    )}
+                  >
                     {hasSelectValue ? selectedOption?.label : placeholder || ""}
                   </span>
                 )}
@@ -449,11 +539,18 @@ function OykFormField({
                   event.preventDefault();
                   if (isMultiSelect) {
                     setNativeError(
-                      getMultiselectValidityMessage(selectedValues.length, required, min, max),
+                      getMultiselectValidityMessage(
+                        selectedValues.length,
+                        required,
+                        min,
+                        max,
+                      ),
                     );
                     return;
                   }
-                  setNativeError(getValidityMessage(event.currentTarget.validity));
+                  setNativeError(
+                    getValidityMessage(event.currentTarget.validity),
+                  );
                 }}
               />
             </>
@@ -466,6 +563,7 @@ function OykFormField({
                 placeholder={placeholder}
                 value={stringValue}
                 required={required}
+                disabled={disabled}
                 rows={4}
                 onChange={handleChange}
                 aria-describedby={describedBy}
@@ -481,6 +579,7 @@ function OykFormField({
               autoComplete="off"
               value={stringValue}
               required={required}
+              disabled={disabled}
               onChange={handleChange}
               aria-describedby={describedBy}
               aria-invalid={Boolean(errorMessage) || undefined}
@@ -491,6 +590,7 @@ function OykFormField({
           <button
             type="button"
             className="oyk-form-field-input-append oyk-clickable"
+            disabled={disabled}
             onClick={() => setShowPassword((show) => !show)}
             aria-label={showPassword ? "Hide password" : "Show password"}
           >
@@ -501,6 +601,7 @@ function OykFormField({
           <button
             type="button"
             className="oyk-form-field-input-append oyk-clickable"
+            disabled={disabled}
             onClick={toggleSelect}
             aria-label={selectOpen ? "Close options" : "Open options"}
             tabIndex={-1}
@@ -564,7 +665,10 @@ function OykFormField({
           {helplist.map((rule) => {
             const isValid = rule.test(stringValue);
             return (
-              <li key={rule.label} className={isValid ? "oyk-valid" : undefined}>
+              <li
+                key={rule.label}
+                className={isValid ? "oyk-valid" : undefined}
+              >
                 {isValid ? <IconCheck size={14} /> : <IconX size={14} />}
                 <span>{rule.label}</span>
               </li>
@@ -592,10 +696,24 @@ function OykFormAlert({
   return (
     <>
       {error ? (
-        <OykAlert {...props} title={errorTitle} message={error} color="danger" variant="ghost" />
+        <OykAlert
+          {...props}
+          title={errorTitle}
+          message={error}
+          color="danger"
+          variant="ghost"
+          className="oyk-form-alert"
+        />
       ) : null}
       {success ? (
-        <OykAlert {...props} title={successTitle} message={success} color="success" variant="ghost" />
+        <OykAlert
+          {...props}
+          title={successTitle}
+          message={success}
+          color="success"
+          variant="ghost"
+          className="oyk-form-alert"
+        />
       ) : null}
     </>
   );

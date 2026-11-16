@@ -2,6 +2,8 @@ model Space {
   id           String        @id @default(uuid(7)) @db.Uuid
   name         String
   description  String?
+  cover        String?
+  isActive     Boolean       @default(true) @map("is_active")
   ownerId      String        @db.Uuid
   owner        User          @relation("SpaceOwner", fields: [ownerId], references: [id])
   members      SpaceMember[]

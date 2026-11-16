@@ -167,6 +167,45 @@
     }
   }
 
+  &-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      animation: spin 3s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+        opacity: 1;
+      }
+      25% {
+        opacity: 0.5;
+      }
+      50% {
+        opacity: 0.9;
+      }
+      75% {
+        opacity: 0.5;
+      }
+      100% {
+        transform: rotate(360deg);
+        opacity: 1;
+      }
+    }
+
+    &+.oyk-button-content {
+      opacity: 0.15;
+    }
+  }
+
   &-bg {
     background-color: currentColor;
     position: absolute;

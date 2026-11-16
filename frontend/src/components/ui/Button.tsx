@@ -1,5 +1,6 @@
 import type { MouseEvent } from "react";
 import type { Icon } from "@tabler/icons-react";
+import { IconLoader } from "@tabler/icons-react";
 import { oykClass } from "@/utils/formatters";
 import { useRouter } from "@/services/router";
 
@@ -23,6 +24,7 @@ interface OykButtonProps {
   size?: "sm" | "md" | "lg";
   grow?: boolean;
   shrink?: boolean;
+  loading?: boolean;
   disabled?: boolean;
   routeName?: string;
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
@@ -41,6 +43,7 @@ export default function OykButton({
   size = "md",
   grow,
   shrink,
+  loading,
   disabled,
   routeName,
   onClick,
@@ -75,10 +78,23 @@ export default function OykButton({
       onClick={handleClick}
     >
       <div className="oyk-button-bg" />
+      {loading && (
+        <div className="oyk-button-loading">
+          <IconLoader size={iconSize} stroke={1.5} />
+        </div>
+      )}
       <div className="oyk-button-content">
-        {IconStart && <span className="oyk-button-content-start"><IconStart size={iconSize} stroke={1.5} /></span>}
+        {IconStart && (
+          <span className="oyk-button-content-start">
+            <IconStart size={iconSize} stroke={1.5} />
+          </span>
+        )}
         {label && <span className="oyk-button-content-label">{label}</span>}
-        {IconEnd && <span className="oyk-button-content-end"><IconEnd size={iconSize} stroke={1.5} /></span>}
+        {IconEnd && (
+          <span className="oyk-button-content-end">
+            <IconEnd size={iconSize} stroke={1.5} />
+          </span>
+        )}
       </div>
     </button>
   );

@@ -7,6 +7,7 @@
     width: 100%;
 
     &-cover {
+
       &-img {
         border: 1px solid var(--oyk-card-divider);
         border-radius: var(--oyk-radius);
@@ -17,15 +18,16 @@
         object-position: center;
 
         &-wrapper {
+          border-radius: var(--oyk-radius);
           font-size: 0;
           line-height: 0;
+          overflow: hidden;
           position: relative;
         }
       }
 
       &-btn {
         background: color-mix(in srgb, var(--oyk-card-bg) 90%, transparent);
-        border-radius: var(--oyk-radius);
         color: var(--oyk-c-accent);
         position: absolute;
         top: 1px;

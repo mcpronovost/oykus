@@ -1,11 +1,35 @@
 import { ForbiddenError, NotFoundError } from "../../shared/errors/index.js";
 import { prisma } from "../../shared/db/index.js";
+import { deleteUploadIfOwned, saveSpaceCover } from "../../shared/uploads.js";
 import { SPACE_OUTPUT_SELECT, toSpaceOutput } from "./spaces.outputs.js";
+
+async function getOwnedSpace(userId, spaceId, select = SPACE_OUTPUT_SELECT) {
+  const space = await prisma.space.findUnique({
+    where: { id: spaceId },
+    select: { ...select, ownerId: true },
+  });
+
+  if (!space) {
+    throw new NotFoundError("Space not found");
+  }
+
+  if (space.ownerId !== userId) {
+    throw new ForbiddenError("Only the owner can manage this space");
+  }
+
+  return space;
+}
 
 export async function listSpaces(userId) {
   const spaces = await prisma.space.findMany({
     where: {
-      OR: [{ ownerId: userId }, { members: { some: { userId } } }],
+      OR: [
+        { ownerId: userId },
+        {
+          isActive: true,
+          members: { some: { userId } },
+        },
+      ],
     },
     select: SPACE_OUTPUT_SELECT,
     orderBy: { updatedAt: "desc" },
@@ -36,32 +60,88 @@ export async function createSpace(userId, { name, description }) {
   return toSpaceOutput(space);
 }
 
-export async function deleteSpace(userId, spaceId) {
-  const space = await prisma.space.findUnique({
+export async function updateSpace(userId, spaceId, input) {
+  await getOwnedSpace(userId, spaceId, { id: true });
+
+  const data = {};
+  if (input.name !== undefined && input.name !== null) {
+    data.name = input.name;
+  }
+  if (input.description !== undefined && input.description !== null) {
+    data.description = input.description.length > 0 ? input.description : null;
+  }
+
+  const space = await prisma.space.update({
     where: { id: spaceId },
-    select: { id: true, ownerId: true },
+    data,
+    select: SPACE_OUTPUT_SELECT,
   });
 
-  if (!space) {
-    throw new NotFoundError("Space not found");
+  return toSpaceOutput(space);
+}
+
+export async function setSpaceActive(userId, spaceId, isActive) {
+  await getOwnedSpace(userId, spaceId, { id: true });
+
+  const space = await prisma.space.update({
+    where: { id: spaceId },
+    data: { isActive },
+    select: SPACE_OUTPUT_SELECT,
+  });
+
+  return toSpaceOutput(space);
+}
+
+export async function updateSpaceCover(userId, spaceId, webpBuffer) {
+  const space = await getOwnedSpace(userId, spaceId, {
+    id: true,
+    cover: true,
+  });
+
+  const cover = await saveSpaceCover(webpBuffer);
+  const previousCover = space.cover;
+
+  const updated = await prisma.space.update({
+    where: { id: spaceId },
+    data: { cover },
+    select: SPACE_OUTPUT_SELECT,
+  });
+
+  if (previousCover && previousCover !== cover) {
+    await deleteUploadIfOwned(previousCover);
   }
 
-  if (space.ownerId !== userId) {
-    throw new ForbiddenError("Only the owner can delete this space");
-  }
+  return toSpaceOutput(updated);
+}
+
+export async function deleteSpace(userId, spaceId) {
+  const space = await getOwnedSpace(userId, spaceId, {
+    id: true,
+    cover: true,
+  });
 
   await prisma.$transaction(async (tx) => {
     await tx.spaceMember.deleteMany({ where: { spaceId } });
     await tx.spaceRole.deleteMany({ where: { spaceId } });
     await tx.space.delete({ where: { id: spaceId } });
   });
+
+  if (space.cover) {
+    await deleteUploadIfOwned(space.cover);
+  }
 }
 
-async function assertSpaceAccess(spaceId, userId) {
+export async function assertSpaceAccess(spaceId, userId) {
   const space = await prisma.space.findFirst({
     where: {
       id: spaceId,
-      OR: [{ ownerId: userId }, { members: { some: { userId } } }],
+      OR: [
+        { ownerId: userId },
+        {
+          isActive: true,
+          members: { some: { userId } },
+        },
+      ],
     },
     select: { id: true },
   });
