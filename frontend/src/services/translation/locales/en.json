@@ -10,6 +10,7 @@
   "Good evening": "Good evening",
   "Good night": "Good night",
   "Hello": "Hello",
+
   "menu.dashboard": "Dashboard",
   "menu.goals": "Goals",
   "menu.encyclopedia": "Encyclopedia",
@@ -24,6 +25,9 @@
   "menu.addplugins": "Add plugins",
   "menu.dev": "Dev",
   "menu.settings": "Settings",
+  "menu.members": "Members",
+  "menu.plugins": "Plugins",
+
   "Here's what's happening with your worlds": "Here's what's happening with your worlds",
   "New Space": "New Space",
   "Name": "Name",

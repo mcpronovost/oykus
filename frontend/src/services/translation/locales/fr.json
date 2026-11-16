@@ -10,6 +10,7 @@
   "Good evening": "Bonsoir",
   "Good night": "Bonne nuit",
   "Hello": "Salut",
+
   "menu.dashboard": "Tableau de bord",
   "menu.goals": "Objectifs",
   "menu.encyclopedia": "Encyclopédie",
@@ -24,6 +25,9 @@
   "menu.addplugins": "Ajouter des extensions",
   "menu.dev": "Dev",
   "menu.settings": "Paramètres",
+  "menu.members": "Membres",
+  "menu.plugins": "Extensions",
+
   "Here's what's happening with your worlds": "Voici ce qui se passe avec vos mondes",
   "New Space": "Nouvel espace",
   "Name": "Nom",
