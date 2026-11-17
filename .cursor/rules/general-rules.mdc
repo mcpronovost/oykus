@@ -30,6 +30,7 @@ Each space can activate plugins: kanban tracker, planner, blog, forum, collectio
 - Eliminate all boilerplate and redundant code
 - Follow industry best practices and design patterns
 - Optimize for performance without sacrificing readability
+- Never use “copy” to mean written content or UI text. Prefer content, “text”, “subtitle”, “label”, etc. The verb “copy” (files, clipboard) is fine.
 
 # Database
 
