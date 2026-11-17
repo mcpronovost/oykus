@@ -1,3 +1,5 @@
+@use "../mixins/tone" as *;
+
 .oyk-heading {
   display: flex;
   flex-direction: row;
@@ -8,10 +10,13 @@
   margin: 32px 0 32px;
 
   &-icon {
-    background: color-mix(in srgb, var(--oyk-card-color, var(--oyk-c-accent)) 6%, transparent);
-    border: 1px solid var(--oyk-card-outlined, var(--oyk-c-accent));
+    @include oyk-tone("oyk-heading-icon");
+
+    --oyk-heading-icon-bg: var(--oyk-card-color, var(--oyk-card-bg));
+    --oyk-heading-icon-fg: var(--oyk-card-color, var(--oyk-card-fg));
+    --oyk-heading-icon-border: var(--oyk-card-outlined, var(--oyk-card-divider));
+
     border-radius: var(--oyk-radius);
-    color: var(--oyk-card-color, var(--oyk-c-accent));
     font-size: 1rem;
     line-height: 1;
     overflow: hidden;
