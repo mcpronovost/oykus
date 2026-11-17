@@ -548,7 +548,7 @@ export default function OykDev() {
             <OykHeading
               title="Default heading"
               suptitle="Suptitle"
-              subtitle="Supporting subtitle copy."
+              subtitle="Supporting subtitle text."
               actions={<OykButton label="Action" size="sm" start={IconPlus} />}
             />
             <OykHeading

@@ -50,7 +50,7 @@ export default function Home() {
         </div>
 
         <div className="oyk-home-hero-frame">
-          <div className="oyk-home-hero-copy">
+          <div className="oyk-home-hero-text">
             <p id="oyk-home-hero-brand" className="oyk-home-hero-brand">
               {t("home.hero.brand")}
             </p>
