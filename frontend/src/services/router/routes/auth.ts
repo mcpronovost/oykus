@@ -2,6 +2,15 @@ import React from "react";
 
 export default [
   {
+    name: "register",
+    component: React.lazy(() => import("../../../pages/Auth/Register")),
+    paths: {
+      fr: "inscription",
+      en: "register",
+    },
+    auth: false,
+  },
+  {
     name: "login",
     component: React.lazy(() => import("../../../pages/Auth/Login")),
     paths: {
@@ -11,12 +20,11 @@ export default [
     auth: false,
   },
   {
-    name: "register",
-    component: React.lazy(() => import("../../../pages/Auth/Register")),
+    name: "logout",
+    component: React.lazy(() => import("../../../pages/Auth/Logout")),
     paths: {
-      fr: "inscription",
-      en: "register",
+      fr: "deconnexion",
+      en: "logout",
     },
-    auth: false,
   },
 ];

@@ -74,10 +74,16 @@ export function AuthProvider({ children }: TypeAuthProviderProps) {
   };
 
   const logout = async () => {
+    let logoutError: unknown = null;
     try {
       await apiLogout();
+    } catch (error) {
+      logoutError = error;
     } finally {
       await clearSession();
+    }
+    if (logoutError) {
+      throw logoutError;
     }
   };
 

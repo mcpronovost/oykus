@@ -42,5 +42,8 @@
   "auth.register.aside.plugins.title": "Plugins",
   "auth.register.aside.plugins.body": "Kanban, planners, blogs, forums, collections — turn on the tools you need.",
   "auth.register.aside.encyclopedia.title": "Encyclopedia",
-  "auth.register.aside.encyclopedia.body": "A living catalogue of people, places, and lore for every corner of your world."
+  "auth.register.aside.encyclopedia.body": "A living catalogue of people, places, and lore for every corner of your world.",
+  "auth.logout.title": "Logging out",
+  "auth.logout.message": "Signing you out of your account…",
+  "auth.logout.button": "Log out"
 }

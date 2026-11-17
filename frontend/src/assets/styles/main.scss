@@ -34,6 +34,7 @@
 // Pages
 @use "./pages/home" as pages-home;
 @use "./pages/register" as pages-register;
+@use "./pages/logout" as pages-logout;
 
 // Core
 @use "./core/header" as core-header;

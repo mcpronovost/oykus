@@ -42,5 +42,8 @@
   "auth.register.aside.plugins.title": "Extensions",
   "auth.register.aside.plugins.body": "Kanban, planificateurs, blogs, forums, collections — activez les outils dont vous avez besoin.",
   "auth.register.aside.encyclopedia.title": "Encyclopédie",
-  "auth.register.aside.encyclopedia.body": "Un catalogue vivant de personnages, lieux et lore pour chaque recoin de votre monde."
+  "auth.register.aside.encyclopedia.body": "Un catalogue vivant de personnages, lieux et lore pour chaque recoin de votre monde.",
+  "auth.logout.title": "Déconnexion",
+  "auth.logout.message": "Déconnexion de votre compte en cours…",
+  "auth.logout.button": "Se déconnecter"
 }
