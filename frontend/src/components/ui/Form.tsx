@@ -17,6 +17,7 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import { getValidityMessage, oykClass } from "@/utils";
+import { useTranslation } from "@/services/translation";
 import OykAlert from "./Alert";
 import OykScrollbar from "./Scrollbar";
 
@@ -173,6 +174,7 @@ function OykFormField({
   className,
   ...props
 }: OykFormFieldProps) {
+  const { t } = useTranslation();
   const fieldRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -621,35 +623,41 @@ function OykFormField({
                   aria-labelledby={fieldId}
                   aria-multiselectable={isMultiSelect || undefined}
                 >
-                  {options.map((option) => {
-                    const isSelected = isMultiSelect
-                      ? selectedValues.includes(option.value)
-                      : option.value === stringValue;
-                    const isDisabled = isMultiSelect && !isSelected && isAtMax;
-                    return (
-                      <li key={option.value} role="presentation">
-                        <button
-                          type="button"
-                          role="option"
-                          aria-selected={isSelected}
-                          disabled={isDisabled}
-                          className={oykClass(
-                            "oyk-form-field-select-option",
-                            isSelected && "oyk-selected",
-                            isDisabled && "oyk-disabled",
-                          )}
-                          onClick={() =>
-                            isMultiSelect
-                              ? handleMultiSelect(option.value)
-                              : handleSelect(option.value)
-                          }
-                        >
-                          <span>{option.label}</span>
-                          {isSelected ? <IconCheck size={16} /> : null}
-                        </button>
-                      </li>
-                    );
-                  })}
+                  {options.length === 0 ? (
+                    <li className="oyk-form-field-select-empty" role="presentation">
+                      <span>{t("NoOptionsAvailable")}</span>
+                    </li>
+                  ) : (
+                    options.map((option) => {
+                      const isSelected = isMultiSelect
+                        ? selectedValues.includes(option.value)
+                        : option.value === stringValue;
+                      const isDisabled = isMultiSelect && !isSelected && isAtMax;
+                      return (
+                        <li key={option.value} role="presentation">
+                          <button
+                            type="button"
+                            role="option"
+                            aria-selected={isSelected}
+                            disabled={isDisabled}
+                            className={oykClass(
+                              "oyk-form-field-select-option",
+                              isSelected && "oyk-selected",
+                              isDisabled && "oyk-disabled",
+                            )}
+                            onClick={() =>
+                              isMultiSelect
+                                ? handleMultiSelect(option.value)
+                                : handleSelect(option.value)
+                            }
+                          >
+                            <span>{option.label}</span>
+                            {isSelected ? <IconCheck size={16} /> : null}
+                          </button>
+                        </li>
+                      );
+                    })
+                  )}
                 </ul>
               </OykScrollbar>
             </div>,

@@ -92,5 +92,6 @@
   "note.category.quote": "Quote",
   "note.category.question": "Question",
   "note.category.thought": "Thought",
-  "note.category.other": "Other"
+  "note.category.other": "Other",
+  "NoOptionsAvailable": "No options available"
 }
