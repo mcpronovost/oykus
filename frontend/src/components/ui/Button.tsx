@@ -22,6 +22,7 @@ interface OykButtonProps {
     | "special";
   customColor?: string;
   size?: "sm" | "md" | "lg";
+  justify?: "start" | "center" | "end";
   grow?: boolean;
   shrink?: boolean;
   loading?: boolean;
@@ -41,6 +42,7 @@ export default function OykButton({
   color = "default",
   customColor,
   size = "md",
+  justify = "center",
   grow,
   shrink,
   loading,
@@ -88,7 +90,7 @@ export default function OykButton({
           <IconLoader size={iconSize} stroke={1.5} />
         </div>
       )}
-      <div className="oyk-button-content">
+      <div className={oykClass("oyk-button-content", (shrink && (IconStart || IconEnd) && !label) && "oyk-ratio", justify && `oyk-justify--${justify}`)}>
         {IconStart && (
           <span className="oyk-button-content-start">
             <IconStart size={iconSize} stroke={1.5} />

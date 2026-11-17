@@ -41,6 +41,23 @@
     &-end {
       font-size: 0;
       line-height: 1;
+      margin: 1px 0 0;
+    }
+
+    &.oyk-ratio {
+      aspect-ratio: 1;
+    }
+
+    &.oyk-justify--start {
+      justify-content: flex-start;
+    }
+
+    &.oyk-justify--center {
+      justify-content: center;
+    }
+
+    &.oyk-justify--end {
+      justify-content: flex-end;
     }
   }
 
@@ -65,7 +82,6 @@
 
   &-shrink {
     .oyk-button-content {
-      aspect-ratio: 1;
       padding: 6px;
     }
   }
