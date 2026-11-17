@@ -341,6 +341,21 @@
         }
       }
     }
+
+    &-menu {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 4px;
+      width: 100%;
+      padding: 4px 8px;
+
+      &-item {
+        width: 100%;
+      }
+    }
   }
 
   @media (max-width: 768px) {
