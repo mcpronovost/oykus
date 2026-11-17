@@ -32,6 +32,10 @@
       opacity 0.2s ease,
       transform 0.2s ease;
 
+    &.oyk-nop {
+      padding: 0;
+    }
+
     &[data-placement="right"] {
       transform: translateX(8px);
     }

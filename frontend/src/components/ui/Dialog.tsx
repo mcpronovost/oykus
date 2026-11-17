@@ -1,4 +1,9 @@
-import type { CSSProperties, HTMLAttributes, ReactNode, TransitionEvent } from "react";
+import type {
+  CSSProperties,
+  HTMLAttributes,
+  ReactNode,
+  TransitionEvent,
+} from "react";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { oykClass } from "@/utils";
@@ -11,10 +16,14 @@ type OykDialogHelpers = {
 
 type OykDialogContent = ReactNode | ((helpers: OykDialogHelpers) => ReactNode);
 
-interface OykDialogProps extends Omit<HTMLAttributes<HTMLDivElement>, "content"> {
+interface OykDialogProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "content"
+> {
   content: OykDialogContent;
   placement?: OykDialogPlacement;
   disabled?: boolean;
+  nop?: boolean;
   offset?: number;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -57,6 +66,7 @@ export default function OykDialog({
   content,
   placement = "right",
   disabled = false,
+  nop = false,
   offset = 8,
   open: openProp,
   onOpenChange,
@@ -70,7 +80,9 @@ export default function OykDialog({
   const [internalOpen, setInternalOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [shown, setShown] = useState(false);
-  const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
+  const [coords, setCoords] = useState<{ top: number; left: number } | null>(
+    null,
+  );
 
   const isControlled = openProp !== undefined;
   const open = isControlled ? openProp : internalOpen;
@@ -154,14 +166,19 @@ export default function OykDialog({
   }, [mounted, shown, placement, offset, content]);
 
   const handleTransitionEnd = (event: TransitionEvent<HTMLDivElement>) => {
-    if (event.target !== event.currentTarget || event.propertyName !== "opacity") return;
+    if (
+      event.target !== event.currentTarget ||
+      event.propertyName !== "opacity"
+    )
+      return;
     if (!wantOpen) {
       setMounted(false);
       setCoords(null);
     }
   };
 
-  const renderedContent = typeof content === "function" ? content({ close }) : content;
+  const renderedContent =
+    typeof content === "function" ? content({ close }) : content;
 
   const contentStyle: CSSProperties | undefined = coords
     ? { top: coords.top, left: coords.left }
@@ -180,7 +197,11 @@ export default function OykDialog({
           <div
             ref={contentRef}
             id={dialogId}
-            className={oykClass("oyk-dialog-content", shown && coords && "oyk-open")}
+            className={oykClass(
+              "oyk-dialog-content",
+              shown && coords && "oyk-open",
+              nop && "oyk-nop",
+            )}
             data-placement={placement}
             role="dialog"
             aria-modal="false"
