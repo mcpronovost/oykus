@@ -24,8 +24,7 @@ export default function OykEncyclopediaEntryCard({
         <header
           className={oykClass(
             "oyk-page-encyclopedia-entrycard-header",
-            entry.topic?.color &&
-              `oyk-page-encyclopedia-entrycard-header-color-${entry.topic.color}`,
+            entry.topic?.color && `oyk-color-${entry.topic.color}`,
           )}
         >
           {TopicIcon && (

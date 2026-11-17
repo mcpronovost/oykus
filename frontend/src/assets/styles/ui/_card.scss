@@ -39,8 +39,8 @@
   @each $gradient in (accent, success, danger, info, warning, special) {
     &-gradient-#{$gradient} {
       --oyk-card-color: var(--oyk-c-#{$gradient});
-      --oyk-card-hoverable: var(--oyk-c-#{$gradient});
-      --oyk-card-outlined: var(--oyk-c-#{$gradient});
+      --oyk-card-hoverable: color-mix(in srgb, var(--oyk-c-#{$gradient}) 50%, var(--oyk-card-divider));
+      --oyk-card-outlined: color-mix(in srgb, var(--oyk-c-#{$gradient}) 10%, var(--oyk-card-divider));
 
       background:
         radial-gradient(

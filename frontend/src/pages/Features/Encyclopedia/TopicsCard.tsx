@@ -1,4 +1,5 @@
 import type { Icon } from "@tabler/icons-react";
+import { oykClass } from "@/utils";
 import { useRouter } from "@/services/router";
 import { OykCard, OykProgressBar, OykStats } from "@/components/ui";
 
@@ -33,15 +34,14 @@ export default function OykEncyclopediaTopicsCard({
       clickable
       onClick={handleClick}
     >
-      <div className="oyk-page-encyclopedia-topics-card">
-        <div
-          className="oyk-page-encyclopedia-topics-card-icon"
-          style={{
-            backgroundColor: `var(--oyk-c-${color}-faint)`,
-            borderColor: `var(--oyk-c-${color}-subtle)`,
-          }}
-        >
-          <IconComponent size={16} color={`var(--oyk-c-${color})`} />
+      <div
+        className={oykClass(
+          "oyk-page-encyclopedia-topics-card",
+          `oyk-color-${color}`,
+        )}
+      >
+        <div className="oyk-page-encyclopedia-topics-card-icon">
+          <IconComponent size={16} />
         </div>
         <OykStats justify="start">
           <OykStats.Item label={label} value={value} valueColor={color} />
