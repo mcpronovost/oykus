@@ -18,6 +18,7 @@ Each space can activate plugins: kanban tracker, planner, blog, forum, collectio
 
 # Code style
 
+- Always use Canadian-English.
 - Double quotes everywhere in code.
 - Descriptive names over comments. DRY and KISS, but readability beats brevity.
 - Handle errors and edge cases explicitly. No speculative features.
