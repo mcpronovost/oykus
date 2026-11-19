@@ -1,9 +1,10 @@
 import "@/assets/styles/pages/_encyclopedia.scss";
 import { useState } from "react";
 import { IconBooksOff, IconPlus } from "@tabler/icons-react";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
   type TypeEncyclopediaEntry,
+  getEncyclopediaCategoryCounts,
   listEncyclopediaCategories,
   listEncyclopediaEntries,
   queryKeys,
@@ -23,6 +24,8 @@ import OykEncyclopediaModalsEditEntry from "./modals/EntryEdit";
 import OykEncyclopediaDrawerEntry from "./drawers/EntryPreview";
 import OykEncyclopediaEntryCard from "./EntryCard";
 
+type CategoryFilter = number | "all" | "uncategorized";
+
 export default function OykEncyclopediaTopic() {
   const { user } = useAuth();
   const { params } = useRouter();
@@ -30,13 +33,7 @@ export default function OykEncyclopediaTopic() {
   const spaceId = user?.currentSpace?.id ?? null;
   const topicSlug = params?.topic ?? null;
 
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [modalCreateEntryOpen, setModalCreateEntryOpen] = useState(false);
-  const [modalEditEntryOpen, setModalEditEntryOpen] = useState(false);
-  const [drawerEntryOpen, setDrawerEntryOpen] = useState(false);
-  const [drawerEntry, setDrawerEntry] = useState<TypeEncyclopediaEntry | null>(null);
-
-  if (!spaceId) {
+  if (!spaceId || !topicSlug) {
     return (
       <div className="oyk-page-encyclopedia">
         <OykGrid>
@@ -54,16 +51,17 @@ export default function OykEncyclopediaTopic() {
     );
   }
 
-  const {
-    data: entries = [],
-    isPending: isEntriesPending,
-    isError: isEntriesError,
-    refetch: refetchEntries,
-  } = useQuery({
-    queryKey: queryKeys.encyclopedia.list(spaceId ?? "", topicSlug),
-    queryFn: () => listEncyclopediaEntries(spaceId!, topicSlug),
-    enabled: Boolean(spaceId),
-  });
+  return <OykEncyclopediaTopicContent key={`${spaceId}/${topicSlug}`} spaceId={spaceId} topicSlug={topicSlug} />;
+}
+
+function OykEncyclopediaTopicContent({ spaceId, topicSlug }: { spaceId: string; topicSlug: string }) {
+  const { t } = useTranslation();
+  const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>("all");
+  const [modalCreateEntryOpen, setModalCreateEntryOpen] = useState(false);
+  const [modalEditEntryOpen, setModalEditEntryOpen] = useState(false);
+  const [drawerEntryOpen, setDrawerEntryOpen] = useState(false);
+  const [drawerEntry, setDrawerEntry] = useState<TypeEncyclopediaEntry | null>(null);
+  const listKey = queryKeys.encyclopedia.list(spaceId, topicSlug);
 
   const {
     data: categories = [],
@@ -73,12 +71,49 @@ export default function OykEncyclopediaTopic() {
   } = useQuery({
     queryKey: queryKeys.encyclopedia.categories(topicSlug),
     queryFn: () => listEncyclopediaCategories(topicSlug),
-    enabled: Boolean(spaceId),
   });
 
-  const handleClickCategory = (category: string) => {
-    setSelectedCategory(category);
-  };
+  const {
+    data: counts = [],
+    isPending: isCountsPending,
+    isError: isCountsError,
+    refetch: refetchCounts,
+  } = useQuery({
+    queryKey: [...listKey, "counts"],
+    queryFn: () => getEncyclopediaCategoryCounts(spaceId, topicSlug),
+  });
+
+  const countByCategory = new Map(counts.map(({ categoryId, count }) => [categoryId, count]));
+  const populatedCategories = categories.filter(({ id }) => (countByCategory.get(id) ?? 0) > 0);
+  const uncategorizedCount = countByCategory.get(null) ?? 0;
+  const hasCategorizedEntries = populatedCategories.length > 0;
+  const categoryFilters: Array<{ id: CategoryFilter; slug: string }> = [
+    { id: "all", slug: "all" },
+    ...populatedCategories,
+    ...(hasCategorizedEntries && uncategorizedCount > 0
+      ? [{ id: "uncategorized" as const, slug: "other" }]
+      : []),
+  ];
+  const activeFilter = categoryFilters.find(({ id }) => id === selectedCategory) ?? categoryFilters[0];
+  const category = activeFilter.id === "all" ? undefined
+    : activeFilter.id === "uncategorized" ? null : activeFilter.slug;
+
+  const {
+    data: entryPages,
+    isPending: isEntriesPending,
+    isError: isEntriesError,
+    refetch: refetchEntries,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isFetchNextPageError,
+  } = useInfiniteQuery({
+    queryKey: [...listKey, "entries", activeFilter.id],
+    queryFn: ({ pageParam, signal }) => listEncyclopediaEntries(spaceId, topicSlug, category, pageParam, signal),
+    initialPageParam: null as string | null,
+    getNextPageParam: (page) => page.nextCursor,
+  });
+  const entries = entryPages?.pages.flatMap((page) => page.items) ?? [];
 
   const handleEntryClick = (entry: TypeEncyclopediaEntry) => {
     setDrawerEntry(entry);
@@ -90,29 +125,11 @@ export default function OykEncyclopediaTopic() {
     setModalEditEntryOpen(true);
   };
 
-  const isPending = isEntriesPending || isCategoriesPending;
-  const isError = isEntriesError || isCategoriesError;
+  const isPending = isEntriesPending || isCategoriesPending || isCountsPending;
+  const isError = (isEntriesError && !entryPages) || isCategoriesError || isCountsError;
   const uncategorizedEntries = entries.filter(
     (entry) => entry.categoryId === null,
   );
-  const populatedCategories = categories.filter((category) =>
-    entries.some((entry) => entry.categoryId === category.id),
-  );
-  const hasCategorizedEntries = populatedCategories.length > 0;
-  const hasUncategorizedEntries = uncategorizedEntries.length > 0;
-  const categoryFilters = [
-    "all",
-    ...populatedCategories.map((category) => category.slug),
-    ...(hasCategorizedEntries && hasUncategorizedEntries ? ["other"] : []),
-  ];
-  const visibleCategories = populatedCategories.filter(
-    (category) =>
-      selectedCategory === "all" || selectedCategory === category.slug,
-  );
-  const showUncategorized =
-    hasUncategorizedEntries &&
-    (selectedCategory === "all" || selectedCategory === "other");
-  const showUncategorizedDivider = hasCategorizedEntries && showUncategorized;
 
   return (
     <div className="oyk-page-encyclopedia">
@@ -151,23 +168,23 @@ export default function OykEncyclopediaTopic() {
             />
           }
         />
-        {!isPending && !isError && hasCategorizedEntries ? (
+        {!isCategoriesPending && !isCountsPending && !isCategoriesError && !isCountsError && hasCategorizedEntries ? (
           <OykGrid.Row>
             <OykGrid.Col flex="horizontal" justify="start">
-              {categoryFilters.map((c) => (
+              {categoryFilters.map(({ id, slug }) => (
                 <OykButton
-                  key={c}
-                  label={t(`encyclopedia.category.${c}`)}
+                  key={id}
+                  label={t(`encyclopedia.category.${slug}`)}
                   size="sm"
-                  color={selectedCategory === c ? "accent" : "default"}
-                  onClick={() => handleClickCategory(c)}
+                  color={activeFilter.id === id ? "accent" : "default"}
+                  onClick={() => setSelectedCategory(id)}
                 />
               ))}
             </OykGrid.Col>
           </OykGrid.Row>
         ) : null}
 
-        {isPending ? (
+        {isPending && !isError ? (
           <OykGrid.Row>
             <OykGrid.Col>
               <OykResult
@@ -194,6 +211,7 @@ export default function OykEncyclopediaTopic() {
                   onClick={() => {
                     void refetchEntries();
                     void refetchCategories();
+                    void refetchCounts();
                   }}
                 />
               </OykResult>
@@ -216,17 +234,19 @@ export default function OykEncyclopediaTopic() {
           </OykGrid.Row>
         ) : (
           <>
-            {visibleCategories.map((category) => {
+            {categories.map((category) => {
               const categoryEntries = entries.filter(
                 (entry) => entry.categoryId === category.id,
               );
+              if (!categoryEntries.length) return null;
+              const total = countByCategory.get(category.id);
 
               return (
                 <OykGrid.Row key={category.id}>
                   <OykGrid.Col>
                     <OykDivider
                       start={t(`encyclopedia.category.${category.slug}`)}
-                      end={`${t("{count} entries", categoryEntries.length)}`}
+                      end={total === undefined ? undefined : t("{count} entries", total)}
                     />
                   </OykGrid.Col>
                     {categoryEntries.map((entry) => (
@@ -237,13 +257,13 @@ export default function OykEncyclopediaTopic() {
                 </OykGrid.Row>
               );
             })}
-            {showUncategorized ? (
+            {uncategorizedEntries.length > 0 ? (
               <OykGrid.Row>
-                {showUncategorizedDivider ? (
+                {hasCategorizedEntries ? (
                   <OykGrid.Col>
                     <OykDivider
                       start={t("encyclopedia.category.other")}
-                      end={`${t("{count} entries", uncategorizedEntries.length)}`}
+                      end={t("{count} entries", uncategorizedCount)}
                     />
                   </OykGrid.Col>
                 ) : null}
@@ -254,6 +274,20 @@ export default function OykEncyclopediaTopic() {
                 ))}
               </OykGrid.Row>
             ) : null}
+            {hasNextPage && (
+              <OykGrid.Row>
+                <OykGrid.Col justify="center" flex="horizontal">
+                  <OykButton
+                    label={t(isFetchNextPageError ? "Try again" : "Load more")}
+                    loading={isFetchingNextPage}
+                    disabled={isFetchingNextPage}
+                    onClick={() => void fetchNextPage({ cancelRefetch: false })}
+                    variant="ghost"
+                    color="accent"
+                  />
+                </OykGrid.Col>
+              </OykGrid.Row>
+            )}
           </>
         )}
       </OykGrid>

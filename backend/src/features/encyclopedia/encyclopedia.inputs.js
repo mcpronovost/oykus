@@ -2,6 +2,7 @@ import { number, object, string } from "../../shared/validate.js";
 
 export const listEncyclopediaEntriesInput = object({
   category: string({ required: false, min: 1, max: 100 }),
+  uncategorized: string({ required: false, trim: false }),
 });
 
 export const listEncyclopediaCategoriesInput = object({

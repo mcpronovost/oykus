@@ -1,4 +1,5 @@
 import { BadRequestError } from "../../shared/errors/index.js";
+import { parsePage } from "../../shared/pagination.js";
 import {
   createNoteCategoryInput,
   createNoteInput,
@@ -34,7 +35,11 @@ function parseCategoryIdParam(value) {
 
 export async function list(req, res) {
   const spaceId = parseIdParam(req.params.id, "spaceId");
-  const notes = await notesServices.listNotes(req.userId, { spaceId });
+  const page = parsePage(req.query, (value) => {
+    const date = new Date(value);
+    return Number.isFinite(date.getTime()) && date.toISOString() === value ? date : null;
+  });
+  const notes = await notesServices.listNotes(req.userId, { spaceId, page });
   res.json({ data: notes });
 }
 

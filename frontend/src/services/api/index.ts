@@ -103,6 +103,8 @@ export type TypeNoteCategory = {
   label: string;
 };
 
+type TypePage<T> = { items: T[]; nextCursor: string | null };
+
 export type TypeNote = {
   id: string;
   content: string;
@@ -145,6 +147,8 @@ export type TypeEncyclopediaCategory = {
   slug: string;
   topicId: number;
 };
+
+type TypeEncyclopediaCategoryCount = { categoryId: number | null; count: number };
 
 export type TypeEncyclopediaEntry = {
   id: string;
@@ -264,8 +268,9 @@ async function setCurrentSpace(spaceId: string): Promise<TypePublicUser> {
   });
 }
 
-async function listNotes(spaceId: string): Promise<TypeNote[]> {
-  return request<TypeNote[]>(`/api/v1/spaces/${spaceId}/notes`);
+async function listNotes(spaceId: string, cursor: string | null, signal: AbortSignal) {
+  const query = cursor ? `?${new URLSearchParams({ cursor })}` : "";
+  return request<TypePage<TypeNote>>(`/api/v1/spaces/${spaceId}/notes${query}`, { signal });
 }
 
 async function createNote(input: TypeCreateNoteInput): Promise<TypeNote> {
@@ -300,9 +305,24 @@ async function getEncyclopediaStats(
 async function listEncyclopediaEntries(
   spaceId: string,
   topic: string,
-): Promise<TypeEncyclopediaEntry[]> {
-  return request<TypeEncyclopediaEntry[]>(
-    `/api/v1/spaces/${spaceId}/encyclopedia/${encodeURIComponent(topic)}`,
+  category: string | null | undefined,
+  cursor: string | null,
+  signal: AbortSignal,
+) {
+  const params = new URLSearchParams();
+  if (cursor) params.set("cursor", cursor);
+  if (category === null) params.set("uncategorized", "true");
+  else if (category !== undefined) params.set("category", category);
+  const query = params.size ? `?${params}` : "";
+  return request<TypePage<TypeEncyclopediaEntry>>(
+    `/api/v1/spaces/${spaceId}/encyclopedia/${encodeURIComponent(topic)}${query}`,
+    { signal },
+  );
+}
+
+async function getEncyclopediaCategoryCounts(spaceId: string, topic: string) {
+  return request<TypeEncyclopediaCategoryCount[]>(
+    `/api/v1/spaces/${spaceId}/encyclopedia/${encodeURIComponent(topic)}/counts`,
   );
 }
 
@@ -362,6 +382,7 @@ export {
   deleteEncyclopediaEntry,
   deleteNote,
   deleteSpace,
+  getEncyclopediaCategoryCounts,
   getEncyclopediaStats,
   getHealth,
   getMe,

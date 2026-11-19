@@ -7,8 +7,7 @@ import { OykButton, OykForm, OykList, OykModal } from "@/components/ui";
 import {
   ApiError,
   deleteSpace,
-  getEncyclopediaStats,
-  listNotes,
+  getSpaceStats,
   queryKeys,
   type TypeSpace,
 } from "@/services/api";
@@ -38,27 +37,18 @@ export default function OykDashboardModalsSpaceDelete({
   const [isDeleting, setIsDeleting] = useState(false);
 
   const {
-    data: notes = [],
-    isPending: isNotesPending,
+    data: stats,
+    isPending: isStatsPending,
+    isError: isStatsError,
+    refetch: refetchStats,
   } = useQuery({
-    queryKey: queryKeys.notes.list(space?.id ?? ""),
-    queryFn: () => listNotes(space!.id),
+    queryKey: queryKeys.spaces.stats(space?.id ?? ""),
+    queryFn: () => getSpaceStats(space!.id),
     enabled: Boolean(space),
   });
 
-  const {
-    data: encyclopediaStats,
-    isPending: isEncyclopediaPending,
-  } = useQuery({
-    queryKey: queryKeys.encyclopedia.stats(space?.id ?? ""),
-    queryFn: () => getEncyclopediaStats(space!.id),
-    enabled: Boolean(space),
-  });
-
-  const encyclopediaCount = encyclopediaStats?.total ?? 0;
-  const isDestroyedItemsPending = isNotesPending || isEncyclopediaPending;
-
-  const destroyedItems: TypeDestroyedItem[] = [
+  const encyclopediaCount = stats?.encyclopedia.reduce((total, topic) => total + topic.count, 0) ?? 0;
+  const destroyedItems: TypeDestroyedItem[] = stats && !isStatsError ? [
     {
       key: "encyclopedia",
       count: encyclopediaCount,
@@ -67,11 +57,11 @@ export default function OykDashboardModalsSpaceDelete({
     },
     {
       key: "notes",
-      count: notes.length,
+      count: stats.notes,
       icon: IconNote,
-      label: t("{count} notes", notes.length),
+      label: t("{count} notes", stats.notes),
     },
-  ].filter((item) => item.count > 0);
+  ].filter((item) => item.count > 0) : [];
 
   const nameMatches =
     space != null && confirmationName.trim() === space.name;
@@ -92,7 +82,7 @@ export default function OykDashboardModalsSpaceDelete({
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!space) return;
+    if (!space || !stats || isStatsError || isDeleting) return;
 
     setError(null);
 
@@ -135,7 +125,14 @@ export default function OykDashboardModalsSpaceDelete({
           <p>
             {t("This will permanently delete this space and destroy all of its content")}
           </p>
-          {!isDestroyedItemsPending && destroyedItems.length > 0 && (
+          {isStatsPending && <p role="status">{t("Loading space counts")}</p>}
+          {isStatsError && (
+            <>
+              <p role="alert">{t("Could not load space counts")}</p>
+              <OykButton type="button" label={t("Try again")} onClick={() => void refetchStats()} />
+            </>
+          )}
+          {destroyedItems.length > 0 && (
             <OykList>
               {destroyedItems.map((item) => (
                 <OykList.Item
@@ -174,7 +171,7 @@ export default function OykDashboardModalsSpaceDelete({
             form={formId}
             label={t("Delete")}
             color="danger"
-            disabled={isDeleting || !nameMatches}
+            disabled={isDeleting || !nameMatches || !stats || isStatsError}
           />
         </>
       )}

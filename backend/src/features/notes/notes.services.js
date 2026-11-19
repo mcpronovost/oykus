@@ -1,4 +1,5 @@
 import { prisma } from "../../shared/db/index.js";
+import { afterCursor, toPage } from "../../shared/pagination.js";
 import {
   ConflictError,
   ForbiddenError,
@@ -60,16 +61,17 @@ async function assertCategoryExists(categoryId) {
   }
 }
 
-export async function listNotes(userId, { spaceId }) {
+export async function listNotes(userId, { spaceId, page: { limit, cursor } }) {
   await assertSpaceAccess(spaceId, userId);
 
   const notes = await prisma.note.findMany({
-    where: { spaceId },
+    where: { spaceId, ...afterCursor(cursor, "updatedAt", "desc") },
     select: NOTE_OUTPUT_SELECT,
-    orderBy: { updatedAt: "desc" },
+    orderBy: [{ updatedAt: "desc" }, { id: "desc" }],
+    take: limit + 1,
   });
 
-  return notes.map(toNoteOutput);
+  return toPage(notes, limit, "updatedAt", toNoteOutput);
 }
 
 export async function getNote(userId, noteId) {

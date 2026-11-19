@@ -8,6 +8,7 @@ router.use(requireAuth);
 
 router.get("/stats", encyclopediaControllers.stats);
 router.get("/recent", encyclopediaControllers.recent);
+router.get("/:topic/counts", encyclopediaControllers.categoryCounts);
 router.get("/:topic", encyclopediaControllers.list);
 
 export default router;

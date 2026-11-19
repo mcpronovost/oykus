@@ -1,4 +1,5 @@
 import { BadRequestError } from "../../shared/errors/index.js";
+import { parsePage } from "../../shared/pagination.js";
 import {
   createEncyclopediaEntryInput,
   listEncyclopediaCategoriesInput,
@@ -42,13 +43,27 @@ export async function stats(req, res) {
 export async function list(req, res) {
   const spaceId = parseIdParam(req.params.id, "spaceId");
   const topic = parseIdParam(req.params.topic, "topic");
-  const input = parseBody(listEncyclopediaEntriesInput, req.query ?? {});
+  const { category, uncategorized } = parseBody(listEncyclopediaEntriesInput, req.query);
+  if (uncategorized !== undefined && (uncategorized !== "true" || category !== undefined)) {
+    throw new BadRequestError("Validation failed", {
+      uncategorized: ["Must be true and cannot be combined with category"],
+    });
+  }
+  const page = parsePage(req.query, (title) => title.includes("\0") ? null : title);
   const entries = await encyclopediaServices.listEntries(req.userId, {
     spaceId,
     topic,
-    category: input.category,
+    category: uncategorized ? null : category,
+    page,
   });
   res.json({ data: entries });
+}
+
+export async function categoryCounts(req, res) {
+  const spaceId = parseIdParam(req.params.id, "spaceId");
+  const topic = parseIdParam(req.params.topic, "topic");
+  const counts = await encyclopediaServices.getCategoryCounts(req.userId, { spaceId, topic });
+  res.json({ data: counts });
 }
 
 export async function recent(req, res) {

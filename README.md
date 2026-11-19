@@ -182,6 +182,8 @@ Client configuration uses names that start with `VITE_` in `.env`. During local 
 
 Authenticated requests validate the session in PostgreSQL. Active sessions renew their database expiry and cookie at most once every 10 minutes, or half of `SESSION_TTL_MS` when the configured lifetime is shorter than 20 minutes. The recorded last activity can lag actual requests by up to that refresh interval.
 
+The notes and encyclopedia topic list routes return pages of 25 records by default. An optional `limit` accepts 1–50. Pass the returned `nextCursor` as the `cursor` query parameter to load the next page.
+
 Lint the frontend:
 
 ```bash

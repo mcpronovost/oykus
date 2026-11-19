@@ -1,4 +1,5 @@
 import { prisma } from "../../shared/db/index.js";
+import { afterCursor, toPage } from "../../shared/pagination.js";
 import {
   ConflictError,
   ForbiddenError,
@@ -174,11 +175,23 @@ export async function listCategories({ topic }) {
   return categories.map(toEncyclopediaCategoryOutput);
 }
 
-export async function listEntries(userId, { spaceId, topic, category }) {
+export async function getCategoryCounts(userId, { spaceId, topic }) {
+  await assertSpaceAccess(spaceId, userId);
+  const { id: topicId } = await getTopicBySlug(topic);
+  const counts = await prisma.encyclopediaEntry.groupBy({
+    by: ["categoryId"],
+    where: { spaceId, topicId },
+    _count: { _all: true },
+  });
+
+  return counts.map(({ categoryId, _count }) => ({ categoryId, count: _count._all }));
+}
+
+export async function listEntries(userId, { spaceId, topic, category, page: { limit, cursor } }) {
   await assertSpaceAccess(spaceId, userId);
   const encyclopediaTopic = await getTopicBySlug(topic);
 
-  let categoryId;
+  let categoryId = category === null ? null : undefined;
   if (category) {
     const encyclopediaCategory = await prisma.encyclopediaTopicCategory.findFirst({
       where: {
@@ -200,12 +213,14 @@ export async function listEntries(userId, { spaceId, topic, category }) {
       spaceId,
       topicId: encyclopediaTopic.id,
       ...(categoryId !== undefined ? { categoryId } : {}),
+      ...afterCursor(cursor, "title", "asc"),
     },
     select: ENCYCLOPEDIA_ENTRY_OUTPUT_SELECT,
-    orderBy: { title: "asc" },
+    orderBy: [{ title: "asc" }, { id: "asc" }],
+    take: limit + 1,
   });
 
-  return entries.map(toEncyclopediaEntryOutput);
+  return toPage(entries, limit, "title", toEncyclopediaEntryOutput);
 }
 
 export async function listRecentEntries(userId, spaceId) {

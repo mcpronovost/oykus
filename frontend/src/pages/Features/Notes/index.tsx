@@ -1,6 +1,6 @@
 import type { SubmitEvent } from "react";
 import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 import { IconNoteOff } from "@tabler/icons-react";
 import {
   OykButton,
@@ -40,15 +40,22 @@ export default function OykNotes() {
   const [noteToDelete, setNoteToDelete] = useState<TypeNote | null>(null);
 
   const {
-    data: notes = [],
+    data: notesPages,
     isPending: isNotesPending,
     isError: isNotesError,
     refetch: refetchNotes,
-  } = useQuery({
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isFetchNextPageError,
+  } = useInfiniteQuery({
     queryKey: queryKeys.notes.list(spaceId ?? ""),
-    queryFn: () => listNotes(spaceId!),
+    queryFn: ({ pageParam, signal }) => listNotes(spaceId!, pageParam, signal),
+    initialPageParam: null as string | null,
+    getNextPageParam: (page) => page.nextCursor,
     enabled: Boolean(spaceId),
   });
+  const notes = notesPages?.pages.flatMap((page) => page.items) ?? [];
 
   const {
     data: categories = [],
@@ -148,7 +155,7 @@ export default function OykNotes() {
   }
 
   const isPending = isNotesPending || isCategoriesPending;
-  const isError = isNotesError || isCategoriesError;
+  const isError = (isNotesError && !notesPages) || isCategoriesError;
   const sortedCategories = sortCategories(categories, (category) =>
     t(`note.category.${category.label}`),
   );
@@ -204,7 +211,7 @@ export default function OykNotes() {
           </OykGrid.Row>
         </OykForm>
 
-        {isPending ? (
+        {isPending && !isError ? (
           <OykGrid.Row>
             <OykGrid.Col>
               <OykResult
@@ -246,7 +253,23 @@ export default function OykNotes() {
             </OykGrid.Col>
           </OykGrid.Row>
         ) : (
-          <OykMasonry notes={notes} onDeleteNote={setNoteToDelete} />
+          <>
+            <OykMasonry notes={notes} onDeleteNote={setNoteToDelete} />
+            {hasNextPage && (
+              <OykGrid.Row>
+                <OykGrid.Col justify="center" flex="horizontal">
+                  <OykButton
+                    label={t(isFetchNextPageError ? "Try again" : "Load more")}
+                    loading={isFetchingNextPage}
+                    disabled={isFetchingNextPage}
+                    onClick={() => void fetchNextPage({ cancelRefetch: false })}
+                    variant="ghost"
+                    color="accent"
+                  />
+                </OykGrid.Col>
+              </OykGrid.Row>
+            )}
+          </>
         )}
       </OykGrid>
     </div>
