@@ -192,10 +192,31 @@ docker compose exec oykus-frontend npm run lint
 
 ## Production
 
-```bash
-docker compose -f docker-compose.prod.yml up --build
+Run the following from the repository root for each release. The migration job finishes before the running API is replaced.
+
+```powershell
+$composeFile = "docker-compose.prod.yml"
+
+docker compose -f $composeFile build
+if ($LASTEXITCODE -ne 0) { throw "Production image build failed." }
+
+docker compose -f $composeFile up -d --wait postgres
+if ($LASTEXITCODE -ne 0) { throw "PostgreSQL did not become healthy." }
+
+docker compose -f $composeFile up --no-deps --no-build --force-recreate --exit-code-from migrate migrate
+if ($LASTEXITCODE -ne 0) { throw "Database migration failed. The API release was not started." }
+
+docker compose -f $composeFile up -d --no-deps --no-build --wait backend
+if ($LASTEXITCODE -ne 0) { throw "The API did not become healthy." }
+
+docker compose -f $composeFile up -d --no-deps --no-build --force-recreate nginx
+if ($LASTEXITCODE -ne 0) { throw "Nginx did not start." }
 ```
 
-Nginx listens on port 80, serves the built frontend, and proxies `/api/` to the backend.
+The release sequence always recreates the migration job. It starts the API and Nginx without replaying completed dependencies. Restarting the API with `docker compose -f docker-compose.prod.yml restart backend` starts Node directly. For migration diagnostics, use `docker compose -f docker-compose.prod.yml logs migrate`.
+
+The running API may continue serving during migrations. Use migrations compatible with both releases or schedule maintenance for incompatible changes. Rolling back an API image leaves applied database migrations in place.
+
+Nginx listens on port 80, serves the built frontend, and proxies `/api/` to the backend. The `oykus-production` Compose project uses its own network and volumes, separate from development.
 
 User uploads (avatars, covers) are served by Nginx at `/uploads/` with a one-year cache. Locally, both the backend and Nginx use `backend/uploads` on the host. In production, a named Docker volume is mounted at `/app/uploads` in the backend (read-write) and `/var/www/uploads` in Nginx (read-only).

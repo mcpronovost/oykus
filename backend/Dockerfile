@@ -1,14 +1,16 @@
 FROM node:24-alpine AS deps
 WORKDIR /app
-COPY package*.json ./
+COPY package.json package-lock.json ./
+RUN npm ci
 COPY prisma ./prisma
 COPY prisma.config.js ./
-RUN if [ -f "package-lock.json" ]; then npm ci; else npm install; fi
-RUN DATABASE_URL="postgresql://oykus:oykus@localhost:5432/oykus" npx prisma generate
+RUN DATABASE_URL="postgresql://oykus:oykus@localhost:5432/oykus" ./node_modules/.bin/prisma generate
 
-FROM node:24-alpine AS development
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+FROM deps AS migrate
+USER node
+CMD ["./node_modules/.bin/prisma", "migrate", "deploy"]
+
+FROM deps AS development
 COPY . .
 ENV NODE_ENV=development
 EXPOSE 3000
@@ -16,18 +18,18 @@ CMD ["sh", "docker-entrypoint.dev.sh"]
 
 FROM node:24-alpine AS prod-deps
 WORKDIR /app
-COPY package*.json ./
-RUN if [ -f "package-lock.json" ]; then npm ci --omit=dev; else npm install --omit=dev; fi
+COPY package.json package-lock.json ./
+# The Prisma Client declares the CLI as an optional peer.
+RUN npm ci --omit=dev --omit=optional
 
 FROM node:24-alpine AS production
 WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=prod-deps /app/node_modules ./node_modules
-COPY package.json prisma.config.js docker-entrypoint.sh ./
-COPY prisma ./prisma
+COPY package.json ./
 COPY --from=deps /app/prisma/db ./prisma/db
 COPY src ./src
-RUN mkdir -p /app/uploads && chown -R node:node /app
+RUN mkdir -p /app/uploads && chown node:node /app/uploads
 USER node
 EXPOSE 3000
-CMD ["sh", "docker-entrypoint.sh"]
+CMD ["node", "--max-old-space-size=512", "src/index.js"]

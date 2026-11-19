@@ -1,19 +1,23 @@
 # Run Prisma migrations once per deploy
 
-## Current behavior and cost
+## Benefits
 
-The [production entrypoint](../../backend/docker-entrypoint.sh) runs `npx prisma migrate deploy` before starting Node. The [Dockerfile](../../backend/Dockerfile) ships the Prisma CLI and production dependencies together because every API container needs the CLI at startup. This increases the runtime image and makes restarts repeat migration startup work. A one-shot migration job gives the deploy a clear failure point and leaves API startup responsible for starting the server.
+- The production API image dropped from **1.13 GB to 357 MB**, about 68%. The CLI is installed in the migration image, and only the uploads directory changes ownership in the API image.
+- API restarts no longer run migrations. In a local test against an already migrated database, median time to the first successful API health response fell from **1.92 seconds to 0.60 seconds**.
+- A failed migration prevents the new API release from starting. The documented release sequence leaves the running API in place until the job succeeds.
 
-The measured production image was 1.13 GB. Its layer history attributed 350 MB to the final recursive ownership change, roughly the size of the preceding `node_modules` copy. This makes ownership a separate optimization that can be measured before migrating the CLI out of the image. [Measured backend baseline](backend-performance-baseline.md)
+## Behaviour before the change
+
+The production entrypoint ran `npx prisma migrate deploy` before starting Node. The API image shipped the Prisma CLI, and every API restart repeated migration startup work.
+
+The measured production image was 1.13 GB. Its layer history attributed 350 MB to the recursive ownership change, roughly the size of the preceding `node_modules` layer. [Measured backend baseline](backend-performance-baseline.md)
 
 ## Implementation
 
-1. Keep a Docker build stage that installs the full lockfile and generates the Prisma client. Add a migration target with the local Prisma CLI, `prisma.config.js`, schema files, and migration history. Run `prisma migrate deploy` using the installed CLI and the deploy-time `DATABASE_URL`. Keep client generation at image build time and migrations at deploy time.
-2. Move the `prisma` CLI package to `devDependencies` and update the lockfile. Keep `@prisma/client`, `@prisma/adapter-pg`, and Express in production dependencies. The API image should install with `npm ci --omit=dev` and copy in the generated client. Check the final image starts under the existing `node` user, can write to its upload volume, and can execute a real database query. Keep the development image and seed command able to access the CLI.
-3. Add a one-shot `migrate` service to [production Compose](../../docker-compose.prod.yml). Have it wait for healthy PostgreSQL, use the same network and database configuration as the API, and exit with the CLI's status. Have backend startup wait for `service_completed_successfully`, then let Nginx continue to wait for the backend health check. Pass secrets at service startup.
-4. Update the [production instructions](../../README.md) so each release executes a fresh migration job for that release, even if a prior job container exists. If deployment is scripted, make migration success a prerequisite to starting the new backend release. Verify the documented command sequence on an existing deployment as well as a fresh one. The API entrypoint can then execute Node directly with its existing options.
-5. For an in-place rollout where the old API can still serve traffic during migration, use schema changes that both versions can tolerate or schedule a maintenance window for incompatible changes. Define rollback around schema compatibility. Rolling back the API image leaves applied migrations in the database.
-6. Replace the recursive `/app` ownership change with targeted setup for writable paths. The `node` user needs to read application files and dependencies and write to `/app/uploads`. Keep readable artifacts root-owned where possible and set ownership at copy or creation time for paths that need it. Validate permissions with a fresh upload volume and with the existing volume before comparing image history and size.
+1. The [Dockerfile](../../backend/Dockerfile) installs the full lockfile and generates Prisma Client at build time. The `migrate` image uses this stage and runs the installed CLI against the deploy-time `DATABASE_URL`.
+2. The Prisma CLI is a dev dependency. The runtime installs with `npm ci --omit=dev --omit=optional` because Prisma Client also declares the CLI as an optional peer. The API image includes the generated client and runs Node directly as the `node` user. Only `/app/uploads` needs an ownership change. Development and seed commands retain access to the CLI.
+3. [Production Compose](../../docker-compose.prod.yml) waits for PostgreSQL to accept TCP connections, then runs the one-shot migration service. The API's dependency condition requires the job to exit successfully. Nginx depends on API health. The production project has its own network and volumes.
+4. The [production release sequence](../../README.md) recreates the migration job before updating the running API. The API and Nginx start after their prerequisites succeed without replaying the job. Use compatible schema changes when keeping the previous API online during migrations. Rolling back the API image leaves applied migrations in the database.
 
 ## Verification
 
@@ -23,5 +27,13 @@ Use the [measured backend baseline](backend-performance-baseline.md) to compare 
 - Restart only the API process or container and verify it starts without invoking the migration CLI. Check that the runtime image lacks the CLI and still performs a database read and writes an upload.
 - Introduce a migration failure in disposable staging and verify it prevents the new backend from starting. Inspect the migration job logs and check recovery after fixing the failure.
 - Compare the old and new production image sizes and API startup times using the same build platform and measurement method. Measure steady-state memory separately if that is a deployment goal.
+
+## Verification results
+
+An isolated Compose project verified that a failed migration blocked startup, a fresh database applied the existing migrations, a subsequent release applied a temporary pending migration before replacing the API container, and repeating that release created a fresh successful job with no pending changes. An API-only restart left the migration container untouched.
+
+The API ran as `node` and served database-backed requests with no Prisma CLI or migration history in its filesystem. The API wrote space covers to both a fresh and a reused upload volume. Stock Nginx with the production proxy config served the API health route and both uploaded files. Existing frontend TypeScript errors still block building the complete Nginx image with the site bundled.
+
+The startup comparison rebuilt the previous API image and used the same base image, Docker Desktop host, and already migrated database for three starts per image. Each sample ran from launching a new container to the first successful database-backed health response. The dependency layer dropped from 348 MB to 83.7 MB, and the upload ownership layer dropped from 350 MB to 12.3 kB.
 
 [Docker Compose startup order](https://docs.docker.com/compose/how-tos/startup-order/) · [Prisma migration deployment](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/deploy-database-changes-with-prisma-migrate)
