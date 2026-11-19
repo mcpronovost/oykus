@@ -180,6 +180,8 @@ Postgres is published on port `5433`. The API and Vite are reached only through 
 
 Client configuration uses names that start with `VITE_` in `.env`. During local development, Compose injects that file into the Vite process, and the browser can read those names from `import.meta.env`. Other names stay on the server. A production build inlines `VITE_` values when the Nginx image is built, so a change to a client variable means rebuilding that image.
 
+Authenticated requests validate the session in PostgreSQL. Active sessions renew their database expiry and cookie at most once every 10 minutes, or half of `SESSION_TTL_MS` when the configured lifetime is shorter than 20 minutes. The recorded last activity can lag actual requests by up to that refresh interval.
+
 Lint the frontend:
 
 ```bash

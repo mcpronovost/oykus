@@ -1,19 +1,22 @@
 import { UnauthorizedError } from "../errors/index.js";
 import { clearSessionCookie, getSessionToken, setSessionCookie } from "../auth/cookies.js";
-import { findValidSession, touchSession } from "../auth/session.js";
+import { authenticateSession } from "../auth/session.js";
 
 export async function requireAuth(req, res, next) {
   try {
     const token = getSessionToken(req);
-    const session = await findValidSession(token);
+    const authentication = await authenticateSession(token);
 
-    if (!session) {
+    if (!authentication) {
       clearSessionCookie(res, req);
       throw new UnauthorizedError("Authentication required");
     }
 
-    await touchSession(session.id);
-    setSessionCookie(res, token, req);
+    const { session, refreshed } = authentication;
+    if (refreshed) {
+      const maxAge = Math.max(0, session.expiresAt.getTime() - Date.now());
+      setSessionCookie(res, token, req, maxAge);
+    }
 
     req.session = session;
     req.userId = session.userId;

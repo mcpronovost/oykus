@@ -2,6 +2,8 @@ import { createHash, randomBytes } from "node:crypto";
 import { prisma } from "../db/index.js";
 import { config } from "../config/index.js";
 
+const SESSION_SELECT = { id: true, userId: true, expiresAt: true, updatedAt: true };
+
 export function createSessionToken() {
   return randomBytes(32).toString("base64url");
 }
@@ -26,32 +28,55 @@ export async function createSession({ userId, token, userAgent, ip }) {
   });
 }
 
-export async function findValidSession(token) {
-  if (!token) {
-    return null;
-  }
-
+async function findValidSession(tokenHash) {
   const session = await prisma.userSession.findUnique({
-    where: { token: hashSessionToken(token) },
+    where: { token: tokenHash },
+    select: SESSION_SELECT,
   });
 
   if (!session) {
     return null;
   }
 
-  if (session.expiresAt.getTime() <= Date.now()) {
-    await prisma.userSession.delete({ where: { id: session.id } }).catch(() => {});
+  const now = new Date();
+  if (session.expiresAt <= now) {
+    await prisma.userSession.deleteMany({
+      where: { id: session.id, expiresAt: { lte: now } },
+    });
     return null;
   }
 
   return session;
 }
 
-export async function touchSession(sessionId) {
-  return prisma.userSession.update({
-    where: { id: sessionId },
-    data: { expiresAt: sessionExpiryDate() },
+export async function authenticateSession(token) {
+  if (!token) {
+    return null;
+  }
+
+  const tokenHash = hashSessionToken(token);
+  const session = await findValidSession(tokenHash);
+  if (!session) {
+    return null;
+  }
+
+  const now = new Date();
+  const refreshCutoff = new Date(now.getTime() - config.session.refreshIntervalMs);
+  if (session.updatedAt > refreshCutoff && session.expiresAt > now) {
+    return { session, refreshed: false };
+  }
+
+  const [refreshedSession] = await prisma.userSession.updateManyAndReturn({
+    where: { id: session.id, updatedAt: { lte: refreshCutoff }, expiresAt: { gt: now } },
+    data: { updatedAt: now, expiresAt: sessionExpiryDate(now) },
+    select: SESSION_SELECT,
   });
+  if (refreshedSession) {
+    return { session: refreshedSession, refreshed: true };
+  }
+
+  const currentSession = await findValidSession(tokenHash);
+  return currentSession ? { session: currentSession, refreshed: false } : null;
 }
 
 export async function deleteSessionByToken(token) {

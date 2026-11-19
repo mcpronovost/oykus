@@ -45,11 +45,11 @@ function cookieOptions(req) {
   };
 }
 
-export function setSessionCookie(res, token, req) {
-  const { cookieName, ttlMs } = config.session;
+export function setSessionCookie(res, token, req, maxAge = config.session.ttlMs) {
+  const { cookieName } = config.session;
   res.cookie(cookieName, token, {
     ...cookieOptions(req),
-    maxAge: ttlMs,
+    maxAge,
   });
 }
 
