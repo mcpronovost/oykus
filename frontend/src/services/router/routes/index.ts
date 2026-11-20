@@ -34,6 +34,15 @@ export const ROUTES: TypeRoute[] = [
     auth: true,
   },
   {
+    name: "profile",
+    component: React.lazy(() => import("../../../pages/Profile/index")),
+    paths: {
+      fr: "profil",
+      en: "profile",
+    },
+    auth: true,
+  },
+  {
     name: "settings",
     component: React.lazy(() => import("../../../pages/Settings/index")),
     paths: {
