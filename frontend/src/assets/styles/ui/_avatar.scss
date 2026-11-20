@@ -1,0 +1,62 @@
+.oyk-avatar {
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  &::before {
+    content: "";
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--oyk-c-accent) 28%, var(--oyk-card-bg)),
+      var(--oyk-card-divider),
+      color-mix(in srgb, var(--oyk-c-accent) 48%, var(--oyk-card-bg)),
+      var(--oyk-card-divider),
+      var(--oyk-card-divider)
+    );
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  &-img {
+    border-radius: 50%;
+    overflow: hidden;
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    object-fit: cover;
+    position: relative;
+    z-index: 1;
+  }
+
+  &-label {
+    background-color: color-mix(in srgb, var(--oyk-c-accent) 4%, var(--oyk-card-bg));
+    border-radius: 50%;
+    overflow: hidden;
+    font-family: var(--oyk-font-heading);
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    position: relative;
+    z-index: 1;
+  }
+
+  &-shape {
+    &--circle {
+      border-radius: 50%;
+    }
+
+    &--square {
+      border-radius: var(--oyk-radius);
+    }
+  }
+}

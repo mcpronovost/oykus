@@ -1,7 +1,7 @@
 import { IconUser, IconLogout } from "@tabler/icons-react";
 import { useAuth } from "@/services/auth";
 import { useTranslation } from "@/services/translation";
-import { OykButton, OykDialog } from "@/components/ui";
+import { OykAvatar, OykButton, OykDialog } from "@/components/ui";
 import ImgUser from "@/assets/img/space-avatar-1.jpg";
 
 export default function OykCoreHeaderUser() {
@@ -47,9 +47,13 @@ export default function OykCoreHeaderUser() {
         <span className="oyk-core-header-user-name-subtitle">Niveau 1</span>
       </div>
       <div className="oyk-core-header-user-avatar">
-        <div className="oyk-core-header-user-avatar-img">
+        <OykAvatar src={user?.avatar || ImgUser} alt={user?.name} size={48} />
+      </div>
+      <div className="oyk-core-header-user-avatar">
+        <OykAvatar src={user?.avatar} alt={user?.name} size={48} />
+        {/*<div className="oyk-core-header-user-avatar-img">
           <img src={user?.avatar || ImgUser} alt="User" />
-        </div>
+        </div>*/}
       </div>
     </OykDialog>
   );
