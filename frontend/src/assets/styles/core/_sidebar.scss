@@ -90,13 +90,13 @@
       &.oyk-active {
         background: linear-gradient(
           135deg,
-          var(--oyk-c-accent-muted),
+          color-mix(in srgb, var(--oyk-c-accent) 18%, var(--oyk-core-header-bg)),
           var(--oyk-core-sidebar-divider),
-          var(--oyk-c-accent-muted),
+          color-mix(in srgb, var(--oyk-c-accent) 18%, var(--oyk-core-header-bg)),
           var(--oyk-core-sidebar-divider),
           var(--oyk-core-sidebar-divider)
         );
-        box-shadow: 0 0 16px hsl(var(--oyk-h-accent), 40%, 30%, 0.18);
+        box-shadow: 0 0 16px color-mix(in srgb, var(--oyk-c-accent) 8%, var(--oyk-core-sidebar-bg));
         color: var(--oyk-c-accent);
         pointer-events: none;
         cursor: default;
@@ -104,7 +104,7 @@
         .oyk-core-sidebar-nav-link-content {
           background: linear-gradient(
             to right,
-            var(--oyk-c-accent-faint),
+            color-mix(in srgb, var(--oyk-c-accent) 8%, var(--oyk-core-sidebar-bg)),
             var(--oyk-core-sidebar-bg)
           );
         }

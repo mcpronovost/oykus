@@ -34,9 +34,9 @@
       img {
         background: linear-gradient(
           135deg,
-          var(--oyk-c-accent-muted),
+          color-mix(in srgb, var(--oyk-c-accent) 28%, var(--oyk-core-header-bg)),
           var(--oyk-core-sidebar-divider),
-          var(--oyk-c-accent-subtle),
+          color-mix(in srgb, var(--oyk-c-accent) 48%, var(--oyk-core-header-bg)),
           var(--oyk-core-sidebar-divider),
           var(--oyk-core-sidebar-divider)
         );
@@ -310,9 +310,9 @@
       &-img {
         background: linear-gradient(
           135deg,
-          var(--oyk-c-accent-muted),
+          color-mix(in srgb, var(--oyk-c-accent) 28%, var(--oyk-core-header-bg)),
           var(--oyk-core-sidebar-divider),
-          var(--oyk-c-accent-subtle),
+          color-mix(in srgb, var(--oyk-c-accent) 48%, var(--oyk-core-header-bg)),
           var(--oyk-core-sidebar-divider),
           var(--oyk-core-sidebar-divider)
         );
@@ -351,6 +351,10 @@
       gap: 4px;
       width: 100%;
       padding: 4px 8px;
+
+      &-list {
+        width: 100%;
+      }
 
       &-item {
         width: 100%;
