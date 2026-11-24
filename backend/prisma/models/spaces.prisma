@@ -1,16 +1,19 @@
 model Space {
-  id           String        @id @default(uuid(7)) @db.Uuid
-  name         String
-  description  String?
-  cover        String?
-  isActive     Boolean       @default(true) @map("is_active")
-  ownerId      String        @db.Uuid
-  owner        User          @relation("SpaceOwner", fields: [ownerId], references: [id])
-  members      SpaceMember[]
-  roles        SpaceRole[]
-  notes        Note[]
-  currentUsers User[]        @relation("UserCurrentSpace")
+  id                  String              @id @default(uuid(7)) @db.Uuid
+  name                String
+  description         String?
+  cover               String?
+  isActive            Boolean             @default(true) @map("is_active")
+  limitLogs           Int                 @default(1000) @map("limit_logs")
+
+  ownerId             String              @db.Uuid
+  owner               User                @relation("SpaceOwner", fields: [ownerId], references: [id])
+  currentUsers        User[]              @relation("UserCurrentSpace")
+  members             SpaceMember[]
+  roles               SpaceRole[]
+  notes               Note[]
   encyclopediaEntries EncyclopediaEntry[]
+  logs                SpaceLog[]
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
@@ -63,4 +66,19 @@ model SpaceRolePermission {
 
   @@unique([roleId, permission])
   @@map("core_spaces_roles_permissions")
+}
+
+model SpaceLog {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  spaceId   String   @db.Uuid
+  space     Space    @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+  userId    String?  @db.Uuid
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  details   Json?
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([spaceId])
+  @@index([userId])
+  @@map("core_spaces_logs")
 }
