@@ -47,13 +47,7 @@ export default function OykCoreHeaderUser() {
         <span className="oyk-core-header-user-name-subtitle">Niveau 1</span>
       </div>
       <div className="oyk-core-header-user-avatar">
-        <OykAvatar src={user?.avatar || ImgUser} alt={user?.name} size={48} />
-      </div>
-      <div className="oyk-core-header-user-avatar">
-        <OykAvatar src={user?.avatar} alt={user?.name} size={48} />
-        {/*<div className="oyk-core-header-user-avatar-img">
-          <img src={user?.avatar || ImgUser} alt="User" />
-        </div>*/}
+        <OykAvatar src={user?.avatar || ImgUser} alt={user?.name} size={48} shape="square" />
       </div>
     </OykDialog>
   );

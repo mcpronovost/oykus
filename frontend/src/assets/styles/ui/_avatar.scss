@@ -53,10 +53,20 @@
   &-shape {
     &--circle {
       border-radius: 50%;
+
+      .oyk-avatar-img,
+      .oyk-avatar-label {
+        border-radius: 50%;
+      }
     }
 
     &--square {
       border-radius: var(--oyk-radius);
+
+      .oyk-avatar-img,
+      .oyk-avatar-label {
+        border-radius: var(--oyk-radius);
+      }
     }
   }
 }
