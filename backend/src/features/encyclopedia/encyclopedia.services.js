@@ -1,8 +1,9 @@
 import { prisma } from "../../shared/db/index.js";
+import { assertSpaceAccess } from "../../core/spaces/spaces.access.js";
+import { withSpaceActivity } from "../../core/spaces/spaces.activity.js";
 import { afterCursor, toPage } from "../../shared/pagination.js";
 import {
   ConflictError,
-  ForbiddenError,
   NotFoundError,
 } from "../../shared/errors/index.js";
 import {
@@ -28,28 +29,12 @@ function slugify(value) {
   return slug || "entry";
 }
 
-async function assertSpaceAccess(spaceId, userId) {
-  const space = await prisma.space.findFirst({
-    where: {
-      id: spaceId,
-      OR: [
-        { ownerId: userId },
-        {
-          isActive: true,
-          members: { some: { userId } },
-        },
-      ],
-    },
-    select: { id: true },
-  });
-
-  if (!space) {
-    throw new ForbiddenError("No access to this space");
-  }
+function getEntryActivityDetails(entry) {
+  return { title: entry.title, topic: entry.topic.slug };
 }
 
-async function getTopicBySlug(topicSlug) {
-  const topic = await prisma.encyclopediaTopic.findUnique({
+async function getTopicBySlug(topicSlug, db = prisma) {
+  const topic = await db.encyclopediaTopic.findUnique({
     where: { slug: topicSlug },
     select: ENCYCLOPEDIA_TOPIC_OUTPUT_SELECT,
   });
@@ -61,12 +46,12 @@ async function getTopicBySlug(topicSlug) {
   return topic;
 }
 
-async function assertCategoryForTopic(categoryId, topicId) {
+async function assertCategoryForTopic(db, categoryId, topicId) {
   if (categoryId === undefined || categoryId === null) {
     return;
   }
 
-  const category = await prisma.encyclopediaTopicCategory.findFirst({
+  const category = await db.encyclopediaTopicCategory.findFirst({
     where: {
       id: categoryId,
       topicId,
@@ -93,12 +78,12 @@ async function getAccessibleEntry(entryId, userId) {
   return entry;
 }
 
-async function ensureUniqueSlug(spaceId, topicId, slug, excludeEntryId = null) {
+async function ensureUniqueSlug(db, spaceId, topicId, slug, excludeEntryId = null) {
   let candidate = slug;
   let suffix = 2;
 
   while (true) {
-    const existing = await prisma.encyclopediaEntry.findFirst({
+    const existing = await db.encyclopediaEntry.findFirst({
       where: {
         spaceId,
         topicId,
@@ -245,31 +230,30 @@ export async function createEntry(
   userId,
   { title, spaceId, topic, categoryId, summary, slug },
 ) {
-  await assertSpaceAccess(spaceId, userId);
-  const encyclopediaTopic = await getTopicBySlug(topic);
-  await assertCategoryForTopic(categoryId, encyclopediaTopic.id);
-
-  const baseSlug = slugify(slug || title);
-  const uniqueSlug = await ensureUniqueSlug(
-    spaceId,
-    encyclopediaTopic.id,
-    baseSlug,
-  );
-
   try {
-    const entry = await prisma.encyclopediaEntry.create({
-      data: {
-        title,
-        slug: uniqueSlug,
-        summary: summary ?? null,
-        spaceId,
-        topicId: encyclopediaTopic.id,
-        categoryId: categoryId ?? null,
-        createdById: userId,
-        updatedById: userId,
+    const entry = await withSpaceActivity(
+      spaceId, userId, "encyclopedia.entry_created",
+      async (tx) => {
+        const encyclopediaTopic = await getTopicBySlug(topic, tx);
+        await assertCategoryForTopic(tx, categoryId, encyclopediaTopic.id);
+        const uniqueSlug = await ensureUniqueSlug(tx, spaceId, encyclopediaTopic.id, slugify(slug || title));
+
+        return tx.encyclopediaEntry.create({
+          data: {
+            title,
+            slug: uniqueSlug,
+            summary: summary ?? null,
+            spaceId,
+            topicId: encyclopediaTopic.id,
+            categoryId: categoryId ?? null,
+            createdById: userId,
+            updatedById: userId,
+          },
+          select: ENCYCLOPEDIA_ENTRY_OUTPUT_SELECT,
+        });
       },
-      select: ENCYCLOPEDIA_ENTRY_OUTPUT_SELECT,
-    });
+      getEntryActivityDetails,
+    );
 
     return toEncyclopediaEntryOutput(entry);
   } catch (error) {
@@ -296,30 +280,29 @@ export async function updateEntry(
     return toEncyclopediaEntryOutput(existing);
   }
 
-  await assertCategoryForTopic(categoryId, existing.topicId);
-
-  let nextSlug;
-  if (slug !== undefined) {
-    nextSlug = await ensureUniqueSlug(
-      existing.spaceId,
-      existing.topicId,
-      slugify(slug),
-      entryId,
-    );
-  }
-
   try {
-    const entry = await prisma.encyclopediaEntry.update({
-      where: { id: entryId },
-      data: {
-        ...(title !== undefined ? { title } : {}),
-        ...(categoryId !== undefined ? { categoryId } : {}),
-        ...(summary !== undefined ? { summary: summary || null } : {}),
-        ...(nextSlug !== undefined ? { slug: nextSlug } : {}),
-        updatedById: userId,
+    const entry = await withSpaceActivity(
+      existing.spaceId, userId, "encyclopedia.entry_updated",
+      async (tx) => {
+        await assertCategoryForTopic(tx, categoryId, existing.topicId);
+        const nextSlug = slug === undefined
+          ? undefined
+          : await ensureUniqueSlug(tx, existing.spaceId, existing.topicId, slugify(slug), entryId);
+
+        return tx.encyclopediaEntry.update({
+          where: { id: entryId },
+          data: {
+            ...(title !== undefined ? { title } : {}),
+            ...(categoryId !== undefined ? { categoryId } : {}),
+            ...(summary !== undefined ? { summary: summary || null } : {}),
+            ...(nextSlug !== undefined ? { slug: nextSlug } : {}),
+            updatedById: userId,
+          },
+          select: ENCYCLOPEDIA_ENTRY_OUTPUT_SELECT,
+        });
       },
-      select: ENCYCLOPEDIA_ENTRY_OUTPUT_SELECT,
-    });
+      getEntryActivityDetails,
+    );
 
     return toEncyclopediaEntryOutput(entry);
   } catch (error) {
@@ -331,6 +314,13 @@ export async function updateEntry(
 }
 
 export async function deleteEntry(userId, entryId) {
-  await getAccessibleEntry(entryId, userId);
-  await prisma.encyclopediaEntry.delete({ where: { id: entryId } });
+  const existing = await getAccessibleEntry(entryId, userId);
+  await withSpaceActivity(
+    existing.spaceId, userId, "encyclopedia.entry_deleted",
+    (tx) => tx.encyclopediaEntry.delete({
+      where: { id: entryId },
+      select: { title: true, topic: { select: { slug: true } } },
+    }),
+    getEntryActivityDetails,
+  );
 }

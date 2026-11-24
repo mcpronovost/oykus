@@ -1,4 +1,6 @@
 import { prisma } from "../../shared/db/index.js";
+import { assertSpaceAccess } from "../../core/spaces/spaces.access.js";
+import { withSpaceActivity } from "../../core/spaces/spaces.activity.js";
 import { afterCursor, toPage } from "../../shared/pagination.js";
 import {
   ConflictError,
@@ -11,26 +13,6 @@ import {
   toNoteCategoryOutput,
   toNoteOutput,
 } from "./notes.outputs.js";
-
-async function assertSpaceAccess(spaceId, userId) {
-  const space = await prisma.space.findFirst({
-    where: {
-      id: spaceId,
-      OR: [
-        { ownerId: userId },
-        {
-          isActive: true,
-          members: { some: { userId } },
-        },
-      ],
-    },
-    select: { id: true },
-  });
-
-  if (!space) {
-    throw new ForbiddenError("No access to this space");
-  }
-}
 
 async function getAccessibleNote(noteId, userId) {
   const note = await prisma.note.findUnique({
@@ -46,12 +28,12 @@ async function getAccessibleNote(noteId, userId) {
   return note;
 }
 
-async function assertCategoryExists(categoryId) {
+async function assertCategoryExists(categoryId, db) {
   if (categoryId === undefined || categoryId === null) {
     return;
   }
 
-  const category = await prisma.noteCategory.findUnique({
+  const category = await db.noteCategory.findUnique({
     where: { id: categoryId },
     select: { id: true },
   });
@@ -80,17 +62,17 @@ export async function getNote(userId, noteId) {
 }
 
 export async function createNote(userId, { content, spaceId, categoryId }) {
-  await assertSpaceAccess(spaceId, userId);
-  await assertCategoryExists(categoryId);
-
-  const note = await prisma.note.create({
-    data: {
-      content,
-      spaceId,
-      userId,
-      categoryId: categoryId ?? null,
-    },
-    select: NOTE_OUTPUT_SELECT,
+  const note = await withSpaceActivity(spaceId, userId, "note.created", async (tx) => {
+    await assertCategoryExists(categoryId, tx);
+    return tx.note.create({
+      data: {
+        content,
+        spaceId,
+        userId,
+        categoryId: categoryId ?? null,
+      },
+      select: NOTE_OUTPUT_SELECT,
+    });
   });
 
   return toNoteOutput(note);
@@ -107,15 +89,16 @@ export async function updateNote(userId, noteId, { content, categoryId }) {
     return toNoteOutput(existing);
   }
 
-  await assertCategoryExists(categoryId);
-
-  const note = await prisma.note.update({
-    where: { id: noteId },
-    data: {
-      ...(content !== undefined ? { content } : {}),
-      ...(categoryId !== undefined ? { categoryId } : {}),
-    },
-    select: NOTE_OUTPUT_SELECT,
+  const note = await withSpaceActivity(existing.spaceId, userId, "note.updated", async (tx) => {
+    await assertCategoryExists(categoryId, tx);
+    return tx.note.update({
+      where: { id: noteId },
+      data: {
+        ...(content !== undefined ? { content } : {}),
+        ...(categoryId !== undefined ? { categoryId } : {}),
+      },
+      select: NOTE_OUTPUT_SELECT,
+    });
   });
 
   return toNoteOutput(note);
@@ -128,7 +111,9 @@ export async function deleteNote(userId, noteId) {
     throw new ForbiddenError("Only the author can delete this note");
   }
 
-  await prisma.note.delete({ where: { id: noteId } });
+  await withSpaceActivity(existing.spaceId, userId, "note.deleted", (tx) =>
+    tx.note.delete({ where: { id: noteId }, select: { id: true } }),
+  );
 }
 
 export async function listCategories() {

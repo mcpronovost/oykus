@@ -1,8 +1,8 @@
-import { number, object, string } from "../../shared/validate.js";
+import { number, object, string, uuid } from "../../shared/validate.js";
 
 export const createNoteInput = object({
   content: string({ required: true, min: 1, max: 20000 }),
-  spaceId: string({ required: true, min: 1, max: 36 }),
+  spaceId: uuid(),
   categoryId: number({ required: false, integer: true, min: 1 }),
 });
 

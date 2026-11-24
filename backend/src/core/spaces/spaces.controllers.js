@@ -1,5 +1,8 @@
 import { BadRequestError } from "../../shared/errors/index.js";
+import { parseLimit } from "../../shared/pagination.js";
 import { decodeWebpBase64 } from "../../shared/uploads.js";
+import { isUuid } from "../../shared/validate.js";
+import { listSpaceLogs } from "./spaces.activity.js";
 import {
   createSpaceInput,
   setSpaceActiveInput,
@@ -85,5 +88,15 @@ export async function remove(req, res) {
 export async function stats(req, res) {
   const spaceId = parseIdParam(req.params.id);
   const data = await spacesServices.getSpaceStats(req.userId, spaceId);
+  res.json({ data });
+}
+
+export async function logs(req, res) {
+  const spaceId = parseIdParam(req.params.id);
+  if (!isUuid(spaceId)) {
+    throw new BadRequestError("Validation failed", { id: ["Must be a UUID"] });
+  }
+  const limit = parseLimit(req.query.limit, 10);
+  const data = await listSpaceLogs(spaceId, req.userId, limit);
   res.json({ data });
 }

@@ -1,17 +1,22 @@
 import { BadRequestError } from "./errors/index.js";
-import { number, object, string } from "./validate.js";
+import { isUuid, number, object, string } from "./validate.js";
 
 const pageLimit = number({ required: false, integer: true, min: 1, max: 50 });
+function limitInput(input) {
+  if (input !== undefined && (typeof input !== "string" || input.length === 0 || /\D/.test(input))) {
+    return { errors: ["Must be an integer between 1 and 50"] };
+  }
+  return pageLimit(input);
+}
 const pageInput = object({
-  limit(input) {
-    if (input !== undefined && (typeof input !== "string" || input.length === 0 || /\D/.test(input))) {
-      return { errors: ["Must be an integer between 1 and 50"] };
-    }
-    return pageLimit(input);
-  },
+  limit: limitInput,
   cursor: string({ required: false, min: 1, max: 2048, trim: false }),
 });
-const uuid = /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i;
+export function parseLimit(input, defaultLimit) {
+  const { value, errors } = limitInput(input);
+  if (errors.length) throw new BadRequestError("Validation failed", { limit: errors });
+  return value ?? defaultLimit;
+}
 
 function readCursor(cursor, parseSortValue) {
   if (!/^[A-Za-z0-9_-]+$/.test(cursor)) return null;
@@ -24,7 +29,7 @@ function readCursor(cursor, parseSortValue) {
     if (!Array.isArray(parts) || parts.length !== 2) return null;
 
     const [id, rawSortValue] = parts;
-    if (typeof id !== "string" || id.length !== 36 || !uuid.test(id) || typeof rawSortValue !== "string") {
+    if (!isUuid(id) || typeof rawSortValue !== "string") {
       return null;
     }
 

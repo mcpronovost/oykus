@@ -47,6 +47,7 @@ export default function OykSettingsModalsSpaceDeactivate({
       await setSpaceActive(space.id, !isDeactivating);
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: queryKeys.spaces.list }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.spaces.logs(space.id) }),
         refresh(),
       ]);
       setSpace(null);

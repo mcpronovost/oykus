@@ -98,6 +98,14 @@ export type TypeSpaceStats = {
   }>;
 };
 
+export type TypeSpaceLog = {
+  id: string;
+  action: string;
+  details: { title?: string; topic?: string } | null;
+  userName: string | null;
+  createdAt: string;
+};
+
 export type TypeNoteCategory = {
   id: number;
   label: string;
@@ -261,6 +269,10 @@ async function getSpaceStats(spaceId: string): Promise<TypeSpaceStats> {
   return request<TypeSpaceStats>(`/api/v1/spaces/${spaceId}/stats`);
 }
 
+async function listSpaceLogs(spaceId: string, signal: AbortSignal): Promise<TypeSpaceLog[]> {
+  return request<TypeSpaceLog[]>(`/api/v1/spaces/${encodeURIComponent(spaceId)}/logs`, { signal });
+}
+
 async function setCurrentSpace(spaceId: string): Promise<TypePublicUser> {
   return request<TypePublicUser>("/api/v1/users/me/current-space", {
     method: "PATCH",
@@ -393,6 +405,7 @@ export {
   listRecentEncyclopediaEntries,
   listNoteCategories,
   listNotes,
+  listSpaceLogs,
   listSpaces,
   login,
   logout,

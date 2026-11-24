@@ -37,6 +37,14 @@ function resolveTimezone(timezone) {
   }
 }
 
+export function oykDateTimeFormatter(lang, timezone) {
+  return new Intl.DateTimeFormat(`${lang}-CA`, {
+    dateStyle: "medium",
+    timeStyle: "short",
+    timeZone: resolveTimezone(timezone || "UTC"),
+  });
+}
+
 export function oykTimeAgo(date, lang = "en", timezone = "UTC") {
   if (date == null || date === "") return "";
 

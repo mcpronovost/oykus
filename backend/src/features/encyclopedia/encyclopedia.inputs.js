@@ -1,4 +1,4 @@
-import { number, object, string } from "../../shared/validate.js";
+import { number, object, string, uuid } from "../../shared/validate.js";
 
 export const listEncyclopediaEntriesInput = object({
   category: string({ required: false, min: 1, max: 100 }),
@@ -11,7 +11,7 @@ export const listEncyclopediaCategoriesInput = object({
 
 export const createEncyclopediaEntryInput = object({
   title: string({ required: true, min: 1, max: 200 }),
-  spaceId: string({ required: true, min: 1, max: 36 }),
+  spaceId: uuid(),
   topic: string({ required: true, min: 1, max: 100 }),
   categoryId: number({ required: false, integer: true, min: 1 }),
   summary: string({ required: false, min: 1, max: 2000 }),

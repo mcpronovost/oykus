@@ -47,6 +47,21 @@ export function email(options = {}) {
   };
 }
 
+export function isUuid(value) {
+  return typeof value === "string" && /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(value) && value.length === 36;
+}
+
+export function uuid() {
+  const validateString = string();
+  return (input) => {
+    const result = validateString(input);
+    if (result.errors.length === 0 && !isUuid(result.value)) {
+      result.errors.push("Must be a UUID");
+    }
+    return result;
+  };
+}
+
 export function number({ min, max, required = true, integer = false } = {}) {
   return (input) => {
     const errors = [];

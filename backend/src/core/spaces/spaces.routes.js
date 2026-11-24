@@ -9,6 +9,7 @@ router.use(requireAuth);
 router.get("/", spacesControllers.list);
 router.post("/", spacesControllers.create);
 router.get("/:id/stats", spacesControllers.stats);
+router.get("/:id/logs", spacesControllers.logs);
 router.patch("/:id", spacesControllers.update);
 router.patch("/:id/active", spacesControllers.setActive);
 router.put("/:id/cover", spacesControllers.updateCover);
