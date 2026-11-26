@@ -37,7 +37,9 @@ export default function OykSpaceCurrentCard({ space, onReactivate }: SpaceCurren
             {/* On future Manuscript plugin: <OykStats.Item label="Words" value="0" /> */}
             <OykStats.Item label={t("Notes")} value={stats?.notes ?? 0} />
             {(stats?.encyclopedia ?? []).map((topic) => (
-              <OykStats.Item key={topic.slug} label={t(`encyclopedia.topic.${topic.slug}`)} value={topic.count} />
+              topic.count > 0 && (
+                <OykStats.Item key={topic.slug} label={t(`encyclopedia.topic.${topic.slug}`)} value={topic.count} />
+              )
             ))}
           </OykStats>
           <footer className="oyk-page-dashboard-currentspace-content-actions">
