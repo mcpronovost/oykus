@@ -1,5 +1,6 @@
 export { default as OykAlert } from "./Alert";
 export { default as OykAvatar } from "./Avatar";
+export { default as OykBanner } from "./Banner";
 export { default as OykButton } from "./Button";
 export { default as OykCard } from "./Card";
 export { default as OykChip } from "./Chip";

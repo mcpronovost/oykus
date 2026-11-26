@@ -1,0 +1,26 @@
+.oyk-banner {
+  border-top-left-radius: var(--oyk-radius);
+  border-top-right-radius: var(--oyk-radius);
+  overflow: hidden;
+  position: relative;
+
+  &-cover {
+    background-color: var(--oyk-card-bg-subtle);
+    border-bottom: 1px solid var(--oyk-card-divider);
+    width: 100%;
+
+    &-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &-avatar {
+    border-radius: 50%;
+    position: absolute;
+    top: 164px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
