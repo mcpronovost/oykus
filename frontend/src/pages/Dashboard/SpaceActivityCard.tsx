@@ -1,10 +1,10 @@
 import type { TypeSpaceLog } from "@/services/api";
 import type { TypeTranslateFn } from "@/services/translation/types";
 import { useQuery } from "@tanstack/react-query";
-import { oykDateTimeFormatter } from "@/utils";
+import { oykTimeAgo } from "@/utils";
 import { listSpaceLogs, queryKeys } from "@/services/api";
 import { useTranslation } from "@/services/translation";
-import { OykButton, OykCard, OykHeading, OykList } from "@/components/ui";
+import { OykButton, OykCard, OykHeading } from "@/components/ui";
 
 function getActivityText({ action, details }: TypeSpaceLog, t: TypeTranslateFn) {
   const actionKey = `activity.action.${action}`;
@@ -29,30 +29,23 @@ export default function OykSpaceActivityCard({ spaceId, timezone }: SpaceActivit
     queryFn: ({ signal }) => listSpaceLogs(spaceId, signal),
     refetchOnMount: "always",
   });
-  const dateTime = oykDateTimeFormatter(lang, timezone);
 
   return (
     <OykCard>
       <section className="oyk-page-dashboard-activity">
         <OykHeading title={t("activity.recent")} tag="h2" variant="card" />
-        <br />
         {logs?.length ? (
-          <OykList>
+          <ul className="oyk-page-dashboard-activity-list">
             {logs.map((log) => (
-              <OykList.Item
-                key={log.id}
-                content={
-                  <>
-                    <p>{getActivityText(log, t)}</p>
-                    <div className="oyk-page-dashboard-activity-meta">
-                      <span>{log.userName ?? t("activity.unknownUser")}</span>
-                      <time dateTime={log.createdAt}>{dateTime.format(new Date(log.createdAt))}</time>
-                    </div>
-                  </>
-                }
-              />
+              <li key={log.id} className="oyk-page-dashboard-activity-item">
+                <p>{getActivityText(log, t)}</p>
+                <div className="oyk-page-dashboard-activity-meta">
+                  <span>{log.userName ?? t("activity.unknownUser")}</span>
+                  <time dateTime={log.createdAt}>{oykTimeAgo(log.createdAt, lang, timezone)}</time>
+                </div>
+              </li>
             ))}
-          </OykList>
+          </ul>
         ) : isPending ? (
           <p role="status">{t("activity.loading")}</p>
         ) : isError ? (

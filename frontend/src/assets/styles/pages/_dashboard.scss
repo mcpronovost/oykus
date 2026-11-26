@@ -63,23 +63,30 @@
   }
 
   &-activity {
-    h2 {
-      font-size: 1.25rem;
-      margin-bottom: 12px;
+    .oyk-heading {
+      gap: 8px;
+      margin: 0 0 16px;
     }
 
-    .oyk-list {
-      margin: 0;
-      overflow-wrap: anywhere;
+    &-list {
+      color: var(--oyk-card-fg-subtle);
+      font-size: 0.75rem;
+      line-height: 1.2;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
 
     &-meta {
+      color: var(--oyk-card-fg-muted);
+      font-size: 0.75rem;
       display: flex;
       flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
       gap: 4px 16px;
-      margin-top: 4px;
-      color: var(--oyk-card-fg-muted);
-      font-size: 0.875rem;
+      width: 100%;
+      margin: 4px 0 0;
     }
   }
 
