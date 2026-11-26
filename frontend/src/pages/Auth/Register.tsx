@@ -142,7 +142,7 @@ export default function Register() {
             </div>
 
             <div className="oyk-register-actions">
-              <OykButton label={t("auth.register.submit")} disabled={!form.acceptTerms} />
+              <OykButton label={t("auth.register.submit")} disabled={!form.acceptTerms} variant="ghost" color="accent" grow />
             </div>
           </form>
 

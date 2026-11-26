@@ -710,6 +710,7 @@ function OykFormAlert({
           message={error}
           color="danger"
           variant="ghost"
+          closable
           className="oyk-form-alert"
         />
       ) : null}
@@ -720,6 +721,7 @@ function OykFormAlert({
           message={success}
           color="success"
           variant="ghost"
+          closable
           className="oyk-form-alert"
         />
       ) : null}

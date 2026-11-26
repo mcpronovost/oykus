@@ -190,41 +190,6 @@
 
   &-actions {
     margin-top: 0.5rem;
-
-    .oyk-button {
-      width: 100%;
-      color: #f0f0f0;
-      border: 1px solid transparent;
-      background:
-        linear-gradient(
-          to bottom,
-          var(--oyk-core-header-bg),
-          var(--oyk-core-header-bg-subtle)
-        ) padding-box,
-        linear-gradient(
-          135deg,
-          var(--oyk-core-sidebar-divider),
-          var(--oyk-core-sidebar-divider),
-          var(--oyk-c-accent),
-          var(--oyk-core-sidebar-divider),
-          var(--oyk-core-sidebar-divider)
-        ) border-box;
-      background-clip: padding-box, border-box;
-      box-shadow: 0 0 0 1px var(--oyk-core-sidebar-divider) inset;
-      transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.25s ease;
-
-      &:not(:disabled):hover {
-        opacity: 1;
-        transform: translateY(-2px);
-        box-shadow:
-          0 0 18px hsl(var(--oyk-h-accent), 45%, 38%, 0.28),
-          0 0 0 1px var(--oyk-c-accent) inset;
-      }
-
-      .oyk-button-content {
-        padding: 0.7rem 1.25rem;
-      }
-    }
   }
 
   &-login {
@@ -359,14 +324,14 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 2.25rem;
   }
 
   &-feature {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: 0.85rem 1rem;
-    align-items: start;
+    gap: 0 1rem;
+    align-items: center;
     animation: oyk-register-rise 0.65s ease-out both;
     animation-delay: var(--oyk-register-feature-delay, 0.2s);
 

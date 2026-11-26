@@ -78,7 +78,6 @@ export default function Login() {
           <OykForm
             className="oyk-register-form"
             loading={isSubmitting}
-            noValidate
             onSubmit={handleSubmit}
           >
             <OykForm.Alert
@@ -86,8 +85,6 @@ export default function Login() {
               error={error ?? undefined}
               errorTitle={t("auth.login.error.title")}
               className="oyk-register-alert"
-              closable
-              onClose={() => setError(null)}
             />
             <OykForm.Field
               name="username"
@@ -105,7 +102,7 @@ export default function Login() {
               onChange={(value) => updateField("password", value as string)}
             />
             <div className="oyk-register-actions">
-              <OykButton type="submit" label={t("auth.login.submit")} disabled={isSubmitting} />
+              <OykButton type="submit" label={t("auth.login.submit")} disabled={isSubmitting} grow variant="ghost" color="accent" />
             </div>
           </OykForm>
 
