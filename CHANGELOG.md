@@ -107,6 +107,41 @@ Brand-new v4 codebase. Previous history was wiped and replaced with this rewrite
 - Encyclopedia stats API; masonry animations removed
 - BSD 3-Clause licence; i18n, theme, and layout polish (xxl breakpoint, greetings/dates)
 
+### 2026-11-15
+- Encyclopedia entry editing and deletion, with OykCode formatting in cards and previews
+- Space Settings page for editing space details, managing cover images, and deactivating spaces
+- Settings navigation and separate auth and Encyclopedia route modules
+- UI updates for modal and drawer actions, heading icons and variants, card and divider colours, and grid spacing
+
+### 2026-11-16
+- Dashboard groups active and inactive spaces and supports reactivation. Feature routes lock when the current space is inactive
+- Share the space deletion dialog between Settings and Dashboard, and add a user menu and a localized logout page
+- Shared colour tones, card gradients, and refreshed Encyclopedia topic and entry styles
+- Form select empty states and focus styling, button alignment, optional dialog padding, and an expanded UI components demo
+
+### 2026-11-18
+- Throttle session refreshes to reduce database writes
+- Paginate Notes and Encyclopedia entries with Load more controls, add Encyclopedia category counts, and use space stats for deletion summaries
+- Run Prisma migrations in a dedicated production Docker service before backend startup and move the Prisma CLI to development dependencies
+- Add project conventions and backend performance documentation
+
+### 2026-11-19
+- Initial profile page linked from the user menu and OykAvatar in the header
+- Header and sidebar colour refinements
+
+### 2026-11-23
+- Add the space activity log table and Prisma relations for spaces and users
+- Fix the square OykAvatar style
+
+### 2026-11-24
+- Record space changes and Notes and Encyclopedia entry actions in the activity log
+- Add a paginated activity API and show the 10 most recent events for the current space on the Dashboard, with EN/FR translations
+
+### 2026-11-25
+- Refresh the Dashboard activity list with relative timestamps and hide Encyclopedia topics with zero entries from the current space card
+- Close OykDialog automatically on route changes
+- Refine Home, Login, and Register styles and make form alerts dismissible
+
 ---
 
 [0.4.0]: https://github.com/mcpronovost/oykus/compare/v0.3.0...HEAD
