@@ -1,5 +1,6 @@
 import { prisma } from "../../shared/db/index.js";
-import { ForbiddenError, NotFoundError } from "../../shared/errors/index.js";
+import { ConflictError, ForbiddenError, NotFoundError } from "../../shared/errors/index.js";
+import { deleteUploadIfOwned, saveUserProfileImage } from "../../shared/uploads.js";
 import { USER_OUTPUT_SELECT } from "./users.outputs.js";
 
 export async function getMe(userId) {
@@ -13,6 +14,44 @@ export async function getMe(userId) {
   }
 
   return user;
+}
+
+export async function updateProfileImages(userId, images) {
+  const uploads = {};
+  let result;
+  try {
+    for (const [field, buffer] of Object.entries(images)) {
+      uploads[field] = await saveUserProfileImage(userId, buffer);
+    }
+
+    result = await prisma.$transaction(async (tx) => {
+      const where = { id: userId };
+      const fields = Object.keys(uploads);
+      const select = Object.fromEntries(fields.map((field) => [field, true]));
+      const previous = await tx.user.findUnique({ where, select });
+      if (!previous) throw new NotFoundError("User not found");
+
+      const { count } = await tx.user.updateMany({
+        where: { ...where, ...previous },
+        data: uploads,
+      });
+      if (count === 0) throw new ConflictError("Profile images changed during the update");
+
+      const user = await tx.user.findUniqueOrThrow({ where, select: USER_OUTPUT_SELECT });
+      return { user, previous };
+    });
+  } catch (error) {
+    await Promise.allSettled(Object.values(uploads).map(deleteUploadIfOwned));
+    throw error;
+  }
+
+  const uploadPrefix = `/uploads/users/${userId}/`;
+  await Promise.allSettled(
+    Object.values(result.previous)
+      .filter((url) => url?.startsWith(uploadPrefix))
+      .map(deleteUploadIfOwned),
+  );
+  return result.user;
 }
 
 export async function setCurrentSpace(userId, { spaceId }) {

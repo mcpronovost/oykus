@@ -69,6 +69,8 @@ export type TypePublicUser = {
   updatedAt: string;
 };
 
+export type TypeProfileImages = Partial<Record<"avatar" | "cover", string>>;
+
 export type TypeSpace = {
   id: string;
   name: string;
@@ -210,6 +212,13 @@ async function logout(): Promise<void> {
 
 async function getMe(): Promise<TypePublicUser> {
   return request<TypePublicUser>("/api/v1/users/me");
+}
+
+async function updateProfileImages(input: TypeProfileImages): Promise<TypePublicUser> {
+  return request<TypePublicUser>("/api/v1/users/me/images", {
+    method: "PATCH",
+    body: JSON.stringify(input),
+  });
 }
 
 async function listSpaces(): Promise<TypeSpace[]> {
@@ -413,6 +422,7 @@ export {
   setCurrentSpace,
   setSpaceActive,
   updateEncyclopediaEntry,
+  updateProfileImages,
   updateSpace,
   updateSpaceCover,
 };

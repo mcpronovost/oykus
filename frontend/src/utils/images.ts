@@ -1,8 +1,8 @@
 const COVER_WIDTH = 400;
 const COVER_HEIGHT = 568;
 
-function loadImage(file) {
-  return new Promise((resolve, reject) => {
+function loadImage(file: Blob) {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
     const url = URL.createObjectURL(file);
     const image = new Image();
     image.onload = () => {
@@ -17,8 +17,8 @@ function loadImage(file) {
   });
 }
 
-function blobToBase64(blob) {
-  return new Promise((resolve, reject) => {
+function blobToBase64(blob: Blob) {
+  return new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => {
       const result = reader.result;
@@ -34,11 +34,7 @@ function blobToBase64(blob) {
   });
 }
 
-/**
- * Centre-crop to 400x568 and encode as WebP base64 (no data-URL prefix).
- * @returns {Promise<{ base64: string, previewUrl: string }>}
- */
-export async function resizeImageToCoverWebp(file, width = COVER_WIDTH, height = COVER_HEIGHT) {
+async function resizeToWebpBlob(file: Blob, width: number, height: number) {
   if (!(file instanceof Blob)) {
     throw new Error("Expected an image file");
   }
@@ -53,11 +49,11 @@ export async function resizeImageToCoverWebp(file, width = COVER_WIDTH, height =
   let sh = image.height;
 
   if (sourceRatio > targetRatio) {
-    sw = Math.round(image.height * targetRatio);
-    sx = Math.round((image.width - sw) / 2);
+    sw = image.height * targetRatio;
+    sx = (image.width - sw) / 2;
   } else if (sourceRatio < targetRatio) {
-    sh = Math.round(image.width / targetRatio);
-    sy = Math.round((image.height - sh) / 2);
+    sh = image.width / targetRatio;
+    sy = (image.height - sh) / 2;
   }
 
   const canvas = document.createElement("canvas");
@@ -70,10 +66,10 @@ export async function resizeImageToCoverWebp(file, width = COVER_WIDTH, height =
 
   context.drawImage(image, sx, sy, sw, sh, 0, 0, width, height);
 
-  const blob = await new Promise((resolve, reject) => {
+  return new Promise<Blob>((resolve, reject) => {
     canvas.toBlob(
       (next) => {
-        if (!next) {
+        if (next?.type !== "image/webp") {
           reject(new Error("Could not encode WebP"));
           return;
         }
@@ -83,7 +79,14 @@ export async function resizeImageToCoverWebp(file, width = COVER_WIDTH, height =
       0.9,
     );
   });
+}
 
+export async function resizeImageToWebpBase64(file: Blob, width: number, height: number) {
+  return blobToBase64(await resizeToWebpBlob(file, width, height));
+}
+
+export async function resizeImageToCoverWebp(file: Blob, width = COVER_WIDTH, height = COVER_HEIGHT) {
+  const blob = await resizeToWebpBlob(file, width, height);
   const base64 = await blobToBase64(blob);
   const previewUrl = URL.createObjectURL(blob);
 

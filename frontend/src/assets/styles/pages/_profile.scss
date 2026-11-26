@@ -1,0 +1,40 @@
+.oyk-page-profile {
+  &-bannerpreview {
+    &-upload {
+      background: transparent;
+      border: 0;
+      border-radius: inherit;
+      color: var(--oyk-c-accent);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      height: 100%;
+      padding: 16px;
+
+      &:disabled {
+        cursor: default;
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--oyk-c-accent);
+        outline-offset: -2px;
+      }
+
+      span {
+        color: var(--oyk-card-fg);
+        font-size: 1rem;
+        line-height: 1.2;
+      }
+
+      small {
+        color: var(--oyk-card-fg-muted);
+        font-size: 0.875rem;
+        line-height: 1.2;
+      }
+    }
+  }
+}

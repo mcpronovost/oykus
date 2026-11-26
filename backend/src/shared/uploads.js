@@ -43,13 +43,20 @@ export function decodeWebpBase64(data) {
   return { buffer };
 }
 
-export async function saveSpaceCover(buffer) {
-  const relativeDir = "spaces";
+async function saveWebp(buffer, relativeDir) {
   const filename = `${randomUUID()}.webp`;
   const absoluteDir = path.join(UPLOADS_ROOT, relativeDir);
   await mkdir(absoluteDir, { recursive: true });
   await writeFile(path.join(absoluteDir, filename), buffer);
   return `/uploads/${relativeDir}/${filename}`;
+}
+
+export function saveSpaceCover(buffer) {
+  return saveWebp(buffer, "spaces");
+}
+
+export function saveUserProfileImage(userId, buffer) {
+  return saveWebp(buffer, `users/${userId}`);
 }
 
 export async function deleteUploadIfOwned(publicPath) {

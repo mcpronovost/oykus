@@ -222,3 +222,5 @@ The running API may continue serving during migrations. Use migrations compatibl
 Nginx listens on port 80, serves the built frontend, and proxies `/api/` to the backend. The `oykus-production` Compose project uses its own network and volumes, separate from development.
 
 User uploads (avatars, covers) are served by Nginx at `/uploads/` with a one-year cache. Locally, both the backend and Nginx use `backend/uploads` on the host. In production, a named Docker volume is mounted at `/app/uploads` in the backend (read-write) and `/var/www/uploads` in Nginx (read-only).
+
+On the Profile page, users can preview and save a 200 × 200 avatar and a 1600 × 300 cover. The browser centre-crops the selected images and converts them to WebP before uploading them.
