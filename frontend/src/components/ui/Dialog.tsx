@@ -4,8 +4,9 @@ import type {
   ReactNode,
   TransitionEvent,
 } from "react";
-import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useId, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useRouter } from "@/services/router";
 import { oykClass } from "@/utils";
 
 type OykDialogPlacement = "top" | "right" | "bottom" | "left";
@@ -74,6 +75,8 @@ export default function OykDialog({
   className = "",
   ...props
 }: OykDialogProps) {
+  const { history } = useRouter();
+  const previousHistory = useRef(history);
   const dialogId = useId();
   const triggerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -95,6 +98,16 @@ export default function OykDialog({
   const wantOpen = open && !disabled && Boolean(content);
 
   const close = () => setOpen(false);
+
+  const closeOnNavigation = useEffectEvent(() => {
+    if (open) close();
+  });
+
+  useEffect(() => {
+    if (previousHistory.current === history) return;
+    previousHistory.current = history;
+    closeOnNavigation();
+  }, [history]);
 
   const toggle = () => {
     if (disabled || !content) return;
