@@ -48,6 +48,7 @@
     height: calc(100% - 2px);
     position: relative;
     z-index: 2;
+    user-select: none;
   }
 
   &-button {
