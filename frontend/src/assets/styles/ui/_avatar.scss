@@ -36,11 +36,12 @@
   &-label {
     background: linear-gradient(32deg, var(--oyk-card-bg-subtle), var(--oyk-card-bg));
     border-radius: 50%;
-    overflow: hidden;
+    color: var(--oyk-card-fg-subtle);
     font-family: var(--oyk-font-heading);
     font-size: 32px;
     font-weight: 400;
     line-height: 1;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
