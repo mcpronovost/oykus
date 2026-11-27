@@ -70,6 +70,8 @@ export type TypePublicUser = {
 };
 
 export type TypeProfileImages = Partial<Record<"avatar" | "cover", string>>;
+export type TypeProfileDetails = Partial<Pick<TypePublicUser, "name" | "language" | "timezone">>;
+export type TypeProfileUpdate = TypeProfileDetails & TypeProfileImages;
 
 export type TypeSpace = {
   id: string;
@@ -212,6 +214,13 @@ async function logout(): Promise<void> {
 
 async function getMe(): Promise<TypePublicUser> {
   return request<TypePublicUser>("/api/v1/users/me");
+}
+
+async function updateProfile(input: TypeProfileUpdate): Promise<TypePublicUser> {
+  return request<TypePublicUser>("/api/v1/users/me", {
+    method: "PATCH",
+    body: JSON.stringify(input),
+  });
 }
 
 async function updateProfileImages(input: TypeProfileImages): Promise<TypePublicUser> {
@@ -422,6 +431,7 @@ export {
   setCurrentSpace,
   setSpaceActive,
   updateEncyclopediaEntry,
+  updateProfile,
   updateProfileImages,
   updateSpace,
   updateSpaceCover,

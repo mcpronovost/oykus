@@ -4,8 +4,14 @@
   "Change Cover": "Changer l’image de couverture",
   "Remove Avatar": "Retirer l’avatar",
   "Remove Cover": "Retirer l’image de couverture",
+  "Your Identity": "Votre identité",
+  "Language": "Langue",
+  "French": "Français",
+  "English": "Anglais",
+  "Time zone": "Fuseau horaire",
+  "Enter a name.": "Saisissez un nom.",
   "Could not process the avatar image.": "Impossible de traiter l’image de l’avatar.",
-  "Could not update profile images.": "Impossible de mettre à jour les images du profil.",
-  "Profile images saved.": "Les images du profil ont été enregistrées.",
+  "Could not update your profile.": "Impossible de mettre à jour votre profil.",
+  "Profile saved.": "Votre profil a été enregistré.",
   "This is your profile page. You can view and edit your personal information here.": "Sur cette page, vous pouvez consulter et modifier vos renseignements personnels."
 }

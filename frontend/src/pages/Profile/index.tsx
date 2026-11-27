@@ -2,15 +2,18 @@ import "@/assets/styles/pages/_profile.scss";
 import type { ChangeEvent } from "react";
 import { useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { IconCircleDashedX, IconUser, IconPhoto } from "@tabler/icons-react";
+import { IconCircleDashedX, IconUser, IconPhoto, IconAlertTriangle } from "@tabler/icons-react";
 import {
   queryKeys,
-  updateProfileImages,
+  updateProfile,
+  type TypeProfileDetails,
   type TypeProfileImages,
   type TypePublicUser,
 } from "@/services/api";
 import { useAuth } from "@/services/auth";
+import { useRouter } from "@/services/router";
 import { useTranslation } from "@/services/translation";
+import { SUPPORTED_LANGS } from "@/services/translation/utils";
 import { resizeImageToWebpBase64 } from "@/utils";
 import {
   OykBanner,
@@ -19,7 +22,6 @@ import {
   OykForm,
   OykGrid,
   OykHeading,
-  OykResult,
 } from "@/components/ui";
 
 const PROFILE_IMAGES = {
@@ -39,25 +41,43 @@ const PROFILE_IMAGES = {
   },
 };
 
+const LANGUAGE_LABELS = { fr: "French", en: "English" };
+const PROFILE_TIMEZONES = ["UTC", "America/Toronto", "Europe/Paris"];
+
 export default function OykProfile() {
   const { user } = useAuth();
 
-  return user ? <ProfileImages key={user.id} user={user} /> : null;
+  return user ? <ProfileForm key={user.id} user={user} /> : null;
 }
 
-function ProfileImages({ user }: { user: TypePublicUser }) {
-  const { t } = useTranslation();
+function ProfileForm({ user }: { user: TypePublicUser }) {
+  const { lang, t } = useTranslation();
+  const { n } = useRouter();
   const queryClient = useQueryClient();
   const avatarInputRef = useRef<HTMLInputElement>(null);
   const coverInputRef = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<TypeProfileImages>({});
+  const [details, setDetails] = useState<TypeProfileDetails>({});
   const [error, setError] = useState<string>();
-  const [success, setSuccess] = useState<string>();
+  const [isSaved, setIsSaved] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isBusy = isProcessing || isSubmitting;
-  const hasChanges = "avatar" in images || "cover" in images;
+  const hasChanges = Object.keys(details).length > 0 || Object.keys(images).length > 0;
+  const timezoneOptions = [...new Set([...PROFILE_TIMEZONES, user.timezone])];
+
+  const changeDetail = (field: keyof TypeProfileDetails, value: string | boolean | string[]) => {
+    if (typeof value !== "string") return;
+    setError(undefined);
+    setIsSaved(false);
+    setDetails((current) => {
+      const next = { ...current };
+      if (value === user[field]) delete next[field];
+      else next[field] = value;
+      return next;
+    });
+  };
 
   const imageSource = (field: keyof TypeProfileImages) => {
     const preview = images[field];
@@ -71,7 +91,7 @@ function ProfileImages({ user }: { user: TypePublicUser }) {
   const removeImage = (field: keyof TypeProfileImages) => {
     if (isBusy) return;
     setError(undefined);
-    setSuccess(undefined);
+    setIsSaved(false);
     setImages((current) => ({ ...current, [field]: "" }));
   };
 
@@ -85,7 +105,7 @@ function ProfileImages({ user }: { user: TypePublicUser }) {
 
     const { width, height, error: imageError } = PROFILE_IMAGES[field];
     setError(undefined);
-    setSuccess(undefined);
+    setIsSaved(false);
     setIsProcessing(true);
     try {
       const base64 = await resizeImageToWebpBase64(file, width, height);
@@ -98,34 +118,48 @@ function ProfileImages({ user }: { user: TypePublicUser }) {
   };
 
   const reset = () => {
+    setDetails({});
     setImages({});
     setError(undefined);
-    setSuccess(undefined);
+    setIsSaved(false);
   };
 
   const handleSubmit = async () => {
     if (isBusy || !hasChanges) return;
 
     setError(undefined);
-    setSuccess(undefined);
+    setIsSaved(false);
+    if (details.name !== undefined && !details.name.trim()) {
+      setError(t("Enter a name."));
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      const updated = await updateProfileImages(images);
+      const updated = await updateProfile({ ...details, ...images });
       await queryClient.cancelQueries({ queryKey: queryKeys.user.me });
       queryClient.setQueryData<TypePublicUser | null>(queryKeys.user.me, (current) =>
         current?.id === updated.id
           ? {
               ...current,
+              name: updated.name,
+              language: updated.language,
+              timezone: updated.timezone,
               avatar: updated.avatar,
               cover: updated.cover,
               updatedAt: updated.updatedAt,
             }
           : current,
       );
+      setDetails({});
       setImages({});
-      setSuccess(t("Profile images saved."));
+      setIsSaved(true);
+      const savedLanguage = SUPPORTED_LANGS.find((language) => language === updated.language);
+      if (details.language !== undefined && savedLanguage && savedLanguage !== lang) {
+        n("profile", {}, savedLanguage);
+      }
     } catch {
-      setError(t("Could not update profile images."));
+      setError(t("Could not update your profile."));
     } finally {
       setIsSubmitting(false);
     }
@@ -142,7 +176,7 @@ function ProfileImages({ user }: { user: TypePublicUser }) {
             <OykGrid.Col size={{ xs: 24, sm: 24, md: 8, lg: 12 }}>
               <OykCard grow nop>
                 <OykBanner
-                  size={180}
+                  size={160}
                   coverSrc={coverSource}
                   coverAlt=""
                   coverSize={110}
@@ -159,6 +193,7 @@ function ProfileImages({ user }: { user: TypePublicUser }) {
                   avatarClickLabel={t("Remove Avatar")}
                   avatarOnClick={() => removeImage("avatar")}
                 />
+                <p className="oyk-page-profile-bannerpreview-name">{details.name ?? user.name}</p>
               </OykCard>
             </OykGrid.Col>
             {(["avatar", "cover"] as const).map((field) => {
@@ -190,21 +225,91 @@ function ProfileImages({ user }: { user: TypePublicUser }) {
               );
             })}
           </OykGrid.Row>
-          <OykForm.Alert error={error} success={success} successTitle={t("Saved")} />
+          <OykCard>
+            <OykHeading title={t("Your Identity")} variant="card" />
+            <OykGrid.Row nopb>
+              <OykGrid.Col>
+                <OykForm.Field
+                  name="name"
+                  label={t("Name")}
+                  value={details.name ?? user.name}
+                  onChange={(value) => changeDetail("name", value)}
+                  required
+                  max={100}
+                  disabled={isBusy}
+                />
+              </OykGrid.Col>
+              <OykGrid.Col size={{ xs: 24, md: 12 }}>
+                <OykForm.Field
+                  name="language"
+                  label={t("Language")}
+                  type="select"
+                  options={SUPPORTED_LANGS.map((value) => ({ value, label: t(LANGUAGE_LABELS[value]) }))}
+                  value={details.language ?? user.language}
+                  onChange={(value) => changeDetail("language", value)}
+                  disabled={isBusy}
+                />
+              </OykGrid.Col>
+              <OykGrid.Col size={{ xs: 24, md: 12 }}>
+                <OykForm.Field
+                  name="timezone"
+                  label={t("Time zone")}
+                  type="select"
+                  options={timezoneOptions.map((value) => ({ value, label: value }))}
+                  value={details.timezone ?? user.timezone}
+                  onChange={(value) => changeDetail("timezone", value)}
+                  disabled={isBusy}
+                />
+              </OykGrid.Col>
+              <OykGrid.Col>
+                <OykForm.Alert error={error} success={isSaved ? t("Profile saved.") : undefined} successTitle={t("Saved")} />
+              </OykGrid.Col>
+              <OykGrid.Col flex="horizontal" justify="end">
+                <OykButton label={t("Reset")} variant="ghost" disabled={isBusy || !hasChanges} onClick={reset} />
+                <OykButton type="submit" label={t("Save")} color="accent" disabled={isBusy || !hasChanges} loading={isSubmitting} />
+              </OykGrid.Col>
+            </OykGrid.Row>
+          </OykCard>
+        </OykGrid>
+        <OykGrid>
           <OykGrid.Row>
-            <OykGrid.Col flex="horizontal" justify="end">
-              <OykButton label={t("Reset")} variant="ghost" disabled={isBusy || !hasChanges} onClick={reset} />
-              <OykButton type="submit" label={t("Save")} color="accent" disabled={isBusy || !hasChanges} loading={isSubmitting} />
+            <OykGrid.Col>
+              <OykCard color="danger">
+                <OykHeading
+                  tag="h2"
+                  title={t("profile.dangerzone.title")}
+                  subtitle={t("profile.dangerzone.subtitle")}
+                  icon={IconAlertTriangle}
+                  variant="card"
+                />
+                <OykGrid.Row nopb>
+                  <OykGrid.Col size={{ xs: 12, md: 18 }}>
+                    <p className="oyk-page-profile-field-title">
+                      {t("profile.dangerzone.deleteusermanually")}
+                    </p>
+                    <small className="oyk-page-profile-field-description">
+                      {t("profile.dangerzone.deleteusermanuallydescription")}
+                      <br />
+                      {t("profile.dangerzone.deleteusermanuallynote")}
+                    </small>
+                  </OykGrid.Col>
+                  <OykGrid.Col
+                    size={{ xs: 12, md: 6 }}
+                    flex="horizontal"
+                    justify="end"
+                  >
+                    <OykButton
+                      label={t("profile.dangerzone.deleteusermanually")}
+                      color="danger"
+                      onClick={() => null}
+                    />
+                  </OykGrid.Col>
+                </OykGrid.Row>
+              </OykCard>
             </OykGrid.Col>
           </OykGrid.Row>
         </OykGrid>
       </OykForm>
-      <OykGrid>
-        <OykResult
-          title={t("Profile")}
-          message={t("This is your profile page. You can view and edit your personal information here.")}
-        />
-      </OykGrid>
     </div>
   );
 }

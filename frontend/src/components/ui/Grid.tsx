@@ -22,7 +22,6 @@ interface OykGridColProps {
   flex?: "horizontal" | "vertical";
   justify?: "start" | "center" | "end";
   wrap?: boolean;
-  gap?: number;
 }
 
 function buildClasses(prefix: string, value?: SizeType): string[] {
@@ -46,7 +45,7 @@ function OykGridRow({ children, nop, nopb }: OykGridRowProps) {
   );
 }
 
-function OykGridCol({ children, size = 24, flex, justify, wrap = false, gap = 16 }: OykGridColProps) {
+function OykGridCol({ children, size = 24, flex, justify, wrap = false }: OykGridColProps) {
   return (
     <div
       className={oykClass(
@@ -56,9 +55,6 @@ function OykGridCol({ children, size = 24, flex, justify, wrap = false, gap = 16
         justify && `oyk-grid-col-justify--${justify}`,
         wrap && "oyk-grid-col-wrap",
       )}
-      style={{
-        ...(gap && { "--oyk-gridcol-gap": `${gap}px` }),
-      } as CSSProperties}
     >
       {children}
     </div>

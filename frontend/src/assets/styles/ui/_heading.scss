@@ -80,7 +80,8 @@
   
   &-variant {
     &--card {
-      margin: 0;
+      gap: 12px;
+      margin: 0 0 16px;
 
       &::after {
         content: "";

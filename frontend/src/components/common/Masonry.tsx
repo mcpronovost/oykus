@@ -76,7 +76,7 @@ export default function OykMasonry({
 
   return (
     <OykGrid.Row>
-      <OykGrid.Col size={24} flex="horizontal" wrap gap={8}>
+      <OykGrid.Col size={24} flex="horizontal" wrap>
         <OykButton
           label={t("All")}
           size="sm"

@@ -28,6 +28,19 @@ $oyk-breakpoints: (
     &-nopb {
       margin-bottom: 0;
     }
+
+    @media (max-width: 768px) {
+      gap: 8px;
+      margin: 8px 0;
+
+      &-nop {
+        margin: 0;
+      }
+
+      &-nopb {
+        margin-bottom: 0;
+      }
+    }
   }
 
   &-col {
@@ -36,6 +49,10 @@ $oyk-breakpoints: (
     box-sizing: border-box;
     grid-column: span 24;
     grid-column-start: auto;
+
+    @media (max-width: 768px) {
+      --oyk-gridcol-gap: 8px
+    }
 
     &-flex {
       &--horizontal {
@@ -79,5 +96,9 @@ $oyk-breakpoints: (
         }
       }
     }
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 8px;
   }
 }

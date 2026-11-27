@@ -4,8 +4,15 @@
   "Change Cover": "Change Cover",
   "Remove Avatar": "Remove Avatar",
   "Remove Cover": "Remove Cover",
+  "Your Identity": "Your Identity",
+  "Language": "Language",
+  "French": "French",
+  "English": "English",
+  "Time zone": "Time zone",
+  "Enter a name.": "Enter a name.",
   "Could not process the avatar image.": "Could not process the avatar image.",
-  "Could not update profile images.": "Could not update profile images.",
-  "Profile images saved.": "Profile images saved.",
-  "This is your profile page. You can view and edit your personal information here.": "This is your profile page. You can view and edit your personal information here."
+  "Could not update your profile.": "Could not update your profile.",
+  "Profile saved.": "Profile saved.",
+  "This is your profile page. You can view and edit your personal information here.": "This is your profile page. You can view and edit your personal information here.",
+  "profile.dangerzone.title": "Danger Zone"
 }

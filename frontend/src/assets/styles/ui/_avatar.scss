@@ -84,7 +84,8 @@
       border-radius: 50%;
 
       .oyk-avatar-img,
-      .oyk-avatar-label {
+      .oyk-avatar-label,
+      .oyk-avatar-button {
         border-radius: 50%;
       }
     }
@@ -93,7 +94,8 @@
       border-radius: var(--oyk-radius);
 
       .oyk-avatar-img,
-      .oyk-avatar-label {
+      .oyk-avatar-label,
+      .oyk-avatar-button {
         border-radius: var(--oyk-radius);
       }
     }

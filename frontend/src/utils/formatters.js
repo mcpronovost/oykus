@@ -37,12 +37,27 @@ function resolveTimezone(timezone) {
   }
 }
 
-export function oykDateTimeFormatter(lang, timezone) {
-  return new Intl.DateTimeFormat(`${lang}-CA`, {
-    dateStyle: "medium",
-    timeStyle: "short",
+export function oykDateTimeFormatter(lang, timezone, show = "full") {
+  const formatLang = lang == "fr" ? "fr-FR" : "en-CA";
+  return new Intl.DateTimeFormat(`${formatLang}`, {
+    hour12: false,
+    year: (["full","date"].includes(show) ? "numeric" : undefined),
+    month: (["full","date"].includes(show) ? "short" : undefined),
+    day: (["full","date"].includes(show) ? "numeric" : undefined),
+    hour: (["full","time"].includes(show) ? "2-digit" : undefined),
+    minute: (["full","time"].includes(show) ? "2-digit" : undefined),
     timeZone: resolveTimezone(timezone || "UTC"),
   });
+}
+
+export function oykDate(date, lang = "en", timezone = "UTC") {
+  if (date == null || date === "") return "";
+
+  const then = date instanceof Date ? date : new Date(date);
+  if (Number.isNaN(then.getTime())) return "";
+
+  const formatter = oykDateTimeFormatter(lang, timezone);
+  return formatter.format(then);
 }
 
 export function oykTimeAgo(date, lang = "en", timezone = "UTC") {
