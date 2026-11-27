@@ -2,6 +2,8 @@
   "Profile": "Profil",
   "Change Avatar": "Changer l’avatar",
   "Change Cover": "Changer l’image de couverture",
+  "Remove Avatar": "Retirer l’avatar",
+  "Remove Cover": "Retirer l’image de couverture",
   "Could not process the avatar image.": "Impossible de traiter l’image de l’avatar.",
   "Could not update profile images.": "Impossible de mettre à jour les images du profil.",
   "Profile images saved.": "Les images du profil ont été enregistrées.",

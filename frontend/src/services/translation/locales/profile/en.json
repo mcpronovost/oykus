@@ -2,6 +2,8 @@
   "Profile": "Profile",
   "Change Avatar": "Change Avatar",
   "Change Cover": "Change Cover",
+  "Remove Avatar": "Remove Avatar",
+  "Remove Cover": "Remove Cover",
   "Could not process the avatar image.": "Could not process the avatar image.",
   "Could not update profile images.": "Could not update profile images.",
   "Profile images saved.": "Profile images saved.",

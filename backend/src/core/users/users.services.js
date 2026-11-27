@@ -17,23 +17,23 @@ export async function getMe(userId) {
 }
 
 export async function updateProfileImages(userId, images) {
-  const uploads = {};
+  const updates = {};
   let result;
   try {
     for (const [field, buffer] of Object.entries(images)) {
-      uploads[field] = await saveUserProfileImage(userId, buffer);
+      updates[field] = buffer === null ? null : await saveUserProfileImage(userId, buffer);
     }
 
     result = await prisma.$transaction(async (tx) => {
       const where = { id: userId };
-      const fields = Object.keys(uploads);
+      const fields = Object.keys(updates);
       const select = Object.fromEntries(fields.map((field) => [field, true]));
       const previous = await tx.user.findUnique({ where, select });
       if (!previous) throw new NotFoundError("User not found");
 
       const { count } = await tx.user.updateMany({
         where: { ...where, ...previous },
-        data: uploads,
+        data: updates,
       });
       if (count === 0) throw new ConflictError("Profile images changed during the update");
 
@@ -41,7 +41,7 @@ export async function updateProfileImages(userId, images) {
       return { user, previous };
     });
   } catch (error) {
-    await Promise.allSettled(Object.values(uploads).map(deleteUploadIfOwned));
+    await Promise.allSettled(Object.values(updates).map(deleteUploadIfOwned));
     throw error;
   }
 

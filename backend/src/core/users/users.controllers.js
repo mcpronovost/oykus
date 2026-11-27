@@ -23,6 +23,10 @@ export async function updateProfileImages(req, res) {
 
   for (const [field, data] of Object.entries(input)) {
     if (data === undefined) continue;
+    if (data === "") {
+      images[field] = null;
+      continue;
+    }
 
     const decoded = decodeWebpBase64(data);
     if (decoded.error) {

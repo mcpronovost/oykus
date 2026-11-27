@@ -2,7 +2,7 @@ import "@/assets/styles/pages/_profile.scss";
 import type { ChangeEvent } from "react";
 import { useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { IconUser, IconPhoto } from "@tabler/icons-react";
+import { IconCircleDashedX, IconUser, IconPhoto } from "@tabler/icons-react";
 import {
   queryKeys,
   updateProfileImages,
@@ -57,11 +57,22 @@ function ProfileImages({ user }: { user: TypePublicUser }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isBusy = isProcessing || isSubmitting;
-  const hasChanges = Boolean(images.avatar || images.cover);
+  const hasChanges = "avatar" in images || "cover" in images;
 
   const imageSource = (field: keyof TypeProfileImages) => {
     const preview = images[field];
-    return preview ? `data:image/webp;base64,${preview}` : user[field];
+    if (preview === undefined) return user[field];
+    return preview ? `data:image/webp;base64,${preview}` : null;
+  };
+
+  const avatarSource = imageSource("avatar");
+  const coverSource = imageSource("cover");
+
+  const removeImage = (field: keyof TypeProfileImages) => {
+    if (isBusy) return;
+    setError(undefined);
+    setSuccess(undefined);
+    setImages((current) => ({ ...current, [field]: "" }));
   };
 
   const handleImageChange = async (
@@ -132,13 +143,21 @@ function ProfileImages({ user }: { user: TypePublicUser }) {
               <OykCard grow nop>
                 <OykBanner
                   size={180}
-                  coverSrc={imageSource("cover")}
+                  coverSrc={coverSource}
                   coverAlt=""
                   coverSize={110}
-                  avatarSrc={imageSource("avatar")}
+                  coverClickable={!isBusy && Boolean(coverSource)}
+                  coverClickIcon={IconCircleDashedX}
+                  coverClickLabel={t("Remove Cover")}
+                  coverOnClick={() => removeImage("cover")}
+                  avatarSrc={avatarSource}
                   avatarAlt={user.name}
                   avatarSize={120}
                   avatarTop={32}
+                  avatarClickable={!isBusy && Boolean(avatarSource)}
+                  avatarClickIcon={IconCircleDashedX}
+                  avatarClickLabel={t("Remove Avatar")}
+                  avatarOnClick={() => removeImage("avatar")}
                 />
               </OykCard>
             </OykGrid.Col>
