@@ -10,7 +10,7 @@ const prisma = new PrismaClient({ adapter });
 
 const TEST_USER = {
   username: "mcpronovost",
-  email: "mc@oykus.local",
+  email: "mc@oykus.ca",
   password: "testpass",
   name: "M-C Pronovost",
 };
@@ -19,16 +19,16 @@ async function seedUsers() {
   const password = await hashPassword(TEST_USER.password);
 
   const user = await prisma.user.upsert({
-    where: { email: TEST_USER.email },
+    where: { username: TEST_USER.username },
     update: {
-      username: TEST_USER.username,
       password,
+      email: TEST_USER.email,
       name: TEST_USER.name,
     },
     create: {
+      password,
       username: TEST_USER.username,
       email: TEST_USER.email,
-      password,
       name: TEST_USER.name,
     },
   });
