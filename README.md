@@ -182,6 +182,8 @@ Client configuration uses names that start with `VITE_` in `.env`. During local 
 
 Authenticated requests validate the session in PostgreSQL. Active sessions renew their database expiry and cookie at most once every 10 minutes, or half of `SESSION_TTL_MS` when the configured lifetime is shorter than 20 minutes. The recorded last activity can lag actual requests by up to that refresh interval.
 
+Users can permanently delete their account from Profile by confirming their profile name. This revokes all sessions and deletes owned spaces and their content. In spaces owned by others, the user's notes are deleted, while encyclopedia contributions and activity history are retained without their account attribution.
+
 The notes and encyclopedia topic list routes return pages of 25 records by default. An optional `limit` accepts 1–50. Pass the returned `nextCursor` as the `cursor` query parameter to load the next page.
 
 The dashboard shows the 10 most recent activity logs for the current space, including the action, the actor’s display name, and the creation date. The read-only `GET /api/v1/spaces/:id/logs` route accepts a `limit` of 1–50 for users with access to the space. Successful space changes, note changes, and encyclopedia entry changes are recorded with the write. Each space retains up to `limitLogs` entries. With a limit of 1,000, adding the 1,001st log replaces the oldest and leaves 1,000 logs. Deleting the space also removes its history through the database relation.

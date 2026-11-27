@@ -8,6 +8,7 @@ export interface TypeAuthContextValue {
   hasError: boolean;
   login: (username: string, password: string) => Promise<TypePublicUser>;
   logout: () => Promise<void>;
+  deleteAccount: (confirmationName: string) => Promise<void>;
   refresh: () => Promise<TypePublicUser | null>;
   setCurrentSpace: (spaceId: string) => Promise<TypePublicUser>;
 }

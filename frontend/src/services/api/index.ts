@@ -216,6 +216,13 @@ async function getMe(): Promise<TypePublicUser> {
   return request<TypePublicUser>("/api/v1/users/me");
 }
 
+async function deleteAccount(confirmationName: string): Promise<void> {
+  await request<void>("/api/v1/users/me", {
+    method: "DELETE",
+    body: JSON.stringify({ confirmationName }),
+  });
+}
+
 async function updateProfile(input: TypeProfileUpdate): Promise<TypePublicUser> {
   return request<TypePublicUser>("/api/v1/users/me", {
     method: "PATCH",
@@ -433,6 +440,7 @@ export {
   updateEncyclopediaEntry,
   updateProfile,
   updateProfileImages,
+  deleteAccount,
   updateSpace,
   updateSpaceCover,
 };

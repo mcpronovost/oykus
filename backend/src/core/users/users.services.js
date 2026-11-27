@@ -1,6 +1,7 @@
 import { prisma } from "../../shared/db/index.js";
-import { ConflictError, ForbiddenError, NotFoundError } from "../../shared/errors/index.js";
+import { BadRequestError, ConflictError, ForbiddenError, NotFoundError } from "../../shared/errors/index.js";
 import { deleteUploadIfOwned, saveUserProfileImage } from "../../shared/uploads.js";
+import { deleteSpaceRecords } from "../spaces/spaces.services.js";
 import { USER_OUTPUT_SELECT } from "./users.outputs.js";
 
 export async function getMe(userId) {
@@ -55,6 +56,36 @@ export async function updateProfile(userId, details, images) {
       .map(deleteUploadIfOwned),
   );
   return result.user;
+}
+
+export async function deleteAccount(userId, { confirmationName }) {
+  const { avatar, cover, spaceCovers } = await prisma.$transaction(async (tx) => {
+    const user = await tx.user.findUnique({
+      where: { id: userId },
+      select: { name: true, ownedSpaces: { select: { id: true } } },
+    });
+    if (!user) throw new NotFoundError("User not found");
+    if (confirmationName !== user.name.trim()) {
+      throw new BadRequestError("Type your profile name exactly to confirm.");
+    }
+
+    const spaceCovers = [];
+    for (const { id } of user.ownedSpaces) {
+      const space = await deleteSpaceRecords(tx, id);
+      spaceCovers.push(space.cover);
+    }
+
+    const deletedUser = await tx.user.delete({
+      where: { id: userId, name: user.name },
+      select: { avatar: true, cover: true },
+    });
+
+    return { ...deletedUser, spaceCovers };
+  });
+
+  const uploadPrefix = `/uploads/users/${userId}/`;
+  const profileUploads = [avatar, cover].filter((url) => url?.startsWith(uploadPrefix));
+  await Promise.allSettled([...profileUploads, ...spaceCovers].map(deleteUploadIfOwned));
 }
 
 export async function setCurrentSpace(userId, { spaceId }) {

@@ -13,5 +13,13 @@
   "Could not process the avatar image.": "Impossible de traiter l’image de l’avatar.",
   "Could not update your profile.": "Impossible de mettre à jour votre profil.",
   "Profile saved.": "Votre profil a été enregistré.",
-  "This is your profile page. You can view and edit your personal information here.": "Sur cette page, vous pouvez consulter et modifier vos renseignements personnels."
+  "This is your profile page. You can view and edit your personal information here.": "Sur cette page, vous pouvez consulter et modifier vos renseignements personnels.",
+  "profile.dangerzone.title": "Zone de danger",
+  "profile.dangerzone.subtitle": "Actions irréversibles affectant votre compte.",
+  "profile.dangerzone.deleteuserpermanently": "Supprimer le compte de manière permanente",
+  "profile.dangerzone.deleteuserpermanentlydescription": "Supprimer définitivement votre compte et les espaces dont vous êtes propriétaire.",
+  "profile.dangerzone.deleteuserpermanentlynote": "Cette action ne peut pas être annulée.",
+  "profile.deleteaccount.consequences": "Cette action supprimera votre compte, tous les espaces dont vous êtes propriétaire et leur contenu, ainsi que les notes que vous avez écrites dans d’autres espaces. Vos contributions à l’encyclopédie et l’historique de vos activités dans d’autres espaces seront conservés sans mention de votre nom.",
+  "Type your profile name to confirm": "Saisissez votre nom de profil pour confirmer",
+  "Could not delete your account. Try again.": "Impossible de supprimer votre compte. Réessayez."
 }

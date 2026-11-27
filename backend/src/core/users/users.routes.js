@@ -6,6 +6,7 @@ const router = Router();
 
 router.get("/me", requireAuth, usersControllers.me);
 router.patch("/me", requireAuth, usersControllers.updateProfile);
+router.delete("/me", requireAuth, usersControllers.deleteAccount);
 router.patch("/me/images", requireAuth, usersControllers.updateProfileImages);
 router.patch("/me/current-space", requireAuth, usersControllers.setCurrentSpace);
 

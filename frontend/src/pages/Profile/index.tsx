@@ -23,6 +23,7 @@ import {
   OykGrid,
   OykHeading,
 } from "@/components/ui";
+import OykProfileModalsAccountDelete from "./modals/AccountDelete";
 
 const PROFILE_IMAGES = {
   avatar: {
@@ -62,6 +63,7 @@ function ProfileForm({ user }: { user: TypePublicUser }) {
   const [isSaved, setIsSaved] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const isBusy = isProcessing || isSubmitting;
   const hasChanges = Object.keys(details).length > 0 || Object.keys(images).length > 0;
@@ -167,6 +169,11 @@ function ProfileForm({ user }: { user: TypePublicUser }) {
 
   return (
     <div className="oyk-page-profile">
+      <OykProfileModalsAccountDelete
+        name={user.name}
+        open={isDeleteOpen}
+        setOpen={setIsDeleteOpen}
+      />
       <OykGrid>
         <OykHeading title={t("Profile")} suptitle={user.name} />
       </OykGrid>
@@ -271,45 +278,46 @@ function ProfileForm({ user }: { user: TypePublicUser }) {
             </OykGrid.Row>
           </OykCard>
         </OykGrid>
-        <OykGrid>
-          <OykGrid.Row>
-            <OykGrid.Col>
-              <OykCard color="danger">
-                <OykHeading
-                  tag="h2"
-                  title={t("profile.dangerzone.title")}
-                  subtitle={t("profile.dangerzone.subtitle")}
-                  icon={IconAlertTriangle}
-                  variant="card"
-                />
-                <OykGrid.Row nopb>
-                  <OykGrid.Col size={{ xs: 12, md: 18 }}>
-                    <p className="oyk-page-profile-field-title">
-                      {t("profile.dangerzone.deleteusermanually")}
-                    </p>
-                    <small className="oyk-page-profile-field-description">
-                      {t("profile.dangerzone.deleteusermanuallydescription")}
-                      <br />
-                      {t("profile.dangerzone.deleteusermanuallynote")}
-                    </small>
-                  </OykGrid.Col>
-                  <OykGrid.Col
-                    size={{ xs: 12, md: 6 }}
-                    flex="horizontal"
-                    justify="end"
-                  >
-                    <OykButton
-                      label={t("profile.dangerzone.deleteusermanually")}
-                      color="danger"
-                      onClick={() => null}
-                    />
-                  </OykGrid.Col>
-                </OykGrid.Row>
-              </OykCard>
-            </OykGrid.Col>
-          </OykGrid.Row>
-        </OykGrid>
       </OykForm>
+      <OykGrid>
+        <OykGrid.Row>
+          <OykGrid.Col>
+            <OykCard color="danger">
+              <OykHeading
+                tag="h2"
+                title={t("profile.dangerzone.title")}
+                subtitle={t("profile.dangerzone.subtitle")}
+                icon={IconAlertTriangle}
+                variant="card"
+              />
+              <OykGrid.Row nopb>
+                <OykGrid.Col size={{ xs: 12, md: 18 }}>
+                  <p className="oyk-page-profile-field-title">
+                    {t("profile.dangerzone.deleteuserpermanently")}
+                  </p>
+                  <small className="oyk-page-profile-field-description">
+                    {t("profile.dangerzone.deleteuserpermanentlydescription")}
+                    <br />
+                    {t("profile.dangerzone.deleteuserpermanentlynote")}
+                  </small>
+                </OykGrid.Col>
+                <OykGrid.Col
+                  size={{ xs: 12, md: 6 }}
+                  flex="horizontal"
+                  justify="end"
+                >
+                  <OykButton
+                    label={t("profile.dangerzone.deleteuserpermanently")}
+                    color="danger"
+                    disabled={isBusy}
+                    onClick={() => setIsDeleteOpen(true)}
+                  />
+                </OykGrid.Col>
+              </OykGrid.Row>
+            </OykCard>
+          </OykGrid.Col>
+        </OykGrid.Row>
+      </OykGrid>
     </div>
   );
 }

@@ -15,6 +15,10 @@ const profileName = string({ min: 1, max: 100 });
 const profileLanguage = string({ max: 2 });
 const profileTimezone = string({ max: 100 });
 
+export const deleteAccountInput = object({
+  confirmationName: profileName,
+});
+
 function optionalProfileField(validate) {
   return (input) => input === undefined ? { value: undefined, errors: [] } : validate(input);
 }

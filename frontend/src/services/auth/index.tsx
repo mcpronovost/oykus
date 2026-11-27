@@ -1,8 +1,9 @@
 import type { TypeAuthContextValue, TypeAuthProviderProps } from "./types";
-import { createContext, useContext } from "react";
+import { createContext, useContext, type Context } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ApiError,
+  deleteAccount as apiDeleteAccount,
   getMe,
   login as apiLogin,
   logout as apiLogout,
@@ -11,7 +12,8 @@ import {
   type TypePublicUser,
 } from "@/services/api";
 
-const AuthContext = import.meta.hot?.data.AuthContext ?? createContext<TypeAuthContextValue | undefined>(undefined);
+const AuthContext: Context<TypeAuthContextValue | undefined> =
+  import.meta.hot?.data.AuthContext ?? createContext<TypeAuthContextValue | undefined>(undefined);
 
 if (import.meta.hot) {
   import.meta.hot.data.AuthContext = AuthContext;
@@ -26,6 +28,9 @@ const INITIAL_STATE: TypeAuthContextValue = {
     throw new Error("AuthProvider not ready");
   },
   logout: async () => {},
+  deleteAccount: async () => {
+    throw new Error("AuthProvider not ready");
+  },
   refresh: async () => null,
   setCurrentSpace: async () => {
     throw new Error("AuthProvider not ready");
@@ -87,6 +92,11 @@ export function AuthProvider({ children }: TypeAuthProviderProps) {
     }
   };
 
+  const deleteAccount = async (confirmationName: string) => {
+    await apiDeleteAccount(confirmationName);
+    await clearSession();
+  };
+
   const refresh = async () => {
     const result = await refetch({ throwOnError: true });
     return result.data ?? null;
@@ -107,6 +117,7 @@ export function AuthProvider({ children }: TypeAuthProviderProps) {
         hasError: isError,
         login,
         logout,
+        deleteAccount,
         refresh,
         setCurrentSpace,
       }}

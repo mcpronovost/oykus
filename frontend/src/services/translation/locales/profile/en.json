@@ -14,5 +14,12 @@
   "Could not update your profile.": "Could not update your profile.",
   "Profile saved.": "Profile saved.",
   "This is your profile page. You can view and edit your personal information here.": "This is your profile page. You can view and edit your personal information here.",
-  "profile.dangerzone.title": "Danger Zone"
+  "profile.dangerzone.title": "Danger Zone",
+  "profile.dangerzone.subtitle": "Warning, this action is irreversible.",
+  "profile.dangerzone.deleteuserpermanently": "Delete Account Permanently",
+  "profile.dangerzone.deleteuserpermanentlydescription": "Permanently delete your account and the spaces you own.",
+  "profile.dangerzone.deleteuserpermanentlynote": "This action cannot be undone.",
+  "profile.deleteaccount.consequences": "This will delete your account, every space you own and its content, and any notes you wrote in other spaces. Your encyclopedia contributions and activity history in other spaces will stay with your name removed.",
+  "Type your profile name to confirm": "Type your profile name to confirm",
+  "Could not delete your account. Try again.": "Could not delete your account. Try again."
 }

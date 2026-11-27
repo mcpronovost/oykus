@@ -1,6 +1,7 @@
+import { clearSessionCookie } from "../../shared/auth/cookies.js";
 import { BadRequestError } from "../../shared/errors/index.js";
 import { decodeWebpBase64 } from "../../shared/uploads.js";
-import { setCurrentSpaceInput, updateProfileImagesInput, updateProfileInput } from "./users.inputs.js";
+import { deleteAccountInput, setCurrentSpaceInput, updateProfileImagesInput, updateProfileInput } from "./users.inputs.js";
 import * as usersServices from "./users.services.js";
 
 function parseBody(schema, body) {
@@ -14,6 +15,13 @@ function parseBody(schema, body) {
 export async function me(req, res) {
   const user = await usersServices.getMe(req.userId);
   res.json({ data: user });
+}
+
+export async function deleteAccount(req, res) {
+  const input = parseBody(deleteAccountInput, req.body ?? {});
+  await usersServices.deleteAccount(req.userId, input);
+  clearSessionCookie(res, req);
+  res.status(204).send();
 }
 
 function decodeProfileImages(input) {

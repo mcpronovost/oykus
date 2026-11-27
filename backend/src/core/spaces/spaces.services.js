@@ -133,14 +133,16 @@ export async function updateSpaceCover(userId, spaceId, webpBuffer) {
   return toSpaceOutput(result.updated);
 }
 
+export async function deleteSpaceRecords(tx, spaceId) {
+  await tx.spaceMember.deleteMany({ where: { spaceId } });
+  await tx.spaceRole.deleteMany({ where: { spaceId } });
+  return tx.space.delete({ where: { id: spaceId }, select: { cover: true } });
+}
+
 export async function deleteSpace(userId, spaceId) {
   await getOwnedSpace(userId, spaceId, { id: true });
 
-  const space = await prisma.$transaction(async (tx) => {
-    await tx.spaceMember.deleteMany({ where: { spaceId } });
-    await tx.spaceRole.deleteMany({ where: { spaceId } });
-    return tx.space.delete({ where: { id: spaceId }, select: { cover: true } });
-  });
+  const space = await prisma.$transaction((tx) => deleteSpaceRecords(tx, spaceId));
 
   if (space.cover) {
     await deleteUploadIfOwned(space.cover);
