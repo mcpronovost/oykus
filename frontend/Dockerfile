@@ -7,7 +7,7 @@ FROM node:24-alpine AS development
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-EXPOSE 5173
+EXPOSE 4627
 CMD ["sh", "docker-entrypoint.dev.sh"]
 
 FROM node:24-alpine AS build
