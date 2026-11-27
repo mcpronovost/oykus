@@ -21,8 +21,6 @@ import {
   OykHeading,
   OykResult,
 } from "@/components/ui";
-import ImgUser from "@/assets/img/space-avatar-1.jpg";
-import ImgCover from "@/assets/img/space-banner-1.jpg";
 
 const PROFILE_IMAGES = {
   avatar: {
